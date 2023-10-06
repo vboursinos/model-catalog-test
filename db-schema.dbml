@@ -1,13 +1,11 @@
-// Use DBML to define your database structure
-// Docs: https://dbml.dbdiagram.io/docs
 
 Table model {
   id integer [pk]
   model_type_id integer [ref: > model_type.id]
   ml_task_id integer [ref: > ml_task.id]
-  name varchar
+  name varchar [not null, unique]
+  display_name varchar [not null]
   description varchar
-  display_name varchar
   structure varchar
   advantages array
   disadvantages array
@@ -15,13 +13,13 @@ Table model {
 
 Table ml_task {  
   id integer [pk]
-  name varchar
+  name varchar [not null, unique]
 }
 
 Table model_dependency {
   id integer [pk]
   model_id integer [ref: > model.id]
-  name varchar
+  name varchar [not null]
 }
 
 Table model_group {
@@ -31,7 +29,7 @@ Table model_group {
 
 Table group {
   id integer [pk]
-  name varchar
+  name varchar [not null]
 }
 
 Table model_metadata {
@@ -43,53 +41,63 @@ Table model_metadata {
 
 Table model_type {
   id integer [pk] 
-  name varchar
+  name varchar [not null]
 }
 
 Table incompatible_metric {
-  id integer [pk] 
   model_id integer [ref: > model.id]
-  metric_name varchar
+  metric_id integer [ref: > metric.id]
+
+  indexes {
+    (model_id, metric_id) [pk]
+  }
+}
+
+Table metric {
+  id integer [pk]
+  name varchar [not null, unique]
+
+  Note: "TBD: This entity seems to be outside the boundaries of this microservice"
 }
 
 Table parameter {
   id integer [pk]
   model_id integer [ref: > model.id]
-  name varchar
-  label varchar
+  name varchar [not null, unique]
+  label varchar [not null]
   description varchar
-  enabled varchar
+  enabled boolean
   fixed_value boolean
   ordering integer
 }
 
 Table parameter_type {
   id integer [pk] 
-  name varchar
+  name varchar [not null, unique]
 }
 
 Table string_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
-  defaultValue varchar
+  default_value varchar
 }
 
 Table boolean_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
-  defaultValue boolean
+  default_value boolean
 }
 
 Table float_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
-  defaultValue double
+  default_value double
 }
 
 Table integer_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
-  defaultValue integer
+  default_value integer
 }
 
 Table distribution {
