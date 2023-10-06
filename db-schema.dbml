@@ -63,12 +63,16 @@ Table metric {
 Table parameter {
   id integer [pk]
   model_id integer [ref: > model.id]
-  name varchar [not null, unique]
+  name varchar [not null]
   label varchar [not null]
   description varchar
   enabled boolean
   fixed_value boolean
   ordering integer
+
+  indexes {
+    (model_id, name) [unique]
+  }
 }
 
 Table parameter_type {
