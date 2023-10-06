@@ -72,39 +72,36 @@ Table string_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue varchar
-  distribution_id integer [ref: > distribution.id]
 }
 
 Table boolean_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue boolean
-  distribution_id integer [ref: > distribution.id]
 }
 
 Table float_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue double
-  distribution_id integer [ref: > distribution.id]
 }
 
 Table integer_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue integer
-  distribution_id integer [ref: > distribution.id]
 }
 
 Table distribution {
   id integer [pk]
-  name varchar
+  name varchar [not null, unique]
 }
 
 Table parameter_category {
   id integer [pk]
   parameter_id integer [ref: > parameter.id]
   parameter_type_id integer [ref: > parameter_type.id]
+  distribution_id integer [ref: > distribution.id]
   ordering integer
 }
 
