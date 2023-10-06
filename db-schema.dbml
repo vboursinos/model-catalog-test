@@ -72,34 +72,36 @@ Table string_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue varchar
-  distribution varchar
 }
 
 Table boolean_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue boolean
-  distribution varchar
 }
 
 Table float_parameter {
-  id integer [pk] 
+  id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue double
-  distribution varchar
 }
 
 Table integer_parameter {
   id integer [pk]
   parameter_category_id integer [ref: - parameter_category.id]
   defaultValue integer
-  distribution varchar
+}
+
+Table distribution {
+  id integer [pk]
+  name varchar [not null, unique]
 }
 
 Table parameter_category {
   id integer [pk]
   parameter_id integer [ref: > parameter.id]
   parameter_type_id integer [ref: > parameter_type.id]
+  distribution_id integer [ref: > distribution.id]
   ordering integer
 }
 
@@ -134,10 +136,10 @@ Table constraint_edge {
 }
 
 Table mapping {
-  id integer [pk] 
+  id integer [pk]
   constraint_edge_id integer [ref: > constraint_edge.id]
   source_type varchar
-  target_type varchar 
+  target_type varchar
 }
 
 Table categorical_constraint {
@@ -180,4 +182,3 @@ Table range_constraint {
   start integer
   stop integer
 }
-
