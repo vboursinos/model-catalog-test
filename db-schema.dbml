@@ -1,0 +1,183 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Model {
+  id integer [primary key]
+  modelTypeId integer [ref: > ModelType.id]
+  name varchar
+  mlTaskId integer [ref: > MltaskType.id]
+  description varchar
+  displayName varchar
+  structure varchar
+  advantages array
+  disadvantages array
+}
+
+Table MltaskType {  
+  id integer [primary key]
+  name varchar
+}
+
+Table ModelDependency {
+  id integer [primary key]
+  modelId integer [ref: > Model.id]
+  name varchar
+}
+
+Table ModelGroup {
+  modelId integer [ref: > Model.id]
+  groupId integer [ref: > Group.id]
+}
+
+Table Group {
+  id integer [primary key]
+  name varchar
+}
+
+Table ModelMetadata {
+  modelId integer [primary key, ref: - Model.id]
+  decisionTree varchar
+  ensembleType varchar
+  family varchar
+}
+
+Table ModelType {
+  id integer [primary key] 
+  name varchar
+}
+
+Table IncompatibleMetric {
+  id integer [primary key] 
+  modelId integer [ref: > Model.id]
+  metricName varchar
+}
+
+Table Parameter {
+  id integer [primary key]
+  modelId integer [ref: > Model.id]
+  name varchar
+  label varchar
+  description varchar
+  enabled varchar
+  fixedValue boolean
+  ordering integer
+}
+
+Table ParameterType {
+  id integer [primary key] 
+  name varchar
+}
+
+Table StringParameter {
+  id integer [primary key]
+  parameterCategoryId integer [ref: - ParameterCategory.id]
+  defaultValue varchar
+  distribution varchar
+}
+
+Table BooleanParameter {
+  id integer [primary key]
+  parameterCategoryId integer [ref: - ParameterCategory.id]
+  defaultValue boolean
+  distribution varchar
+}
+
+Table FloatParameter {
+  id integer [primary key] 
+  parameterCategoryId integer [ref: - ParameterCategory.id]
+  defaultValue double
+  distribution varchar
+}
+
+Table IntegerParameter {
+  id integer [primary key]
+  parameterCategoryId integer [ref: - ParameterCategory.id]
+  defaultValue integer
+  distribution varchar
+}
+
+Table ParameterCategory {
+  id integer [primary key]
+  parameterId integer [ref: > Parameter.id]
+  parameterTypeId integer [ref: > ParameterType.id]
+  ordering integer
+}
+
+Table StringCategory{
+  id integer [primary key]
+  stringParameterId integer [ref: > StringParameter.id]
+  value boolean
+}
+
+Table Interval {
+  id integer [primary key]
+  floatParameterId integer [ref: > FloatParameter.id]
+  left boolean
+  right boolean
+  lower double
+  upper double
+}
+
+Table Range {
+  id integer [primary key]
+  integerParameterId integer [ref: > IntegerParameter.id]
+  start integer
+  stop integer
+}
+
+Table ConstraintEdge {
+  id integer [primary key]
+  modelId integer [ref: > Model.id]
+  source integer [ref: - Parameter.id]
+  target integer [ref: - Parameter.id]
+  constraintInformation varchar
+}
+
+Table Mapping {
+  id integer [primary key] 
+  constraintEdgeId integer [ref: > ConstraintEdge.id]
+  sourceType varchar
+  targetType varchar 
+}
+
+Table CategoricalConstraint {
+  id integer [primary key]
+  sourceMappingId integer [ref: - Mapping.id]
+  targetMappingId integer [ref: - Mapping.id]
+}
+
+Table FloatConstraint {
+  id integer [primary key]
+  sourceMappingId integer [ref: - Mapping.id]
+  targetMappingId integer [ref: - Mapping.id]
+}
+
+Table IntegerConstraint {
+  id integer [primary key]
+  sourceMappingId integer [ref: - Mapping.id]
+  targetMappingId integer [ref: - Mapping.id]
+}
+
+Table CategoryConstraint{
+  id integer [primary key]
+  categoricalConstraintId integer [ref: > CategoricalConstraint.id]
+  stringValue varchar
+  booleanValue boolean
+}
+
+Table IntervalConstraint {
+  id integer [primary key]
+  floatConstraintId integer [ref: > FloatConstraint.id]
+  left boolean
+  right boolean
+  lower double
+  upper double
+}
+
+Table RangeConstraint {
+  id integer [primary key]
+  integerConstraintId integer [ref: > IntegerConstraint.id]
+  start integer
+  stop integer
+}
+
