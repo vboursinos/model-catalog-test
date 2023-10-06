@@ -1,182 +1,182 @@
 // Use DBML to define your database structure
 // Docs: https://dbml.dbdiagram.io/docs
 
-Table Model {
+Table model {
   id integer [pk]
-  modelTypeId integer [ref: > ModelType.id]
+  model_type_id integer [ref: > model_type.id]
+  ml_task_id integer [ref: > ml_task.id]
   name varchar
-  mlTaskId integer [ref: > MltaskType.id]
   description varchar
-  displayName varchar
+  display_name varchar
   structure varchar
   advantages array
   disadvantages array
 }
 
-Table MltaskType {  
+Table ml_task {  
   id integer [pk]
   name varchar
 }
 
-Table ModelDependency {
+Table model_dependency {
   id integer [pk]
-  modelId integer [ref: > Model.id]
+  model_id integer [ref: > model.id]
   name varchar
 }
 
-Table ModelGroup {
-  modelId integer [ref: > Model.id]
-  groupId integer [ref: > Group.id]
+Table model_group {
+  model_id integer [ref: > model.id]
+  group_id integer [ref: > group.id]
 }
 
-Table Group {
+Table group {
   id integer [pk]
   name varchar
 }
 
-Table ModelMetadata {
-  modelId integer [pk, ref: - Model.id]
-  decisionTree varchar
-  ensembleType varchar
+Table model_metadata {
+  model_id integer [pk, ref: - model.id]
+  decision_tree varchar
+  ensemble_type varchar
   family varchar
 }
 
-Table ModelType {
+Table model_type {
   id integer [pk] 
   name varchar
 }
 
-Table IncompatibleMetric {
+Table incompatible_metric {
   id integer [pk] 
-  modelId integer [ref: > Model.id]
-  metricName varchar
+  model_id integer [ref: > model.id]
+  metric_name varchar
 }
 
-Table Parameter {
+Table parameter {
   id integer [pk]
-  modelId integer [ref: > Model.id]
+  model_id integer [ref: > model.id]
   name varchar
   label varchar
   description varchar
   enabled varchar
-  fixedValue boolean
+  fixed_value boolean
   ordering integer
 }
 
-Table ParameterType {
+Table parameter_type {
   id integer [pk] 
   name varchar
 }
 
-Table StringParameter {
+Table string_parameter {
   id integer [pk]
-  parameterCategoryId integer [ref: - ParameterCategory.id]
+  parameter_category_id integer [ref: - parameter_category.id]
   defaultValue varchar
   distribution varchar
 }
 
-Table BooleanParameter {
+Table boolean_parameter {
   id integer [pk]
-  parameterCategoryId integer [ref: - ParameterCategory.id]
+  parameter_category_id integer [ref: - parameter_category.id]
   defaultValue boolean
   distribution varchar
 }
 
-Table FloatParameter {
+Table float_parameter {
   id integer [pk] 
-  parameterCategoryId integer [ref: - ParameterCategory.id]
+  parameter_category_id integer [ref: - parameter_category.id]
   defaultValue double
   distribution varchar
 }
 
-Table IntegerParameter {
+Table integer_parameter {
   id integer [pk]
-  parameterCategoryId integer [ref: - ParameterCategory.id]
+  parameter_category_id integer [ref: - parameter_category.id]
   defaultValue integer
   distribution varchar
 }
 
-Table ParameterCategory {
+Table parameter_category {
   id integer [pk]
-  parameterId integer [ref: > Parameter.id]
-  parameterTypeId integer [ref: > ParameterType.id]
+  parameter_id integer [ref: > parameter.id]
+  parameter_type_id integer [ref: > parameter_type.id]
   ordering integer
 }
 
-Table StringCategory{
+Table string_category{
   id integer [pk]
-  stringParameterId integer [ref: > StringParameter.id]
+  string_parameter_id integer [ref: > string_parameter.id]
   value boolean
 }
 
-Table Interval {
+Table interval {
   id integer [pk]
-  floatParameterId integer [ref: > FloatParameter.id]
+  float_parameter_id integer [ref: > float_parameter.id]
   left boolean
   right boolean
   lower double
   upper double
 }
 
-Table Range {
+Table range {
   id integer [pk]
-  integerParameterId integer [ref: > IntegerParameter.id]
+  integer_parameter_id integer [ref: > integer_parameter.id]
   start integer
   stop integer
 }
 
-Table ConstraintEdge {
+Table constraint_edge {
   id integer [pk]
-  modelId integer [ref: > Model.id]
-  source integer [ref: - Parameter.id]
-  target integer [ref: - Parameter.id]
-  constraintInformation varchar
+  model_id integer [ref: > model.id]
+  source_id integer [ref: - parameter.id]
+  target_id integer [ref: - parameter.id]
+  description varchar
 }
 
-Table Mapping {
+Table mapping {
   id integer [pk] 
-  constraintEdgeId integer [ref: > ConstraintEdge.id]
-  sourceType varchar
-  targetType varchar 
+  constraint_edge_id integer [ref: > constraint_edge.id]
+  source_type varchar
+  target_type varchar 
 }
 
-Table CategoricalConstraint {
+Table categorical_constraint {
   id integer [pk]
-  sourceMappingId integer [ref: - Mapping.id]
-  targetMappingId integer [ref: - Mapping.id]
+  source_mapping_id integer [ref: - mapping.id]
+  target_mapping_id integer [ref: - mapping.id]
 }
 
-Table FloatConstraint {
+Table float_constraint {
   id integer [pk]
-  sourceMappingId integer [ref: - Mapping.id]
-  targetMappingId integer [ref: - Mapping.id]
+  source_mapping_id integer [ref: - mapping.id]
+  target_mapping_id integer [ref: - mapping.id]
 }
 
-Table IntegerConstraint {
+Table integer_constraint {
   id integer [pk]
-  sourceMappingId integer [ref: - Mapping.id]
-  targetMappingId integer [ref: - Mapping.id]
+  source_mapping_id integer [ref: - mapping.id]
+  target_mapping_id integer [ref: - mapping.id]
 }
 
-Table CategoryConstraint{
+Table category_constraint{
   id integer [pk]
-  categoricalConstraintId integer [ref: > CategoricalConstraint.id]
-  stringValue varchar
-  booleanValue boolean
+  categorical_constraint_id integer [ref: > categorical_constraint.id]
+  string_value varchar
+  boolean_value boolean
 }
 
-Table IntervalConstraint {
+Table interval_constraint {
   id integer [pk]
-  floatConstraintId integer [ref: > FloatConstraint.id]
+  float_constraint_id integer [ref: > float_constraint.id]
   left boolean
   right boolean
   lower double
   upper double
 }
 
-Table RangeConstraint {
+Table range_constraint {
   id integer [pk]
-  integerConstraintId integer [ref: > IntegerConstraint.id]
+  integer_constraint_id integer [ref: > integer_constraint.id]
   start integer
   stop integer
 }
