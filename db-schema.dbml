@@ -5,10 +5,15 @@ Table model {
   ml_task_id integer [ref: > ml_task.id]
   name varchar [not null, unique]
   display_name varchar [not null]
+  structure_id integer [ref: > structure.id]
   description varchar
-  structure varchar
   advantages array
   disadvantages array
+}
+
+Table structure {
+  id integer [pk]
+  name varchar [not null, unique]
 }
 
 Table ml_task {  
