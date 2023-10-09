@@ -2,13 +2,19 @@
 Table model {
   id integer [pk]
   model_type_id integer [ref: > model_type.id]
-  ml_task_id integer [ref: > ml_task.id]
+  ml_task_id integer [ref: > ml_task.id, not null]
   name varchar [not null, unique]
   display_name varchar [not null]
+  structure_id integer [ref: > model_structure_type.id, not null]
   description varchar
-  structure varchar
   advantages array
   disadvantages array
+  enabled boolean [not null]
+}
+
+Table model_structure_type {
+  id integer [pk]
+  name varchar [not null, unique]
 }
 
 Table ml_task {  
