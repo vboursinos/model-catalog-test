@@ -9,6 +9,7 @@ Table model {
   description varchar
   advantages array
   disadvantages array
+  enabled boolean [not null]
 }
 
 Table structure {
