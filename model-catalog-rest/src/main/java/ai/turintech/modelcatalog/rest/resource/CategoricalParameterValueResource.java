@@ -43,7 +43,7 @@ public class CategoricalParameterValueResource {
 
     private static final String ENTITY_NAME = "modelCatalogCategoricalParameterValue";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final CategoricalParameterValueFacade categoricalParameterValueFacade;

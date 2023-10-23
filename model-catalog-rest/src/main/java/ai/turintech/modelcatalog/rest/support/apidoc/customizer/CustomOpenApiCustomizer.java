@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.rest.support.apidoc.customizer;
 
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.core.Ordered;
+import org.springframework.stereotype.Component;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.models.info.License;
 /**
  * A OpenApi customizer to set up {@link io.swagger.v3.oas.models.OpenAPI} with JHipster settings.
  */
+@Component
 public class CustomOpenApiCustomizer implements OpenApiCustomizer, Ordered {
 
     /**

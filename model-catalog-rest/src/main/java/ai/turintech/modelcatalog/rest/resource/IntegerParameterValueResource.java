@@ -43,7 +43,7 @@ public class IntegerParameterValueResource {
 
     private static final String ENTITY_NAME = "modelCatalogIntegerParameterValue";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final IntegerParameterValueFacade integerParameterValueFacade;

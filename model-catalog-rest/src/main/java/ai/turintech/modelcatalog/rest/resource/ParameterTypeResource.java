@@ -44,7 +44,7 @@ public class ParameterTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogParameterType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final ParameterTypeFacade parameterTypeFacade;

@@ -42,7 +42,7 @@ public class MetricResource {
 
     private static final String ENTITY_NAME = "modelCatalogMetric";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final MetricFacade metricFacade;

@@ -44,7 +44,7 @@ public class ModelStructureTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogModelStructureType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final ModelStructureTypeFacade modelStructureTypeFacade;

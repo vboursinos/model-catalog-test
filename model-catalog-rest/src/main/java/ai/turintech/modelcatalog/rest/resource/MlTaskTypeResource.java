@@ -44,7 +44,7 @@ public class MlTaskTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogMlTaskType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final MlTaskTypeFacade mlTaskTypeFacade;

@@ -44,7 +44,7 @@ public class ParameterDistributionTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogParameterDistributionType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final ParameterDistributionTypeFacade parameterDistributionTypeFacade;

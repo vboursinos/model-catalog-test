@@ -29,12 +29,13 @@ import org.springframework.data.relational.core.dialect.RenderContextFactory;
 import org.springframework.data.relational.core.sql.render.SqlRenderer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 import ai.turintech.modelcatalog.rest.support.database.h2.H2ConfigurationHelper;
 import io.r2dbc.spi.ConnectionFactory;
 
 @Configuration
-@EnableR2dbcRepositories({ "ai.turintech.catalog.repository" })
+@EnableR2dbcRepositories(basePackageClasses = { ModelCatalogRepositoryPackage.class })
 @EnableTransactionManagement
 public class DatabaseConfiguration {
 

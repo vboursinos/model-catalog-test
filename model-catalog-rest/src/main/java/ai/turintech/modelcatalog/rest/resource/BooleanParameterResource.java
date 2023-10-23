@@ -41,7 +41,7 @@ public class BooleanParameterResource {
 
     private static final String ENTITY_NAME = "modelCatalogBooleanParameter";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final BooleanParameterFacade booleanParameterFacade;

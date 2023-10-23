@@ -16,7 +16,7 @@ import org.springframework.core.env.Profiles;
 import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 
 /**
- * Aspect for logging execution of service and repository Spring components.
+ * Aspect for logging execution of facade, service and repository Spring components.
  *
  * By default, it only runs with the "dev" profile.
  */
@@ -45,9 +45,10 @@ public class LoggingAspect {
      * Pointcut that matches all Spring beans in the application's main packages.
      */
     @Pointcut(
-        "within(ai.turintech.catalog.repository..*)" +
-        " || within(ai.turintech.catalog.service..*)" +
-        " || within(ai.turintech.catalog.web.rest..*)"
+        "within(ai.turintech.modelcatalog.repository..*)" +
+        " || within(ai.turintech.modelcatalog.service..*)" +
+        " || within(ai.turintech.modelcatalog.facade..*)" +
+        " || within(ai.turintech.modelcatalog.rest..*)"
     )
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.

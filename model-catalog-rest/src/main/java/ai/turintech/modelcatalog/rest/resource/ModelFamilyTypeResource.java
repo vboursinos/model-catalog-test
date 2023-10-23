@@ -44,7 +44,7 @@ public class ModelFamilyTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogModelFamilyType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final ModelFamilyTypeFacade modelFamilyTypeFacade;

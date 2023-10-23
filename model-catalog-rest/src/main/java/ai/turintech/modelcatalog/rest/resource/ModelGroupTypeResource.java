@@ -44,7 +44,7 @@ public class ModelGroupTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogModelGroupType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final ModelGroupTypeFacade modelGroupTypeFacade;

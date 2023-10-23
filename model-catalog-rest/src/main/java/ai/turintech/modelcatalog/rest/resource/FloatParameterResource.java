@@ -41,7 +41,7 @@ public class FloatParameterResource {
 
     private static final String ENTITY_NAME = "modelCatalogFloatParameter";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${jhipster.clientApp.name:'modelCatalogApp'}")
     private String applicationName;
 
     private final FloatParameterFacade floatParameterFacade;
