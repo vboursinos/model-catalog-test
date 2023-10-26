@@ -9,7 +9,6 @@
 	        <relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>model-catalog-to</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>model-catalog-to</name>
 	<description>Transfer objects module for the model-catalog microservice</description>
 	<properties>

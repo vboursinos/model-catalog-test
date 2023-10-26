@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.facade.ModelGroupTypeFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ModelGroupTypeTO;
+import ai.turintech.modelcatalog.todtomapper.ModelGroupTypeMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -48,29 +49,32 @@ public class ModelGroupTypeResource {
     private String applicationName;
 
     private final ModelGroupTypeFacade modelGroupTypeFacade;
+    
+    private final ModelGroupTypeMapper modelGroupTypeMapper;
 
 
-    public ModelGroupTypeResource(ModelGroupTypeFacade modelGroupTypeFacade) {
+    public ModelGroupTypeResource(ModelGroupTypeFacade modelGroupTypeFacade, ModelGroupTypeMapper modelGroupTypeMapper) {
         this.modelGroupTypeFacade = modelGroupTypeFacade;
+        this.modelGroupTypeMapper = modelGroupTypeMapper;
     }
 
     /**
      * {@code POST  /model-group-types} : Create a new modelGroupType.
      *
-     * @param modelGroupTypeDTO the modelGroupTypeDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelGroupTypeDTO, or with status {@code 400 (Bad Request)} if the modelGroupType has already an ID.
+     * @param modelGroupTypeTO the modelGroupTypeTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelGroupTypeTO, or with status {@code 400 (Bad Request)} if the modelGroupType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/model-group-types")
-    public Mono<ResponseEntity<ModelGroupTypeDTO>> createModelGroupType(@Valid @RequestBody ModelGroupTypeDTO modelGroupTypeDTO)
+    public Mono<ResponseEntity<ModelGroupTypeTO>> createModelGroupType(@Valid @RequestBody ModelGroupTypeTO modelGroupTypeTO)
         throws URISyntaxException {
-        log.debug("REST request to save ModelGroupType : {}", modelGroupTypeDTO);
-        if (modelGroupTypeDTO.getId() != null) {
+        log.debug("REST request to save ModelGroupType : {}", modelGroupTypeTO);
+        if (modelGroupTypeTO.getId() != null) {
             throw new BadRequestAlertException("A new modelGroupType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        modelGroupTypeDTO.setId(UUID.randomUUID());
+        modelGroupTypeTO.setId(UUID.randomUUID());
         return modelGroupTypeFacade
-            .save(modelGroupTypeDTO)
+            .save(modelGroupTypeMapper.toDto(modelGroupTypeTO)).map(modelGroupTypeMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -86,23 +90,23 @@ public class ModelGroupTypeResource {
     /**
      * {@code PUT  /model-group-types/:id} : Updates an existing modelGroupType.
      *
-     * @param id the id of the modelGroupTypeDTO to save.
-     * @param modelGroupTypeDTO the modelGroupTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelGroupTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the modelGroupTypeDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the modelGroupTypeDTO couldn't be updated.
+     * @param id the id of the modelGroupTypeTO to save.
+     * @param modelGroupTypeDTO the modelGroupTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelGroupTypeTO,
+     * or with status {@code 400 (Bad Request)} if the modelGroupTypeTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the modelGroupTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/model-group-types/{id}")
-    public Mono<ResponseEntity<ModelGroupTypeDTO>> updateModelGroupType(
+    public Mono<ResponseEntity<ModelGroupTypeTO>> updateModelGroupType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ModelGroupTypeDTO modelGroupTypeDTO
+        @Valid @RequestBody ModelGroupTypeTO modelGroupTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to update ModelGroupType : {}, {}", id, modelGroupTypeDTO);
-        if (modelGroupTypeDTO.getId() == null) {
+        log.debug("REST request to update ModelGroupType : {}, {}", id, modelGroupTypeTO);
+        if (modelGroupTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelGroupTypeDTO.getId())) {
+        if (!Objects.equals(id, modelGroupTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -114,7 +118,7 @@ public class ModelGroupTypeResource {
                 }
 
                 return modelGroupTypeFacade
-                    .update(modelGroupTypeDTO)
+                    .update(modelGroupTypeMapper.toDto(modelGroupTypeTO)).map(modelGroupTypeMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -128,24 +132,24 @@ public class ModelGroupTypeResource {
     /**
      * {@code PATCH  /model-group-types/:id} : Partial updates given fields of an existing modelGroupType, field will ignore if it is null
      *
-     * @param id the id of the modelGroupTypeDTO to save.
-     * @param modelGroupTypeDTO the modelGroupTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelGroupTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the modelGroupTypeDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the modelGroupTypeDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the modelGroupTypeDTO couldn't be updated.
+     * @param id the id of the modelGroupTypeTO to save.
+     * @param modelGroupTypeTO the modelGroupTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelGroupTypeTO,
+     * or with status {@code 400 (Bad Request)} if the modelGroupTypeTO is not valid,
+     * or with status {@code 404 (Not Found)} if the modelGroupTypeTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the modelGroupTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/model-group-types/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ModelGroupTypeDTO>> partialUpdateModelGroupType(
+    public Mono<ResponseEntity<ModelGroupTypeTO>> partialUpdateModelGroupType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ModelGroupTypeDTO modelGroupTypeDTO
+        @NotNull @RequestBody ModelGroupTypeTO modelGroupTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update ModelGroupType partially : {}, {}", id, modelGroupTypeDTO);
-        if (modelGroupTypeDTO.getId() == null) {
+        log.debug("REST request to partial update ModelGroupType partially : {}, {}", id, modelGroupTypeTO);
+        if (modelGroupTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelGroupTypeDTO.getId())) {
+        if (!Objects.equals(id, modelGroupTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -156,7 +160,7 @@ public class ModelGroupTypeResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ModelGroupTypeDTO> result = modelGroupTypeFacade.partialUpdate(modelGroupTypeDTO);
+                Mono<ModelGroupTypeTO> result = modelGroupTypeFacade.partialUpdate(modelGroupTypeMapper.toDto(modelGroupTypeTO)).map(modelGroupTypeMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -175,9 +179,9 @@ public class ModelGroupTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of modelGroupTypes in body.
      */
     @GetMapping(value = "/model-group-types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<ModelGroupTypeDTO>> getAllModelGroupTypes() {
+    public Mono<List<ModelGroupTypeTO>> getAllModelGroupTypes() {
         log.debug("REST request to get all ModelGroupTypes");
-        return modelGroupTypeFacade.findAll().collectList();
+        return modelGroupTypeFacade.findAll().collectList().map(modelGroupTypeMapper::toTo);
     }
 
     /**
@@ -185,9 +189,9 @@ public class ModelGroupTypeResource {
      * @return the {@link Flux} of modelGroupTypes.
      */
     @GetMapping(value = "/model-group-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<ModelGroupTypeDTO> getAllModelGroupTypesAsStream() {
+    public Flux<ModelGroupTypeTO> getAllModelGroupTypesAsStream() {
         log.debug("REST request to get all ModelGroupTypes as a stream");
-        return modelGroupTypeFacade.findAll();
+        return modelGroupTypeFacade.findAll().map(modelGroupTypeMapper::toTo);
     }
 
     /**
@@ -197,10 +201,10 @@ public class ModelGroupTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the modelGroupTypeDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/model-group-types/{id}")
-    public Mono<ResponseEntity<ModelGroupTypeDTO>> getModelGroupType(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ModelGroupTypeTO>> getModelGroupType(@PathVariable UUID id) {
         log.debug("REST request to get ModelGroupType : {}", id);
-        Mono<ModelGroupTypeDTO> modelGroupTypeDTO = modelGroupTypeFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(modelGroupTypeDTO);
+        Mono<ModelGroupTypeTO> modelGroupTypeTO = modelGroupTypeFacade.findOne(id).map(modelGroupTypeMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(modelGroupTypeTO);
     }
 
     /**

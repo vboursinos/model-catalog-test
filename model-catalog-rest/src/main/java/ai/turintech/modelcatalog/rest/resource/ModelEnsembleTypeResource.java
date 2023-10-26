@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.facade.ModelEnsembleTypeFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ModelEnsembleTypeTO;
+import ai.turintech.modelcatalog.todtomapper.ModelEnsembleTypeMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -48,31 +49,34 @@ public class ModelEnsembleTypeResource {
     private String applicationName;
 
     private final ModelEnsembleTypeFacade modelEnsembleTypeFacade;
+    
+    private final ModelEnsembleTypeMapper modelEnsembleTypeMapper;
 
 
     public ModelEnsembleTypeResource(
-        ModelEnsembleTypeFacade modelEnsembleTypeFacade) {
+        ModelEnsembleTypeFacade modelEnsembleTypeFacade, ModelEnsembleTypeMapper modelEnsembleTypeMapper) {
         this.modelEnsembleTypeFacade = modelEnsembleTypeFacade;
+        this.modelEnsembleTypeMapper = modelEnsembleTypeMapper;
     }
 
     /**
      * {@code POST  /model-ensemble-types} : Create a new modelEnsembleType.
      *
-     * @param modelEnsembleTypeDTO the modelEnsembleTypeDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelEnsembleTypeDTO, or with status {@code 400 (Bad Request)} if the modelEnsembleType has already an ID.
+     * @param modelEnsembleTypeTO the modelEnsembleTypeTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelEnsembleTypeTO, or with status {@code 400 (Bad Request)} if the modelEnsembleType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/model-ensemble-types")
-    public Mono<ResponseEntity<ModelEnsembleTypeDTO>> createModelEnsembleType(
-        @Valid @RequestBody ModelEnsembleTypeDTO modelEnsembleTypeDTO
+    public Mono<ResponseEntity<ModelEnsembleTypeTO>> createModelEnsembleType(
+        @Valid @RequestBody ModelEnsembleTypeTO modelEnsembleTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to save ModelEnsembleType : {}", modelEnsembleTypeDTO);
-        if (modelEnsembleTypeDTO.getId() != null) {
+        log.debug("REST request to save ModelEnsembleType : {}", modelEnsembleTypeTO);
+        if (modelEnsembleTypeTO.getId() != null) {
             throw new BadRequestAlertException("A new modelEnsembleType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        modelEnsembleTypeDTO.setId(UUID.randomUUID());
+        modelEnsembleTypeTO.setId(UUID.randomUUID());
         return modelEnsembleTypeFacade
-            .save(modelEnsembleTypeDTO)
+            .save(modelEnsembleTypeMapper.toDto(modelEnsembleTypeTO)).map(modelEnsembleTypeMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -88,23 +92,23 @@ public class ModelEnsembleTypeResource {
     /**
      * {@code PUT  /model-ensemble-types/:id} : Updates an existing modelEnsembleType.
      *
-     * @param id the id of the modelEnsembleTypeDTO to save.
-     * @param modelEnsembleTypeDTO the modelEnsembleTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelEnsembleTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the modelEnsembleTypeDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the modelEnsembleTypeDTO couldn't be updated.
+     * @param id the id of the modelEnsembleTypeTO to save.
+     * @param modelEnsembleTypeTO the modelEnsembleTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelEnsembleTypeTO,
+     * or with status {@code 400 (Bad Request)} if the modelEnsembleTypeTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the modelEnsembleTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/model-ensemble-types/{id}")
-    public Mono<ResponseEntity<ModelEnsembleTypeDTO>> updateModelEnsembleType(
+    public Mono<ResponseEntity<ModelEnsembleTypeTO>> updateModelEnsembleType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ModelEnsembleTypeDTO modelEnsembleTypeDTO
+        @Valid @RequestBody ModelEnsembleTypeTO modelEnsembleTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to update ModelEnsembleType : {}, {}", id, modelEnsembleTypeDTO);
-        if (modelEnsembleTypeDTO.getId() == null) {
+        log.debug("REST request to update ModelEnsembleType : {}, {}", id, modelEnsembleTypeTO);
+        if (modelEnsembleTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelEnsembleTypeDTO.getId())) {
+        if (!Objects.equals(id, modelEnsembleTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -116,7 +120,7 @@ public class ModelEnsembleTypeResource {
                 }
 
                 return modelEnsembleTypeFacade
-                    .update(modelEnsembleTypeDTO)
+                    .update(modelEnsembleTypeMapper.toDto(modelEnsembleTypeTO)).map(modelEnsembleTypeMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -139,15 +143,15 @@ public class ModelEnsembleTypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/model-ensemble-types/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ModelEnsembleTypeDTO>> partialUpdateModelEnsembleType(
+    public Mono<ResponseEntity<ModelEnsembleTypeTO>> partialUpdateModelEnsembleType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ModelEnsembleTypeDTO modelEnsembleTypeDTO
+        @NotNull @RequestBody ModelEnsembleTypeTO modelEnsembleTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update ModelEnsembleType partially : {}, {}", id, modelEnsembleTypeDTO);
-        if (modelEnsembleTypeDTO.getId() == null) {
+        log.debug("REST request to partial update ModelEnsembleType partially : {}, {}", id, modelEnsembleTypeTO);
+        if (modelEnsembleTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelEnsembleTypeDTO.getId())) {
+        if (!Objects.equals(id, modelEnsembleTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -158,7 +162,7 @@ public class ModelEnsembleTypeResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ModelEnsembleTypeDTO> result = modelEnsembleTypeFacade.partialUpdate(modelEnsembleTypeDTO);
+                Mono<ModelEnsembleTypeTO> result = modelEnsembleTypeFacade.partialUpdate(modelEnsembleTypeMapper.toDto(modelEnsembleTypeTO)).map(modelEnsembleTypeMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -177,9 +181,9 @@ public class ModelEnsembleTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of modelEnsembleTypes in body.
      */
     @GetMapping(value = "/model-ensemble-types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<ModelEnsembleTypeDTO>> getAllModelEnsembleTypes() {
+    public Mono<List<ModelEnsembleTypeTO>> getAllModelEnsembleTypes() {
         log.debug("REST request to get all ModelEnsembleTypes");
-        return modelEnsembleTypeFacade.findAll().collectList();
+        return modelEnsembleTypeFacade.findAll().collectList().map(modelEnsembleTypeMapper::toTo);
     }
 
     /**
@@ -187,9 +191,9 @@ public class ModelEnsembleTypeResource {
      * @return the {@link Flux} of modelEnsembleTypes.
      */
     @GetMapping(value = "/model-ensemble-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<ModelEnsembleTypeDTO> getAllModelEnsembleTypesAsStream() {
+    public Flux<ModelEnsembleTypeTO> getAllModelEnsembleTypesAsStream() {
         log.debug("REST request to get all ModelEnsembleTypes as a stream");
-        return modelEnsembleTypeFacade.findAll();
+        return modelEnsembleTypeFacade.findAll().map(modelEnsembleTypeMapper::toTo);
     }
 
     /**
@@ -199,10 +203,10 @@ public class ModelEnsembleTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the modelEnsembleTypeDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/model-ensemble-types/{id}")
-    public Mono<ResponseEntity<ModelEnsembleTypeDTO>> getModelEnsembleType(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ModelEnsembleTypeTO>> getModelEnsembleType(@PathVariable UUID id) {
         log.debug("REST request to get ModelEnsembleType : {}", id);
-        Mono<ModelEnsembleTypeDTO> modelEnsembleTypeDTO = modelEnsembleTypeFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(modelEnsembleTypeDTO);
+        Mono<ModelEnsembleTypeTO> modelEnsembleTypeTO = modelEnsembleTypeFacade.findOne(id).map(modelEnsembleTypeMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(modelEnsembleTypeTO);
     }
 
     /**

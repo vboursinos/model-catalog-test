@@ -22,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.FloatParameterDTO;
 import ai.turintech.modelcatalog.facade.FloatParameterFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.FloatParameterTO;
+import ai.turintech.modelcatalog.todtomapper.FloatParameterMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,9 +46,11 @@ public class FloatParameterResource {
     private String applicationName;
 
     private final FloatParameterFacade floatParameterFacade;
+    private final FloatParameterMapper floatParameterMapper;
 
-    public FloatParameterResource(FloatParameterFacade floatParameterFacade) {
+    public FloatParameterResource(FloatParameterFacade floatParameterFacade,FloatParameterMapper floatParameterMapper) {
         this.floatParameterFacade = floatParameterFacade;
+        this.floatParameterMapper = floatParameterMapper;
     }
 
     /**
@@ -58,14 +61,14 @@ public class FloatParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/float-parameters")
-    public Mono<ResponseEntity<FloatParameterDTO>> createFloatParameter(@RequestBody FloatParameterDTO floatParameterDTO)
+    public Mono<ResponseEntity<FloatParameterTO>> createFloatParameter(@RequestBody FloatParameterTO floatParameterTO)
         throws URISyntaxException {
-        log.debug("REST request to save FloatParameter : {}", floatParameterDTO);
-        if (floatParameterDTO.getId() != null) {
+        log.debug("REST request to save FloatParameter : {}", floatParameterTO);
+        if (floatParameterTO.getId() != null) {
             throw new BadRequestAlertException("A new floatParameter cannot already have an ID", ENTITY_NAME, "idexists");
         }
         return floatParameterFacade
-            .save(floatParameterDTO)
+            .save(floatParameterMapper.toDto(floatParameterTO)).map(floatParameterMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -89,15 +92,15 @@ public class FloatParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/float-parameters/{id}")
-    public Mono<ResponseEntity<FloatParameterDTO>> updateFloatParameter(
+    public Mono<ResponseEntity<FloatParameterTO>> updateFloatParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody FloatParameterDTO floatParameterDTO
+        @RequestBody FloatParameterTO floatParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to update FloatParameter : {}, {}", id, floatParameterDTO);
-        if (floatParameterDTO.getId() == null) {
+        log.debug("REST request to update FloatParameter : {}, {}", id, floatParameterTO);
+        if (floatParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, floatParameterDTO.getId())) {
+        if (!Objects.equals(id, floatParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -109,7 +112,7 @@ public class FloatParameterResource {
                 }
 
                 return floatParameterFacade
-                    .update(floatParameterDTO)
+                    .update(floatParameterMapper.toDto(floatParameterTO)).map(floatParameterMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -132,15 +135,15 @@ public class FloatParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/float-parameters/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<FloatParameterDTO>> partialUpdateFloatParameter(
+    public Mono<ResponseEntity<FloatParameterTO>> partialUpdateFloatParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody FloatParameterDTO floatParameterDTO
+        @RequestBody FloatParameterTO floatParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update FloatParameter partially : {}, {}", id, floatParameterDTO);
-        if (floatParameterDTO.getId() == null) {
+        log.debug("REST request to partial update FloatParameter partially : {}, {}", id, floatParameterTO);
+        if (floatParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, floatParameterDTO.getId())) {
+        if (!Objects.equals(id, floatParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -151,7 +154,7 @@ public class FloatParameterResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<FloatParameterDTO> result = floatParameterFacade.partialUpdate(floatParameterDTO);
+                Mono<FloatParameterTO> result = floatParameterFacade.partialUpdate(floatParameterMapper.toDto(floatParameterTO)).map(floatParameterMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -170,9 +173,9 @@ public class FloatParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of floatParameters in body.
      */
     @GetMapping(value = "/float-parameters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<FloatParameterDTO>> getAllFloatParameters() {
+    public Mono<List<FloatParameterTO>> getAllFloatParameters() {
         log.debug("REST request to get all FloatParameters");
-        return floatParameterFacade.findAll().collectList();
+        return floatParameterFacade.findAll().collectList().map(floatParameterMapper::toTo);
     }
 
     /**
@@ -180,9 +183,9 @@ public class FloatParameterResource {
      * @return the {@link Flux} of floatParameters.
      */
     @GetMapping(value = "/float-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<FloatParameterDTO> getAllFloatParametersAsStream() {
+    public Flux<FloatParameterTO> getAllFloatParametersAsStream() {
         log.debug("REST request to get all FloatParameters as a stream");
-        return floatParameterFacade.findAll();
+        return floatParameterFacade.findAll().map(floatParameterMapper::toTo);
     }
 
     /**
@@ -192,10 +195,10 @@ public class FloatParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the floatParameterDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/float-parameters/{id}")
-    public Mono<ResponseEntity<FloatParameterDTO>> getFloatParameter(@PathVariable Long id) {
+    public Mono<ResponseEntity<FloatParameterTO>> getFloatParameter(@PathVariable Long id) {
         log.debug("REST request to get FloatParameter : {}", id);
-        Mono<FloatParameterDTO> floatParameterDTO = floatParameterFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(floatParameterDTO);
+        Mono<FloatParameterTO> floatParameterTO = floatParameterFacade.findOne(id).map(floatParameterMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(floatParameterTO);
     }
 
     /**

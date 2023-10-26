@@ -29,12 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.facade.ModelFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.PaginationUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ModelTO;
+import ai.turintech.modelcatalog.todtomapper.ModelMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Mono;
@@ -54,28 +55,31 @@ public class ModelResource {
     private String applicationName;
 
     private final ModelFacade modelFacade;
+    
+    private final ModelMapper modelMapper;
 
 
-    public ModelResource(ModelFacade modelFacade) {
+    public ModelResource(ModelFacade modelFacade, ModelMapper modelMapper) {
         this.modelFacade = modelFacade;
+        this.modelMapper =modelMapper;
     }
 
     /**
      * {@code POST  /models} : Create a new model.
      *
-     * @param modelDTO the modelDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelDTO, or with status {@code 400 (Bad Request)} if the model has already an ID.
+     * @param modelTO the modelTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelTO, or with status {@code 400 (Bad Request)} if the model has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/models")
-    public Mono<ResponseEntity<ModelDTO>> createModel(@Valid @RequestBody ModelDTO modelDTO) throws URISyntaxException {
-        log.debug("REST request to save Model : {}", modelDTO);
-        if (modelDTO.getId() != null) {
+    public Mono<ResponseEntity<ModelTO>> createModel(@Valid @RequestBody ModelTO modelTO) throws URISyntaxException {
+        log.debug("REST request to save Model : {}", modelTO);
+        if (modelTO.getId() != null) {
             throw new BadRequestAlertException("A new model cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        modelDTO.setId(UUID.randomUUID());
+        modelTO.setId(UUID.randomUUID());
         return modelFacade
-            .save(modelDTO)
+            .save(modelMapper.toDto(modelTO)).map(modelMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -91,23 +95,23 @@ public class ModelResource {
     /**
      * {@code PUT  /models/:id} : Updates an existing model.
      *
-     * @param id the id of the modelDTO to save.
-     * @param modelDTO the modelDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelDTO,
-     * or with status {@code 400 (Bad Request)} if the modelDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the modelDTO couldn't be updated.
+     * @param id the id of the modelTO to save.
+     * @param modelTO the modelTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelTO,
+     * or with status {@code 400 (Bad Request)} if the modelTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the modelTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/models/{id}")
-    public Mono<ResponseEntity<ModelDTO>> updateModel(
+    public Mono<ResponseEntity<ModelTO>> updateModel(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ModelDTO modelDTO
+        @Valid @RequestBody ModelTO modelTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Model : {}, {}", id, modelDTO);
-        if (modelDTO.getId() == null) {
+        log.debug("REST request to update Model : {}, {}", id, modelTO);
+        if (modelTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelDTO.getId())) {
+        if (!Objects.equals(id, modelTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -119,7 +123,7 @@ public class ModelResource {
                 }
 
                 return modelFacade
-                    .update(modelDTO)
+                    .update(modelMapper.toDto(modelTO)).map(modelMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -133,24 +137,24 @@ public class ModelResource {
     /**
      * {@code PATCH  /models/:id} : Partial updates given fields of an existing model, field will ignore if it is null
      *
-     * @param id the id of the modelDTO to save.
-     * @param modelDTO the modelDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelDTO,
-     * or with status {@code 400 (Bad Request)} if the modelDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the modelDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the modelDTO couldn't be updated.
+     * @param id the id of the modelTO to save.
+     * @param modelTO the modelTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelTO,
+     * or with status {@code 400 (Bad Request)} if the modelTO is not valid,
+     * or with status {@code 404 (Not Found)} if the modelTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the modelTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/models/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ModelDTO>> partialUpdateModel(
+    public Mono<ResponseEntity<ModelTO>> partialUpdateModel(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ModelDTO modelDTO
+        @NotNull @RequestBody ModelTO modelTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Model partially : {}, {}", id, modelDTO);
-        if (modelDTO.getId() == null) {
+        log.debug("REST request to partial update Model partially : {}, {}", id, modelTO);
+        if (modelTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelDTO.getId())) {
+        if (!Objects.equals(id, modelTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -161,7 +165,7 @@ public class ModelResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ModelDTO> result = modelFacade.partialUpdate(modelDTO);
+                Mono<ModelTO> result = modelFacade.partialUpdate(modelMapper.toDto(modelTO)).map(modelMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -183,7 +187,7 @@ public class ModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of models in body.
      */
     @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<List<ModelDTO>>> getAllModels(
+    public Mono<ResponseEntity<List<ModelTO>>> getAllModels(
         @ParameterObject Pageable pageable,
         ServerHttpRequest request,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
@@ -191,7 +195,7 @@ public class ModelResource {
         log.debug("REST request to get a page of Models");
         return modelFacade
             .countAll()
-            .zipWith(modelFacade.findAll(pageable).collectList())
+            .zipWith(modelFacade.findAll(pageable).collectList().map(modelMapper::toTo))
             .map(countWithEntities ->
                 ResponseEntity
                     .ok()
@@ -208,20 +212,20 @@ public class ModelResource {
     /**
      * {@code GET  /models/:id} : get the "id" model.
      *
-     * @param id the id of the modelDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the modelDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the modelTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the modelTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/models/{id}")
-    public Mono<ResponseEntity<ModelDTO>> getModel(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ModelTO>> getModel(@PathVariable UUID id) {
         log.debug("REST request to get Model : {}", id);
-        Mono<ModelDTO> modelDTO = modelFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(modelDTO);
+        Mono<ModelTO> modelTO = modelFacade.findOne(id).map(modelMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(modelTO);
     }
 
     /**
      * {@code DELETE  /models/:id} : delete the "id" model.
      *
-     * @param id the id of the modelDTO to delete.
+     * @param id the id of the modelTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/models/{id}")

@@ -23,16 +23,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.MetricDTO;
 import ai.turintech.modelcatalog.facade.MetricFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.MetricTO;
+import ai.turintech.modelcatalog.todtomapper.MetricMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * REST controller for managing {@link ai.turintech.catalog.domain.Metric}.
+ * REST controller for managing {@link ai.turintech.modelcatalog.entity.Metric}.
  */
 @RestController
 @RequestMapping("/api")
@@ -46,10 +47,13 @@ public class MetricResource {
     private String applicationName;
 
     private final MetricFacade metricFacade;
+    
+    private final MetricMapper metricMapper;
 
 
-    public MetricResource(MetricFacade metricFacade) {
+    public MetricResource(MetricFacade metricFacade, MetricMapper metricMapper) {
         this.metricFacade = metricFacade;
+        this.metricMapper = metricMapper;
     }
 
     /**
@@ -60,14 +64,14 @@ public class MetricResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/metrics")
-    public Mono<ResponseEntity<MetricDTO>> createMetric(@RequestBody MetricDTO metricDTO) throws URISyntaxException {
-        log.debug("REST request to save Metric : {}", metricDTO);
-        if (metricDTO.getId() != null) {
+    public Mono<ResponseEntity<MetricTO>> createMetric(@RequestBody MetricTO metricTO) throws URISyntaxException {
+        log.debug("REST request to save Metric : {}", metricTO);
+        if (metricTO.getId() != null) {
             throw new BadRequestAlertException("A new metric cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        metricDTO.setId(UUID.randomUUID());
+        metricTO.setId(UUID.randomUUID());
         return metricFacade
-            .save(metricDTO)
+            .save(metricMapper.toDto(metricTO)).map(metricMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -91,15 +95,15 @@ public class MetricResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/metrics/{id}")
-    public Mono<ResponseEntity<MetricDTO>> updateMetric(
+    public Mono<ResponseEntity<MetricTO>> updateMetric(
         @PathVariable(value = "id", required = false) final UUID id,
-        @RequestBody MetricDTO metricDTO
+        @RequestBody MetricTO metricTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Metric : {}, {}", id, metricDTO);
-        if (metricDTO.getId() == null) {
+        log.debug("REST request to update Metric : {}, {}", id, metricTO);
+        if (metricTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, metricDTO.getId())) {
+        if (!Objects.equals(id, metricTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -111,7 +115,7 @@ public class MetricResource {
                 }
 
                 return metricFacade
-                    .update(metricDTO)
+                    .update(metricMapper.toDto(metricTO)).map(metricMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -125,24 +129,24 @@ public class MetricResource {
     /**
      * {@code PATCH  /metrics/:id} : Partial updates given fields of an existing metric, field will ignore if it is null
      *
-     * @param id the id of the metricDTO to save.
-     * @param metricDTO the metricDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metricDTO,
-     * or with status {@code 400 (Bad Request)} if the metricDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the metricDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the metricDTO couldn't be updated.
+     * @param id the id of the metricTO to save.
+     * @param metricDTO the metricTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metricTO,
+     * or with status {@code 400 (Bad Request)} if the metricTO is not valid,
+     * or with status {@code 404 (Not Found)} if the metricTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the metricTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/metrics/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<MetricDTO>> partialUpdateMetric(
+    public Mono<ResponseEntity<MetricTO>> partialUpdateMetric(
         @PathVariable(value = "id", required = false) final UUID id,
-        @RequestBody MetricDTO metricDTO
+        @RequestBody MetricTO metricTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Metric partially : {}, {}", id, metricDTO);
-        if (metricDTO.getId() == null) {
+        log.debug("REST request to partial update Metric partially : {}, {}", id, metricTO);
+        if (metricTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, metricDTO.getId())) {
+        if (!Objects.equals(id, metricTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -153,7 +157,7 @@ public class MetricResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<MetricDTO> result = metricFacade.partialUpdate(metricDTO);
+                Mono<MetricTO> result = metricFacade.partialUpdate(metricMapper.toDto(metricTO)).map(metricMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -172,9 +176,9 @@ public class MetricResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of metrics in body.
      */
     @GetMapping(value = "/metrics", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<MetricDTO>> getAllMetrics() {
+    public Mono<List<MetricTO>> getAllMetrics() {
         log.debug("REST request to get all Metrics");
-        return metricFacade.findAll().collectList();
+        return metricFacade.findAll().collectList().map(metricMapper::toTo);
     }
 
     /**
@@ -182,28 +186,28 @@ public class MetricResource {
      * @return the {@link Flux} of metrics.
      */
     @GetMapping(value = "/metrics", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<MetricDTO> getAllMetricsAsStream() {
+    public Flux<MetricTO> getAllMetricsAsStream() {
         log.debug("REST request to get all Metrics as a stream");
-        return metricFacade.findAll();
+        return metricFacade.findAll().map(metricMapper::toTo);
     }
 
     /**
      * {@code GET  /metrics/:id} : get the "id" metric.
      *
-     * @param id the id of the metricDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the metricDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the metricTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the metricTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/metrics/{id}")
-    public Mono<ResponseEntity<MetricDTO>> getMetric(@PathVariable UUID id) {
+    public Mono<ResponseEntity<MetricTO>> getMetric(@PathVariable UUID id) {
         log.debug("REST request to get Metric : {}", id);
-        Mono<MetricDTO> metricDTO = metricFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(metricDTO);
+        Mono<MetricTO> metricTO = metricFacade.findOne(id).map(metricMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(metricTO);
     }
 
     /**
      * {@code DELETE  /metrics/:id} : delete the "id" metric.
      *
-     * @param id the id of the metricDTO to delete.
+     * @param id the id of the metricTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/metrics/{id}")

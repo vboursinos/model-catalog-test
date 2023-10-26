@@ -22,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.facade.FloatParameterRangeFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.FloatParameterRangeTO;
+import ai.turintech.modelcatalog.todtomapper.FloatParameterRangeMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -47,9 +48,12 @@ public class FloatParameterRangeResource {
     private String applicationName;
 
     private final FloatParameterRangeFacade floatParameterRangeFacade;
+    
+    private final FloatParameterRangeMapper floatParameterRangeMapper;
 
-    public FloatParameterRangeResource(FloatParameterRangeFacade floatParameterRangeFacade) {
+    public FloatParameterRangeResource(FloatParameterRangeFacade floatParameterRangeFacade,FloatParameterRangeMapper floatParameterRangeMapper) {
         this.floatParameterRangeFacade = floatParameterRangeFacade;
+        this.floatParameterRangeMapper = floatParameterRangeMapper;
     }
 
     /**
@@ -60,15 +64,15 @@ public class FloatParameterRangeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/float-parameter-ranges")
-    public Mono<ResponseEntity<FloatParameterRangeDTO>> createFloatParameterRange(
-        @Valid @RequestBody FloatParameterRangeDTO floatParameterRangeDTO
+    public Mono<ResponseEntity<FloatParameterRangeTO>> createFloatParameterRange(
+        @Valid @RequestBody FloatParameterRangeTO floatParameterRangeTO
     ) throws URISyntaxException {
-        log.debug("REST request to save FloatParameterRange : {}", floatParameterRangeDTO);
-        if (floatParameterRangeDTO.getId() != null) {
+        log.debug("REST request to save FloatParameterRange : {}", floatParameterRangeTO);
+        if (floatParameterRangeTO.getId() != null) {
             throw new BadRequestAlertException("A new floatParameterRange cannot already have an ID", ENTITY_NAME, "idexists");
         }
         return floatParameterRangeFacade
-            .save(floatParameterRangeDTO)
+            .save(floatParameterRangeMapper.toDto(floatParameterRangeTO)).map(floatParameterRangeMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -92,15 +96,15 @@ public class FloatParameterRangeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/float-parameter-ranges/{id}")
-    public Mono<ResponseEntity<FloatParameterRangeDTO>> updateFloatParameterRange(
+    public Mono<ResponseEntity<FloatParameterRangeTO>> updateFloatParameterRange(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody FloatParameterRangeDTO floatParameterRangeDTO
+        @Valid @RequestBody FloatParameterRangeTO floatParameterRangeTO
     ) throws URISyntaxException {
-        log.debug("REST request to update FloatParameterRange : {}, {}", id, floatParameterRangeDTO);
-        if (floatParameterRangeDTO.getId() == null) {
+        log.debug("REST request to update FloatParameterRange : {}, {}", id, floatParameterRangeTO);
+        if (floatParameterRangeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, floatParameterRangeDTO.getId())) {
+        if (!Objects.equals(id, floatParameterRangeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -112,7 +116,7 @@ public class FloatParameterRangeResource {
                 }
 
                 return floatParameterRangeFacade
-                    .update(floatParameterRangeDTO)
+                    .update(floatParameterRangeMapper.toDto(floatParameterRangeTO)).map(floatParameterRangeMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -135,15 +139,15 @@ public class FloatParameterRangeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/float-parameter-ranges/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<FloatParameterRangeDTO>> partialUpdateFloatParameterRange(
+    public Mono<ResponseEntity<FloatParameterRangeTO>> partialUpdateFloatParameterRange(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody FloatParameterRangeDTO floatParameterRangeDTO
+        @NotNull @RequestBody FloatParameterRangeTO floatParameterRangeTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update FloatParameterRange partially : {}, {}", id, floatParameterRangeDTO);
-        if (floatParameterRangeDTO.getId() == null) {
+        log.debug("REST request to partial update FloatParameterRange partially : {}, {}", id, floatParameterRangeTO);
+        if (floatParameterRangeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, floatParameterRangeDTO.getId())) {
+        if (!Objects.equals(id, floatParameterRangeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -154,7 +158,7 @@ public class FloatParameterRangeResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<FloatParameterRangeDTO> result = floatParameterRangeFacade.partialUpdate(floatParameterRangeDTO);
+                Mono<FloatParameterRangeTO> result = floatParameterRangeFacade.partialUpdate(floatParameterRangeMapper.toDto(floatParameterRangeTO)).map(floatParameterRangeMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -173,9 +177,9 @@ public class FloatParameterRangeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of floatParameterRanges in body.
      */
     @GetMapping(value = "/float-parameter-ranges", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<FloatParameterRangeDTO>> getAllFloatParameterRanges() {
+    public Mono<List<FloatParameterRangeTO>> getAllFloatParameterRanges() {
         log.debug("REST request to get all FloatParameterRanges");
-        return floatParameterRangeFacade.findAll().collectList();
+        return floatParameterRangeFacade.findAll().collectList().map(floatParameterRangeMapper::toTo);
     }
 
     /**
@@ -183,9 +187,9 @@ public class FloatParameterRangeResource {
      * @return the {@link Flux} of floatParameterRanges.
      */
     @GetMapping(value = "/float-parameter-ranges", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<FloatParameterRangeDTO> getAllFloatParameterRangesAsStream() {
+    public Flux<FloatParameterRangeTO> getAllFloatParameterRangesAsStream() {
         log.debug("REST request to get all FloatParameterRanges as a stream");
-        return floatParameterRangeFacade.findAll();
+        return floatParameterRangeFacade.findAll().map(floatParameterRangeMapper::toTo);
     }
 
     /**
@@ -195,10 +199,10 @@ public class FloatParameterRangeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the floatParameterRangeDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/float-parameter-ranges/{id}")
-    public Mono<ResponseEntity<FloatParameterRangeDTO>> getFloatParameterRange(@PathVariable Long id) {
+    public Mono<ResponseEntity<FloatParameterRangeTO>> getFloatParameterRange(@PathVariable Long id) {
         log.debug("REST request to get FloatParameterRange : {}", id);
-        Mono<FloatParameterRangeDTO> floatParameterRangeDTO = floatParameterRangeFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(floatParameterRangeDTO);
+        Mono<FloatParameterRangeTO> floatParameterRangeTO = floatParameterRangeFacade.findOne(id).map(floatParameterRangeMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(floatParameterRangeTO);
     }
 
     /**

@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.ModelStructureTypeDTO;
 import ai.turintech.modelcatalog.facade.ModelStructureTypeFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ModelStructureTypeTO;
+import ai.turintech.modelcatalog.todtomapper.ModelStructureTypeMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -48,29 +49,32 @@ public class ModelStructureTypeResource {
     private String applicationName;
 
     private final ModelStructureTypeFacade modelStructureTypeFacade;
+    
+    private final ModelStructureTypeMapper modelStructureTypeMapper;
 
-    public ModelStructureTypeResource(ModelStructureTypeFacade modelStructureTypeFacade) {
+    public ModelStructureTypeResource(ModelStructureTypeFacade modelStructureTypeFacade, ModelStructureTypeMapper modelStructureTypeMapper) {
         this.modelStructureTypeFacade = modelStructureTypeFacade;
+        this.modelStructureTypeMapper = modelStructureTypeMapper;
     }
 
     /**
      * {@code POST  /model-structure-types} : Create a new modelStructureType.
      *
-     * @param modelStructureTypeDTO the modelStructureTypeDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelStructureTypeDTO, or with status {@code 400 (Bad Request)} if the modelStructureType has already an ID.
+     * @param ModelStructureTypeTO the ModelStructureTypeTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ModelStructureTypeTO, or with status {@code 400 (Bad Request)} if the modelStructureType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/model-structure-types")
-    public Mono<ResponseEntity<ModelStructureTypeDTO>> createModelStructureType(
-        @Valid @RequestBody ModelStructureTypeDTO modelStructureTypeDTO
+    public Mono<ResponseEntity<ModelStructureTypeTO>> createModelStructureType(
+        @Valid @RequestBody ModelStructureTypeTO modelStructureTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to save ModelStructureType : {}", modelStructureTypeDTO);
-        if (modelStructureTypeDTO.getId() != null) {
+        log.debug("REST request to save ModelStructureType : {}", modelStructureTypeTO);
+        if (modelStructureTypeTO.getId() != null) {
             throw new BadRequestAlertException("A new modelStructureType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        modelStructureTypeDTO.setId(UUID.randomUUID());
+        modelStructureTypeTO.setId(UUID.randomUUID());
         return modelStructureTypeFacade
-            .save(modelStructureTypeDTO)
+            .save(modelStructureTypeMapper.toDto(modelStructureTypeTO)).map(modelStructureTypeMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -86,23 +90,23 @@ public class ModelStructureTypeResource {
     /**
      * {@code PUT  /model-structure-types/:id} : Updates an existing modelStructureType.
      *
-     * @param id the id of the modelStructureTypeDTO to save.
-     * @param modelStructureTypeDTO the modelStructureTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelStructureTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the modelStructureTypeDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the modelStructureTypeDTO couldn't be updated.
+     * @param id the id of the ModelStructureTypeTO to save.
+     * @param ModelStructureTypeTO the ModelStructureTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ModelStructureTypeTO,
+     * or with status {@code 400 (Bad Request)} if the ModelStructureTypeTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the ModelStructureTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/model-structure-types/{id}")
-    public Mono<ResponseEntity<ModelStructureTypeDTO>> updateModelStructureType(
+    public Mono<ResponseEntity<ModelStructureTypeTO>> updateModelStructureType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ModelStructureTypeDTO modelStructureTypeDTO
+        @Valid @RequestBody ModelStructureTypeTO modelStructureTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to update ModelStructureType : {}, {}", id, modelStructureTypeDTO);
-        if (modelStructureTypeDTO.getId() == null) {
+        log.debug("REST request to update ModelStructureType : {}, {}", id, modelStructureTypeTO);
+        if (modelStructureTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelStructureTypeDTO.getId())) {
+        if (!Objects.equals(id, modelStructureTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -114,7 +118,7 @@ public class ModelStructureTypeResource {
                 }
 
                 return modelStructureTypeFacade
-                    .update(modelStructureTypeDTO)
+                    .update(modelStructureTypeMapper.toDto(modelStructureTypeTO)).map(modelStructureTypeMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -128,24 +132,24 @@ public class ModelStructureTypeResource {
     /**
      * {@code PATCH  /model-structure-types/:id} : Partial updates given fields of an existing modelStructureType, field will ignore if it is null
      *
-     * @param id the id of the modelStructureTypeDTO to save.
-     * @param modelStructureTypeDTO the modelStructureTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelStructureTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the modelStructureTypeDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the modelStructureTypeDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the modelStructureTypeDTO couldn't be updated.
+     * @param id the id of the ModelStructureTypeTO to save.
+     * @param ModelStructureTypeTO the ModelStructureTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ModelStructureTypeTO,
+     * or with status {@code 400 (Bad Request)} if the ModelStructureTypeTO is not valid,
+     * or with status {@code 404 (Not Found)} if the ModelStructureTypeTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the ModelStructureTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/model-structure-types/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ModelStructureTypeDTO>> partialUpdateModelStructureType(
+    public Mono<ResponseEntity<ModelStructureTypeTO>> partialUpdateModelStructureType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ModelStructureTypeDTO modelStructureTypeDTO
+        @NotNull @RequestBody ModelStructureTypeTO modelStructureTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update ModelStructureType partially : {}, {}", id, modelStructureTypeDTO);
-        if (modelStructureTypeDTO.getId() == null) {
+        log.debug("REST request to partial update ModelStructureType partially : {}, {}", id, modelStructureTypeTO);
+        if (modelStructureTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, modelStructureTypeDTO.getId())) {
+        if (!Objects.equals(id, modelStructureTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -156,7 +160,7 @@ public class ModelStructureTypeResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ModelStructureTypeDTO> result = modelStructureTypeFacade.partialUpdate(modelStructureTypeDTO);
+                Mono<ModelStructureTypeTO> result = modelStructureTypeFacade.partialUpdate(modelStructureTypeMapper.toDto(modelStructureTypeTO)).map(modelStructureTypeMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -175,9 +179,9 @@ public class ModelStructureTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of modelStructureTypes in body.
      */
     @GetMapping(value = "/model-structure-types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<ModelStructureTypeDTO>> getAllModelStructureTypes() {
+    public Mono<List<ModelStructureTypeTO>> getAllModelStructureTypes() {
         log.debug("REST request to get all ModelStructureTypes");
-        return modelStructureTypeFacade.findAll().collectList();
+        return modelStructureTypeFacade.findAll().collectList().map(modelStructureTypeMapper::toTo);
     }
 
     /**
@@ -185,28 +189,28 @@ public class ModelStructureTypeResource {
      * @return the {@link Flux} of modelStructureTypes.
      */
     @GetMapping(value = "/model-structure-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<ModelStructureTypeDTO> getAllModelStructureTypesAsStream() {
+    public Flux<ModelStructureTypeTO> getAllModelStructureTypesAsStream() {
         log.debug("REST request to get all ModelStructureTypes as a stream");
-        return modelStructureTypeFacade.findAll();
+        return modelStructureTypeFacade.findAll().map(modelStructureTypeMapper::toTo);
     }
 
     /**
      * {@code GET  /model-structure-types/:id} : get the "id" modelStructureType.
      *
-     * @param id the id of the modelStructureTypeDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the modelStructureTypeDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the ModelStructureTypeTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ModelStructureTypeTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/model-structure-types/{id}")
-    public Mono<ResponseEntity<ModelStructureTypeDTO>> getModelStructureType(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ModelStructureTypeTO>> getModelStructureType(@PathVariable UUID id) {
         log.debug("REST request to get ModelStructureType : {}", id);
-        Mono<ModelStructureTypeDTO> modelStructureTypeDTO = modelStructureTypeFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(modelStructureTypeDTO);
+        Mono<ModelStructureTypeTO> modelStructureTypeTO = modelStructureTypeFacade.findOne(id).map(modelStructureTypeMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(modelStructureTypeTO);
     }
 
     /**
      * {@code DELETE  /model-structure-types/:id} : delete the "id" modelStructureType.
      *
-     * @param id the id of the modelStructureTypeDTO to delete.
+     * @param id the id of the ModelStructureTypeTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/model-structure-types/{id}")

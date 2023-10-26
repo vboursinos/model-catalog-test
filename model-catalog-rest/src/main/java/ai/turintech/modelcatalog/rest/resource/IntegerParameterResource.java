@@ -22,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
 import ai.turintech.modelcatalog.facade.IntegerParameterFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.IntegerParameterTO;
+import ai.turintech.modelcatalog.todtomapper.IntegerParameterMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,9 +46,12 @@ public class IntegerParameterResource {
     private String applicationName;
 
     private final IntegerParameterFacade integerParameterFacade;
+    
+    private final IntegerParameterMapper integerParameterMapper;
 
-    public IntegerParameterResource(IntegerParameterFacade integerParameterFacade) {
+    public IntegerParameterResource(IntegerParameterFacade integerParameterFacade,IntegerParameterMapper integerParameterMapper) {
         this.integerParameterFacade = integerParameterFacade;
+        this.integerParameterMapper = integerParameterMapper;
     }
 
     /**
@@ -58,14 +62,14 @@ public class IntegerParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/integer-parameters")
-    public Mono<ResponseEntity<IntegerParameterDTO>> createIntegerParameter(@RequestBody IntegerParameterDTO integerParameterDTO)
+    public Mono<ResponseEntity<IntegerParameterTO>> createIntegerParameter(@RequestBody IntegerParameterTO integerParameterTO)
         throws URISyntaxException {
-        log.debug("REST request to save IntegerParameter : {}", integerParameterDTO);
-        if (integerParameterDTO.getId() != null) {
+        log.debug("REST request to save IntegerParameter : {}", integerParameterTO);
+        if (integerParameterTO.getId() != null) {
             throw new BadRequestAlertException("A new integerParameter cannot already have an ID", ENTITY_NAME, "idexists");
         }
         return integerParameterFacade
-            .save(integerParameterDTO)
+            .save(integerParameterMapper.toDto(integerParameterTO)).map(integerParameterMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -89,15 +93,15 @@ public class IntegerParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/integer-parameters/{id}")
-    public Mono<ResponseEntity<IntegerParameterDTO>> updateIntegerParameter(
+    public Mono<ResponseEntity<IntegerParameterTO>> updateIntegerParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody IntegerParameterDTO integerParameterDTO
+        @RequestBody IntegerParameterTO integerParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to update IntegerParameter : {}, {}", id, integerParameterDTO);
-        if (integerParameterDTO.getId() == null) {
+        log.debug("REST request to update IntegerParameter : {}, {}", id, integerParameterTO);
+        if (integerParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, integerParameterDTO.getId())) {
+        if (!Objects.equals(id, integerParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -109,7 +113,7 @@ public class IntegerParameterResource {
                 }
 
                 return integerParameterFacade
-                    .update(integerParameterDTO)
+                    .update(integerParameterMapper.toDto(integerParameterTO)).map(integerParameterMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -132,15 +136,15 @@ public class IntegerParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/integer-parameters/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<IntegerParameterDTO>> partialUpdateIntegerParameter(
+    public Mono<ResponseEntity<IntegerParameterTO>> partialUpdateIntegerParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody IntegerParameterDTO integerParameterDTO
+        @RequestBody IntegerParameterTO integerParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update IntegerParameter partially : {}, {}", id, integerParameterDTO);
-        if (integerParameterDTO.getId() == null) {
+        log.debug("REST request to partial update IntegerParameter partially : {}, {}", id, integerParameterTO);
+        if (integerParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, integerParameterDTO.getId())) {
+        if (!Objects.equals(id, integerParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -151,7 +155,7 @@ public class IntegerParameterResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<IntegerParameterDTO> result = integerParameterFacade.partialUpdate(integerParameterDTO);
+                Mono<IntegerParameterTO> result = integerParameterFacade.partialUpdate(integerParameterMapper.toDto(integerParameterTO)).map(integerParameterMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -170,9 +174,9 @@ public class IntegerParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of integerParameters in body.
      */
     @GetMapping(value = "/integer-parameters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<IntegerParameterDTO>> getAllIntegerParameters() {
+    public Mono<List<IntegerParameterTO>> getAllIntegerParameters() {
         log.debug("REST request to get all IntegerParameters");
-        return integerParameterFacade.findAll().collectList();
+        return integerParameterFacade.findAll().collectList().map(integerParameterMapper::toTo);
     }
 
     /**
@@ -180,9 +184,9 @@ public class IntegerParameterResource {
      * @return the {@link Flux} of integerParameters.
      */
     @GetMapping(value = "/integer-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<IntegerParameterDTO> getAllIntegerParametersAsStream() {
+    public Flux<IntegerParameterTO> getAllIntegerParametersAsStream() {
         log.debug("REST request to get all IntegerParameters as a stream");
-        return integerParameterFacade.findAll();
+        return integerParameterFacade.findAll().map(integerParameterMapper::toTo);
     }
 
     /**
@@ -192,10 +196,10 @@ public class IntegerParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the integerParameterDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/integer-parameters/{id}")
-    public Mono<ResponseEntity<IntegerParameterDTO>> getIntegerParameter(@PathVariable Long id) {
+    public Mono<ResponseEntity<IntegerParameterTO>> getIntegerParameter(@PathVariable Long id) {
         log.debug("REST request to get IntegerParameter : {}", id);
-        Mono<IntegerParameterDTO> integerParameterDTO = integerParameterFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(integerParameterDTO);
+        Mono<IntegerParameterTO> integerParameterTO = integerParameterFacade.findOne(id).map(integerParameterMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(integerParameterTO);
     }
 
     /**

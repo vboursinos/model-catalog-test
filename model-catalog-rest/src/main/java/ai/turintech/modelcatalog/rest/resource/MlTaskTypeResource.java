@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import ai.turintech.modelcatalog.facade.MlTaskTypeFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.MlTaskTypeTO;
+import ai.turintech.modelcatalog.todtomapper.MlTaskTypeMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -48,10 +49,13 @@ public class MlTaskTypeResource {
     private String applicationName;
 
     private final MlTaskTypeFacade mlTaskTypeFacade;
+    
+    private final MlTaskTypeMapper mlTaskTypeMapper;
 
 
-    public MlTaskTypeResource(MlTaskTypeFacade mlTaskTypeFacade) {
+    public MlTaskTypeResource(MlTaskTypeFacade mlTaskTypeFacade, MlTaskTypeMapper mlTaskTypeMapper) {
         this.mlTaskTypeFacade = mlTaskTypeFacade;
+        this.mlTaskTypeMapper = mlTaskTypeMapper;
     }
 
     /**
@@ -62,14 +66,14 @@ public class MlTaskTypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/ml-task-types")
-    public Mono<ResponseEntity<MlTaskTypeDTO>> createMlTaskType(@Valid @RequestBody MlTaskTypeDTO mlTaskTypeDTO) throws URISyntaxException {
-        log.debug("REST request to save MlTaskType : {}", mlTaskTypeDTO);
-        if (mlTaskTypeDTO.getId() != null) {
+    public Mono<ResponseEntity<MlTaskTypeTO>> createMlTaskType(@Valid @RequestBody MlTaskTypeTO mlTaskTypeTO) throws URISyntaxException {
+        log.debug("REST request to save MlTaskType : {}", mlTaskTypeTO);
+        if (mlTaskTypeTO.getId() != null) {
             throw new BadRequestAlertException("A new mlTaskType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        mlTaskTypeDTO.setId(UUID.randomUUID());
+        mlTaskTypeTO.setId(UUID.randomUUID());
         return mlTaskTypeFacade
-            .save(mlTaskTypeDTO)
+            .save(mlTaskTypeMapper.toDto(mlTaskTypeTO)).map(mlTaskTypeMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -93,15 +97,15 @@ public class MlTaskTypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/ml-task-types/{id}")
-    public Mono<ResponseEntity<MlTaskTypeDTO>> updateMlTaskType(
+    public Mono<ResponseEntity<MlTaskTypeTO>> updateMlTaskType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody MlTaskTypeDTO mlTaskTypeDTO
+        @Valid @RequestBody MlTaskTypeTO mlTaskTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to update MlTaskType : {}, {}", id, mlTaskTypeDTO);
-        if (mlTaskTypeDTO.getId() == null) {
+        log.debug("REST request to update MlTaskType : {}, {}", id, mlTaskTypeTO);
+        if (mlTaskTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, mlTaskTypeDTO.getId())) {
+        if (!Objects.equals(id, mlTaskTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -113,7 +117,7 @@ public class MlTaskTypeResource {
                 }
 
                 return mlTaskTypeFacade
-                    .update(mlTaskTypeDTO)
+                    .update(mlTaskTypeMapper.toDto(mlTaskTypeTO)).map(mlTaskTypeMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -136,15 +140,15 @@ public class MlTaskTypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/ml-task-types/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<MlTaskTypeDTO>> partialUpdateMlTaskType(
+    public Mono<ResponseEntity<MlTaskTypeTO>> partialUpdateMlTaskType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody MlTaskTypeDTO mlTaskTypeDTO
+        @NotNull @RequestBody MlTaskTypeTO mlTaskTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update MlTaskType partially : {}, {}", id, mlTaskTypeDTO);
-        if (mlTaskTypeDTO.getId() == null) {
+        log.debug("REST request to partial update MlTaskType partially : {}, {}", id, mlTaskTypeTO);
+        if (mlTaskTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, mlTaskTypeDTO.getId())) {
+        if (!Objects.equals(id, mlTaskTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -155,7 +159,7 @@ public class MlTaskTypeResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<MlTaskTypeDTO> result = mlTaskTypeFacade.partialUpdate(mlTaskTypeDTO);
+                Mono<MlTaskTypeTO> result = mlTaskTypeFacade.partialUpdate(mlTaskTypeMapper.toDto(mlTaskTypeTO)).map(mlTaskTypeMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -174,9 +178,9 @@ public class MlTaskTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of mlTaskTypes in body.
      */
     @GetMapping(value = "/ml-task-types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<MlTaskTypeDTO>> getAllMlTaskTypes() {
+    public Mono<List<MlTaskTypeTO>> getAllMlTaskTypes() {
         log.debug("REST request to get all MlTaskTypes");
-        return mlTaskTypeFacade.findAll().collectList();
+        return mlTaskTypeFacade.findAll().collectList().map(mlTaskTypeMapper::toTo);
     }
 
     /**
@@ -184,9 +188,9 @@ public class MlTaskTypeResource {
      * @return the {@link Flux} of mlTaskTypes.
      */
     @GetMapping(value = "/ml-task-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<MlTaskTypeDTO> getAllMlTaskTypesAsStream() {
+    public Flux<MlTaskTypeTO> getAllMlTaskTypesAsStream() {
         log.debug("REST request to get all MlTaskTypes as a stream");
-        return mlTaskTypeFacade.findAll();
+        return mlTaskTypeFacade.findAll().map(mlTaskTypeMapper::toTo);
     }
 
     /**
@@ -196,10 +200,10 @@ public class MlTaskTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the mlTaskTypeDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/ml-task-types/{id}")
-    public Mono<ResponseEntity<MlTaskTypeDTO>> getMlTaskType(@PathVariable UUID id) {
+    public Mono<ResponseEntity<MlTaskTypeTO>> getMlTaskType(@PathVariable UUID id) {
         log.debug("REST request to get MlTaskType : {}", id);
-        Mono<MlTaskTypeDTO> mlTaskTypeDTO = mlTaskTypeFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(mlTaskTypeDTO);
+        Mono<MlTaskTypeTO> mlTaskTypeTO = mlTaskTypeFacade.findOne(id).map(mlTaskTypeMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(mlTaskTypeTO);
     }
 
     /**

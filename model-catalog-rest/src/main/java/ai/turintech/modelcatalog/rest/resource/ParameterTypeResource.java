@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
 import ai.turintech.modelcatalog.facade.ParameterTypeFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ParameterTypeTO;
+import ai.turintech.modelcatalog.todtomapper.ParameterTypeMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -48,28 +49,31 @@ public class ParameterTypeResource {
     private String applicationName;
 
     private final ParameterTypeFacade parameterTypeFacade;
+    
+    private final ParameterTypeMapper parameterTypeMapper;
 
-    public ParameterTypeResource(ParameterTypeFacade parameterTypeFacade) {
+    public ParameterTypeResource(ParameterTypeFacade parameterTypeFacade, ParameterTypeMapper parameterTypeMapper) {
         this.parameterTypeFacade = parameterTypeFacade;
+        this.parameterTypeMapper = parameterTypeMapper;
     }
 
     /**
      * {@code POST  /parameter-types} : Create a new parameterType.
      *
-     * @param parameterTypeDTO the parameterTypeDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new parameterTypeDTO, or with status {@code 400 (Bad Request)} if the parameterType has already an ID.
+     * @param parameterTypeTO the parameterTypeTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new parameterTypeTO, or with status {@code 400 (Bad Request)} if the parameterType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/parameter-types")
-    public Mono<ResponseEntity<ParameterTypeDTO>> createParameterType(@Valid @RequestBody ParameterTypeDTO parameterTypeDTO)
+    public Mono<ResponseEntity<ParameterTypeTO>> createParameterType(@Valid @RequestBody ParameterTypeTO parameterTypeTO)
         throws URISyntaxException {
-        log.debug("REST request to save ParameterType : {}", parameterTypeDTO);
-        if (parameterTypeDTO.getId() != null) {
+        log.debug("REST request to save ParameterType : {}", parameterTypeTO);
+        if (parameterTypeTO.getId() != null) {
             throw new BadRequestAlertException("A new parameterType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        parameterTypeDTO.setId(UUID.randomUUID());
+        parameterTypeTO.setId(UUID.randomUUID());
         return parameterTypeFacade
-            .save(parameterTypeDTO)
+            .save(parameterTypeMapper.toDto(parameterTypeTO)).map(parameterTypeMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -85,23 +89,23 @@ public class ParameterTypeResource {
     /**
      * {@code PUT  /parameter-types/:id} : Updates an existing parameterType.
      *
-     * @param id the id of the parameterTypeDTO to save.
-     * @param parameterTypeDTO the parameterTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterTypeDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the parameterTypeDTO couldn't be updated.
+     * @param id the id of the parameterTypeTO to save.
+     * @param parameterTypeTO the parameterTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeTO,
+     * or with status {@code 400 (Bad Request)} if the parameterTypeTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the parameterTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/parameter-types/{id}")
-    public Mono<ResponseEntity<ParameterTypeDTO>> updateParameterType(
+    public Mono<ResponseEntity<ParameterTypeTO>> updateParameterType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ParameterTypeDTO parameterTypeDTO
+        @Valid @RequestBody ParameterTypeTO parameterTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to update ParameterType : {}, {}", id, parameterTypeDTO);
-        if (parameterTypeDTO.getId() == null) {
+        log.debug("REST request to update ParameterType : {}, {}", id, parameterTypeTO);
+        if (parameterTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterTypeDTO.getId())) {
+        if (!Objects.equals(id, parameterTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -113,7 +117,7 @@ public class ParameterTypeResource {
                 }
 
                 return parameterTypeFacade
-                    .update(parameterTypeDTO)
+                    .update(parameterTypeMapper.toDto(parameterTypeTO)).map(parameterTypeMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -127,24 +131,24 @@ public class ParameterTypeResource {
     /**
      * {@code PATCH  /parameter-types/:id} : Partial updates given fields of an existing parameterType, field will ignore if it is null
      *
-     * @param id the id of the parameterTypeDTO to save.
-     * @param parameterTypeDTO the parameterTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterTypeDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the parameterTypeDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the parameterTypeDTO couldn't be updated.
+     * @param id the id of the parameterTypeTO to save.
+     * @param parameterTypeTO the parameterTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeTO,
+     * or with status {@code 400 (Bad Request)} if the parameterTypeTO is not valid,
+     * or with status {@code 404 (Not Found)} if the parameterTypeTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the parameterTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/parameter-types/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ParameterTypeDTO>> partialUpdateParameterType(
+    public Mono<ResponseEntity<ParameterTypeTO>> partialUpdateParameterType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ParameterTypeDTO parameterTypeDTO
+        @NotNull @RequestBody ParameterTypeTO parameterTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update ParameterType partially : {}, {}", id, parameterTypeDTO);
-        if (parameterTypeDTO.getId() == null) {
+        log.debug("REST request to partial update ParameterType partially : {}, {}", id, parameterTypeTO);
+        if (parameterTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterTypeDTO.getId())) {
+        if (!Objects.equals(id, parameterTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -155,7 +159,7 @@ public class ParameterTypeResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ParameterTypeDTO> result = parameterTypeFacade.partialUpdate(parameterTypeDTO);
+                Mono<ParameterTypeTO> result = parameterTypeFacade.partialUpdate(parameterTypeMapper.toDto(parameterTypeTO)).map(parameterTypeMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -174,9 +178,9 @@ public class ParameterTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of parameterTypes in body.
      */
     @GetMapping(value = "/parameter-types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<ParameterTypeDTO>> getAllParameterTypes() {
+    public Mono<List<ParameterTypeTO>> getAllParameterTypes() {
         log.debug("REST request to get all ParameterTypes");
-        return parameterTypeFacade.findAll().collectList();
+        return parameterTypeFacade.findAll().collectList().map(parameterTypeMapper::toTo);
     }
 
     /**
@@ -184,28 +188,28 @@ public class ParameterTypeResource {
      * @return the {@link Flux} of parameterTypes.
      */
     @GetMapping(value = "/parameter-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<ParameterTypeDTO> getAllParameterTypesAsStream() {
+    public Flux<ParameterTypeTO> getAllParameterTypesAsStream() {
         log.debug("REST request to get all ParameterTypes as a stream");
-        return parameterTypeFacade.findAll();
+        return parameterTypeFacade.findAll().map(parameterTypeMapper::toTo);
     }
 
     /**
      * {@code GET  /parameter-types/:id} : get the "id" parameterType.
      *
-     * @param id the id of the parameterTypeDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the parameterTypeDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the parameterTypeTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the parameterTypeTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/parameter-types/{id}")
-    public Mono<ResponseEntity<ParameterTypeDTO>> getParameterType(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ParameterTypeTO>> getParameterType(@PathVariable UUID id) {
         log.debug("REST request to get ParameterType : {}", id);
-        Mono<ParameterTypeDTO> parameterTypeDTO = parameterTypeFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(parameterTypeDTO);
+        Mono<ParameterTypeTO> parameterTypeTO = parameterTypeFacade.findOne(id).map(parameterTypeMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(parameterTypeTO);
     }
 
     /**
      * {@code DELETE  /parameter-types/:id} : delete the "id" parameterType.
      *
-     * @param id the id of the parameterTypeDTO to delete.
+     * @param id the id of the parameterTypeTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/parameter-types/{id}")

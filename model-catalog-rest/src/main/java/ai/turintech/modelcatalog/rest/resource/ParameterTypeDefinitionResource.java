@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.facade.ParameterTypeDefinitionFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ParameterTypeDefinitionTO;
+import ai.turintech.modelcatalog.todtomapper.ParameterTypeDefinitionMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -48,30 +49,33 @@ public class ParameterTypeDefinitionResource {
     private String applicationName;
 
     private final ParameterTypeDefinitionFacade parameterTypeDefinitionFacade;
+    
+    private final ParameterTypeDefinitionMapper parameterTypeDefinitionMapper;
 
     public ParameterTypeDefinitionResource(
-        ParameterTypeDefinitionFacade parameterTypeDefinitionFacade) {
+        ParameterTypeDefinitionFacade parameterTypeDefinitionFacade, ParameterTypeDefinitionMapper parameterTypeDefinitionMapper) {
         this.parameterTypeDefinitionFacade = parameterTypeDefinitionFacade;
+        this.parameterTypeDefinitionMapper = parameterTypeDefinitionMapper;
     }
 
     /**
      * {@code POST  /parameter-type-definitions} : Create a new parameterTypeDefinition.
      *
-     * @param parameterTypeDefinitionDTO the parameterTypeDefinitionDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new parameterTypeDefinitionDTO, or with status {@code 400 (Bad Request)} if the parameterTypeDefinition has already an ID.
+     * @param parameterTypeDefinitionTO the parameterTypeDefinitionTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new parameterTypeDefinitionTO, or with status {@code 400 (Bad Request)} if the parameterTypeDefinition has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/parameter-type-definitions")
-    public Mono<ResponseEntity<ParameterTypeDefinitionDTO>> createParameterTypeDefinition(
-        @Valid @RequestBody ParameterTypeDefinitionDTO parameterTypeDefinitionDTO
+    public Mono<ResponseEntity<ParameterTypeDefinitionTO>> createParameterTypeDefinition(
+        @Valid @RequestBody ParameterTypeDefinitionTO parameterTypeDefinitionTO
     ) throws URISyntaxException {
-        log.debug("REST request to save ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-        if (parameterTypeDefinitionDTO.getId() != null) {
+        log.debug("REST request to save ParameterTypeDefinition : {}", parameterTypeDefinitionTO);
+        if (parameterTypeDefinitionTO.getId() != null) {
             throw new BadRequestAlertException("A new parameterTypeDefinition cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        parameterTypeDefinitionDTO.setId(UUID.randomUUID());
+        parameterTypeDefinitionTO.setId(UUID.randomUUID());
         return parameterTypeDefinitionFacade
-            .save(parameterTypeDefinitionDTO)
+            .save(parameterTypeDefinitionMapper.toDto(parameterTypeDefinitionTO)).map(parameterTypeDefinitionMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -87,23 +91,23 @@ public class ParameterTypeDefinitionResource {
     /**
      * {@code PUT  /parameter-type-definitions/:id} : Updates an existing parameterTypeDefinition.
      *
-     * @param id the id of the parameterTypeDefinitionDTO to save.
-     * @param parameterTypeDefinitionDTO the parameterTypeDefinitionDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeDefinitionDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterTypeDefinitionDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the parameterTypeDefinitionDTO couldn't be updated.
+     * @param id the id of the parameterTypeDefinitionTO to save.
+     * @param parameterTypeDefinitionTO the parameterTypeDefinitionTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeDefinitionTO,
+     * or with status {@code 400 (Bad Request)} if the parameterTypeDefinitionTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the parameterTypeDefinitionTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/parameter-type-definitions/{id}")
-    public Mono<ResponseEntity<ParameterTypeDefinitionDTO>> updateParameterTypeDefinition(
+    public Mono<ResponseEntity<ParameterTypeDefinitionTO>> updateParameterTypeDefinition(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ParameterTypeDefinitionDTO parameterTypeDefinitionDTO
+        @Valid @RequestBody ParameterTypeDefinitionTO parameterTypeDefinitionTO
     ) throws URISyntaxException {
-        log.debug("REST request to update ParameterTypeDefinition : {}, {}", id, parameterTypeDefinitionDTO);
-        if (parameterTypeDefinitionDTO.getId() == null) {
+        log.debug("REST request to update ParameterTypeDefinition : {}, {}", id, parameterTypeDefinitionTO);
+        if (parameterTypeDefinitionTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterTypeDefinitionDTO.getId())) {
+        if (!Objects.equals(id, parameterTypeDefinitionTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -115,7 +119,7 @@ public class ParameterTypeDefinitionResource {
                 }
 
                 return parameterTypeDefinitionFacade
-                    .update(parameterTypeDefinitionDTO)
+                    .update(parameterTypeDefinitionMapper.toDto(parameterTypeDefinitionTO)).map(parameterTypeDefinitionMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -129,24 +133,24 @@ public class ParameterTypeDefinitionResource {
     /**
      * {@code PATCH  /parameter-type-definitions/:id} : Partial updates given fields of an existing parameterTypeDefinition, field will ignore if it is null
      *
-     * @param id the id of the parameterTypeDefinitionDTO to save.
-     * @param parameterTypeDefinitionDTO the parameterTypeDefinitionDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeDefinitionDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterTypeDefinitionDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the parameterTypeDefinitionDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the parameterTypeDefinitionDTO couldn't be updated.
+     * @param id the id of the parameterTypeDefinitionTO to save.
+     * @param parameterTypeDefinitionTO the parameterTypeDefinitionTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTypeDefinitionTO,
+     * or with status {@code 400 (Bad Request)} if the parameterTypeDefinitionTO is not valid,
+     * or with status {@code 404 (Not Found)} if the parameterTypeDefinitionTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the parameterTypeDefinitionTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/parameter-type-definitions/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ParameterTypeDefinitionDTO>> partialUpdateParameterTypeDefinition(
+    public Mono<ResponseEntity<ParameterTypeDefinitionTO>> partialUpdateParameterTypeDefinition(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ParameterTypeDefinitionDTO parameterTypeDefinitionDTO
+        @NotNull @RequestBody ParameterTypeDefinitionTO parameterTypeDefinitionTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update ParameterTypeDefinition partially : {}, {}", id, parameterTypeDefinitionDTO);
-        if (parameterTypeDefinitionDTO.getId() == null) {
+        log.debug("REST request to partial update ParameterTypeDefinition partially : {}, {}", id, parameterTypeDefinitionTO);
+        if (parameterTypeDefinitionTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterTypeDefinitionDTO.getId())) {
+        if (!Objects.equals(id, parameterTypeDefinitionTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -157,7 +161,7 @@ public class ParameterTypeDefinitionResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ParameterTypeDefinitionDTO> result = parameterTypeDefinitionFacade.partialUpdate(parameterTypeDefinitionDTO);
+                Mono<ParameterTypeDefinitionTO> result = parameterTypeDefinitionFacade.partialUpdate(parameterTypeDefinitionMapper.toDto(parameterTypeDefinitionTO)).map(parameterTypeDefinitionMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -176,9 +180,9 @@ public class ParameterTypeDefinitionResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of parameterTypeDefinitions in body.
      */
     @GetMapping(value = "/parameter-type-definitions", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<ParameterTypeDefinitionDTO>> getAllParameterTypeDefinitions() {
+    public Mono<List<ParameterTypeDefinitionTO>> getAllParameterTypeDefinitions() {
         log.debug("REST request to get all ParameterTypeDefinitions");
-        return parameterTypeDefinitionFacade.findAll().collectList();
+        return parameterTypeDefinitionFacade.findAll().collectList().map(parameterTypeDefinitionMapper::toTo);
     }
 
     /**
@@ -186,28 +190,28 @@ public class ParameterTypeDefinitionResource {
      * @return the {@link Flux} of parameterTypeDefinitions.
      */
     @GetMapping(value = "/parameter-type-definitions", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<ParameterTypeDefinitionDTO> getAllParameterTypeDefinitionsAsStream() {
+    public Flux<ParameterTypeDefinitionTO> getAllParameterTypeDefinitionsAsStream() {
         log.debug("REST request to get all ParameterTypeDefinitions as a stream");
-        return parameterTypeDefinitionFacade.findAll();
+        return parameterTypeDefinitionFacade.findAll().map(parameterTypeDefinitionMapper::toTo);
     }
 
     /**
      * {@code GET  /parameter-type-definitions/:id} : get the "id" parameterTypeDefinition.
      *
-     * @param id the id of the parameterTypeDefinitionDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the parameterTypeDefinitionDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the parameterTypeDefinitionTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the parameterTypeDefinitionTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/parameter-type-definitions/{id}")
-    public Mono<ResponseEntity<ParameterTypeDefinitionDTO>> getParameterTypeDefinition(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ParameterTypeDefinitionTO>> getParameterTypeDefinition(@PathVariable UUID id) {
         log.debug("REST request to get ParameterTypeDefinition : {}", id);
-        Mono<ParameterTypeDefinitionDTO> parameterTypeDefinitionDTO = parameterTypeDefinitionFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(parameterTypeDefinitionDTO);
+        Mono<ParameterTypeDefinitionTO> parameterTypeDefinitionTO = parameterTypeDefinitionFacade.findOne(id).map(parameterTypeDefinitionMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(parameterTypeDefinitionTO);
     }
 
     /**
      * {@code DELETE  /parameter-type-definitions/:id} : delete the "id" parameterTypeDefinition.
      *
-     * @param id the id of the parameterTypeDefinitionDTO to delete.
+     * @param id the id of the parameterTypeDefinitionTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/parameter-type-definitions/{id}")

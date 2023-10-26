@@ -27,6 +27,8 @@ import ai.turintech.modelcatalog.facade.BooleanParameterFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.BooleanParameterTO;
+import ai.turintech.modelcatalog.todtomapper.BooleanParameterMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,10 +47,13 @@ public class BooleanParameterResource {
     private String applicationName;
 
     private final BooleanParameterFacade booleanParameterFacade;
+    
+    private final BooleanParameterMapper booleanParameterMapper;
 
 
-    public BooleanParameterResource(BooleanParameterFacade booleanParameterFacade) {
+    public BooleanParameterResource(BooleanParameterFacade booleanParameterFacade, BooleanParameterMapper booleanParameterMapper) {
         this.booleanParameterFacade = booleanParameterFacade;
+        this.booleanParameterMapper = booleanParameterMapper;
     }
 
     /**
@@ -59,14 +64,14 @@ public class BooleanParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/boolean-parameters")
-    public Mono<ResponseEntity<BooleanParameterDTO>> createBooleanParameter(@RequestBody BooleanParameterDTO booleanParameterDTO)
+    public Mono<ResponseEntity<BooleanParameterTO>> createBooleanParameter(@RequestBody BooleanParameterTO booleanParameterTO)
         throws URISyntaxException {
-        log.debug("REST request to save BooleanParameter : {}", booleanParameterDTO);
-        if (booleanParameterDTO.getId() != null) {
+        log.debug("REST request to save BooleanParameter : {}", booleanParameterTO);
+        if (booleanParameterTO.getId() != null) {
             throw new BadRequestAlertException("A new booleanParameter cannot already have an ID", ENTITY_NAME, "idexists");
         }
         return booleanParameterFacade
-            .save(booleanParameterDTO)
+            .save(this.booleanParameterMapper.toDto(booleanParameterTO)).map(booleanParameterMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -90,15 +95,15 @@ public class BooleanParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/boolean-parameters/{id}")
-    public Mono<ResponseEntity<BooleanParameterDTO>> updateBooleanParameter(
+    public Mono<ResponseEntity<BooleanParameterTO>> updateBooleanParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody BooleanParameterDTO booleanParameterDTO
+        @RequestBody BooleanParameterTO booleanParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to update BooleanParameter : {}, {}", id, booleanParameterDTO);
-        if (booleanParameterDTO.getId() == null) {
+        log.debug("REST request to update BooleanParameter : {}, {}", id, booleanParameterTO);
+        if (booleanParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, booleanParameterDTO.getId())) {
+        if (!Objects.equals(id, booleanParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -109,7 +114,7 @@ public class BooleanParameterResource {
                 }
 
                 return booleanParameterFacade
-                    .update(booleanParameterDTO)
+                    .update(booleanParameterMapper.toDto(booleanParameterTO)).map(booleanParameterMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -132,15 +137,15 @@ public class BooleanParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/boolean-parameters/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<BooleanParameterDTO>> partialUpdateBooleanParameter(
+    public Mono<ResponseEntity<BooleanParameterTO>> partialUpdateBooleanParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody BooleanParameterDTO booleanParameterDTO
+        @RequestBody BooleanParameterTO booleanParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update BooleanParameter partially : {}, {}", id, booleanParameterDTO);
-        if (booleanParameterDTO.getId() == null) {
+        log.debug("REST request to partial update BooleanParameter partially : {}, {}", id, booleanParameterTO);
+        if (booleanParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, booleanParameterDTO.getId())) {
+        if (!Objects.equals(id, booleanParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -151,7 +156,7 @@ public class BooleanParameterResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<BooleanParameterDTO> result = booleanParameterFacade.partialUpdate(booleanParameterDTO);
+                Mono<BooleanParameterTO> result = booleanParameterFacade.partialUpdate(booleanParameterMapper.toDto(booleanParameterTO)).map(booleanParameterMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -180,9 +185,9 @@ public class BooleanParameterResource {
      * @return the {@link Flux} of booleanParameters.
      */
     @GetMapping(value = "/boolean-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<BooleanParameterDTO> getAllBooleanParametersAsStream() {
+    public Flux<BooleanParameterTO> getAllBooleanParametersAsStream() {
         log.debug("REST request to get all BooleanParameters as a stream");
-        return booleanParameterFacade.findAll();
+        return booleanParameterFacade.findAll().map(booleanParameterMapper::toTo);
     }
 
     /**
@@ -192,10 +197,10 @@ public class BooleanParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the booleanParameterDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/boolean-parameters/{id}")
-    public Mono<ResponseEntity<BooleanParameterDTO>> getBooleanParameter(@PathVariable Long id) {
+    public Mono<ResponseEntity<BooleanParameterTO>> getBooleanParameter(@PathVariable Long id) {
         log.debug("REST request to get BooleanParameter : {}", id);
-        Mono<BooleanParameterDTO> booleanParameterDTO = booleanParameterFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(booleanParameterDTO);
+        Mono<BooleanParameterTO> booleanParameterTO = booleanParameterFacade.findOne(id).map(booleanParameterMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(booleanParameterTO);
     }
 
     /**

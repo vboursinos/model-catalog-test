@@ -28,12 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.facade.ParameterFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.PaginationUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ParameterTO;
+import ai.turintech.modelcatalog.todtomapper.ParameterMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Mono;
@@ -53,27 +54,30 @@ public class ParameterResource {
     private String applicationName;
 
     private final ParameterFacade parameterFacade;
+    
+    private final ParameterMapper parameterMapper;
 
-    public ParameterResource(ParameterFacade parameterFacade) {
+    public ParameterResource(ParameterFacade parameterFacade, ParameterMapper parameterMapper) {
         this.parameterFacade = parameterFacade;
+        this.parameterMapper = parameterMapper;
     }
 
     /**
      * {@code POST  /parameters} : Create a new parameter.
      *
-     * @param parameterDTO the parameterDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new parameterDTO, or with status {@code 400 (Bad Request)} if the parameter has already an ID.
+     * @param parameterTO the parameterTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new parameterTO, or with status {@code 400 (Bad Request)} if the parameter has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/parameters")
-    public Mono<ResponseEntity<ParameterDTO>> createParameter(@Valid @RequestBody ParameterDTO parameterDTO) throws URISyntaxException {
-        log.debug("REST request to save Parameter : {}", parameterDTO);
-        if (parameterDTO.getId() != null) {
+    public Mono<ResponseEntity<ParameterTO>> createParameter(@Valid @RequestBody ParameterTO parameterTO) throws URISyntaxException {
+        log.debug("REST request to save Parameter : {}", parameterTO);
+        if (parameterTO.getId() != null) {
             throw new BadRequestAlertException("A new parameter cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        parameterDTO.setId(UUID.randomUUID());
+        parameterTO.setId(UUID.randomUUID());
         return parameterFacade
-            .save(parameterDTO)
+            .save(parameterMapper.toDto(parameterTO)).map(parameterMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -89,23 +93,23 @@ public class ParameterResource {
     /**
      * {@code PUT  /parameters/:id} : Updates an existing parameter.
      *
-     * @param id the id of the parameterDTO to save.
-     * @param parameterDTO the parameterDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the parameterDTO couldn't be updated.
+     * @param id the id of the parameterTO to save.
+     * @param parameterTO the parameterTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTO,
+     * or with status {@code 400 (Bad Request)} if the parameterTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the parameterTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/parameters/{id}")
-    public Mono<ResponseEntity<ParameterDTO>> updateParameter(
+    public Mono<ResponseEntity<ParameterTO>> updateParameter(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ParameterDTO parameterDTO
+        @Valid @RequestBody ParameterTO parameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Parameter : {}, {}", id, parameterDTO);
-        if (parameterDTO.getId() == null) {
+        log.debug("REST request to update Parameter : {}, {}", id, parameterTO);
+        if (parameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterDTO.getId())) {
+        if (!Objects.equals(id, parameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -117,7 +121,7 @@ public class ParameterResource {
                 }
 
                 return parameterFacade
-                    .update(parameterDTO)
+                    .update(parameterMapper.toDto(parameterTO)).map(parameterMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -131,24 +135,24 @@ public class ParameterResource {
     /**
      * {@code PATCH  /parameters/:id} : Partial updates given fields of an existing parameter, field will ignore if it is null
      *
-     * @param id the id of the parameterDTO to save.
-     * @param parameterDTO the parameterDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the parameterDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the parameterDTO couldn't be updated.
+     * @param id the id of the parameterTO to save.
+     * @param parameterTO the parameterTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterTO,
+     * or with status {@code 400 (Bad Request)} if the parameterTO is not valid,
+     * or with status {@code 404 (Not Found)} if the parameterTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the parameterTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/parameters/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ParameterDTO>> partialUpdateParameter(
+    public Mono<ResponseEntity<ParameterTO>> partialUpdateParameter(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ParameterDTO parameterDTO
+        @NotNull @RequestBody ParameterTO parameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Parameter partially : {}, {}", id, parameterDTO);
-        if (parameterDTO.getId() == null) {
+        log.debug("REST request to partial update Parameter partially : {}, {}", id, parameterTO);
+        if (parameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterDTO.getId())) {
+        if (!Objects.equals(id, parameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -159,7 +163,7 @@ public class ParameterResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ParameterDTO> result = parameterFacade.partialUpdate(parameterDTO);
+                Mono<ParameterTO> result = parameterFacade.partialUpdate(parameterMapper.toDto(parameterTO)).map(parameterMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -180,14 +184,14 @@ public class ParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of parameters in body.
      */
     @GetMapping(value = "/parameters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<List<ParameterDTO>>> getAllParameters(
+    public Mono<ResponseEntity<List<ParameterTO>>> getAllParameters(
         @ParameterObject Pageable pageable,
         ServerHttpRequest request
     ) {
         log.debug("REST request to get a page of Parameters");
         return parameterFacade
             .countAll()
-            .zipWith(parameterFacade.findAll(pageable).collectList())
+            .zipWith(parameterFacade.findAll(pageable).collectList().map(parameterMapper::toTo))
             .map(countWithEntities ->
                 ResponseEntity
                     .ok()
@@ -204,20 +208,20 @@ public class ParameterResource {
     /**
      * {@code GET  /parameters/:id} : get the "id" parameter.
      *
-     * @param id the id of the parameterDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the parameterDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the parameterTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the parameterTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/parameters/{id}")
-    public Mono<ResponseEntity<ParameterDTO>> getParameter(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ParameterTO>> getParameter(@PathVariable UUID id) {
         log.debug("REST request to get Parameter : {}", id);
-        Mono<ParameterDTO> parameterDTO = parameterFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(parameterDTO);
+        Mono<ParameterTO> parameterTO = parameterFacade.findOne(id).map(parameterMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(parameterTO);
     }
 
     /**
      * {@code DELETE  /parameters/:id} : delete the "id" parameter.
      *
-     * @param id the id of the parameterDTO to delete.
+     * @param id the id of the parameterTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/parameters/{id}")

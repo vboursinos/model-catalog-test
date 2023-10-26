@@ -27,6 +27,8 @@ import ai.turintech.modelcatalog.facade.CategoricalParameterFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.CategoricalParameterTO;
+import ai.turintech.modelcatalog.todtomapper.CategoricalParameterMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,12 +47,16 @@ public class CategoricalParameterResource {
     private String applicationName;
 
     private final CategoricalParameterFacade categoricalParameterFacade;
+    
+    private final CategoricalParameterMapper categoricalParameterMapper;
 
 
     public CategoricalParameterResource(
-        CategoricalParameterFacade categoricalParameterFacade
+        CategoricalParameterFacade categoricalParameterFacade,
+        CategoricalParameterMapper categoricalParameterMapper
     ) {
         this.categoricalParameterFacade = categoricalParameterFacade;
+        this.categoricalParameterMapper = categoricalParameterMapper;
     }
 
     /**
@@ -61,15 +67,15 @@ public class CategoricalParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/categorical-parameters")
-    public Mono<ResponseEntity<CategoricalParameterDTO>> createCategoricalParameter(
-        @RequestBody CategoricalParameterDTO categoricalParameterDTO
+    public Mono<ResponseEntity<CategoricalParameterTO>> createCategoricalParameter(
+        @RequestBody CategoricalParameterTO categoricalParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to save CategoricalParameter : {}", categoricalParameterDTO);
-        if (categoricalParameterDTO.getId() != null) {
+        log.debug("REST request to save CategoricalParameter : {}", categoricalParameterTO);
+        if (categoricalParameterTO.getId() != null) {
             throw new BadRequestAlertException("A new categoricalParameter cannot already have an ID", ENTITY_NAME, "idexists");
         }
         return categoricalParameterFacade
-            .save(categoricalParameterDTO)
+            .save(categoricalParameterMapper.toDto(categoricalParameterTO)).map(categoricalParameterMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -93,15 +99,15 @@ public class CategoricalParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/categorical-parameters/{id}")
-    public Mono<ResponseEntity<CategoricalParameterDTO>> updateCategoricalParameter(
+    public Mono<ResponseEntity<CategoricalParameterTO>> updateCategoricalParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody CategoricalParameterDTO categoricalParameterDTO
+        @RequestBody CategoricalParameterTO categoricalParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to update CategoricalParameter : {}, {}", id, categoricalParameterDTO);
-        if (categoricalParameterDTO.getId() == null) {
+        log.debug("REST request to update CategoricalParameter : {}, {}", id, categoricalParameterTO);
+        if (categoricalParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, categoricalParameterDTO.getId())) {
+        if (!Objects.equals(id, categoricalParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -113,7 +119,7 @@ public class CategoricalParameterResource {
                 }
 
                 return categoricalParameterFacade
-                    .update(categoricalParameterDTO)
+                    .update(categoricalParameterMapper.toDto(categoricalParameterTO)).map(categoricalParameterMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -136,15 +142,15 @@ public class CategoricalParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/categorical-parameters/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<CategoricalParameterDTO>> partialUpdateCategoricalParameter(
+    public Mono<ResponseEntity<CategoricalParameterTO>> partialUpdateCategoricalParameter(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody CategoricalParameterDTO categoricalParameterDTO
+        @RequestBody CategoricalParameterTO categoricalParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update CategoricalParameter partially : {}, {}", id, categoricalParameterDTO);
-        if (categoricalParameterDTO.getId() == null) {
+        log.debug("REST request to partial update CategoricalParameter partially : {}, {}", id, categoricalParameterTO);
+        if (categoricalParameterTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, categoricalParameterDTO.getId())) {
+        if (!Objects.equals(id, categoricalParameterTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -155,7 +161,7 @@ public class CategoricalParameterResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<CategoricalParameterDTO> result = categoricalParameterFacade.partialUpdate(categoricalParameterDTO);
+                Mono<CategoricalParameterTO> result = categoricalParameterFacade.partialUpdate(categoricalParameterMapper.toDto(categoricalParameterTO)).map(categoricalParameterMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -184,9 +190,9 @@ public class CategoricalParameterResource {
      * @return the {@link Flux} of categoricalParameters.
      */
     @GetMapping(value = "/categorical-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<CategoricalParameterDTO> getAllCategoricalParametersAsStream() {
+    public Flux<CategoricalParameterTO> getAllCategoricalParametersAsStream() {
         log.debug("REST request to get all CategoricalParameters as a stream");
-        return categoricalParameterFacade.findAll();
+        return categoricalParameterFacade.findAll().map(categoricalParameterMapper::toTo);
     }
 
     /**
@@ -196,10 +202,10 @@ public class CategoricalParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the categoricalParameterDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/categorical-parameters/{id}")
-    public Mono<ResponseEntity<CategoricalParameterDTO>> getCategoricalParameter(@PathVariable Long id) {
+    public Mono<ResponseEntity<CategoricalParameterTO>> getCategoricalParameter(@PathVariable Long id) {
         log.debug("REST request to get CategoricalParameter : {}", id);
-        Mono<CategoricalParameterDTO> categoricalParameterDTO = categoricalParameterFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(categoricalParameterDTO);
+        Mono<CategoricalParameterTO> categoricalParameterTO = categoricalParameterFacade.findOne(id).map(categoricalParameterMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(categoricalParameterTO);
     }
 
     /**

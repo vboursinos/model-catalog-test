@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.facade.ParameterDistributionTypeFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
+import ai.turintech.modelcatalog.to.ParameterDistributionTypeTO;
+import ai.turintech.modelcatalog.todtomapper.ParameterDistributionTypeMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
@@ -48,30 +49,33 @@ public class ParameterDistributionTypeResource {
     private String applicationName;
 
     private final ParameterDistributionTypeFacade parameterDistributionTypeFacade;
+    
+    private final ParameterDistributionTypeMapper parameterDistributionTypeMapper;
 
 
-    public ParameterDistributionTypeResource(ParameterDistributionTypeFacade parameterDistributionTypeFacade) {
+    public ParameterDistributionTypeResource(ParameterDistributionTypeFacade parameterDistributionTypeFacade, ParameterDistributionTypeMapper parameterDistributionTypeMapper) {
         this.parameterDistributionTypeFacade = parameterDistributionTypeFacade;
+        this.parameterDistributionTypeMapper = parameterDistributionTypeMapper;
     }
 
     /**
      * {@code POST  /parameter-distribution-types} : Create a new parameterDistributionType.
      *
-     * @param parameterDistributionTypeDTO the parameterDistributionTypeDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new parameterDistributionTypeDTO, or with status {@code 400 (Bad Request)} if the parameterDistributionType has already an ID.
+     * @param ParameterDistributionTypeTO the ParameterDistributionTypeTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ParameterDistributionTypeTO, or with status {@code 400 (Bad Request)} if the parameterDistributionType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/parameter-distribution-types")
-    public Mono<ResponseEntity<ParameterDistributionTypeDTO>> createParameterDistributionType(
-        @Valid @RequestBody ParameterDistributionTypeDTO parameterDistributionTypeDTO
+    public Mono<ResponseEntity<ParameterDistributionTypeTO>> createParameterDistributionType(
+        @Valid @RequestBody ParameterDistributionTypeTO parameterDistributionTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to save ParameterDistributionType : {}", parameterDistributionTypeDTO);
-        if (parameterDistributionTypeDTO.getId() != null) {
+        log.debug("REST request to save ParameterDistributionType : {}", parameterDistributionTypeTO);
+        if (parameterDistributionTypeTO.getId() != null) {
             throw new BadRequestAlertException("A new parameterDistributionType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        parameterDistributionTypeDTO.setId(UUID.randomUUID());
+        parameterDistributionTypeTO.setId(UUID.randomUUID());
         return parameterDistributionTypeFacade
-            .save(parameterDistributionTypeDTO)
+            .save(parameterDistributionTypeMapper.toDto(parameterDistributionTypeTO)).map(parameterDistributionTypeMapper::toTo)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -87,23 +91,23 @@ public class ParameterDistributionTypeResource {
     /**
      * {@code PUT  /parameter-distribution-types/:id} : Updates an existing parameterDistributionType.
      *
-     * @param id the id of the parameterDistributionTypeDTO to save.
-     * @param parameterDistributionTypeDTO the parameterDistributionTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterDistributionTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterDistributionTypeDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the parameterDistributionTypeDTO couldn't be updated.
+     * @param id the id of the ParameterDistributionTypeTO to save.
+     * @param ParameterDistributionTypeTO the ParameterDistributionTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ParameterDistributionTypeTO,
+     * or with status {@code 400 (Bad Request)} if the ParameterDistributionTypeTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the ParameterDistributionTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/parameter-distribution-types/{id}")
-    public Mono<ResponseEntity<ParameterDistributionTypeDTO>> updateParameterDistributionType(
+    public Mono<ResponseEntity<ParameterDistributionTypeTO>> updateParameterDistributionType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @Valid @RequestBody ParameterDistributionTypeDTO parameterDistributionTypeDTO
+        @Valid @RequestBody ParameterDistributionTypeTO parameterDistributionTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to update ParameterDistributionType : {}, {}", id, parameterDistributionTypeDTO);
-        if (parameterDistributionTypeDTO.getId() == null) {
+        log.debug("REST request to update ParameterDistributionType : {}, {}", id, parameterDistributionTypeTO);
+        if (parameterDistributionTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterDistributionTypeDTO.getId())) {
+        if (!Objects.equals(id, parameterDistributionTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -115,7 +119,7 @@ public class ParameterDistributionTypeResource {
                 }
 
                 return parameterDistributionTypeFacade
-                    .update(parameterDistributionTypeDTO)
+                    .update(parameterDistributionTypeMapper.toDto(parameterDistributionTypeTO)).map(parameterDistributionTypeMapper::toTo)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -129,24 +133,24 @@ public class ParameterDistributionTypeResource {
     /**
      * {@code PATCH  /parameter-distribution-types/:id} : Partial updates given fields of an existing parameterDistributionType, field will ignore if it is null
      *
-     * @param id the id of the parameterDistributionTypeDTO to save.
-     * @param parameterDistributionTypeDTO the parameterDistributionTypeDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated parameterDistributionTypeDTO,
-     * or with status {@code 400 (Bad Request)} if the parameterDistributionTypeDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the parameterDistributionTypeDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the parameterDistributionTypeDTO couldn't be updated.
+     * @param id the id of the ParameterDistributionTypeTO to save.
+     * @param ParameterDistributionTypeTO the ParameterDistributionTypeTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ParameterDistributionTypeTO,
+     * or with status {@code 400 (Bad Request)} if the ParameterDistributionTypeTO is not valid,
+     * or with status {@code 404 (Not Found)} if the ParameterDistributionTypeTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the ParameterDistributionTypeTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/parameter-distribution-types/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ParameterDistributionTypeDTO>> partialUpdateParameterDistributionType(
+    public Mono<ResponseEntity<ParameterDistributionTypeTO>> partialUpdateParameterDistributionType(
         @PathVariable(value = "id", required = false) final UUID id,
-        @NotNull @RequestBody ParameterDistributionTypeDTO parameterDistributionTypeDTO
+        @NotNull @RequestBody ParameterDistributionTypeTO parameterDistributionTypeTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update ParameterDistributionType partially : {}, {}", id, parameterDistributionTypeDTO);
-        if (parameterDistributionTypeDTO.getId() == null) {
+        log.debug("REST request to partial update ParameterDistributionType partially : {}, {}", id, parameterDistributionTypeTO);
+        if (parameterDistributionTypeTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, parameterDistributionTypeDTO.getId())) {
+        if (!Objects.equals(id, parameterDistributionTypeTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -157,7 +161,7 @@ public class ParameterDistributionTypeResource {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ParameterDistributionTypeDTO> result = parameterDistributionTypeFacade.partialUpdate(parameterDistributionTypeDTO);
+                Mono<ParameterDistributionTypeTO> result = parameterDistributionTypeFacade.partialUpdate(parameterDistributionTypeMapper.toDto(parameterDistributionTypeTO)).map(parameterDistributionTypeMapper::toTo);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -176,9 +180,9 @@ public class ParameterDistributionTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of parameterDistributionTypes in body.
      */
     @GetMapping(value = "/parameter-distribution-types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<ParameterDistributionTypeDTO>> getAllParameterDistributionTypes() {
+    public Mono<List<ParameterDistributionTypeTO>> getAllParameterDistributionTypes() {
         log.debug("REST request to get all ParameterDistributionTypes");
-        return parameterDistributionTypeFacade.findAll().collectList();
+        return parameterDistributionTypeFacade.findAll().collectList().map(parameterDistributionTypeMapper::toTo);
     }
 
     /**
@@ -186,28 +190,28 @@ public class ParameterDistributionTypeResource {
      * @return the {@link Flux} of parameterDistributionTypes.
      */
     @GetMapping(value = "/parameter-distribution-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<ParameterDistributionTypeDTO> getAllParameterDistributionTypesAsStream() {
+    public Flux<ParameterDistributionTypeTO> getAllParameterDistributionTypesAsStream() {
         log.debug("REST request to get all ParameterDistributionTypes as a stream");
-        return parameterDistributionTypeFacade.findAll();
+        return parameterDistributionTypeFacade.findAll().map(parameterDistributionTypeMapper::toTo);
     }
 
     /**
      * {@code GET  /parameter-distribution-types/:id} : get the "id" parameterDistributionType.
      *
-     * @param id the id of the parameterDistributionTypeDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the parameterDistributionTypeDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the ParameterDistributionTypeTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ParameterDistributionTypeTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/parameter-distribution-types/{id}")
-    public Mono<ResponseEntity<ParameterDistributionTypeDTO>> getParameterDistributionType(@PathVariable UUID id) {
+    public Mono<ResponseEntity<ParameterDistributionTypeTO>> getParameterDistributionType(@PathVariable UUID id) {
         log.debug("REST request to get ParameterDistributionType : {}", id);
-        Mono<ParameterDistributionTypeDTO> parameterDistributionTypeDTO = parameterDistributionTypeFacade.findOne(id);
-        return ResponseUtil.wrapOrNotFound(parameterDistributionTypeDTO);
+        Mono<ParameterDistributionTypeTO> parameterDistributionTypeTO = parameterDistributionTypeFacade.findOne(id).map(parameterDistributionTypeMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(parameterDistributionTypeTO);
     }
 
     /**
      * {@code DELETE  /parameter-distribution-types/:id} : delete the "id" parameterDistributionType.
      *
-     * @param id the id of the parameterDistributionTypeDTO to delete.
+     * @param id the id of the ParameterDistributionTypeTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/parameter-distribution-types/{id}")
