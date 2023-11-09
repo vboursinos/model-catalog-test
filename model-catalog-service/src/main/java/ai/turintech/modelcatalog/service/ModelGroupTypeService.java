@@ -1,18 +1,27 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.ModelGroupTypeRepository;
+import ai.turintech.modelcatalog.callable.ModelGroupTypeCallable;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelGroupTypeMapper;
-import java.util.UUID;
+import ai.turintech.modelcatalog.repository.ModelGroupTypeRepository;
+import ai.turintech.modelcatalog.entity.ModelGroupType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ModelGroupType}.
+ * Service Implementation for managing {@link ModelGroupType}.
  */
 @Service
 @Transactional
@@ -20,14 +29,17 @@ public class ModelGroupTypeService {
 
     private final Logger log = LoggerFactory.getLogger(ModelGroupTypeService.class);
 
-    private final ModelGroupTypeRepository modelGroupTypeRepository;
+    @Autowired
+    private ApplicationContext context;
 
-    private final ModelGroupTypeMapper modelGroupTypeMapper;
+    @Autowired
+    private Scheduler jdbcScheduler;
 
-    public ModelGroupTypeService(ModelGroupTypeRepository modelGroupTypeRepository, ModelGroupTypeMapper modelGroupTypeMapper) {
-        this.modelGroupTypeRepository = modelGroupTypeRepository;
-        this.modelGroupTypeMapper = modelGroupTypeMapper;
-    }
+    @Autowired
+    private ModelGroupTypeRepository modelGroupTypeRepository;
+
+    @Autowired
+    private ModelGroupTypeMapper modelGroupTypeMapper;
 
     /**
      * Save a modelGroupType.
@@ -35,9 +47,11 @@ public class ModelGroupTypeService {
      * @param modelGroupTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelGroupTypeDTO> save(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to save ModelGroupType : {}", modelGroupTypeDTO);
-        return modelGroupTypeRepository.save(modelGroupTypeMapper.toEntity(modelGroupTypeDTO)).map(modelGroupTypeMapper::toDto);
+        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "create", modelGroupTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -46,11 +60,11 @@ public class ModelGroupTypeService {
      * @param modelGroupTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelGroupTypeDTO> update(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to update ModelGroupType : {}", modelGroupTypeDTO);
-        return modelGroupTypeRepository
-            .save(modelGroupTypeMapper.toEntity(modelGroupTypeDTO).setIsPersisted())
-            .map(modelGroupTypeMapper::toDto);
+        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "update", modelGroupTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -59,18 +73,11 @@ public class ModelGroupTypeService {
      * @param modelGroupTypeDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelGroupTypeDTO> partialUpdate(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to partially update ModelGroupType : {}", modelGroupTypeDTO);
-
-        return modelGroupTypeRepository
-            .findById(modelGroupTypeDTO.getId())
-            .map(existingModelGroupType -> {
-                modelGroupTypeMapper.partialUpdate(existingModelGroupType, modelGroupTypeDTO);
-
-                return existingModelGroupType;
-            })
-            .flatMap(modelGroupTypeRepository::save)
-            .map(modelGroupTypeMapper::toDto);
+        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "partialUpdate", modelGroupTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -79,18 +86,20 @@ public class ModelGroupTypeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<ModelGroupTypeDTO> findAll() {
+    public Mono<List<ModelGroupTypeDTO>> findAll() {
         log.debug("Request to get all ModelGroupTypes");
-        return modelGroupTypeRepository.findAll().map(modelGroupTypeMapper::toDto);
+        Callable<List<ModelGroupTypeDTO>> callable = context.getBean(ModelGroupTypeCallable.class, "findAll");
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of modelGroupTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelGroupTypeRepository.count();
+    @Transactional(readOnly = true)
+    public Flux<ModelGroupTypeDTO> findAllStream() {
+        log.debug("Request to get all ModelGroupTypes");
+
+        return Flux.defer(() -> Flux.fromStream(
+                        modelGroupTypeRepository.findAll().stream()
+                                .map(modelGroupTypeMapper::toDto)))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -102,27 +111,21 @@ public class ModelGroupTypeService {
     @Transactional(readOnly = true)
     public Mono<ModelGroupTypeDTO> findOne(UUID id) {
         log.debug("Request to get ModelGroupType : {}", id);
-        return modelGroupTypeRepository.findById(id).map(modelGroupTypeMapper::toDto);
+        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "findById", id);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
      * Delete the modelGroupType by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
+    @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelGroupType : {}", id);
-        return modelGroupTypeRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns whether or not a ModelGroupType exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the ModelGroupType
-     */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.modelGroupTypeRepository.existsById(id);
+        Callable<Void> callable = context.getBean(ModelGroupTypeCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

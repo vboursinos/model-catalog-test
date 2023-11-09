@@ -1,75 +1,58 @@
 package ai.turintech.modelcatalog.dto;
 
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.UUID;
 
 /**
- * A DTO for the {@link ai.turintech.catalog.domain.IntegerParameterValue} entity.
+ * A DTO for the IntegerParameterValue entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class IntegerParameterValueDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
-    //@NotNull(message = "must not be null")
-    private Integer left;
+    @NotNull(message = "must not be null")
+    private Integer lower;
 
-    //@NotNull(message = "must not be null")
-    private Integer right;
+    @NotNull(message = "must not be null")
+    private Integer upper;
 
-    public Long getId() {
+
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Integer getLeft() {
-        return left;
+    public Integer getLower() {
+        return lower;
     }
 
-    public void setLeft(Integer left) {
-        this.left = left;
+    public void setLower(Integer lower) {
+        this.lower = lower;
     }
 
-    public Integer getRight() {
-        return right;
+    public Integer getUpper() {
+        return upper;
     }
 
-    public void setRight(Integer right) {
-        this.right = right;
+    public void setUpper(Integer upper) {
+        this.upper = upper;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof IntegerParameterValueDTO)) {
-            return false;
-        }
-
-        IntegerParameterValueDTO integerParameterValueDTO = (IntegerParameterValueDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, integerParameterValueDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "IntegerParameterValueDTO{" +
             "id=" + getId() +
-            ", left=" + getLeft() +
-            ", right=" + getRight() +
+            ", lower=" + getLower() +
+            ", upper=" + getUpper() +
             "}";
     }
 }

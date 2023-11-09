@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
 import ai.turintech.modelcatalog.service.IntegerParameterService;
+import ai.turintech.modelcatalog.entity.IntegerParameter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.IntegerParameter}.
+ * Service Implementation for managing {@link IntegerParameter}.
  */
 @Service
 @Transactional
@@ -67,16 +70,7 @@ public class IntegerParameterFacade {
     @Transactional(readOnly = true)
     public Flux<IntegerParameterDTO> findAll() {
         log.debug("Request to get all IntegerParameters");
-        return integerParameterService.findAll();
-    }
-
-    /**
-     * Returns the number of integerParameters available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return integerParameterService.countAll();
+        return integerParameterService.findAllStream();
     }
 
     /**
@@ -86,7 +80,7 @@ public class IntegerParameterFacade {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<IntegerParameterDTO> findOne(Long id) {
+    public Mono<IntegerParameterDTO> findOne(UUID id) {
         log.debug("Request to get IntegerParameter : {}", id);
         return integerParameterService.findOne(id);
     }
@@ -97,7 +91,7 @@ public class IntegerParameterFacade {
      * @param id the id of the entity.
      * @return a Mono to signal the deletion
      */
-    public Mono<Void> delete(Long id) {
+    public Mono<Void> delete(UUID id) {
         log.debug("Request to delete IntegerParameter : {}", id);
         return integerParameterService.delete(id);
     }
@@ -107,8 +101,8 @@ public class IntegerParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the IntegerParameter
      */
-    public Mono<Boolean> existsById(Long id) {
-    	log.debug("Request to delete IntegerParameter : {}", id);
-    	return this.integerParameterService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(Long id) {
+//    	log.debug("Request to delete IntegerParameter : {}", id);
+//    	return this.integerParameterService.existsById(id);
+//    }
 }

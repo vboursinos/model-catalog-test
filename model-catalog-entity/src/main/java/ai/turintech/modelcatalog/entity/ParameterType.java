@@ -1,48 +1,43 @@
 package ai.turintech.modelcatalog.entity;
 
-//import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.UUID;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * A ParameterType.
  */
-@Table("parameter_type")
+@Entity
+@Table(name = "parameter_type")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterType implements Serializable, Persistable<UUID> {
+public class ParameterType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
-    @NotNull(message = "must not be null")
-    @Column("name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Transient
-    private boolean isPersisted;
-
-    @Transient
-    private Parameter parameter;
-
-    @Transient
-    private ParameterTypeDefinition parameterTypeDefinition;
-
-    @Column("parameter_id")
-    private UUID parameterId;
-
-    @Column("parameter_type_definition_id")
-    private UUID parameterTypeDefinitionId;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "integerParameter", "floatParameter", "categoricalParameter", "booleanParameter", "distribution", "parameter", "type" },
+        allowSetters = true
+    )
+    private Set<ParameterTypeDefinition> definitions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -72,59 +67,35 @@ public class ParameterType implements Serializable, Persistable<UUID> {
         this.name = name;
     }
 
-    @Transient
-    @Override
-    public boolean isNew() {
-        return !this.isPersisted;
+    public Set<ParameterTypeDefinition> getDefinitions() {
+        return this.definitions;
     }
 
-    public ParameterType setIsPersisted() {
-        this.isPersisted = true;
+    public void setDefinitions(Set<ParameterTypeDefinition> parameterTypeDefinitions) {
+        if (this.definitions != null) {
+            this.definitions.forEach(i -> i.setType(null));
+        }
+        if (parameterTypeDefinitions != null) {
+            parameterTypeDefinitions.forEach(i -> i.setType(this));
+        }
+        this.definitions = parameterTypeDefinitions;
+    }
+
+    public ParameterType definitions(Set<ParameterTypeDefinition> parameterTypeDefinitions) {
+        this.setDefinitions(parameterTypeDefinitions);
         return this;
     }
 
-    public Parameter getParameter() {
-        return this.parameter;
-    }
-
-    public void setParameter(Parameter parameter) {
-        this.parameter = parameter;
-        this.parameterId = parameter != null ? parameter.getId() : null;
-    }
-
-    public ParameterType parameter(Parameter parameter) {
-        this.setParameter(parameter);
+    public ParameterType addDefinitions(ParameterTypeDefinition parameterTypeDefinition) {
+        this.definitions.add(parameterTypeDefinition);
+        parameterTypeDefinition.setType(this);
         return this;
     }
 
-    public ParameterTypeDefinition getParameterTypeDefinition() {
-        return this.parameterTypeDefinition;
-    }
-
-    public void setParameterTypeDefinition(ParameterTypeDefinition parameterTypeDefinition) {
-        this.parameterTypeDefinition = parameterTypeDefinition;
-        this.parameterTypeDefinitionId = parameterTypeDefinition != null ? parameterTypeDefinition.getId() : null;
-    }
-
-    public ParameterType parameterTypeDefinition(ParameterTypeDefinition parameterTypeDefinition) {
-        this.setParameterTypeDefinition(parameterTypeDefinition);
+    public ParameterType removeDefinitions(ParameterTypeDefinition parameterTypeDefinition) {
+        this.definitions.remove(parameterTypeDefinition);
+        parameterTypeDefinition.setType(null);
         return this;
-    }
-
-    public UUID getParameterId() {
-        return this.parameterId;
-    }
-
-    public void setParameterId(UUID parameter) {
-        this.parameterId = parameter;
-    }
-
-    public UUID getParameterTypeDefinitionId() {
-        return this.parameterTypeDefinitionId;
-    }
-
-    public void setParameterTypeDefinitionId(UUID parameterTypeDefinition) {
-        this.parameterTypeDefinitionId = parameterTypeDefinition;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

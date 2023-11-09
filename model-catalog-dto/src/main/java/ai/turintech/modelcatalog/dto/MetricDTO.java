@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * A DTO for the {@link ai.turintech.catalog.domain.Metric} entity.
+ * A DTO for the Metric entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class MetricDTO implements Serializable {

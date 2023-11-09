@@ -1,40 +1,43 @@
 package ai.turintech.modelcatalog.entity;
 
-//import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * A ParameterDistributionType.
  */
-@Table("parameter_distribution_type")
+@Entity
+@Table(name = "parameter_distribution_type")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterDistributionType implements Serializable, Persistable<UUID> {
+public class ParameterDistributionType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
-    //@NotNull(message = "must not be null")
-    @Column("name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Transient
-    private boolean isPersisted;
-
-    @Transient
-    private Parameter parameter;
-
-    @Column("parameter_id")
-    private UUID parameterId;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "distribution")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "integerParameter", "floatParameter", "categoricalParameter", "booleanParameter", "distribution", "parameter", "type" },
+        allowSetters = true
+    )
+    private Set<ParameterTypeDefinition> definitions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -64,37 +67,35 @@ public class ParameterDistributionType implements Serializable, Persistable<UUID
         this.name = name;
     }
 
-    @Transient
-    @Override
-    public boolean isNew() {
-        return !this.isPersisted;
+    public Set<ParameterTypeDefinition> getDefinitions() {
+        return this.definitions;
     }
 
-    public ParameterDistributionType setIsPersisted() {
-        this.isPersisted = true;
+    public void setDefinitions(Set<ParameterTypeDefinition> parameterTypeDefinitions) {
+        if (this.definitions != null) {
+            this.definitions.forEach(i -> i.setDistribution(null));
+        }
+        if (parameterTypeDefinitions != null) {
+            parameterTypeDefinitions.forEach(i -> i.setDistribution(this));
+        }
+        this.definitions = parameterTypeDefinitions;
+    }
+
+    public ParameterDistributionType definitions(Set<ParameterTypeDefinition> parameterTypeDefinitions) {
+        this.setDefinitions(parameterTypeDefinitions);
         return this;
     }
 
-    public Parameter getParameter() {
-        return this.parameter;
-    }
-
-    public void setParameter(Parameter parameter) {
-        this.parameter = parameter;
-        this.parameterId = parameter != null ? parameter.getId() : null;
-    }
-
-    public ParameterDistributionType parameter(Parameter parameter) {
-        this.setParameter(parameter);
+    public ParameterDistributionType addDefinitions(ParameterTypeDefinition parameterTypeDefinition) {
+        this.definitions.add(parameterTypeDefinition);
+        parameterTypeDefinition.setDistribution(this);
         return this;
     }
 
-    public UUID getParameterId() {
-        return this.parameterId;
-    }
-
-    public void setParameterId(UUID parameter) {
-        this.parameterId = parameter;
+    public ParameterDistributionType removeDefinitions(ParameterTypeDefinition parameterTypeDefinition) {
+        this.definitions.remove(parameterTypeDefinition);
+        parameterTypeDefinition.setDistribution(null);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

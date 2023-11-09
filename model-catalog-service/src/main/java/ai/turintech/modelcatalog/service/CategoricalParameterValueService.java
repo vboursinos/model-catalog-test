@@ -1,36 +1,42 @@
 package ai.turintech.modelcatalog.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import ai.turintech.modelcatalog.callable.CategoricalParameterValueCallable;
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.CategoricalParameterValueMapper;
 import ai.turintech.modelcatalog.repository.CategoricalParameterValueRepository;
+import ai.turintech.modelcatalog.entity.CategoricalParameterValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.CategoricalParameterValue}.
+ * Service Implementation for managing {@link CategoricalParameterValue}.
  */
 @Service
 @Transactional
 public class CategoricalParameterValueService {
 
     private final Logger log = LoggerFactory.getLogger(CategoricalParameterValueService.class);
+    @Autowired
+    private ApplicationContext context;
+    @Autowired
+    private Scheduler jdbcScheduler;
+    @Autowired
+    private CategoricalParameterValueRepository categoricalParameterValueRepository;
+    @Autowired
+    private CategoricalParameterValueMapper categoricalParameterValueMapper;
 
-    private final CategoricalParameterValueRepository categoricalParameterValueRepository;
-
-    private final CategoricalParameterValueMapper categoricalParameterValueMapper;
-
-    public CategoricalParameterValueService(
-        CategoricalParameterValueRepository categoricalParameterValueRepository,
-        CategoricalParameterValueMapper categoricalParameterValueMapper
-    ) {
-        this.categoricalParameterValueRepository = categoricalParameterValueRepository;
-        this.categoricalParameterValueMapper = categoricalParameterValueMapper;
-    }
 
     /**
      * Save a categoricalParameterValue.
@@ -38,11 +44,11 @@ public class CategoricalParameterValueService {
      * @param categoricalParameterValueDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<CategoricalParameterValueDTO> save(CategoricalParameterValueDTO categoricalParameterValueDTO) {
         log.debug("Request to save CategoricalParameterValue : {}", categoricalParameterValueDTO);
-        return categoricalParameterValueRepository
-            .save(categoricalParameterValueMapper.toEntity(categoricalParameterValueDTO))
-            .map(categoricalParameterValueMapper::toDto);
+        Callable<CategoricalParameterValueDTO> callable = context.getBean(CategoricalParameterValueCallable.class, "create", categoricalParameterValueDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -51,11 +57,11 @@ public class CategoricalParameterValueService {
      * @param categoricalParameterValueDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<CategoricalParameterValueDTO> update(CategoricalParameterValueDTO categoricalParameterValueDTO) {
         log.debug("Request to update CategoricalParameterValue : {}", categoricalParameterValueDTO);
-        return categoricalParameterValueRepository
-            .save(categoricalParameterValueMapper.toEntity(categoricalParameterValueDTO))
-            .map(categoricalParameterValueMapper::toDto);
+        Callable<CategoricalParameterValueDTO> callable = context.getBean(CategoricalParameterValueCallable.class, "update", categoricalParameterValueDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -64,18 +70,11 @@ public class CategoricalParameterValueService {
      * @param categoricalParameterValueDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<CategoricalParameterValueDTO> partialUpdate(CategoricalParameterValueDTO categoricalParameterValueDTO) {
         log.debug("Request to partially update CategoricalParameterValue : {}", categoricalParameterValueDTO);
-
-        return categoricalParameterValueRepository
-            .findById(categoricalParameterValueDTO.getId())
-            .map(existingCategoricalParameterValue -> {
-                categoricalParameterValueMapper.partialUpdate(existingCategoricalParameterValue, categoricalParameterValueDTO);
-
-                return existingCategoricalParameterValue;
-            })
-            .flatMap(categoricalParameterValueRepository::save)
-            .map(categoricalParameterValueMapper::toDto);
+        Callable<CategoricalParameterValueDTO> callable = context.getBean(CategoricalParameterValueCallable.class, "partialUpdate", categoricalParameterValueDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -84,18 +83,20 @@ public class CategoricalParameterValueService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<CategoricalParameterValueDTO> findAll() {
+    public Mono<List<CategoricalParameterValueDTO>> findAll() {
         log.debug("Request to get all CategoricalParameterValues");
-        return categoricalParameterValueRepository.findAll().map(categoricalParameterValueMapper::toDto);
+        Callable<List<CategoricalParameterValueDTO>> callable = context.getBean(CategoricalParameterValueCallable.class, "findAll");
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of categoricalParameterValues available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return categoricalParameterValueRepository.count();
+    @Transactional(readOnly = true)
+    public Flux<CategoricalParameterValueDTO> findAllStream() {
+        log.debug("Request to get all CategoricalParameterValues");
+
+        return Flux.defer(() -> Flux.fromStream(
+                        categoricalParameterValueRepository.findAll().stream()
+                                .map(categoricalParameterValueMapper::toDto)))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -105,29 +106,23 @@ public class CategoricalParameterValueService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<CategoricalParameterValueDTO> findOne(Long id) {
+    public Mono<CategoricalParameterValueDTO> findOne(UUID id) {
         log.debug("Request to get CategoricalParameterValue : {}", id);
-        return categoricalParameterValueRepository.findById(id).map(categoricalParameterValueMapper::toDto);
+        Callable<CategoricalParameterValueDTO> callable = context.getBean(CategoricalParameterValueCallable.class, "findById", id);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
      * Delete the categoricalParameterValue by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
-    public Mono<Void> delete(Long id) {
+    @Transactional
+    public Mono<Void> delete(UUID id) {
         log.debug("Request to delete CategoricalParameterValue : {}", id);
-        return categoricalParameterValueRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns wether or not a CategoricalParameterValue exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the categoricalParameterValue
-     */
-    public Mono<Boolean> existsById(Long id) {
-    	log.debug("Request to delete CategoricalParameterValue : {}", id);
-    	return this.categoricalParameterValueRepository.existsById(id);
+        Callable<Void> callable = context.getBean(CategoricalParameterValueCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

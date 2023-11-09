@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.service.ParameterDistributionTypeService;
+import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ParameterDistributionType}.
+ * Service Implementation for managing {@link ParameterDistributionType}.
  */
 @Service
 @Transactional
@@ -69,16 +70,7 @@ public class ParameterDistributionTypeFacade {
     @Transactional(readOnly = true)
     public Flux<ParameterDistributionTypeDTO> findAll() {
         log.debug("Request to get all ParameterDistributionTypes");
-        return parameterDistributionTypeService.findAll();
-    }
-
-    /**
-     * Returns the number of parameterDistributionTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return parameterDistributionTypeService.countAll();
+        return parameterDistributionTypeService.findAllStream();
     }
 
     /**
@@ -109,8 +101,8 @@ public class ParameterDistributionTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ParameterDistributionType
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.parameterDistributionTypeService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete ModelGroupType : {}", id);
+//    	return this.parameterDistributionTypeService.existsById(id);
+//    }
 }

@@ -16,6 +16,7 @@
 		<java.version>17</java.version>
 		<sentry.version>6.28.0</sentry.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
+		<validation-api.version>3.0.2</validation-api.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -105,6 +106,11 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>${validation-api.version}</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

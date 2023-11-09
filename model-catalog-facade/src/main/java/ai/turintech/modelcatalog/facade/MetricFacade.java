@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.MetricDTO;
 import ai.turintech.modelcatalog.service.MetricService;
+import ai.turintech.modelcatalog.entity.Metric;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.Metric}.
+ * Service Implementation for managing {@link Metric}.
  */
 @Service
 @Transactional
@@ -70,16 +71,7 @@ public class MetricFacade {
     @Transactional(readOnly = true)
     public Flux<MetricDTO> findAll() {
         log.debug("Request to get all Metrics");
-        return metricService.findAll();
-    }
-
-    /**
-     * Returns the number of metrics available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return metricService.countAll();
+        return metricService.findAllStream();
     }
 
     /**
@@ -110,8 +102,8 @@ public class MetricFacade {
      * @param id
      * @return a Mono to signal the existence of the Metric
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete Metric : {}", id);
-    	return this.metricService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete Metric : {}", id);
+//    	return this.metricService.existsById(id);
+//    }
 }

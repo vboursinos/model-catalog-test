@@ -2,23 +2,21 @@ package ai.turintech.modelcatalog.to;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
-/**
- * A TO for the {@link ai.turintech.catalog.domain.BooleanParameter} resource.
- */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class BooleanParameterTO implements Serializable {
 
-    private Long id;
+    private UUID parameterTypeDefinitionId;
 
     private Boolean defaultValue;
 
-    public Long getId() {
-        return id;
+    public UUID getParameterTypeDefinitionId() {
+        return parameterTypeDefinitionId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+        this.parameterTypeDefinitionId = parameterTypeDefinitionId;
     }
 
     public Boolean getDefaultValue() {
@@ -39,23 +37,23 @@ public class BooleanParameterTO implements Serializable {
         }
 
         BooleanParameterTO booleanParameterDTO = (BooleanParameterTO) o;
-        if (this.id == null) {
+        if (this.getParameterTypeDefinitionId() == null) {
             return false;
         }
-        return Objects.equals(this.id, booleanParameterDTO.id);
+        return Objects.equals(this.parameterTypeDefinitionId, booleanParameterDTO.parameterTypeDefinitionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hash(this.parameterTypeDefinitionId);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "BooleanParameterDTO{" +
-            "id=" + getId() +
-            ", defaultValue='" + getDefaultValue() + "'" +
-            "}";
+                "parameterTypeDefinitionId=" + parameterTypeDefinitionId +
+                ", defaultValue=" + defaultValue +
+                '}';
     }
 }

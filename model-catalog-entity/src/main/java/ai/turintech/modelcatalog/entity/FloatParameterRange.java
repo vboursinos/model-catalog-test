@@ -1,52 +1,63 @@
 package ai.turintech.modelcatalog.entity;
 
-import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import java.io.Serializable;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import java.util.UUID;
 
 /**
  * A FloatParameterRange.
  */
-@Table("float_parameter_range")
+@Entity
+@Table(name = "float_parameter_range")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class FloatParameterRange implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
-    private Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    private UUID id;
 
-    @NotNull(message = "must not be null")
-    @Column("is_left_open")
+    @NotNull
+    @Column(name = "is_left_open", nullable = false)
     private Boolean isLeftOpen;
 
-    @NotNull(message = "must not be null")
-    @Column("is_right_open")
+    @NotNull
+    @Column(name = "is_right_open", nullable = false)
     private Boolean isRightOpen;
 
-    @NotNull(message = "must not be null")
-    @Column("jhi_left")
-    private Float left;
+    @NotNull
+    @Column(name = "lower", nullable = false)
+    private Double lower;
 
-    @NotNull(message = "must not be null")
-    @Column("jhi_right")
-    private Float right;
+    @NotNull
+    @Column(name = "upper", nullable = false)
+    private Double upper;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "parameterTypeDefinition", "floatParameterRanges" }, allowSetters = true)
+    @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "parameter_type_definition_id")
+    private FloatParameter floatParameter;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public Long getId() {
+    public UUID getId() {
         return this.id;
     }
 
-    public FloatParameterRange id(Long id) {
+    public FloatParameterRange id(UUID id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -76,30 +87,43 @@ public class FloatParameterRange implements Serializable {
         this.isRightOpen = isRightOpen;
     }
 
-    public Float getLeft() {
-        return this.left;
+    public Double getLower() {
+        return this.lower;
     }
 
-    public FloatParameterRange left(Float left) {
-        this.setLeft(left);
+    public FloatParameterRange lower(Double lower) {
+        this.setLower(lower);
         return this;
     }
 
-    public void setLeft(Float left) {
-        this.left = left;
+    public void setLower(Double lower) {
+        this.lower = lower;
     }
 
-    public Float getRight() {
-        return this.right;
+    public Double getUpper() {
+        return this.upper;
     }
 
-    public FloatParameterRange right(Float right) {
-        this.setRight(right);
+    public FloatParameterRange upper(Double upper) {
+        this.setUpper(upper);
         return this;
     }
 
-    public void setRight(Float right) {
-        this.right = right;
+    public void setUpper(Double upper) {
+        this.upper = upper;
+    }
+
+    public FloatParameter getFloatParameter() {
+        return this.floatParameter;
+    }
+
+    public void setFloatParameter(FloatParameter floatParameter) {
+        this.floatParameter = floatParameter;
+    }
+
+    public FloatParameterRange floatParameter(FloatParameter floatParameter) {
+        this.setFloatParameter(floatParameter);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -128,8 +152,8 @@ public class FloatParameterRange implements Serializable {
             "id=" + getId() +
             ", isLeftOpen='" + getIsLeftOpen() + "'" +
             ", isRightOpen='" + getIsRightOpen() + "'" +
-            ", left=" + getLeft() +
-            ", right=" + getRight() +
+            ", lower=" + getLower() +
+            ", upper=" + getUpper() +
             "}";
     }
 }

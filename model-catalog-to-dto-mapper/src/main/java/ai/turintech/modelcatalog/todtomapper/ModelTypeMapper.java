@@ -6,16 +6,16 @@ import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
 import org.mapstruct.*;
 
+import java.util.List;
+
 /**
  * Mapper for the entity {@link ModelType} and its DTO {@link ModelTypeDTO}.
  */
 @Mapper(componentModel = "spring")
 public interface ModelTypeMapper extends EntityMapper<ModelTypeTO, ModelTypeDTO> {
-    @Mapping(target = "models", source = "models", qualifiedByName = "modelId")
     ModelTypeDTO toDto(ModelTypeTO s);
 
-    @Named("modelId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ModelDTO toDtoModelId(ModelTO model);
+    ModelTypeTO toTO(ModelTypeDTO s);
+
+    List<ModelTypeTO> toTO(List<ModelTypeDTO> s);
 }

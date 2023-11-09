@@ -1,22 +1,20 @@
 package ai.turintech.modelcatalog.dto;
 
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 /**
- * A DTO for the {@link ai.turintech.catalog.domain.ParameterDistributionType} entity.
+ * A DTO for the ParameterDistributionType entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ParameterDistributionTypeDTO implements Serializable {
 
     private UUID id;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String name;
-
-    private ParameterDTO parameter;
 
     public UUID getId() {
         return id;
@@ -32,14 +30,6 @@ public class ParameterDistributionTypeDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ParameterDTO getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(ParameterDTO parameter) {
-        this.parameter = parameter;
     }
 
     @Override
@@ -69,7 +59,6 @@ public class ParameterDistributionTypeDTO implements Serializable {
         return "ParameterDistributionTypeDTO{" +
             "id='" + getId() + "'" +
             ", name='" + getName() + "'" +
-            ", parameter=" + getParameter() +
             "}";
     }
 }

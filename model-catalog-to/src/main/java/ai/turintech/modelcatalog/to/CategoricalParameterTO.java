@@ -1,25 +1,19 @@
 package ai.turintech.modelcatalog.to;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
-/**
- * A DTO for the {@link ai.turintech.catalog.domain.CategoricalParameter} entity.
- */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class CategoricalParameterTO implements Serializable {
 
-    private Long id;
+    private UUID parameterTypeDefinitionId;
 
     private String defaultValue;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Set<CategoricalParameterValueTO> categoricalParameterValues = new HashSet<>();;
 
     public String getDefaultValue() {
         return defaultValue;
@@ -27,6 +21,22 @@ public class CategoricalParameterTO implements Serializable {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public UUID getParameterTypeDefinitionId() {
+        return parameterTypeDefinitionId;
+    }
+
+    public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+        this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+    }
+
+    public Set<CategoricalParameterValueTO> getCategoricalParameterValues() {
+        return categoricalParameterValues;
+    }
+
+    public void setCategoricalParameterValues(Set<CategoricalParameterValueTO> categoricalParameterValues) {
+        this.categoricalParameterValues = categoricalParameterValues;
     }
 
     @Override
@@ -39,23 +49,22 @@ public class CategoricalParameterTO implements Serializable {
         }
 
         CategoricalParameterTO categoricalParameterDTO = (CategoricalParameterTO) o;
-        if (this.id == null) {
+        if (this.parameterTypeDefinitionId == null) {
             return false;
         }
-        return Objects.equals(this.id, categoricalParameterDTO.id);
+        return Objects.equals(this.parameterTypeDefinitionId, categoricalParameterDTO.parameterTypeDefinitionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hash(this.parameterTypeDefinitionId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "CategoricalParameterDTO{" +
-            "id=" + getId() +
-            ", defaultValue='" + getDefaultValue() + "'" +
-            "}";
+                "parameterTypeDefinitionId=" + parameterTypeDefinitionId +
+                ", defaultValue='" + defaultValue + '\'' +
+                '}';
     }
 }

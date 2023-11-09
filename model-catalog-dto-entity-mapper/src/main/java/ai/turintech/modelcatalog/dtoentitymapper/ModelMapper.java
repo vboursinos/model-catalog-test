@@ -3,28 +3,22 @@ package ai.turintech.modelcatalog.dtoentitymapper;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-
-import ai.turintech.modelcatalog.dto.MetricDTO;
-import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
-import ai.turintech.modelcatalog.dto.ParameterDTO;
-import ai.turintech.modelcatalog.entity.Metric;
-import ai.turintech.modelcatalog.entity.Model;
-import ai.turintech.modelcatalog.entity.ModelGroupType;
-import ai.turintech.modelcatalog.entity.Parameter;
+import ai.turintech.modelcatalog.dto.*;
+import ai.turintech.modelcatalog.entity.*;
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Model} and its DTO {@link ModelDTO}.
  */
 @Mapper(componentModel = "spring")
 public interface ModelMapper extends EntityMapper<ModelDTO, Model> {
-    @Mapping(target = "groups", source = "groups", qualifiedByName = "modelGroupTypeIdSet")
-    @Mapping(target = "incompatibleMetrics", source = "incompatibleMetrics", qualifiedByName = "metricIdSet")
-    @Mapping(target = "parameters", source = "parameters", qualifiedByName = "parameterId")
+    @Mapping(target = "groups", source = "groups")
+    @Mapping(target = "incompatibleMetrics", source = "incompatibleMetrics")
+    @Mapping(target = "mlTask", source = "mlTask")
+    @Mapping(target = "structure", source = "structure")
+    @Mapping(target = "type", source = "type")
+    @Mapping(target = "familyType", source = "familyType")
+    @Mapping(target = "ensembleType", source = "ensembleType")
     ModelDTO toDto(Model s);
 
     @Mapping(target = "removeGroups", ignore = true)
@@ -51,8 +45,28 @@ public interface ModelMapper extends EntityMapper<ModelDTO, Model> {
         return metric.stream().map(this::toDtoMetricId).collect(Collectors.toSet());
     }
 
-    @Named("parameterId")
+    @Named("mlTaskTypeId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    ParameterDTO toDtoParameterId(Parameter parameter);
+    MlTaskTypeDTO toDtoMlTaskTypeId(MlTaskType mlTaskType);
+
+    @Named("modelStructureTypeId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    ModelStructureTypeDTO toDtoModelStructureTypeId(ModelStructureType modelStructureType);
+
+    @Named("modelTypeId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    ModelTypeDTO toDtoModelTypeId(ModelType modelType);
+
+    @Named("modelFamilyTypeId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    ModelFamilyTypeDTO toDtoModelFamilyTypeId(ModelFamilyType modelFamilyType);
+
+    @Named("modelEnsembleTypeId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    ModelEnsembleTypeDTO toDtoModelEnsembleTypeId(ModelEnsembleType modelEnsembleType);
 }

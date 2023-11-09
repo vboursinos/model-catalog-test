@@ -1,18 +1,27 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.MetricRepository;
-import ai.turintech.modelcatalog.dto.MetricDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.MetricMapper;
-import java.util.UUID;
+import ai.turintech.modelcatalog.repository.MetricRepository;
+import ai.turintech.modelcatalog.callable.MetricCallable;
+import ai.turintech.modelcatalog.dto.MetricDTO;
+import ai.turintech.modelcatalog.entity.Metric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.Metric}.
+ * Service Implementation for managing {@link Metric}.
  */
 @Service
 @Transactional
@@ -20,14 +29,17 @@ public class MetricService {
 
     private final Logger log = LoggerFactory.getLogger(MetricService.class);
 
-    private final MetricRepository metricRepository;
+    @Autowired
+    private ApplicationContext context;
 
-    private final MetricMapper metricMapper;
+    @Autowired
+    private Scheduler jdbcScheduler;
+    @Autowired
+    private MetricRepository metricRepository;
 
-    public MetricService(MetricRepository metricRepository, MetricMapper metricMapper) {
-        this.metricRepository = metricRepository;
-        this.metricMapper = metricMapper;
-    }
+    @Autowired
+    private MetricMapper metricMapper;
+
 
     /**
      * Save a metric.
@@ -35,9 +47,11 @@ public class MetricService {
      * @param metricDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<MetricDTO> save(MetricDTO metricDTO) {
         log.debug("Request to save Metric : {}", metricDTO);
-        return metricRepository.save(metricMapper.toEntity(metricDTO)).map(metricMapper::toDto);
+        Callable<MetricDTO> callable = context.getBean(MetricCallable.class, "create", metricDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -46,9 +60,11 @@ public class MetricService {
      * @param metricDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<MetricDTO> update(MetricDTO metricDTO) {
         log.debug("Request to update Metric : {}", metricDTO);
-        return metricRepository.save(metricMapper.toEntity(metricDTO).setIsPersisted()).map(metricMapper::toDto);
+        Callable<MetricDTO> callable = context.getBean(MetricCallable.class, "update", metricDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -57,18 +73,11 @@ public class MetricService {
      * @param metricDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<MetricDTO> partialUpdate(MetricDTO metricDTO) {
         log.debug("Request to partially update Metric : {}", metricDTO);
-
-        return metricRepository
-            .findById(metricDTO.getId())
-            .map(existingMetric -> {
-                metricMapper.partialUpdate(existingMetric, metricDTO);
-
-                return existingMetric;
-            })
-            .flatMap(metricRepository::save)
-            .map(metricMapper::toDto);
+        Callable<MetricDTO> callable = context.getBean(MetricCallable.class, "partialUpdate", metricDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -77,18 +86,20 @@ public class MetricService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<MetricDTO> findAll() {
+    public Mono<List<MetricDTO>> findAll() {
         log.debug("Request to get all Metrics");
-        return metricRepository.findAll().map(metricMapper::toDto);
+        Callable<List<MetricDTO>> callable = context.getBean(MetricCallable.class, "findAll");
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of metrics available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return metricRepository.count();
+    @Transactional(readOnly = true)
+    public Flux<MetricDTO> findAllStream() {
+        log.debug("Request to get all Metrics");
+
+        return Flux.defer(() -> Flux.fromStream(
+                        metricRepository.findAll().stream()
+                                .map(metricMapper::toDto)))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -100,27 +111,21 @@ public class MetricService {
     @Transactional(readOnly = true)
     public Mono<MetricDTO> findOne(UUID id) {
         log.debug("Request to get Metric : {}", id);
-        return metricRepository.findById(id).map(metricMapper::toDto);
+        Callable<MetricDTO> callable = context.getBean(MetricCallable.class, "findById", id);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
      * Delete the metric by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
+    @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete Metric : {}", id);
-        return metricRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns whether or not a Metric exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the Metric
-     */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete Metric : {}", id);
-    	return this.metricRepository.existsById(id);
+        Callable<MetricDTO> callable = context.getBean(MetricCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

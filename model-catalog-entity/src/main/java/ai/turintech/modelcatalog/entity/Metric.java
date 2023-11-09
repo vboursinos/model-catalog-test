@@ -1,35 +1,40 @@
 package ai.turintech.modelcatalog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * A Metric.
  */
-@Table("metric")
+@Entity
+@Table(name = "metric")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Metric implements Serializable, Persistable<UUID> {
+public class Metric implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
-    @Column("metric")
+    @Column(name = "name")
     private String metric;
 
-    @Transient
-    private boolean isPersisted;
-
-    @Transient
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "incompatibleMetrics")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "parameters", "groups", "incompatibleMetrics", "mlTask", "structure", "type", "familyType", "ensembleType" },
+        allowSetters = true
+    )
     private Set<Model> models = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -58,17 +63,6 @@ public class Metric implements Serializable, Persistable<UUID> {
 
     public void setMetric(String metric) {
         this.metric = metric;
-    }
-
-    @Transient
-    @Override
-    public boolean isNew() {
-        return !this.isPersisted;
-    }
-
-    public Metric setIsPersisted() {
-        this.isPersisted = true;
-        return this;
     }
 
     public Set<Model> getModels() {

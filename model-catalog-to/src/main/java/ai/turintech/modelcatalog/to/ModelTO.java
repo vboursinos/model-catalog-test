@@ -1,43 +1,48 @@
 package ai.turintech.modelcatalog.to;
 
-//import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import jakarta.validation.constraints.NotNull;
 
-/**
- * A DTO for the {@link ai.turintech.catalog.domain.Model} entity.
- */
+import java.io.Serializable;
+import java.util.*;
+
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ModelTO implements Serializable {
 
     private UUID id;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String name;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String displayName;
 
     private String description;
 
-    private String advantages;
+    private String[] advantages;
 
-    private String disadvantages;
+    private String[] disadvantages;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private Boolean enabled;
 
-    //@NotNull(message = "must not be null")
-    private Boolean decistionTree;
+    @NotNull(message = "must not be null")
+    private Boolean decisionTree;
 
     private Set<ModelGroupTypeTO> groups = new HashSet<>();
 
     private Set<MetricTO> incompatibleMetrics = new HashSet<>();
 
-    private ParameterTO parameters;
+    private List<ParameterTO> parameters = new ArrayList<>();
+
+    private MlTaskTypeTO mlTask;
+
+    private ModelStructureTypeTO structure;
+
+    private ModelTypeTO type;
+
+    private ModelFamilyTypeTO familyType;
+
+    private ModelEnsembleTypeTO ensembleType;
 
     public UUID getId() {
         return id;
@@ -71,19 +76,19 @@ public class ModelTO implements Serializable {
         this.description = description;
     }
 
-    public String getAdvantages() {
+    public String[] getAdvantages() {
         return advantages;
     }
 
-    public void setAdvantages(String advantages) {
+    public void setAdvantages(String[] advantages) {
         this.advantages = advantages;
     }
 
-    public String getDisadvantages() {
+    public String[] getDisadvantages() {
         return disadvantages;
     }
 
-    public void setDisadvantages(String disadvantages) {
+    public void setDisadvantages(String[] disadvantages) {
         this.disadvantages = disadvantages;
     }
 
@@ -95,12 +100,12 @@ public class ModelTO implements Serializable {
         this.enabled = enabled;
     }
 
-    public Boolean getDecistionTree() {
-        return decistionTree;
+    public Boolean getDecisionTree() {
+        return decisionTree;
     }
 
-    public void setDecistionTree(Boolean decistionTree) {
-        this.decistionTree = decistionTree;
+    public void setDecisionTree(Boolean decisionTree) {
+        this.decisionTree = decisionTree;
     }
 
     public Set<ModelGroupTypeTO> getGroups() {
@@ -119,11 +124,51 @@ public class ModelTO implements Serializable {
         this.incompatibleMetrics = incompatibleMetrics;
     }
 
-    public ParameterTO getParameters() {
+    public MlTaskTypeTO getMlTask() {
+        return mlTask;
+    }
+
+    public void setMlTask(MlTaskTypeTO mlTask) {
+        this.mlTask = mlTask;
+    }
+
+    public ModelStructureTypeTO getStructure() {
+        return structure;
+    }
+
+    public void setStructure(ModelStructureTypeTO structure) {
+        this.structure = structure;
+    }
+
+    public ModelTypeTO getType() {
+        return type;
+    }
+
+    public void setType(ModelTypeTO type) {
+        this.type = type;
+    }
+
+    public ModelFamilyTypeTO getFamilyType() {
+        return familyType;
+    }
+
+    public void setFamilyType(ModelFamilyTypeTO familyType) {
+        this.familyType = familyType;
+    }
+
+    public ModelEnsembleTypeTO getEnsembleType() {
+        return ensembleType;
+    }
+
+    public void setEnsembleType(ModelEnsembleTypeTO ensembleType) {
+        this.ensembleType = ensembleType;
+    }
+
+    public List<ParameterTO> getParameters() {
         return parameters;
     }
 
-    public void setParameters(ParameterTO parameters) {
+    public void setParameters(List<ParameterTO> parameters) {
         this.parameters = parameters;
     }
 
@@ -149,20 +194,27 @@ public class ModelTO implements Serializable {
     }
 
     // prettier-ignore
+
+
     @Override
     public String toString() {
         return "ModelDTO{" +
-            "id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            ", displayName='" + getDisplayName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", advantages='" + getAdvantages() + "'" +
-            ", disadvantages='" + getDisadvantages() + "'" +
-            ", enabled='" + getEnabled() + "'" +
-            ", decistionTree='" + getDecistionTree() + "'" +
-            ", groups=" + getGroups() +
-            ", incompatibleMetrics=" + getIncompatibleMetrics() +
-            ", parameters=" + getParameters() +
-            "}";
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", advantages='" + advantages + '\'' +
+                ", disadvantages='" + disadvantages + '\'' +
+                ", enabled=" + enabled +
+                ", decisionTree=" + decisionTree +
+                ", groups=" + groups +
+                ", incompatibleMetrics=" + incompatibleMetrics +
+                ", parameters=" + parameters +
+                ", mlTask=" + mlTask +
+                ", structure=" + structure +
+                ", type=" + type +
+                ", familyType=" + familyType +
+                ", ensembleType=" + ensembleType +
+                '}';
     }
 }

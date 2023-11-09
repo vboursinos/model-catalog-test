@@ -1,33 +1,43 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.ModelTypeRepository;
+import ai.turintech.modelcatalog.callable.ModelTypeCallable;
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelTypeMapper;
-import java.util.UUID;
+import ai.turintech.modelcatalog.repository.ModelTypeRepository;
+import ai.turintech.modelcatalog.entity.ModelType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ModelType}.
+ * Service Implementation for managing {@link ModelType}.
  */
 @Service
 @Transactional
 public class ModelTypeService {
 
     private final Logger log = LoggerFactory.getLogger(ModelTypeService.class);
+    @Autowired
+    private ApplicationContext context;
 
-    private final ModelTypeRepository modelTypeRepository;
+    @Autowired
+    private Scheduler jdbcScheduler;
+    @Autowired
+    private ModelTypeRepository modelTypeRepository;
 
-    private final ModelTypeMapper modelTypeMapper;
-
-    public ModelTypeService(ModelTypeRepository modelTypeRepository, ModelTypeMapper modelTypeMapper) {
-        this.modelTypeRepository = modelTypeRepository;
-        this.modelTypeMapper = modelTypeMapper;
-    }
+    @Autowired
+    private ModelTypeMapper modelTypeMapper;
 
     /**
      * Save a modelType.
@@ -35,9 +45,10 @@ public class ModelTypeService {
      * @param modelTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelTypeDTO> save(ModelTypeDTO modelTypeDTO) {
-        log.debug("Request to save ModelType : {}", modelTypeDTO);
-        return modelTypeRepository.save(modelTypeMapper.toEntity(modelTypeDTO)).map(modelTypeMapper::toDto);
+        Callable<ModelTypeDTO> callable = context.getBean(ModelTypeCallable.class, "create", modelTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -46,9 +57,10 @@ public class ModelTypeService {
      * @param modelTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelTypeDTO> update(ModelTypeDTO modelTypeDTO) {
-        log.debug("Request to update ModelType : {}", modelTypeDTO);
-        return modelTypeRepository.save(modelTypeMapper.toEntity(modelTypeDTO).setIsPersisted()).map(modelTypeMapper::toDto);
+        Callable<ModelTypeDTO> callable = context.getBean(ModelTypeCallable.class, "update", modelTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -57,18 +69,11 @@ public class ModelTypeService {
      * @param modelTypeDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelTypeDTO> partialUpdate(ModelTypeDTO modelTypeDTO) {
         log.debug("Request to partially update ModelType : {}", modelTypeDTO);
-
-        return modelTypeRepository
-            .findById(modelTypeDTO.getId())
-            .map(existingModelType -> {
-                modelTypeMapper.partialUpdate(existingModelType, modelTypeDTO);
-
-                return existingModelType;
-            })
-            .flatMap(modelTypeRepository::save)
-            .map(modelTypeMapper::toDto);
+        Callable<ModelTypeDTO> callable = context.getBean(ModelTypeCallable.class, "partialUpdate", modelTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -77,18 +82,20 @@ public class ModelTypeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<ModelTypeDTO> findAll() {
+    public Mono<List<ModelTypeDTO>> findAll() {
         log.debug("Request to get all ModelTypes");
-        return modelTypeRepository.findAll().map(modelTypeMapper::toDto);
+        Callable<List<ModelTypeDTO>> callable = context.getBean(ModelTypeCallable.class, "findAll");
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of modelTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelTypeRepository.count();
+    @Transactional(readOnly = true)
+    public Flux<ModelTypeDTO> findAllStream() {
+        log.debug("Request to get all ModelTypes");
+
+        return Flux.defer(() -> Flux.fromStream(
+                        modelTypeRepository.findAll().stream()
+                                .map(modelTypeMapper::toDto)))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -100,27 +107,21 @@ public class ModelTypeService {
     @Transactional(readOnly = true)
     public Mono<ModelTypeDTO> findOne(UUID id) {
         log.debug("Request to get ModelType : {}", id);
-        return modelTypeRepository.findById(id).map(modelTypeMapper::toDto);
+        Callable<ModelTypeDTO> callable = context.getBean(ModelTypeCallable.class, "findById", id);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
      * Delete the modelType by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
+    @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelType : {}", id);
-        return modelTypeRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns whether or not a ModelType exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the ModelType
-     */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.modelTypeRepository.existsById(id);
+        Callable<Void> callable = context.getBean(ModelTypeCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

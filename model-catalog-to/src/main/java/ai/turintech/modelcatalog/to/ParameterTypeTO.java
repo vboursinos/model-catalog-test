@@ -1,26 +1,19 @@
 package ai.turintech.modelcatalog.to;
 
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * A DTO for the {@link ai.turintech.catalog.domain.ParameterType} entity.
- */
+
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ParameterTypeTO implements Serializable {
 
-    private static final long serialVersionUID = -6017445921327931645L;
+    private UUID id;
 
-	private UUID id;
-
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String name;
-
-    private ParameterTO parameter;
-
-    private ParameterTypeDefinitionTO parameterTypeDefinition;
 
     public UUID getId() {
         return id;
@@ -36,22 +29,6 @@ public class ParameterTypeTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ParameterTO getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(ParameterTO parameter) {
-        this.parameter = parameter;
-    }
-
-    public ParameterTypeDefinitionTO getParameterTypeDefinition() {
-        return parameterTypeDefinition;
-    }
-
-    public void setParameterTypeDefinition(ParameterTypeDefinitionTO parameterTypeDefinition) {
-        this.parameterTypeDefinition = parameterTypeDefinition;
     }
 
     @Override
@@ -81,8 +58,6 @@ public class ParameterTypeTO implements Serializable {
         return "ParameterTypeDTO{" +
             "id='" + getId() + "'" +
             ", name='" + getName() + "'" +
-            ", parameter=" + getParameter() +
-            ", parameterTypeDefinition=" + getParameterTypeDefinition() +
             "}";
     }
 }

@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import ai.turintech.modelcatalog.service.MlTaskTypeService;
+import ai.turintech.modelcatalog.entity.MlTaskType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.MlTaskType}.
+ * Service Implementation for managing {@link MlTaskType}.
  */
 @Service
 @Transactional
@@ -69,16 +70,7 @@ public class MlTaskTypeFacade {
     @Transactional(readOnly = true)
     public Flux<MlTaskTypeDTO> findAll() {
         log.debug("Request to get all MlTaskTypes");
-        return modelTaskTypeService.findAll();
-    }
-
-    /**
-     * Returns the number of mlTaskTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelTaskTypeService.countAll();
+        return modelTaskTypeService.findAllStream();
     }
 
     /**
@@ -109,8 +101,8 @@ public class MlTaskTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the MlTaskType
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete Metric : {}", id);
-    	return this.modelTaskTypeService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete Metric : {}", id);
+//    	return this.modelTaskTypeService.existsById(id);
+//    }
 }

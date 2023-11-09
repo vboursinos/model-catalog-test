@@ -1,42 +1,51 @@
 package ai.turintech.modelcatalog.entity;
 
-import java.io.Serializable;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * A CategoricalParameterValue.
  */
-@Table("categorical_parameter_value")
+@Entity
+@Table(name = "categorical_parameter_value")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class CategoricalParameterValue implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
-    private Long id;
+    @GeneratedValue
+    @Column(name = "id")
+    private UUID id;
 
-    @NotNull(message = "must not be null")
-    @Column("value")
+    @NotNull
+    @Column(name = "value", nullable = false)
     private String value;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "parameterTypeDefinition", "categoricalParameterValues" }, allowSetters = true)
+    @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "parameter_type_definition_id")
+    private CategoricalParameter categoricalParameter;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public Long getId() {
+    public UUID getId() {
         return this.id;
     }
 
-    public CategoricalParameterValue id(Long id) {
+    public CategoricalParameterValue id(UUID id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -51,6 +60,19 @@ public class CategoricalParameterValue implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public CategoricalParameter getCategoricalParameter() {
+        return this.categoricalParameter;
+    }
+
+    public void setCategoricalParameter(CategoricalParameter categoricalParameter) {
+        this.categoricalParameter = categoricalParameter;
+    }
+
+    public CategoricalParameterValue categoricalParameter(CategoricalParameter categoricalParameter) {
+        this.setCategoricalParameter(categoricalParameter);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

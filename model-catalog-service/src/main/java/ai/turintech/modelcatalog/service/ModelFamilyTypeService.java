@@ -1,18 +1,27 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.ModelFamilyTypeRepository;
+import ai.turintech.modelcatalog.callable.ModelFamilyCallable;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelFamilyTypeMapper;
-import java.util.UUID;
+import ai.turintech.modelcatalog.repository.ModelFamilyTypeRepository;
+import ai.turintech.modelcatalog.entity.ModelFamilyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ModelFamilyType}.
+ * Service Implementation for managing {@link ModelFamilyType}.
  */
 @Service
 @Transactional
@@ -20,14 +29,16 @@ public class ModelFamilyTypeService {
 
     private final Logger log = LoggerFactory.getLogger(ModelFamilyTypeService.class);
 
-    private final ModelFamilyTypeRepository modelFamilyTypeRepository;
+    @Autowired
+    private ApplicationContext context;
 
-    private final ModelFamilyTypeMapper modelFamilyTypeMapper;
+    @Autowired
+    private Scheduler jdbcScheduler;
+    @Autowired
+    private ModelFamilyTypeRepository modelFamilyTypeRepository;
 
-    public ModelFamilyTypeService(ModelFamilyTypeRepository modelFamilyTypeRepository, ModelFamilyTypeMapper modelFamilyTypeMapper) {
-        this.modelFamilyTypeRepository = modelFamilyTypeRepository;
-        this.modelFamilyTypeMapper = modelFamilyTypeMapper;
-    }
+    @Autowired
+    private ModelFamilyTypeMapper modelFamilyTypeMapper;
 
     /**
      * Save a modelFamilyType.
@@ -35,9 +46,11 @@ public class ModelFamilyTypeService {
      * @param modelFamilyTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelFamilyTypeDTO> save(ModelFamilyTypeDTO modelFamilyTypeDTO) {
         log.debug("Request to save ModelFamilyType : {}", modelFamilyTypeDTO);
-        return modelFamilyTypeRepository.save(modelFamilyTypeMapper.toEntity(modelFamilyTypeDTO)).map(modelFamilyTypeMapper::toDto);
+        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "create", modelFamilyTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -46,11 +59,11 @@ public class ModelFamilyTypeService {
      * @param modelFamilyTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelFamilyTypeDTO> update(ModelFamilyTypeDTO modelFamilyTypeDTO) {
         log.debug("Request to update ModelFamilyType : {}", modelFamilyTypeDTO);
-        return modelFamilyTypeRepository
-            .save(modelFamilyTypeMapper.toEntity(modelFamilyTypeDTO).setIsPersisted())
-            .map(modelFamilyTypeMapper::toDto);
+        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "update", modelFamilyTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -59,18 +72,11 @@ public class ModelFamilyTypeService {
      * @param modelFamilyTypeDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelFamilyTypeDTO> partialUpdate(ModelFamilyTypeDTO modelFamilyTypeDTO) {
         log.debug("Request to partially update ModelFamilyType : {}", modelFamilyTypeDTO);
-
-        return modelFamilyTypeRepository
-            .findById(modelFamilyTypeDTO.getId())
-            .map(existingModelFamilyType -> {
-                modelFamilyTypeMapper.partialUpdate(existingModelFamilyType, modelFamilyTypeDTO);
-
-                return existingModelFamilyType;
-            })
-            .flatMap(modelFamilyTypeRepository::save)
-            .map(modelFamilyTypeMapper::toDto);
+        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "partialUpdate", modelFamilyTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -79,18 +85,20 @@ public class ModelFamilyTypeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<ModelFamilyTypeDTO> findAll() {
+    public Mono<List<ModelFamilyTypeDTO>> findAll() {
         log.debug("Request to get all ModelFamilyTypes");
-        return modelFamilyTypeRepository.findAll().map(modelFamilyTypeMapper::toDto);
+        Callable<List<ModelFamilyTypeDTO>> callable = context.getBean(ModelFamilyCallable.class, "findAll");
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of modelFamilyTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelFamilyTypeRepository.count();
+    @Transactional(readOnly = true)
+    public Flux<ModelFamilyTypeDTO> findAllStream() {
+        log.debug("Request to get all ModelFamilyTypes");
+
+        return Flux.defer(() -> Flux.fromStream(
+                        modelFamilyTypeRepository.findAll().stream()
+                                .map(modelFamilyTypeMapper::toDto)))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -102,27 +110,20 @@ public class ModelFamilyTypeService {
     @Transactional(readOnly = true)
     public Mono<ModelFamilyTypeDTO> findOne(UUID id) {
         log.debug("Request to get ModelFamilyType : {}", id);
-        return modelFamilyTypeRepository.findById(id).map(modelFamilyTypeMapper::toDto);
+        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "findById", id);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
      * Delete the modelFamilyType by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelFamilyType : {}", id);
-        return modelFamilyTypeRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns whether or not a ModelFamilyType exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the ModelFamilyType
-     */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelFamilyType : {}", id);
-    	return this.modelFamilyTypeRepository.existsById(id);
+        Callable<Void> callable = context.getBean(ModelFamilyCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

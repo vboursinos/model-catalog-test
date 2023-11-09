@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.service.FloatParameterRangeService;
+import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.FloatParameterRange}.
+ * Service Implementation for managing {@link FloatParameterRange}.
  */
 @Service
 @Transactional
@@ -70,16 +73,7 @@ public class FloatParameterRangeFacade {
     @Transactional(readOnly = true)
     public Flux<FloatParameterRangeDTO> findAll() {
         log.debug("Request to get all FloatParameterRanges");
-        return floatParameterRangeService.findAll();
-    }
-
-    /**
-     * Returns the number of floatParameterRanges available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return floatParameterRangeService.countAll();
+        return floatParameterRangeService.findAllStream();
     }
 
     /**
@@ -89,7 +83,7 @@ public class FloatParameterRangeFacade {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<FloatParameterRangeDTO> findOne(Long id) {
+    public Mono<FloatParameterRangeDTO> findOne(UUID id) {
         log.debug("Request to get FloatParameterRange : {}", id);
         return floatParameterRangeService.findOne(id);
     }
@@ -100,7 +94,7 @@ public class FloatParameterRangeFacade {
      * @param id the id of the entity.
      * @return a Mono to signal the deletion
      */
-    public Mono<Void> delete(Long id) {
+    public Mono<Void> delete(UUID id) {
         log.debug("Request to delete FloatParameterRange : {}", id);
         return floatParameterRangeService.delete(id);
     }
@@ -110,8 +104,8 @@ public class FloatParameterRangeFacade {
      * @param id
      * @return a Mono to signal the existence of the FloatParameterRange
      */
-    public Mono<Boolean> existsById(Long id) {
-    	log.debug("Request to delete FloatParameterRange : {}", id);
-    	return this.floatParameterRangeService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(Long id) {
+//    	log.debug("Request to delete FloatParameterRange : {}", id);
+//    	return this.floatParameterRangeService.existsById(id);
+//    }
 }

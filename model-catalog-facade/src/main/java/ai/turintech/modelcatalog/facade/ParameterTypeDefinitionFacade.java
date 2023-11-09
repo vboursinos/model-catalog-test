@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.service.ParameterTypeDefinitionService;
+import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ParameterTypeDefinition}.
+ * Service Implementation for managing {@link ParameterTypeDefinition}.
  */
 @Service
 @Transactional
@@ -71,16 +72,7 @@ public class ParameterTypeDefinitionFacade {
     @Transactional(readOnly = true)
     public Flux<ParameterTypeDefinitionDTO> findAll() {
         log.debug("Request to get all ParameterTypeDefinitions");
-        return parameterTypeDefinitionService.findAll();
-    }
-
-    /**
-     * Returns the number of parameterTypeDefinitions available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return parameterTypeDefinitionService.countAll();
+        return parameterTypeDefinitionService.findAllStream();
     }
 
     /**
@@ -111,8 +103,8 @@ public class ParameterTypeDefinitionFacade {
      * @param id
      * @return a Mono to signal the existence of the ParameterTypeDefinition
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ParameterTypeDefinition : {}", id);
-    	return this.parameterTypeDefinitionService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete ParameterTypeDefinition : {}", id);
+//    	return this.parameterTypeDefinitionService.existsById(id);
+//    }
 }

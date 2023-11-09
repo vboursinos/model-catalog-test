@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
 import ai.turintech.modelcatalog.service.ParameterTypeService;
+import ai.turintech.modelcatalog.entity.ParameterType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ParameterType}.
+ * Service Implementation for managing {@link ParameterType}.
  */
 @Service
 @Transactional
@@ -68,16 +69,7 @@ public class ParameterTypeFacade {
     @Transactional(readOnly = true)
     public Flux<ParameterTypeDTO> findAll() {
         log.debug("Request to get all ParameterTypes");
-        return parameterTypeService.findAll();
-    }
-
-    /**
-     * Returns the number of parameterTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return parameterTypeService.countAll();
+        return parameterTypeService.findAllStream();
     }
 
     /**
@@ -108,8 +100,8 @@ public class ParameterTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ParameterType
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ParameterType : {}", id);
-    	return this.parameterTypeService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete ParameterType : {}", id);
+//    	return this.parameterTypeService.existsById(id);
+//    }
 }

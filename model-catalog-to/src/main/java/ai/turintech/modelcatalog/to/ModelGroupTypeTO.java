@@ -1,19 +1,17 @@
 package ai.turintech.modelcatalog.to;
 
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * A DTO for the {@link ai.turintech.catalog.domain.ModelGroupType} entity.
- */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ModelGroupTypeTO implements Serializable {
 
     private UUID id;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String name;
 
     public UUID getId() {

@@ -1,44 +1,68 @@
 package ai.turintech.modelcatalog.entity;
 
-//import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * A ParameterTypeDefinition.
  */
-@Table("parameter_type_definition")
+@Entity
+@Table(name = "parameter_type_definition")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterTypeDefinition implements Serializable, Persistable<UUID> {
+public class ParameterTypeDefinition implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
-    @NotNull(message = "must not be null")
-    @Column("ordering")
+    @NotNull
+    @Column(name = "ordering", nullable = false)
     private Integer ordering;
 
-    @Transient
-    private boolean isPersisted;
+    @JsonIgnoreProperties(value = { "parameterTypeDefinition", "integerParameterValues" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "parameterTypeDefinition")
+    @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
+    private IntegerParameter integerParameter;
 
-    @Transient
-    private Set<Parameter> parameters = new HashSet<>();
+    @JsonIgnoreProperties(value = { "parameterTypeDefinition", "floatParameterRanges" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "parameterTypeDefinition")
+    @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
+    private FloatParameter floatParameter;
 
-    @Transient
-    private Set<ParameterType> types = new HashSet<>();
+    @JsonIgnoreProperties(value = { "parameterTypeDefinition", "categoricalParameterValues" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "parameterTypeDefinition")
+    @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
+    private CategoricalParameter categoricalParameter;
+
+    @JsonIgnoreProperties(value = { "parameterTypeDefinition" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "parameterTypeDefinition")
+    @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
+    private BooleanParameter booleanParameter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "definitions" }, allowSetters = true)
+    @JoinColumn(name = "parameter_distribution_type_id", referencedColumnName = "id")
+    private ParameterDistributionType distribution;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "definitions", "model" }, allowSetters = true)
+    @JoinColumn(name = "parameter_id", referencedColumnName = "id")
+    private Parameter parameter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "definitions" }, allowSetters = true)
+    @JoinColumn(name = "parameter_type_id", referencedColumnName = "id")
+    private ParameterType type;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -68,76 +92,118 @@ public class ParameterTypeDefinition implements Serializable, Persistable<UUID> 
         this.ordering = ordering;
     }
 
-    @Transient
-    @Override
-    public boolean isNew() {
-        return !this.isPersisted;
+    public IntegerParameter getIntegerParameter() {
+        return this.integerParameter;
     }
 
-    public ParameterTypeDefinition setIsPersisted() {
-        this.isPersisted = true;
-        return this;
-    }
-
-    public Set<Parameter> getParameters() {
-        return this.parameters;
-    }
-
-    public void setParameters(Set<Parameter> parameters) {
-        if (this.parameters != null) {
-            this.parameters.forEach(i -> i.setDefinitions(null));
+    public void setIntegerParameter(IntegerParameter integerParameter) {
+        if (this.integerParameter != null) {
+            this.integerParameter.setParameterTypeDefinition(null);
         }
-        if (parameters != null) {
-            parameters.forEach(i -> i.setDefinitions(this));
+        if (integerParameter != null) {
+            integerParameter.setParameterTypeDefinition(this);
         }
-        this.parameters = parameters;
+        this.integerParameter = integerParameter;
     }
 
-    public ParameterTypeDefinition parameters(Set<Parameter> parameters) {
-        this.setParameters(parameters);
+    public ParameterTypeDefinition integerParameter(IntegerParameter integerParameter) {
+        this.setIntegerParameter(integerParameter);
         return this;
     }
 
-    public ParameterTypeDefinition addParameter(Parameter parameter) {
-        this.parameters.add(parameter);
-        parameter.setDefinitions(this);
-        return this;
+    public FloatParameter getFloatParameter() {
+        return this.floatParameter;
     }
 
-    public ParameterTypeDefinition removeParameter(Parameter parameter) {
-        this.parameters.remove(parameter);
-        parameter.setDefinitions(null);
-        return this;
-    }
-
-    public Set<ParameterType> getTypes() {
-        return this.types;
-    }
-
-    public void setTypes(Set<ParameterType> parameterTypes) {
-        if (this.types != null) {
-            this.types.forEach(i -> i.setParameterTypeDefinition(null));
+    public void setFloatParameter(FloatParameter floatParameter) {
+        if (this.floatParameter != null) {
+            this.floatParameter.setParameterTypeDefinition(null);
         }
-        if (parameterTypes != null) {
-            parameterTypes.forEach(i -> i.setParameterTypeDefinition(this));
+        if (floatParameter != null) {
+            floatParameter.setParameterTypeDefinition(this);
         }
-        this.types = parameterTypes;
+        this.floatParameter = floatParameter;
     }
 
-    public ParameterTypeDefinition types(Set<ParameterType> parameterTypes) {
-        this.setTypes(parameterTypes);
+    public ParameterTypeDefinition floatParameter(FloatParameter floatParameter) {
+        this.setFloatParameter(floatParameter);
         return this;
     }
 
-    public ParameterTypeDefinition addType(ParameterType parameterType) {
-        this.types.add(parameterType);
-        parameterType.setParameterTypeDefinition(this);
+    public CategoricalParameter getCategoricalParameter() {
+        return this.categoricalParameter;
+    }
+
+    public void setCategoricalParameter(CategoricalParameter categoricalParameter) {
+        if (this.categoricalParameter != null) {
+            this.categoricalParameter.setParameterTypeDefinition(null);
+        }
+        if (categoricalParameter != null) {
+            categoricalParameter.setParameterTypeDefinition(this);
+        }
+        this.categoricalParameter = categoricalParameter;
+    }
+
+    public ParameterTypeDefinition categoricalParameter(CategoricalParameter categoricalParameter) {
+        this.setCategoricalParameter(categoricalParameter);
         return this;
     }
 
-    public ParameterTypeDefinition removeType(ParameterType parameterType) {
-        this.types.remove(parameterType);
-        parameterType.setParameterTypeDefinition(null);
+    public BooleanParameter getBooleanParameter() {
+        return this.booleanParameter;
+    }
+
+    public void setBooleanParameter(BooleanParameter booleanParameter) {
+        if (this.booleanParameter != null) {
+            this.booleanParameter.setParameterTypeDefinition(null);
+        }
+        if (booleanParameter != null) {
+            booleanParameter.setParameterTypeDefinition(this);
+        }
+        this.booleanParameter = booleanParameter;
+    }
+
+    public ParameterTypeDefinition booleanParameter(BooleanParameter booleanParameter) {
+        this.setBooleanParameter(booleanParameter);
+        return this;
+    }
+
+    public ParameterDistributionType getDistribution() {
+        return this.distribution;
+    }
+
+    public void setDistribution(ParameterDistributionType parameterDistributionType) {
+        this.distribution = parameterDistributionType;
+    }
+
+    public ParameterTypeDefinition distribution(ParameterDistributionType parameterDistributionType) {
+        this.setDistribution(parameterDistributionType);
+        return this;
+    }
+
+    public Parameter getParameter() {
+        return this.parameter;
+    }
+
+    public void setParameter(Parameter parameter) {
+        this.parameter = parameter;
+    }
+
+    public ParameterTypeDefinition parameter(Parameter parameter) {
+        this.setParameter(parameter);
+        return this;
+    }
+
+    public ParameterType getType() {
+        return this.type;
+    }
+
+    public void setType(ParameterType parameterType) {
+        this.type = parameterType;
+    }
+
+    public ParameterTypeDefinition type(ParameterType parameterType) {
+        this.setType(parameterType);
         return this;
     }
 

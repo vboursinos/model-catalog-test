@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.service.ModelEnsembleTypeService;
+import ai.turintech.modelcatalog.entity.ModelEnsembleType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ModelEnsembleType}.
+ * Service Implementation for managing {@link ModelEnsembleType}.
  */
 @Service
 @Transactional
@@ -71,17 +72,9 @@ public class ModelEnsembleTypeFacade {
     @Transactional(readOnly = true)
     public Flux<ModelEnsembleTypeDTO> findAll() {
         log.debug("Request to get all ModelEnsembleTypes");
-        return modelEnsembleTypeService.findAll();
+        return modelEnsembleTypeService.findAllStream();
     }
 
-    /**
-     * Returns the number of modelEnsembleTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelEnsembleTypeService.countAll();
-    }
 
     /**
      * Get one modelEnsembleType by id.
@@ -111,8 +104,8 @@ public class ModelEnsembleTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ModelEnsembleType
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete Metric : {}", id);
-    	return this.modelEnsembleTypeService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete Metric : {}", id);
+//    	return this.modelEnsembleTypeService.existsById(id);
+//    }
 }

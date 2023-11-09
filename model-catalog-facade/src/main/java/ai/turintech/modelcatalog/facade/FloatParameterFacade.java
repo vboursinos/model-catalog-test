@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.facade;
 
 import ai.turintech.modelcatalog.service.FloatParameterService;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
+import ai.turintech.modelcatalog.entity.FloatParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.FloatParameter}.
+ * Service Implementation for managing {@link FloatParameter}.
  */
 @Service
 @Transactional
@@ -66,16 +69,7 @@ public class FloatParameterFacade {
     @Transactional(readOnly = true)
     public Flux<FloatParameterDTO> findAll() {
         log.debug("Request to get all FloatParameters");
-        return floatParameterService.findAll();
-    }
-
-    /**
-     * Returns the number of floatParameters available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return floatParameterService.countAll();
+        return floatParameterService.findAllStream();
     }
 
     /**
@@ -85,7 +79,7 @@ public class FloatParameterFacade {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<FloatParameterDTO> findOne(Long id) {
+    public Mono<FloatParameterDTO> findOne(UUID id) {
         log.debug("Request to get FloatParameter : {}", id);
         return floatParameterService.findOne(id);
     }
@@ -96,7 +90,7 @@ public class FloatParameterFacade {
      * @param id the id of the entity.
      * @return a Mono to signal the deletion
      */
-    public Mono<Void> delete(Long id) {
+    public Mono<Void> delete(UUID id) {
         log.debug("Request to delete FloatParameter : {}", id);
         return floatParameterService.delete(id);
     }
@@ -106,8 +100,8 @@ public class FloatParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the FloatParameter
      */
-    public Mono<Boolean> existsById(Long id) {
-    	log.debug("Request to delete FloatParameter : {}", id);
-    	return this.floatParameterService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(Long id) {
+//    	log.debug("Request to delete FloatParameter : {}", id);
+//    	return this.floatParameterService.existsById(id);
+//    }
 }

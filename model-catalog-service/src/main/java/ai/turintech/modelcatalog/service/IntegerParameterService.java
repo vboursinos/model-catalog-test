@@ -1,17 +1,27 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.IntegerParameterRepository;
+import ai.turintech.modelcatalog.callable.IntegerParameterCallable;
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.IntegerParameterMapper;
+import ai.turintech.modelcatalog.repository.IntegerParameterRepository;
+import ai.turintech.modelcatalog.entity.IntegerParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.IntegerParameter}.
+ * Service Implementation for managing {@link IntegerParameter}.
  */
 @Service
 @Transactional
@@ -19,14 +29,18 @@ public class IntegerParameterService {
 
     private final Logger log = LoggerFactory.getLogger(IntegerParameterService.class);
 
-    private final IntegerParameterRepository integerParameterRepository;
+    @Autowired
+    private ApplicationContext context;
 
-    private final IntegerParameterMapper integerParameterMapper;
+    @Autowired
+    private Scheduler jdbcScheduler;
 
-    public IntegerParameterService(IntegerParameterRepository integerParameterRepository, IntegerParameterMapper integerParameterMapper) {
-        this.integerParameterRepository = integerParameterRepository;
-        this.integerParameterMapper = integerParameterMapper;
-    }
+    @Autowired
+    private IntegerParameterRepository integerParameterRepository;
+
+    @Autowired
+    private IntegerParameterMapper integerParameterMapper;
+
 
     /**
      * Save a integerParameter.
@@ -34,9 +48,11 @@ public class IntegerParameterService {
      * @param integerParameterDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<IntegerParameterDTO> save(IntegerParameterDTO integerParameterDTO) {
         log.debug("Request to save IntegerParameter : {}", integerParameterDTO);
-        return integerParameterRepository.save(integerParameterMapper.toEntity(integerParameterDTO)).map(integerParameterMapper::toDto);
+        Callable<IntegerParameterDTO> callable = context.getBean(IntegerParameterCallable.class, "create", integerParameterDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -45,9 +61,11 @@ public class IntegerParameterService {
      * @param integerParameterDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<IntegerParameterDTO> update(IntegerParameterDTO integerParameterDTO) {
         log.debug("Request to update IntegerParameter : {}", integerParameterDTO);
-        return integerParameterRepository.save(integerParameterMapper.toEntity(integerParameterDTO)).map(integerParameterMapper::toDto);
+        Callable<IntegerParameterDTO> callable = context.getBean(IntegerParameterCallable.class, "update", integerParameterDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -56,18 +74,11 @@ public class IntegerParameterService {
      * @param integerParameterDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<IntegerParameterDTO> partialUpdate(IntegerParameterDTO integerParameterDTO) {
         log.debug("Request to partially update IntegerParameter : {}", integerParameterDTO);
-
-        return integerParameterRepository
-            .findById(integerParameterDTO.getId())
-            .map(existingIntegerParameter -> {
-                integerParameterMapper.partialUpdate(existingIntegerParameter, integerParameterDTO);
-
-                return existingIntegerParameter;
-            })
-            .flatMap(integerParameterRepository::save)
-            .map(integerParameterMapper::toDto);
+        Callable<IntegerParameterDTO> callable = context.getBean(IntegerParameterCallable.class, "partialUpdate", integerParameterDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -76,19 +87,22 @@ public class IntegerParameterService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<IntegerParameterDTO> findAll() {
+    public Mono<List<IntegerParameterDTO>> findAll() {
         log.debug("Request to get all IntegerParameters");
-        return integerParameterRepository.findAll().map(integerParameterMapper::toDto);
+        Callable<List<IntegerParameterDTO>> callable = context.getBean(IntegerParameterCallable.class, "findAll");
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of integerParameters available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return integerParameterRepository.count();
+    @Transactional(readOnly = true)
+    public Flux<IntegerParameterDTO> findAllStream() {
+        log.debug("Request to get all IntegerParameters");
+
+        return Flux.defer(() -> Flux.fromStream(
+                        integerParameterRepository.findAll().stream()
+                                .map(integerParameterMapper::toDto)))
+                .subscribeOn(Schedulers.boundedElastic());
     }
+
 
     /**
      * Get one integerParameter by id.
@@ -97,30 +111,23 @@ public class IntegerParameterService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<IntegerParameterDTO> findOne(Long id) {
+    public Mono<IntegerParameterDTO> findOne(UUID id) {
         log.debug("Request to get IntegerParameter : {}", id);
-        return integerParameterRepository.findById(id).map(integerParameterMapper::toDto);
+        Callable<IntegerParameterDTO> callable = context.getBean(IntegerParameterCallable.class, "findById", id);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
      * Delete the integerParameter by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
-    public Mono<Void> delete(Long id) {
+    @Transactional
+    public Mono<Void> delete(UUID id) {
         log.debug("Request to delete IntegerParameter : {}", id);
-        return integerParameterRepository.deleteById(id);
-    }
-    
-    
-    /**
-     * Returns wether or not a IntegerParameter exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the IntegerParameter
-     */
-    public Mono<Boolean> existsById(Long id) {
-    	log.debug("Request to delete IntegerParameter : {}", id);
-    	return this.integerParameterRepository.existsById(id);
+        Callable<Void> callable = context.getBean(IntegerParameterCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

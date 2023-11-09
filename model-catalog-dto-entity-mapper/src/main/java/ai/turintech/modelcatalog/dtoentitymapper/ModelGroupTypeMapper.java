@@ -1,7 +1,7 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
-import ai.turintech.modelcatalog.entity.ModelGroupType;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
+import ai.turintech.modelcatalog.entity.ModelGroupType;
 import org.mapstruct.*;
 
 /**

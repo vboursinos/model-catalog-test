@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.service.ModelFamilyTypeService;
+import ai.turintech.modelcatalog.entity.ModelFamilyType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ModelFamilyType}.
+ * Service Implementation for managing {@link ModelFamilyType}.
  */
 @Service
 @Transactional
@@ -68,16 +69,7 @@ public class ModelFamilyTypeFacade {
     @Transactional(readOnly = true)
     public Flux<ModelFamilyTypeDTO> findAll() {
         log.debug("Request to get all ModelFamilyTypes");
-        return modelFamilyTypeService.findAll();
-    }
-
-    /**
-     * Returns the number of modelFamilyTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelFamilyTypeService.countAll();
+        return modelFamilyTypeService.findAllStream();
     }
 
     /**
@@ -108,8 +100,8 @@ public class ModelFamilyTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ModelFamilyType
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelFamilyType : {}", id);
-    	return this.modelFamilyTypeService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete ModelFamilyType : {}", id);
+//    	return this.modelFamilyTypeService.existsById(id);
+//    }
 }

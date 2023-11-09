@@ -1,7 +1,7 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
-import ai.turintech.modelcatalog.entity.Metric;
 import ai.turintech.modelcatalog.dto.MetricDTO;
+import ai.turintech.modelcatalog.entity.Metric;
 import org.mapstruct.*;
 
 /**

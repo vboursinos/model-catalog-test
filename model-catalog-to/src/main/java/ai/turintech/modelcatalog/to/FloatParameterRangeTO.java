@@ -1,34 +1,33 @@
 package ai.turintech.modelcatalog.to;
 
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
-/**
- * A DTO for the {@link ai.turintech.catalog.domain.FloatParameterRange} entity.
- */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class FloatParameterRangeTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private Boolean isLeftOpen;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private Boolean isRightOpen;
 
-    //@NotNull(message = "must not be null")
-    private Float left;
+    @NotNull(message = "must not be null")
+    private Double lower;
 
-    //@NotNull(message = "must not be null")
-    private Float right;
+    @NotNull(message = "must not be null")
+    private Double upper;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -48,20 +47,20 @@ public class FloatParameterRangeTO implements Serializable {
         this.isRightOpen = isRightOpen;
     }
 
-    public Float getLeft() {
-        return left;
+    public Double getLower() {
+        return lower;
     }
 
-    public void setLeft(Float left) {
-        this.left = left;
+    public void setLower(Double lower) {
+        this.lower = lower;
     }
 
-    public Float getRight() {
-        return right;
+    public Double getUpper() {
+        return upper;
     }
 
-    public void setRight(Float right) {
-        this.right = right;
+    public void setUpper(Double upper) {
+        this.upper = upper;
     }
 
     @Override
@@ -92,8 +91,8 @@ public class FloatParameterRangeTO implements Serializable {
             "id=" + getId() +
             ", isLeftOpen='" + getIsLeftOpen() + "'" +
             ", isRightOpen='" + getIsRightOpen() + "'" +
-            ", left=" + getLeft() +
-            ", right=" + getRight() +
+            ", lower=" + getLower() +
+            ", upper=" + getUpper() +
             "}";
     }
 }

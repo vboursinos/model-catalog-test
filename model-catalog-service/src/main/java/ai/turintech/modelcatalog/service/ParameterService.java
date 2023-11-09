@@ -1,19 +1,29 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.ParameterRepository;
+import ai.turintech.modelcatalog.callable.ParameterCallable;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterMapper;
-import java.util.UUID;
+import ai.turintech.modelcatalog.entity.Parameter;
+import ai.turintech.modelcatalog.repository.ParameterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.Parameter}.
+ * Service Implementation for managing {@link Parameter}.
  */
 @Service
 @Transactional
@@ -21,14 +31,15 @@ public class ParameterService {
 
     private final Logger log = LoggerFactory.getLogger(ParameterService.class);
 
-    private final ParameterRepository parameterRepository;
+    @Autowired
+    private ApplicationContext context;
+    @Autowired
+    private Scheduler jdbcScheduler;
+    @Autowired
+    private ParameterRepository parameterRepository;
 
-    private final ParameterMapper parameterMapper;
-
-    public ParameterService(ParameterRepository parameterRepository, ParameterMapper parameterMapper) {
-        this.parameterRepository = parameterRepository;
-        this.parameterMapper = parameterMapper;
-    }
+    @Autowired
+    private ParameterMapper parameterMapper;
 
     /**
      * Save a parameter.
@@ -36,9 +47,14 @@ public class ParameterService {
      * @param parameterDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ParameterDTO> save(ParameterDTO parameterDTO) {
         log.debug("Request to save Parameter : {}", parameterDTO);
-        return parameterRepository.save(parameterMapper.toEntity(parameterDTO)).map(parameterMapper::toDto);
+        return Mono.fromCallable(() ->  {
+            Parameter parameter = parameterMapper.toEntity(parameterDTO);
+            parameter = parameterRepository.save(parameter);
+            return parameterMapper.toDto(parameter);
+        });
     }
 
     /**
@@ -47,9 +63,11 @@ public class ParameterService {
      * @param parameterDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ParameterDTO> update(ParameterDTO parameterDTO) {
         log.debug("Request to update Parameter : {}", parameterDTO);
-        return parameterRepository.save(parameterMapper.toEntity(parameterDTO).setIsPersisted()).map(parameterMapper::toDto);
+        Callable<ParameterDTO> callable = context.getBean(ParameterCallable.class, "update", parameterDTO);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -58,18 +76,10 @@ public class ParameterService {
      * @param parameterDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Mono<ParameterDTO> partialUpdate(ParameterDTO parameterDTO) {
+    public Mono<Optional<ParameterDTO>> partialUpdate(ParameterDTO parameterDTO) {
         log.debug("Request to partially update Parameter : {}", parameterDTO);
-
-        return parameterRepository
-            .findById(parameterDTO.getId())
-            .map(existingParameter -> {
-                parameterMapper.partialUpdate(existingParameter, parameterDTO);
-
-                return existingParameter;
-            })
-            .flatMap(parameterRepository::save)
-            .map(parameterMapper::toDto);
+        Callable<Optional<ParameterDTO>> callable = context.getBean(ParameterCallable.class, "partialUpdate", parameterDTO);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -79,20 +89,20 @@ public class ParameterService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<ParameterDTO> findAll(Pageable pageable) {
+    public Mono<List<ParameterDTO>> findAll(Pageable pageable) {
         log.debug("Request to get all Parameters");
-        return parameterRepository.findAllBy(pageable).map(parameterMapper::toDto);
+        Callable<List<ParameterDTO>> callable = context.getBean(ParameterCallable.class, "findAll");
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of parameters available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return parameterRepository.count();
-    }
 
+    @Transactional(readOnly = true)
+    public Flux<ParameterDTO> findAllStream(Pageable pageable) {
+        log.debug("Request to get all Parameters");
+        return Flux.defer(() -> Flux.fromIterable(parameterRepository.findAll(pageable)
+                        .map(parameterMapper::toDto).getContent()))
+                .subscribeOn(Schedulers.boundedElastic());
+    }
     /**
      * Get one parameter by id.
      *
@@ -102,27 +112,21 @@ public class ParameterService {
     @Transactional(readOnly = true)
     public Mono<ParameterDTO> findOne(UUID id) {
         log.debug("Request to get Parameter : {}", id);
-        return parameterRepository.findById(id).map(parameterMapper::toDto);
+        Callable<ParameterDTO> callable = context.getBean(ParameterCallable.class, "findById", id);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
      * Delete the parameter by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
+    @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete Parameter : {}", id);
-        return parameterRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns whether or not a Parameter exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the Parameter
-     */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.parameterRepository.existsById(id);
+        Callable<Void> callable = context.getBean(ParameterCallable.class, "delete" , id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

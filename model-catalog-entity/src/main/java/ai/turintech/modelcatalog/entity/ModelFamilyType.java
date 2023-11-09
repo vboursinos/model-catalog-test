@@ -1,42 +1,43 @@
 package ai.turintech.modelcatalog.entity;
 
-//import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.UUID;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * A ModelFamilyType.
  */
-@Table("model_family_type")
+@Entity
+@Table(name = "model_family_type")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelFamilyType implements Serializable, Persistable<UUID> {
+public class ModelFamilyType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
-    @NotNull(message = "must not be null")
-    @Column("name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Transient
-    private boolean isPersisted;
-
-    @Transient
-    private Model models;
-
-    @Column("models_id")
-    private UUID modelsId;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "familyType")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "parameters", "groups", "incompatibleMetrics", "mlTask", "structure", "type", "familyType", "ensembleType" },
+        allowSetters = true
+    )
+    private Set<Model> models = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -66,37 +67,35 @@ public class ModelFamilyType implements Serializable, Persistable<UUID> {
         this.name = name;
     }
 
-    @Transient
-    @Override
-    public boolean isNew() {
-        return !this.isPersisted;
-    }
-
-    public ModelFamilyType setIsPersisted() {
-        this.isPersisted = true;
-        return this;
-    }
-
-    public Model getModels() {
+    public Set<Model> getModels() {
         return this.models;
     }
 
-    public void setModels(Model model) {
-        this.models = model;
-        this.modelsId = model != null ? model.getId() : null;
+    public void setModels(Set<Model> models) {
+        if (this.models != null) {
+            this.models.forEach(i -> i.setFamilyType(null));
+        }
+        if (models != null) {
+            models.forEach(i -> i.setFamilyType(this));
+        }
+        this.models = models;
     }
 
-    public ModelFamilyType models(Model model) {
-        this.setModels(model);
+    public ModelFamilyType models(Set<Model> models) {
+        this.setModels(models);
         return this;
     }
 
-    public UUID getModelsId() {
-        return this.modelsId;
+    public ModelFamilyType addModels(Model model) {
+        this.models.add(model);
+        model.setFamilyType(this);
+        return this;
     }
 
-    public void setModelsId(UUID model) {
-        this.modelsId = model;
+    public ModelFamilyType removeModels(Model model) {
+        this.models.remove(model);
+        model.setFamilyType(null);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

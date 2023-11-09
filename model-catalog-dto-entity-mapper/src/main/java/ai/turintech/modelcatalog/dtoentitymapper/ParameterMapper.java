@@ -1,9 +1,9 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
-import ai.turintech.modelcatalog.entity.Parameter;
-import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
+import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
-import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.entity.Model;
+import ai.turintech.modelcatalog.entity.Parameter;
 import org.mapstruct.*;
 
 /**
@@ -11,11 +11,10 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ParameterMapper extends EntityMapper<ParameterDTO, Parameter> {
-    @Mapping(target = "definitions", source = "definitions", qualifiedByName = "parameterTypeDefinitionId")
     ParameterDTO toDto(Parameter s);
 
-    @Named("parameterTypeDefinitionId")
+    @Named("modelId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    ParameterTypeDefinitionDTO toDtoParameterTypeDefinitionId(ParameterTypeDefinition parameterTypeDefinition);
+    ModelDTO toDtoModelId(Model model);
 }

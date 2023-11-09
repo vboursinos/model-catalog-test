@@ -1,22 +1,18 @@
 package ai.turintech.modelcatalog.to;
 
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * A DTO for the {@link ai.turintech.catalog.domain.ModelStructureType} entity.
- */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ModelStructureTypeTO implements Serializable {
 
     private UUID id;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String name;
-
-    private ModelTO model;
 
     public UUID getId() {
         return id;
@@ -32,14 +28,6 @@ public class ModelStructureTypeTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ModelTO getModel() {
-        return model;
-    }
-
-    public void setModel(ModelTO model) {
-        this.model = model;
     }
 
     @Override
@@ -69,7 +57,6 @@ public class ModelStructureTypeTO implements Serializable {
         return "ModelStructureTypeDTO{" +
             "id='" + getId() + "'" +
             ", name='" + getName() + "'" +
-            ", model=" + getModel() +
             "}";
     }
 }

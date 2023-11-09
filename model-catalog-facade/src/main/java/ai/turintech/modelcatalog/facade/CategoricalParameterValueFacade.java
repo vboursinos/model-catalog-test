@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.service.CategoricalParameterValueService;
+import ai.turintech.modelcatalog.entity.CategoricalParameterValue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.CategoricalParameterValue}.
+ * Service Implementation for managing {@link CategoricalParameterValue}.
  */
 @Service
 @Transactional
@@ -68,16 +71,7 @@ public class CategoricalParameterValueFacade {
     @Transactional(readOnly = true)
     public Flux<CategoricalParameterValueDTO> findAll() {
         log.debug("Request to get all CategoricalParameterValues");
-        return categoricalParameterValueService.findAll();
-    }
-
-    /**
-     * Returns the number of categoricalParameterValues available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return categoricalParameterValueService.countAll();
+        return categoricalParameterValueService.findAllStream();
     }
 
     /**
@@ -87,7 +81,7 @@ public class CategoricalParameterValueFacade {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<CategoricalParameterValueDTO> findOne(Long id) {
+    public Mono<CategoricalParameterValueDTO> findOne(UUID id) {
         log.debug("Request to get CategoricalParameterValue : {}", id);
         return categoricalParameterValueService.findOne(id);
     }
@@ -98,7 +92,7 @@ public class CategoricalParameterValueFacade {
      * @param id the id of the entity.
      * @return a Mono to signal the deletion
      */
-    public Mono<Void> delete(Long id) {
+    public Mono<Void> delete(UUID id) {
         log.debug("Request to delete CategoricalParameterValue : {}", id);
         return categoricalParameterValueService.delete(id);
     }
@@ -108,8 +102,8 @@ public class CategoricalParameterValueFacade {
      * @param id
      * @return a Mono to signal the existence of the categoricalParameterValue
      */
-    public Mono<Boolean> existsById(Long id) {
-    	log.debug("Request to delete CategoricalParameterValue : {}", id);
-    	return this.categoricalParameterValueService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(Long id) {
+//    	log.debug("Request to delete CategoricalParameterValue : {}", id);
+//    	return this.categoricalParameterValueService.existsById(id);
+//    }
 }

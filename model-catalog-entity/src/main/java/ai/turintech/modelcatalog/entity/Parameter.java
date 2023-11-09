@@ -1,72 +1,69 @@
 package ai.turintech.modelcatalog.entity;
 
-//import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
-import jakarta.validation.constraints.NotNull;
-
 /**
  * A Parameter.
  */
-@Table("parameter")
+@Entity
+@Table(name = "parameter")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Parameter implements Serializable, Persistable<UUID> {
+public class Parameter implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
-    @NotNull(message = "must not be null")
-    @Column("name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull(message = "must not be null")
-    @Column("label")
+    @NotNull
+    @Column(name = "label", nullable = false)
     private String label;
 
-    @Column("description")
+    @Column(name = "description")
     private String description;
 
-    @NotNull(message = "must not be null")
-    @Column("enbled")
-    private Boolean enbled;
+    @NotNull
+    @Column(name = "enabled", nullable = false)
+    private Boolean enabled;
 
-    @NotNull(message = "must not be null")
-    @Column("fixed_value")
+    @NotNull
+    @Column(name = "fixed_value", nullable = false)
     private Boolean fixedValue;
 
-    @NotNull(message = "must not be null")
-    @Column("ordering")
+    @NotNull
+    @Column(name = "ordering", nullable = false)
     private Integer ordering;
 
-    @Transient
-    private boolean isPersisted;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parameter")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "integerParameter", "floatParameter", "categoricalParameter", "booleanParameter", "distribution", "parameter", "type" },
+        allowSetters = true
+    )
+    private Set<ParameterTypeDefinition> definitions = new HashSet<>();
 
-    @Transient
-    private Set<Model> models = new HashSet<>();
-
-    @Transient
-    private Set<ParameterType> types = new HashSet<>();
-
-    @Transient
-    private Set<ParameterDistributionType> distributions = new HashSet<>();
-
-    @Transient
-    private ParameterTypeDefinition definitions;
-
-    @Column("definitions_id")
-    private UUID definitionsId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "parameters", "groups", "incompatibleMetrics", "mlTask", "structure", "type", "familyType", "ensembleType" },
+        allowSetters = true
+    )
+    private Model model;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -122,17 +119,17 @@ public class Parameter implements Serializable, Persistable<UUID> {
         this.description = description;
     }
 
-    public Boolean getEnbled() {
-        return this.enbled;
+    public Boolean getEnabled() {
+        return this.enabled;
     }
 
-    public Parameter enbled(Boolean enbled) {
-        this.setEnbled(enbled);
+    public Parameter enabled(Boolean enabled) {
+        this.setEnabled(enabled);
         return this;
     }
 
-    public void setEnbled(Boolean enbled) {
-        this.enbled = enbled;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Boolean getFixedValue() {
@@ -161,130 +158,48 @@ public class Parameter implements Serializable, Persistable<UUID> {
         this.ordering = ordering;
     }
 
-    @Transient
-    @Override
-    public boolean isNew() {
-        return !this.isPersisted;
-    }
-
-    public Parameter setIsPersisted() {
-        this.isPersisted = true;
-        return this;
-    }
-
-    public Set<Model> getModels() {
-        return this.models;
-    }
-
-    public void setModels(Set<Model> models) {
-        if (this.models != null) {
-            this.models.forEach(i -> i.setParameters(null));
-        }
-        if (models != null) {
-            models.forEach(i -> i.setParameters(this));
-        }
-        this.models = models;
-    }
-
-    public Parameter models(Set<Model> models) {
-        this.setModels(models);
-        return this;
-    }
-
-    public Parameter addModel(Model model) {
-        this.models.add(model);
-        model.setParameters(this);
-        return this;
-    }
-
-    public Parameter removeModel(Model model) {
-        this.models.remove(model);
-        model.setParameters(null);
-        return this;
-    }
-
-    public Set<ParameterType> getTypes() {
-        return this.types;
-    }
-
-    public void setTypes(Set<ParameterType> parameterTypes) {
-        if (this.types != null) {
-            this.types.forEach(i -> i.setParameter(null));
-        }
-        if (parameterTypes != null) {
-            parameterTypes.forEach(i -> i.setParameter(this));
-        }
-        this.types = parameterTypes;
-    }
-
-    public Parameter types(Set<ParameterType> parameterTypes) {
-        this.setTypes(parameterTypes);
-        return this;
-    }
-
-    public Parameter addType(ParameterType parameterType) {
-        this.types.add(parameterType);
-        parameterType.setParameter(this);
-        return this;
-    }
-
-    public Parameter removeType(ParameterType parameterType) {
-        this.types.remove(parameterType);
-        parameterType.setParameter(null);
-        return this;
-    }
-
-    public Set<ParameterDistributionType> getDistributions() {
-        return this.distributions;
-    }
-
-    public void setDistributions(Set<ParameterDistributionType> parameterDistributionTypes) {
-        if (this.distributions != null) {
-            this.distributions.forEach(i -> i.setParameter(null));
-        }
-        if (parameterDistributionTypes != null) {
-            parameterDistributionTypes.forEach(i -> i.setParameter(this));
-        }
-        this.distributions = parameterDistributionTypes;
-    }
-
-    public Parameter distributions(Set<ParameterDistributionType> parameterDistributionTypes) {
-        this.setDistributions(parameterDistributionTypes);
-        return this;
-    }
-
-    public Parameter addDistribution(ParameterDistributionType parameterDistributionType) {
-        this.distributions.add(parameterDistributionType);
-        parameterDistributionType.setParameter(this);
-        return this;
-    }
-
-    public Parameter removeDistribution(ParameterDistributionType parameterDistributionType) {
-        this.distributions.remove(parameterDistributionType);
-        parameterDistributionType.setParameter(null);
-        return this;
-    }
-
-    public ParameterTypeDefinition getDefinitions() {
+    public Set<ParameterTypeDefinition> getDefinitions() {
         return this.definitions;
     }
 
-    public void setDefinitions(ParameterTypeDefinition parameterTypeDefinition) {
-        this.definitions = parameterTypeDefinition;
-        this.definitionsId = parameterTypeDefinition != null ? parameterTypeDefinition.getId() : null;
+    public void setDefinitions(Set<ParameterTypeDefinition> parameterTypeDefinitions) {
+        if (this.definitions != null) {
+            this.definitions.forEach(i -> i.setParameter(null));
+        }
+        if (parameterTypeDefinitions != null) {
+            parameterTypeDefinitions.forEach(i -> i.setParameter(this));
+        }
+        this.definitions = parameterTypeDefinitions;
     }
 
-    public Parameter definitions(ParameterTypeDefinition parameterTypeDefinition) {
-        this.setDefinitions(parameterTypeDefinition);
+    public Parameter definitions(Set<ParameterTypeDefinition> parameterTypeDefinitions) {
+        this.setDefinitions(parameterTypeDefinitions);
         return this;
     }
 
-    public UUID getDefinitionsId() {
-        return this.definitionsId;
+    public Parameter addDefinitions(ParameterTypeDefinition parameterTypeDefinition) {
+        this.definitions.add(parameterTypeDefinition);
+        parameterTypeDefinition.setParameter(this);
+        return this;
     }
 
-    public void setDefinitionsId(UUID parameterTypeDefinition) {
-        this.definitionsId = parameterTypeDefinition;
+    public Parameter removeDefinitions(ParameterTypeDefinition parameterTypeDefinition) {
+        this.definitions.remove(parameterTypeDefinition);
+        parameterTypeDefinition.setParameter(null);
+        return this;
+    }
+
+    public Model getModel() {
+        return this.model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public Parameter model(Model model) {
+        this.setModel(model);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -314,7 +229,7 @@ public class Parameter implements Serializable, Persistable<UUID> {
             ", name='" + getName() + "'" +
             ", label='" + getLabel() + "'" +
             ", description='" + getDescription() + "'" +
-            ", enbled='" + getEnbled() + "'" +
+            ", enabled='" + getEnabled() + "'" +
             ", fixedValue='" + getFixedValue() + "'" +
             ", ordering=" + getOrdering() +
             "}";

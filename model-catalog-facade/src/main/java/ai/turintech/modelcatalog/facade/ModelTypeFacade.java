@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
 import ai.turintech.modelcatalog.service.ModelTypeService;
+import ai.turintech.modelcatalog.entity.ModelType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.ModelType}.
+ * Service Implementation for managing {@link ModelType}.
  */
 @Service
 @Transactional
@@ -69,16 +70,7 @@ public class ModelTypeFacade {
     @Transactional(readOnly = true)
     public Flux<ModelTypeDTO> findAll() {
         log.debug("Request to get all ModelTypes");
-        return modelTypeService.findAll();
-    }
-
-    /**
-     * Returns the number of modelTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelTypeService.countAll();
+        return modelTypeService.findAllStream();
     }
 
     /**
@@ -109,8 +101,8 @@ public class ModelTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ModelType
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.modelTypeService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete ModelGroupType : {}", id);
+//    	return this.modelTypeService.existsById(id);
+//    }
 }

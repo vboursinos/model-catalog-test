@@ -1,34 +1,48 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.ModelRepository;
+import ai.turintech.modelcatalog.callable.ModelCallable;
 import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
-import java.util.UUID;
+import ai.turintech.modelcatalog.entity.Model;
+import ai.turintech.modelcatalog.repository.ModelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.Model}.
+ * Service Implementation for managing {@link Model}.
  */
 @Service
 @Transactional
 public class ModelService {
 
+    @Autowired
+    private ApplicationContext context;
+
+    @Autowired
+    private Scheduler jdbcScheduler;
+
     private final Logger log = LoggerFactory.getLogger(ModelService.class);
+    @Autowired
+    private ModelRepository modelRepository;
 
-    private final ModelRepository modelRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    private final ModelMapper modelMapper;
-
-    public ModelService(ModelRepository modelRepository, ModelMapper modelMapper) {
-        this.modelRepository = modelRepository;
-        this.modelMapper = modelMapper;
-    }
+    @Autowired
+    private PaginationConverter paginationConverter;
 
     /**
      * Save a model.
@@ -36,9 +50,12 @@ public class ModelService {
      * @param modelDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelDTO> save(ModelDTO modelDTO) {
         log.debug("Request to save Model : {}", modelDTO);
-        return modelRepository.save(modelMapper.toEntity(modelDTO)).map(modelMapper::toDto);
+        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "create", modelDTO);
+        return Mono.fromCallable(callable)
+                .subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -47,9 +64,12 @@ public class ModelService {
      * @param modelDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelDTO> update(ModelDTO modelDTO) {
         log.debug("Request to update Model : {}", modelDTO);
-        return modelRepository.save(modelMapper.toEntity(modelDTO).setIsPersisted()).map(modelMapper::toDto);
+        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "update", modelDTO);
+        return Mono.fromCallable(callable)
+                .subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -58,19 +78,14 @@ public class ModelService {
      * @param modelDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO) {
         log.debug("Request to partially update Model : {}", modelDTO);
-
-        return modelRepository
-            .findById(modelDTO.getId())
-            .map(existingModel -> {
-                modelMapper.partialUpdate(existingModel, modelDTO);
-
-                return existingModel;
-            })
-            .flatMap(modelRepository::save)
-            .map(modelMapper::toDto);
+        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "partialUpdate", modelDTO);
+        return Mono.fromCallable(callable)
+                .subscribeOn(jdbcScheduler);
     }
+
 
     /**
      * Get all the models.
@@ -79,9 +94,11 @@ public class ModelService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<ModelDTO> findAll(Pageable pageable) {
+    public Mono<ModelPaginatedListDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Models");
-        return modelRepository.findAllBy(pageable).map(modelMapper::toDto);
+        Callable<ModelPaginatedListDTO> callable = context.getBean(ModelCallable.class, "findAll", pageable);
+        return Mono.fromCallable(callable)
+                .subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -89,17 +106,9 @@ public class ModelService {
      *
      * @return the list of entities.
      */
-    public Flux<ModelDTO> findAllWithEagerRelationships(Pageable pageable) {
+    public Page<ModelDTO> findAllWithEagerRelationships(Pageable pageable) {
+        List<Model> models = modelRepository.findAllWithEagerRelationships();
         return modelRepository.findAllWithEagerRelationships(pageable).map(modelMapper::toDto);
-    }
-
-    /**
-     * Returns the number of models available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelRepository.count();
     }
 
     /**
@@ -109,29 +118,23 @@ public class ModelService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<ModelDTO> findOne(UUID id) {
+    public Mono<ModelDTO> findOne(UUID id) throws Exception {
         log.debug("Request to get Model : {}", id);
-        return modelRepository.findOneWithEagerRelationships(id).map(modelMapper::toDto);
+        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "findById", id);
+        return Mono.fromCallable(callable);
     }
 
     /**
      * Delete the model by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
+    @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete Model : {}", id);
-        return modelRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns whether or not a Model exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the Model
-     */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.modelRepository.existsById(id);
+        Callable<Void> callable = context.getBean(ModelCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

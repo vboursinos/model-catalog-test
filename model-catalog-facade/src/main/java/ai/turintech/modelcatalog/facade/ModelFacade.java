@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.facade;
 
 import java.util.UUID;
 
+import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -10,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.service.ModelService;
+import ai.turintech.modelcatalog.entity.Model;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.Model}.
+ * Service Implementation for managing {@link Model}.
  */
 @Service
 @Transactional
@@ -69,27 +71,9 @@ public class ModelFacade {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<ModelDTO> findAll(Pageable pageable) {
+    public Mono<ModelPaginatedListDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Models");
         return modelService.findAll(pageable);
-    }
-
-    /**
-     * Get all the models with eager load of many-to-many relationships.
-     *
-     * @return the list of entities.
-     */
-    public Flux<ModelDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return modelService.findAllWithEagerRelationships(pageable);
-    }
-
-    /**
-     * Returns the number of models available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return modelService.countAll();
     }
 
     /**
@@ -99,7 +83,7 @@ public class ModelFacade {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<ModelDTO> findOne(UUID id) {
+    public Mono<ModelDTO> findOne(UUID id) throws Exception {
         log.debug("Request to get Model : {}", id);
         return modelService.findOne(id);
     }
@@ -120,8 +104,8 @@ public class ModelFacade {
      * @param id
      * @return a Mono to signal the existence of the Model
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.modelService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete ModelGroupType : {}", id);
+//    	return this.modelService.existsById(id);
+//    }
 }

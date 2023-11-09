@@ -1,18 +1,27 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.repository.MlTaskTypeRepository;
+import ai.turintech.modelcatalog.callable.MlTaskTypeCallable;
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.MlTaskTypeMapper;
-import java.util.UUID;
+import ai.turintech.modelcatalog.repository.MlTaskTypeRepository;
+import ai.turintech.modelcatalog.entity.MlTaskType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.MlTaskType}.
+ * Service Implementation for managing {@link MlTaskType}.
  */
 @Service
 @Transactional
@@ -20,14 +29,16 @@ public class MlTaskTypeService {
 
     private final Logger log = LoggerFactory.getLogger(MlTaskTypeService.class);
 
-    private final MlTaskTypeRepository mlTaskTypeRepository;
+    @Autowired
+    private ApplicationContext context;
 
-    private final MlTaskTypeMapper mlTaskTypeMapper;
+    @Autowired
+    private Scheduler jdbcScheduler;
+    @Autowired
+    private MlTaskTypeRepository mlTaskTypeRepository;
 
-    public MlTaskTypeService(MlTaskTypeRepository mlTaskTypeRepository, MlTaskTypeMapper mlTaskTypeMapper) {
-        this.mlTaskTypeRepository = mlTaskTypeRepository;
-        this.mlTaskTypeMapper = mlTaskTypeMapper;
-    }
+    @Autowired
+    private MlTaskTypeMapper mlTaskTypeMapper;
 
     /**
      * Save a mlTaskType.
@@ -35,9 +46,11 @@ public class MlTaskTypeService {
      * @param mlTaskTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<MlTaskTypeDTO> save(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to save MlTaskType : {}", mlTaskTypeDTO);
-        return mlTaskTypeRepository.save(mlTaskTypeMapper.toEntity(mlTaskTypeDTO)).map(mlTaskTypeMapper::toDto);
+        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "create", mlTaskTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -46,9 +59,11 @@ public class MlTaskTypeService {
      * @param mlTaskTypeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<MlTaskTypeDTO> update(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to update MlTaskType : {}", mlTaskTypeDTO);
-        return mlTaskTypeRepository.save(mlTaskTypeMapper.toEntity(mlTaskTypeDTO).setIsPersisted()).map(mlTaskTypeMapper::toDto);
+        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "update", mlTaskTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -57,18 +72,11 @@ public class MlTaskTypeService {
      * @param mlTaskTypeDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Mono<MlTaskTypeDTO> partialUpdate(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to partially update MlTaskType : {}", mlTaskTypeDTO);
-
-        return mlTaskTypeRepository
-            .findById(mlTaskTypeDTO.getId())
-            .map(existingMlTaskType -> {
-                mlTaskTypeMapper.partialUpdate(existingMlTaskType, mlTaskTypeDTO);
-
-                return existingMlTaskType;
-            })
-            .flatMap(mlTaskTypeRepository::save)
-            .map(mlTaskTypeMapper::toDto);
+        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "partialUpdate", mlTaskTypeDTO);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
@@ -77,20 +85,21 @@ public class MlTaskTypeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<MlTaskTypeDTO> findAll() {
+    public Mono<List<MlTaskTypeDTO>> findAll() {
         log.debug("Request to get all MlTaskTypes");
-        return mlTaskTypeRepository.findAll().map(mlTaskTypeMapper::toDto);
+        Callable<List<MlTaskTypeDTO>> callable = context.getBean(MlTaskTypeCallable.class, "findAll");
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
-    /**
-     * Returns the number of mlTaskTypes available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return mlTaskTypeRepository.count();
-    }
+    @Transactional(readOnly = true)
+    public Flux<MlTaskTypeDTO> findAllStream() {
+        log.debug("Request to get all MlTaskTypes");
 
+        return Flux.defer(() -> Flux.fromStream(
+                        mlTaskTypeRepository.findAll().stream()
+                                .map(mlTaskTypeMapper::toDto)))
+                .subscribeOn(Schedulers.boundedElastic());
+    }
     /**
      * Get one mlTaskType by id.
      *
@@ -100,27 +109,21 @@ public class MlTaskTypeService {
     @Transactional(readOnly = true)
     public Mono<MlTaskTypeDTO> findOne(UUID id) {
         log.debug("Request to get MlTaskType : {}", id);
-        return mlTaskTypeRepository.findById(id).map(mlTaskTypeMapper::toDto);
+        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "findById", id);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
     /**
      * Delete the mlTaskType by id.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
+    @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete MlTaskType : {}", id);
-        return mlTaskTypeRepository.deleteById(id);
-    }
-    
-    /**
-     * Returns whether or not a MlTaskType exists with provided id.
-     * @param id
-     * @return a Mono to signal the existence of the MlTaskType
-     */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete Metric : {}", id);
-    	return this.mlTaskTypeRepository.existsById(id);
+        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "delete", id);
+        Mono delete = Mono.fromCallable(callable);
+        delete.subscribe();
+        return delete;
     }
 }

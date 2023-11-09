@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.service.BooleanParameterService;
+import ai.turintech.modelcatalog.entity.BooleanParameter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.BooleanParameter}.
+ * Service Implementation for managing {@link BooleanParameter}.
  */
 @Service
 @Transactional
@@ -66,16 +69,7 @@ public class BooleanParameterFacade {
     @Transactional(readOnly = true)
     public Flux<BooleanParameterDTO> findAll() {
         log.debug("Request to get all BooleanParameters");
-        return booleanParameterService.findAll();
-    }
-
-    /**
-     * Returns the number of booleanParameters available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return booleanParameterService.countAll();
+        return booleanParameterService.findAllStream();
     }
 
     /**
@@ -85,7 +79,7 @@ public class BooleanParameterFacade {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<BooleanParameterDTO> findOne(Long id) {
+    public Mono<BooleanParameterDTO> findOne(UUID id) {
         log.debug("Request to get BooleanParameter : {}", id);
         return booleanParameterService.findOne(id);
     }
@@ -96,7 +90,7 @@ public class BooleanParameterFacade {
      * @param id the id of the entity.
      * @return a Mono to signal the deletion
      */
-    public Mono<Void> delete(Long id) {
+    public Mono<Void> delete(UUID id) {
         log.debug("Request to delete BooleanParameter : {}", id);
         return booleanParameterService.delete(id);
     }
@@ -106,8 +100,8 @@ public class BooleanParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the BooleanParameter
      */
-    public Mono<Boolean> existsById(Long id) {
-    	log.debug("Request to delete BooleanParameter : {}", id);
-    	return this.booleanParameterService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete BooleanParameter : {}", id);
+//    	return this.booleanParameterService.existsById(id);
+//    }
 }

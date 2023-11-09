@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -10,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.service.ParameterService;
+import ai.turintech.modelcatalog.entity.Parameter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Service Implementation for managing {@link ai.turintech.catalog.domain.Parameter}.
+ * Service Implementation for managing {@link Parameter}.
  */
 @Service
 @Transactional
@@ -56,7 +58,7 @@ public class ParameterFacade {
      * @param parameterDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Mono<ParameterDTO> partialUpdate(ParameterDTO parameterDTO) {
+    public Mono<Optional<ParameterDTO>> partialUpdate(ParameterDTO parameterDTO) {
         log.debug("Request to partially update Parameter : {}", parameterDTO);
 
         return parameterService.partialUpdate(parameterDTO);
@@ -71,16 +73,7 @@ public class ParameterFacade {
     @Transactional(readOnly = true)
     public Flux<ParameterDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Parameters");
-        return parameterService.findAll(pageable);
-    }
-
-    /**
-     * Returns the number of parameters available.
-     * @return the number of entities in the database.
-     *
-     */
-    public Mono<Long> countAll() {
-        return parameterService.countAll();
+        return parameterService.findAllStream(pageable);
     }
 
     /**
@@ -111,8 +104,8 @@ public class ParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the Parameter
      */
-    public Mono<Boolean> existsById(UUID id) {
-    	log.debug("Request to delete ModelGroupType : {}", id);
-    	return this.parameterService.existsById(id);
-    }
+//    public Mono<Boolean> existsById(UUID id) {
+//    	log.debug("Request to delete ModelGroupType : {}", id);
+//    	return this.parameterService.existsById(id);
+//    }
 }

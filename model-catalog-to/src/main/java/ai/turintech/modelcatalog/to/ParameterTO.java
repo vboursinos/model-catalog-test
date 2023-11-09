@@ -1,36 +1,41 @@
 package ai.turintech.modelcatalog.to;
 
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * A DTO for the {@link ai.turintech.catalog.domain.Parameter} entity.
- */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ParameterTO implements Serializable {
 
     private UUID id;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String name;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private String label;
 
     private String description;
 
-    //@NotNull(message = "must not be null")
-    private Boolean enbled;
+    @NotNull(message = "must not be null")
+    private Boolean enabled;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private Boolean fixedValue;
 
-    //@NotNull(message = "must not be null")
+    @NotNull(message = "must not be null")
     private Integer ordering;
 
-    private ParameterTypeDefinitionTO definitions;
+    @NotNull
+    private UUID modelId;
+
+    @NotNull
+    private List<ParameterTypeDefinitionTO> definitions = new ArrayList<>();
+
 
     public UUID getId() {
         return id;
@@ -64,12 +69,12 @@ public class ParameterTO implements Serializable {
         this.description = description;
     }
 
-    public Boolean getEnbled() {
-        return enbled;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setEnbled(Boolean enbled) {
-        this.enbled = enbled;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Boolean getFixedValue() {
@@ -88,11 +93,19 @@ public class ParameterTO implements Serializable {
         this.ordering = ordering;
     }
 
-    public ParameterTypeDefinitionTO getDefinitions() {
+    public UUID getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(UUID modelId) {
+        this.modelId = modelId;
+    }
+
+    public List<ParameterTypeDefinitionTO> getDefinitions() {
         return definitions;
     }
 
-    public void setDefinitions(ParameterTypeDefinitionTO definitions) {
+    public void setDefinitions(List<ParameterTypeDefinitionTO> definitions) {
         this.definitions = definitions;
     }
 
@@ -121,14 +134,15 @@ public class ParameterTO implements Serializable {
     @Override
     public String toString() {
         return "ParameterDTO{" +
-            "id='" + getId() + "'" +
-            ", name='" + getName() + "'" +
-            ", label='" + getLabel() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", enbled='" + getEnbled() + "'" +
-            ", fixedValue='" + getFixedValue() + "'" +
-            ", ordering=" + getOrdering() +
-            ", definitions=" + getDefinitions() +
-            "}";
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                ", enabled=" + enabled +
+                ", fixedValue=" + fixedValue +
+                ", ordering=" + ordering +
+                ", modelId=" + modelId +
+                ", definitions=" + definitions +
+                '}';
     }
 }

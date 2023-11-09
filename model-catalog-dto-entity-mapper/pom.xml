@@ -13,6 +13,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>model-catalog-dto-entity-mapper</name>
 	<description>Mappers module between Data Transfer Objects and Entities for the model-catalog microservice</description>
+	<properties>
+
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
