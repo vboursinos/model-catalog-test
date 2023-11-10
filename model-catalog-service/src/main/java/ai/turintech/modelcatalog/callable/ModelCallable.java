@@ -71,7 +71,6 @@ public class ModelCallable<T> implements Callable<T> {
         return model.map(modelMapper::toDto).orElse(null);
     }
 
-    @Transactional
     public ModelDTO create() throws Exception {
         Model model = modelMapper.toEntity(modelDTO);
         model = modelRepository.save(model);
