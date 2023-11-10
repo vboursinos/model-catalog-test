@@ -43,12 +43,6 @@ public class CategoricalParameterResource {
     private String applicationName;
 
     @Autowired
-    private CategoricalParameterService categoricalParameterService;
-
-    @Autowired
-    private CategoricalParameterRepository categoricalParameterRepository;
-
-    @Autowired
     private CategoricalParameterFacade categoricalParameterFacade;
 
     @Autowired

@@ -42,11 +42,6 @@ public class BooleanParameterResource {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @Autowired
-    private BooleanParameterService booleanParameterService;
-
-    @Autowired
-    private BooleanParameterRepository booleanParameterRepository;
 
     @Autowired
     private BooleanParameterFacade booleanParameterFacade;

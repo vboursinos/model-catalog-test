@@ -43,10 +43,7 @@ public class FloatParameterRangeResource {
 
     @Value("${spring.application.name}")
     private String applicationName;
-    @Autowired
-    private FloatParameterRangeService floatParameterRangeService;
-    @Autowired
-    private FloatParameterRangeRepository floatParameterRangeRepository;
+
     @Autowired
     private FloatParameterRangeFacade floatParameterRangeFacade;
     @Autowired

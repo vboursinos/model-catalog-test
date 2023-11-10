@@ -44,10 +44,6 @@ public class IntegerParameterValueResource {
     @Value("${spring.application.name}")
     private String applicationName;
     @Autowired
-    private IntegerParameterValueService integerParameterValueService;
-    @Autowired
-    private IntegerParameterValueRepository integerParameterValueRepository;
-    @Autowired
     private IntegerParameterValueFacade integerParameterValueFacade;
     @Autowired
     private IntegerParameterValueMapper integerParameterValueMapper;

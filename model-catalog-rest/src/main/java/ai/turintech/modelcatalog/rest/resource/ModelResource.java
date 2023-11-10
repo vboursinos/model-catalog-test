@@ -58,9 +58,6 @@ public class ModelResource {
     private ModelService modelService;
 
     @Autowired
-    private ModelRepository modelRepository;
-
-    @Autowired
     private ModelFacade modelFacade;
 
     @Autowired

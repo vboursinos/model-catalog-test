@@ -43,10 +43,6 @@ public class IntegerParameterResource {
     private String applicationName;
 
     @Autowired
-    private IntegerParameterService integerParameterService;
-    @Autowired
-    private IntegerParameterRepository integerParameterRepository;
-    @Autowired
     private IntegerParameterFacade integerParameterFacade;
     @Autowired
     private IntegerParameterMapper integerParameterMapper;

@@ -43,11 +43,6 @@ public class ParameterDistributionTypeResource {
 
     @Value("${spring.application.name}")
     private String applicationName;
-    @Autowired
-    private ParameterDistributionTypeService parameterDistributionTypeService;
-
-    @Autowired
-    private ParameterDistributionTypeRepository parameterDistributionTypeRepository;
 
     @Autowired
     private ParameterDistributionTypeFacade parameterDistributionTypeFacade;

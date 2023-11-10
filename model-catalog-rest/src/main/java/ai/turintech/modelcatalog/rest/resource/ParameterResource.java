@@ -52,9 +52,6 @@ public class ParameterResource {
     private ParameterService parameterService;
 
     @Autowired
-    private ParameterRepository parameterRepository;
-
-    @Autowired
     private ParameterFacade parameterFacade;
 
     @Autowired

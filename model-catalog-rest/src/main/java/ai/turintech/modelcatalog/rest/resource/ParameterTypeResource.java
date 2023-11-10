@@ -45,12 +45,6 @@ public class ParameterTypeResource {
     private String applicationName;
 
     @Autowired
-    private ParameterTypeService parameterTypeService;
-
-    @Autowired
-    private ParameterTypeRepository parameterTypeRepository;
-
-    @Autowired
     private ParameterTypeFacade parameterTypeFacade;
 
     @Autowired

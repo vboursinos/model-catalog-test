@@ -44,12 +44,6 @@ public class ModelEnsembleTypeResource {
     private String applicationName;
 
     @Autowired
-    private ModelEnsembleTypeService modelEnsembleTypeService;
-
-    @Autowired
-    private ModelEnsembleTypeRepository modelEnsembleTypeRepository;
-
-    @Autowired
     private ModelEnsembleTypeFacade modelEnsembleTypeFacade;
 
     @Autowired

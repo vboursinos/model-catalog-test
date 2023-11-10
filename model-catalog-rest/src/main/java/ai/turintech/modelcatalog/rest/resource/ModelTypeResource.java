@@ -44,12 +44,6 @@ public class ModelTypeResource {
     @Value("${spring.application.name}")
     private String applicationName;
     @Autowired
-    private ModelTypeService modelTypeService;
-
-    @Autowired
-    private ModelTypeRepository modelTypeRepository;
-
-    @Autowired
     private ModelTypeMapper modelTypeMapper;
 
     @Autowired

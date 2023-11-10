@@ -46,12 +46,6 @@ public class ModelGroupTypeResource {
     private String applicationName;
 
     @Autowired
-    private ModelGroupTypeService modelGroupTypeService;
-
-    @Autowired
-    private ModelGroupTypeRepository modelGroupTypeRepository;
-
-    @Autowired
     private ModelGroupTypeFacade modelGroupTypeFacade;
 
     @Autowired

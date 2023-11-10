@@ -45,12 +45,6 @@ public class ParameterTypeDefinitionResource {
     private String applicationName;
 
     @Autowired
-    private ParameterTypeDefinitionService parameterTypeDefinitionService;
-
-    @Autowired
-    private ParameterTypeDefinitionRepository parameterTypeDefinitionRepository;
-
-    @Autowired
     private ParameterTypeDefinitionFacade parameterTypeDefinitionFacade;
 
     @Autowired

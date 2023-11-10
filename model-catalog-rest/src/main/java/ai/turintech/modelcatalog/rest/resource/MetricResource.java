@@ -43,12 +43,6 @@ public class MetricResource {
     private String applicationName;
 
     @Autowired
-    private MetricService metricService;
-
-    @Autowired
-    private MetricRepository metricRepository;
-
-    @Autowired
     private MetricFacade metricFacade;
 
     @Autowired

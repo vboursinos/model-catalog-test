@@ -43,11 +43,6 @@ public class ModelStructureTypeResource {
 
     @Value("${spring.application.name}")
     private String applicationName;
-    @Autowired
-    private ModelStructureTypeService modelStructureTypeService;
-
-    @Autowired
-    private ModelStructureTypeRepository modelStructureTypeRepository;
 
     @Autowired
     private ModelStructureTypeFacade modelStructureTypeFacade;

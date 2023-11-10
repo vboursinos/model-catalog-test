@@ -45,9 +45,6 @@ public class CategoricalParameterValueResource {
     private String applicationName;
 
     @Autowired
-    private CategoricalParameterValueRepository categoricalParameterValueRepository;
-
-    @Autowired
     private CategoricalParameterValueFacade categoricalParameterValueFacade;
 
     @Autowired
