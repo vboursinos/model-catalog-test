@@ -9,13 +9,11 @@ import ai.turintech.modelcatalog.service.PaginationConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
@@ -52,12 +50,13 @@ public class ModelCallable<T> implements Callable<T> {
     private ModelRepository modelRepository;
 
     @Autowired
+    private List<JpaRepository> repositories;
+    @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private PaginationConverter paginationConverter;
 
-    private ModelPaginatedListDTO findAll(){
+    public ModelPaginatedListDTO findAll(){
         List<Model> models = modelRepository.findAll(pageable).getContent();
         ModelPaginatedListDTO paginatedList = paginationConverter.getPaginatedList(
                 models.stream().map(modelMapper::toDto).toList(),
@@ -72,9 +71,11 @@ public class ModelCallable<T> implements Callable<T> {
         return model.map(modelMapper::toDto).orElse(null);
     }
 
+    @Transactional
     public ModelDTO create() throws Exception {
         Model model = modelMapper.toEntity(modelDTO);
         model = modelRepository.save(model);
+        System.out.println(model.toString());
         return modelMapper.toDto(model);
     }
 

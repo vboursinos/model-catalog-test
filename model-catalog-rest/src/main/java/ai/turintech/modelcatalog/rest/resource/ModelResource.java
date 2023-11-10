@@ -79,7 +79,7 @@ public class ModelResource {
         if (modelTO.getId() != null) {
             throw new BadRequestAlertException("A new model cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        modelTO.setId(UUID.randomUUID());
+//        modelTO.setId(UUID.randomUUID());
         return modelFacade
             .save(modelMapper.toDto(modelTO)).map(modelMapper::toTo)
             .map(result -> {
