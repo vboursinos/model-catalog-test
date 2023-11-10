@@ -106,7 +106,7 @@ public class ModelTypeResource {
         }
 
         Mono<ModelTypeDTO> result = modelTypeService.update(modelTypeDTO);
-        Mono<ModelTypeTO> resultTO = result.map(modelTypeMapper::toTO);
+        Mono<ModelTypeTO> resultTO = result.map(modelTypeMapper::toTo);
         return resultTO
             .map(
                 res -> ResponseEntity
@@ -164,7 +164,7 @@ public class ModelTypeResource {
     public Mono<ResponseEntity<List<ModelTypeTO>>> getAllModelTypes() {
         log.debug("REST request to get all ModelTypes");
         return modelTypeService.findAll()
-                .map(modelTypeMapper::toTO)
+                .map(modelTypeMapper::toTo)
                 .map(modelTypeTOList -> ResponseEntity.ok().body(modelTypeTOList));
     }
 

@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link BooleanParameter} and its DTO {@link BooleanParameterDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "BooleanParameterMapperTOImpl")
 public interface BooleanParameterMapper extends EntityMapper<BooleanParameterTO, BooleanParameterDTO> {}

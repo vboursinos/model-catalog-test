@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link FloatParameter} and its DTO {@link FloatParameterDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "FloatParameterMapperTOImpl")
 public interface FloatParameterMapper extends EntityMapper<FloatParameterTO, FloatParameterDTO> {}

@@ -9,9 +9,8 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link MlTaskType} and its DTO {@link MlTaskTypeDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "MlTaskTypeMapperTOImpl", uses = {ModelMapper.class})
 public interface MlTaskTypeMapper extends EntityMapper<MlTaskTypeTO, MlTaskTypeDTO> {
-    @Mapping(target = "models", source = "models", qualifiedByName = "modelId")
     MlTaskTypeDTO toDto(MlTaskTypeTO s);
 
     @Named("modelId")

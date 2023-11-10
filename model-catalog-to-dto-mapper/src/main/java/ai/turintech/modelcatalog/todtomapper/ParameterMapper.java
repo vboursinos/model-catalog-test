@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Parameter} and its DTO {@link ParameterDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "ParameterMapperTOImpl")
 public interface ParameterMapper extends EntityMapper<ParameterTO, ParameterDTO> {
     @Mapping(target = "definitions", source = "definitions", qualifiedByName = "parameterTypeDefinitionId")
     ParameterDTO toDto(ParameterTO s);

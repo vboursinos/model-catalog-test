@@ -9,9 +9,8 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ModelFamilyType} and its DTO {@link ModelFamilyTypeDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "ModelFamilyTypeMapperTOImpl")
 public interface ModelFamilyTypeMapper extends EntityMapper<ModelFamilyTypeTO, ModelFamilyTypeDTO> {
-    @Mapping(target = "models", source = "models", qualifiedByName = "modelId")
     ModelFamilyTypeDTO toDto(ModelFamilyTypeTO s);
 
     @Named("modelId")

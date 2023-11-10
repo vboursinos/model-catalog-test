@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ParameterTypeDefinition} and its DTO {@link ParameterTypeDefinitionDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "ParameterTypeDefinitionMapperTOImpl")
 public interface ParameterTypeDefinitionMapper extends EntityMapper<ParameterTypeDefinitionTO, ParameterTypeDefinitionDTO> {}

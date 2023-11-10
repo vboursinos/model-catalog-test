@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Metric} and its DTO {@link MetricDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "MetricMapperTOImpl")
 public interface MetricMapper extends EntityMapper<MetricTO, MetricDTO> {}

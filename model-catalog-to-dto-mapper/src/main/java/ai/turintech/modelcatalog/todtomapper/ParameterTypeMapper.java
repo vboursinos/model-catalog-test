@@ -11,10 +11,9 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ParameterType} and its DTO {@link ParameterTypeDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "ParameterTypeMapperTOImpl")
 public interface ParameterTypeMapper extends EntityMapper<ParameterTypeTO, ParameterTypeDTO> {
-    @Mapping(target = "parameter", source = "parameter", qualifiedByName = "parameterId")
-    @Mapping(target = "parameterTypeDefinition", source = "parameterTypeDefinition", qualifiedByName = "parameterTypeDefinitionId")
+
     ParameterTypeDTO toDto(ParameterTypeTO s);
 
     @Named("parameterId")

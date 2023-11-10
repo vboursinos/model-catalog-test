@@ -1,21 +1,17 @@
 package ai.turintech.modelcatalog.todtomapper;
 
-import ai.turintech.modelcatalog.to.ModelTO;
-import ai.turintech.modelcatalog.to.ModelTypeTO;
-import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
-import org.mapstruct.*;
+import ai.turintech.modelcatalog.to.ModelTypeTO;
+import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Mapper for the entity {@link ModelType} and its DTO {@link ModelTypeDTO}.
- */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "ModelTypeMapperTOImpl")
 public interface ModelTypeMapper extends EntityMapper<ModelTypeTO, ModelTypeDTO> {
-    ModelTypeDTO toDto(ModelTypeTO s);
-
-    ModelTypeTO toTO(ModelTypeDTO s);
-
-    List<ModelTypeTO> toTO(List<ModelTypeDTO> s);
+//    ModelTypeDTO toDto(ModelTypeTO s);
+//
+//    ModelTypeTO toTO(ModelTypeDTO dto);
+//
+//    List<ModelTypeTO> toTO(List<ModelTypeDTO> s);
 }

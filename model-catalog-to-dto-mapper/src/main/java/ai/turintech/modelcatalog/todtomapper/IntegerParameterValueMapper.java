@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link IntegerParameterValue} and its DTO {@link IntegerParameterValueDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", implementationName = "IntegerParameterValueMapperTOImpl")
 public interface IntegerParameterValueMapper extends EntityMapper<IntegerParameterValueTO, IntegerParameterValueDTO> {}
