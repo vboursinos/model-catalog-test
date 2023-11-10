@@ -37,9 +37,8 @@ public class ModelStructureTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogModelStructureType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${spring.application.name}")
     private String applicationName;
-
     @Autowired
     private ModelStructureTypeService modelStructureTypeService;
 

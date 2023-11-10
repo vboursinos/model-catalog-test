@@ -44,7 +44,7 @@ public class ModelResource {
 
     private static final String ENTITY_NAME = "modelCatalogModel";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${spring.application.name}")
     private String applicationName;
 
     @Autowired

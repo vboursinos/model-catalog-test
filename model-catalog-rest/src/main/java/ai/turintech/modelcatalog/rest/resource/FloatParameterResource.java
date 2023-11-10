@@ -36,9 +36,8 @@ public class FloatParameterResource {
 
     private static final String ENTITY_NAME = "modelCatalogFloatParameter";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${spring.application.name}")
     private String applicationName;
-
     @Autowired
     private FloatParameterService floatParameterService;
 

@@ -37,7 +37,7 @@ public class ParameterTypeResource {
 
     private static final String ENTITY_NAME = "modelCatalogParameterType";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${spring.application.name}")
     private String applicationName;
 
     @Autowired

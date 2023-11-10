@@ -35,7 +35,7 @@ public class CategoricalParameterValueResource {
 
     private static final String ENTITY_NAME = "modelCatalogCategoricalParameterValue";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("${spring.application.name}")
     private String applicationName;
     @Autowired
     private CategoricalParameterValueService categoricalParameterValueService;
