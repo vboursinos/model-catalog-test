@@ -8,6 +8,7 @@ import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.rest.ModelCatalogRestPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
 import ai.turintech.modelcatalog.todtomapper.ModelCatalogToDtoMapperPackage;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
         ModelCatalogRepositoryPackage.class,
         ModelCatalogEntityPackage.class,
         ModelCatalogCallablePackage.class})
+@EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class})
 public class PackageScanningConfig {
 
 }

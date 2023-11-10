@@ -3,14 +3,17 @@ package ai.turintech.modelcatalog.rest.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "ai.turintech.catalog.repository")
+@EnableJpaRepositories(basePackages = "ai.turintech.modelcatalog.repository")
 public class JpaConfiguration {
 
     @Value("${spring.datasource.url}")
@@ -38,9 +41,15 @@ public class JpaConfiguration {
     @Bean(name="entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setPackagesToScan("ai.turintech.catalog");
+        sessionFactory.setPackagesToScan("ai.turintech.modelcatalog");
         sessionFactory.setDataSource(dataSource());
 
         return sessionFactory;
+    }
+
+    @Primary
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(dataSource());
     }
 }
