@@ -144,15 +144,15 @@ public class ParameterResource {
 
         Mono<Optional<ParameterDTO>> result = parameterService.partialUpdate(parameterDTO);
 
-        return result.flatMap(updatedFloatParameterOptional -> {
-            if (updatedFloatParameterOptional.isPresent()) {
-                ParameterDTO updatedParameterDTO = updatedFloatParameterOptional.get();
+        return result.flatMap(updatedParameterOptional -> {
+            if (updatedParameterOptional.isPresent()) {
+                ParameterDTO updatedParameterDTO = updatedParameterOptional
+                        .orElseThrow(() -> new RuntimeException("Updated ParameterDTO not found"));
+
                 String idString = Optional
                         .ofNullable(updatedParameterDTO.getId())
                         .map(UUID::toString)
-                        .orElse(null);
-
-                if (idString == null) throw new RuntimeException("ID cannot be null after update");
+                        .orElseThrow(() -> new RuntimeException("ID cannot be null after update"));
 
                 return Mono.just(
                         ResponseEntity.ok()
