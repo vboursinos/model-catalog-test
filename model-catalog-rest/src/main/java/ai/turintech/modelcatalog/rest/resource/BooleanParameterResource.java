@@ -1,11 +1,15 @@
 package ai.turintech.modelcatalog.rest.resource;
 
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
+import ai.turintech.modelcatalog.facade.BooleanParameterFacade;
 import ai.turintech.modelcatalog.repository.BooleanParameterRepository;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
+import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.service.BooleanParameterService;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
+import ai.turintech.modelcatalog.to.BooleanParameterTO;
+import ai.turintech.modelcatalog.todtomapper.BooleanParameterMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -43,6 +48,12 @@ public class BooleanParameterResource {
     @Autowired
     private BooleanParameterRepository booleanParameterRepository;
 
+    @Autowired
+    private BooleanParameterFacade booleanParameterFacade;
+
+    @Autowired
+    private BooleanParameterMapper booleanParameterMapper;
+
     /**
      * {@code POST  /boolean-parameters} : Create a new booleanParameter.
      *
@@ -51,26 +62,24 @@ public class BooleanParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/boolean-parameters")
-    public Mono<ResponseEntity<BooleanParameterDTO>> createBooleanParameter(@RequestBody BooleanParameterDTO booleanParameterDTO)
+    public Mono<ResponseEntity<BooleanParameterTO>> createBooleanParameter(@RequestBody BooleanParameterTO booleanParameterTO)
         throws URISyntaxException {
-        log.debug("REST request to save BooleanParameter : {}", booleanParameterDTO);
-        if (booleanParameterDTO.getParameterTypeDefinitionId() != null) {
+        log.debug("REST request to save BooleanParameter : {}", booleanParameterTO);
+        if (booleanParameterTO.getParameterTypeDefinitionId() != null) {
             throw new BadRequestAlertException("A new booleanParameter cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Mono<BooleanParameterDTO> result = booleanParameterService.save(booleanParameterDTO);
-        return result
-            .map(
-                newentity -> {
-                    try {
-                        return ResponseEntity
-                            .created(new URI("/api/boolean-parameters/" + newentity.getParameterTypeDefinitionId()))
-                            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, newentity.getParameterTypeDefinitionId().toString()))
-                            .body(newentity);
-                    } catch (URISyntaxException e) {
-                        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-                    }
+        return booleanParameterFacade
+            .save(this.booleanParameterMapper.toDto(booleanParameterTO)).map(booleanParameterMapper::toTo)
+            .map(result -> {
+                try {
+                    return ResponseEntity
+                        .created(new URI("/api/boolean-parameters/" + result.getParameterTypeDefinitionId()))
+                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getParameterTypeDefinitionId().toString()))
+                        .body(result);
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
                 }
-            );
+            });
     }
 
     /**
@@ -84,25 +93,34 @@ public class BooleanParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/boolean-parameters/{id}")
-    public Mono<ResponseEntity<BooleanParameterDTO>> updateBooleanParameter(
+    public Mono<ResponseEntity<BooleanParameterTO>> updateBooleanParameter(
         @PathVariable(value = "id", required = false) final UUID id,
-        @RequestBody BooleanParameterDTO booleanParameterDTO
+        @RequestBody BooleanParameterTO booleanParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to update BooleanParameter : {}, {}", id, booleanParameterDTO);
-
-        if (!booleanParameterRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        log.debug("REST request to update BooleanParameter : {}, {}", id, booleanParameterTO);
+        if (booleanParameterTO.getParameterTypeDefinitionId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, booleanParameterTO.getParameterTypeDefinitionId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        Mono<BooleanParameterDTO> result = booleanParameterService.update(booleanParameterDTO);
+        return booleanParameterFacade.existsById(id)
+        		.flatMap(exists -> {
+                if (!exists) {
+                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                }
 
-        return result.map((updatedBooleanParameterDTO) ->
-            ResponseEntity
-                .ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, updatedBooleanParameterDTO.getParameterTypeDefinitionId().toString()))
-                .body(updatedBooleanParameterDTO)
-        );
-
+                return booleanParameterFacade
+                    .update(booleanParameterMapper.toDto(booleanParameterTO)).map(booleanParameterMapper::toTo)
+                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                    .map(result ->
+                        ResponseEntity
+                            .ok()
+                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getParameterTypeDefinitionId().toString()))
+                            .body(result)
+                    );
+            });
     }
 
     /**
@@ -117,24 +135,36 @@ public class BooleanParameterResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/boolean-parameters/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<BooleanParameterDTO>> partialUpdateBooleanParameter(
+    public Mono<ResponseEntity<BooleanParameterTO>> partialUpdateBooleanParameter(
         @PathVariable(value = "id", required = false) final UUID id,
-        @RequestBody BooleanParameterDTO booleanParameterDTO
+        @RequestBody BooleanParameterTO booleanParameterTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update BooleanParameter partially : {}, {}", id, booleanParameterDTO);
-
-        if (!booleanParameterRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        log.debug("REST request to partial update BooleanParameter partially : {}, {}", id, booleanParameterTO);
+        if (booleanParameterTO.getParameterTypeDefinitionId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, booleanParameterTO.getParameterTypeDefinitionId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        Mono<BooleanParameterDTO> result = booleanParameterService.partialUpdate(booleanParameterDTO);
+        return booleanParameterFacade
+            .existsById(id)
+            .flatMap(exists -> {
+                if (!exists) {
+                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                }
 
-        return result.map((updatedBooleanParameterDTO) ->
-            ResponseEntity
-                .ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, updatedBooleanParameterDTO.getParameterTypeDefinitionId().toString()))
-                .body(updatedBooleanParameterDTO)
-        );
+                Mono<BooleanParameterTO> result = booleanParameterFacade.partialUpdate(booleanParameterMapper.toDto(booleanParameterTO)).map(booleanParameterMapper::toTo);
+
+                return result
+                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                    .map(res ->
+                        ResponseEntity
+                            .ok()
+                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getParameterTypeDefinitionId().toString()))
+                            .body(res)
+                    );
+            });
     }
 
     /**
@@ -143,21 +173,19 @@ public class BooleanParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of booleanParameters in body.
      */
     @GetMapping(value = "/boolean-parameters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<List<BooleanParameterDTO>>> getAllBooleanParameters() {
+    public Mono<List<BooleanParameterDTO>> getAllBooleanParameters() {
         log.debug("REST request to get all BooleanParameters");
-        return booleanParameterService.findAll().map((booleanParameters) ->
-            new ResponseEntity<>(booleanParameters, HttpStatus.OK)
-        );
+        return booleanParameterFacade.findAll().collectList();
     }
 
     /**
      * {@code GET  /boolean-parameters} : get all the booleanParameters as a stream.
      * @return the {@link Flux} of booleanParameters.
      */
-    @GetMapping(value = "/boolean-parameters/stream", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<BooleanParameterDTO> getAllBooleanParametersAsStream() {
+    @GetMapping(value = "/boolean-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public Flux<BooleanParameterTO> getAllBooleanParametersAsStream() {
         log.debug("REST request to get all BooleanParameters as a stream");
-        return booleanParameterService.findAllStream();
+        return booleanParameterFacade.findAll().map(booleanParameterMapper::toTo);
     }
 
     /**
@@ -167,12 +195,10 @@ public class BooleanParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the booleanParameterDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/boolean-parameters/{id}")
-    public Mono<ResponseEntity<BooleanParameterDTO>> getBooleanParameter(@PathVariable UUID id) {
+    public Mono<ResponseEntity<BooleanParameterTO>> getBooleanParameter(@PathVariable UUID id) {
         log.debug("REST request to get BooleanParameter : {}", id);
-        Mono<BooleanParameterDTO> booleanParameterDTO = booleanParameterService.findOne(id);
-        return booleanParameterDTO
-                .map((response) -> ResponseEntity.ok().body(response))
-                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+        Mono<BooleanParameterTO> booleanParameterTO = booleanParameterFacade.findOne(id).map(booleanParameterMapper::toTo);
+        return ResponseUtil.wrapOrNotFound(booleanParameterTO);
     }
     /**
      * {@code DELETE  /boolean-parameters/:id} : delete the "id" booleanParameter.
@@ -183,7 +209,15 @@ public class BooleanParameterResource {
     @DeleteMapping("/boolean-parameters/{id}")
     public Mono<ResponseEntity<Void>> deleteBooleanParameter(@PathVariable UUID id) {
         log.debug("REST request to delete BooleanParameter : {}", id);
-        booleanParameterService.delete(id);
-        return Mono.just(ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build());
+        return booleanParameterFacade
+            .delete(id)
+            .then(
+                Mono.just(
+                    ResponseEntity
+                        .noContent()
+                        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                        .build()
+                )
+            );
     }
 }
