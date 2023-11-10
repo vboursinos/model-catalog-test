@@ -100,8 +100,8 @@ public class BooleanParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the BooleanParameter
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete BooleanParameter : {}", id);
-//    	return this.booleanParameterService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete BooleanParameter : {}", id);
+    	return this.booleanParameterService.existsById(id);
+    }
 }

@@ -100,8 +100,8 @@ public class FloatParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the FloatParameter
      */
-//    public Mono<Boolean> existsById(Long id) {
-//    	log.debug("Request to delete FloatParameter : {}", id);
-//    	return this.floatParameterService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete FloatParameter : {}", id);
+    	return this.floatParameterService.existsById(id);
+    }
 }

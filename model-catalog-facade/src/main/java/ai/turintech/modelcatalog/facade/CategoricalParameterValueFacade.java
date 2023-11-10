@@ -102,8 +102,8 @@ public class CategoricalParameterValueFacade {
      * @param id
      * @return a Mono to signal the existence of the categoricalParameterValue
      */
-//    public Mono<Boolean> existsById(Long id) {
-//    	log.debug("Request to delete CategoricalParameterValue : {}", id);
-//    	return this.categoricalParameterValueService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete CategoricalParameterValue : {}", id);
+    	return this.categoricalParameterValueService.existsById(id);
+    }
 }

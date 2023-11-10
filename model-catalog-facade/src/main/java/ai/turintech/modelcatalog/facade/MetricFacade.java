@@ -102,8 +102,8 @@ public class MetricFacade {
      * @param id
      * @return a Mono to signal the existence of the Metric
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete Metric : {}", id);
-//    	return this.metricService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete Metric : {}", id);
+    	return this.metricService.existsById(id);
+    }
 }

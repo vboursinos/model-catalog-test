@@ -134,4 +134,11 @@ public class ParameterTypeService {
         delete.subscribe();
         return delete;
     }
+
+
+    @Transactional
+    public Mono<Boolean> existsById(UUID id) {
+        log.debug("Request to check if ModelGroupType exists : {}", id);
+        return Mono.just(parameterTypeRepository.existsById(id));
+    }
 }

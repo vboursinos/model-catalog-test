@@ -103,8 +103,8 @@ public class ModelStructureTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ModelStructureType
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete ModelGroupType : {}", id);
-//    	return this.modelStructureTypeService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete ModelGroupType : {}", id);
+    	return this.modelStructureTypeService.existsById(id);
+    }
 }

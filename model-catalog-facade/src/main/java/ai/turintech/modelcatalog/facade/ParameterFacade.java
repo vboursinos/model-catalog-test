@@ -104,8 +104,8 @@ public class ParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the Parameter
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete ModelGroupType : {}", id);
-//    	return this.parameterService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete ModelGroupType : {}", id);
+    	return this.parameterService.existsById(id);
+    }
 }

@@ -100,8 +100,8 @@ public class ModelFamilyTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ModelFamilyType
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete ModelFamilyType : {}", id);
-//    	return this.modelFamilyTypeService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete ModelFamilyType : {}", id);
+    	return this.modelFamilyTypeService.existsById(id);
+    }
 }

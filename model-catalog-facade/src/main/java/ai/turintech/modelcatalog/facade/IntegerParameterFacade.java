@@ -101,8 +101,8 @@ public class IntegerParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the IntegerParameter
      */
-//    public Mono<Boolean> existsById(Long id) {
-//    	log.debug("Request to delete IntegerParameter : {}", id);
-//    	return this.integerParameterService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete IntegerParameter : {}", id);
+    	return this.integerParameterService.existsById(id);
+    }
 }

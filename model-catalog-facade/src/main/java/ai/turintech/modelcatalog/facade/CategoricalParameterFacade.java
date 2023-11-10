@@ -101,8 +101,8 @@ public class CategoricalParameterFacade {
      * @param id
      * @return a Mono to signal the existence of the CategoricalParameter
      */
-//    public Mono<Boolean> existsById(Long id) {
-//    	log.debug("Request to determine existence of CategoricalParameter : {}", id);
-//    	return this.categoricalParameterService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to determine existence of CategoricalParameter : {}", id);
+    	return this.categoricalParameterService.existsById(id);
+    }
 }

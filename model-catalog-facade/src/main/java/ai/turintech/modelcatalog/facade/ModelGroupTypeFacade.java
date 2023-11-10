@@ -102,8 +102,8 @@ public class ModelGroupTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ModelGroupType
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete ModelGroupType : {}", id);
-//    	return this.modelGroupTypeService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete ModelGroupType : {}", id);
+    	return this.modelGroupTypeService.existsById(id);
+    }
 }

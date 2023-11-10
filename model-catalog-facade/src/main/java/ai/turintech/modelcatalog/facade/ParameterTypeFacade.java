@@ -100,8 +100,8 @@ public class ParameterTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ParameterType
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete ParameterType : {}", id);
-//    	return this.parameterTypeService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete ParameterType : {}", id);
+    	return this.parameterTypeService.existsById(id);
+    }
 }

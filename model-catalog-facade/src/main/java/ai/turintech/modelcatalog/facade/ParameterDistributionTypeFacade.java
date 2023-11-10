@@ -101,8 +101,8 @@ public class ParameterDistributionTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the ParameterDistributionType
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete ModelGroupType : {}", id);
-//    	return this.parameterDistributionTypeService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete ModelGroupType : {}", id);
+    	return this.parameterDistributionTypeService.existsById(id);
+    }
 }

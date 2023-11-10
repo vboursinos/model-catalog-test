@@ -101,8 +101,8 @@ public class MlTaskTypeFacade {
      * @param id
      * @return a Mono to signal the existence of the MlTaskType
      */
-//    public Mono<Boolean> existsById(UUID id) {
-//    	log.debug("Request to delete Metric : {}", id);
-//    	return this.modelTaskTypeService.existsById(id);
-//    }
+    public Mono<Boolean> existsById(UUID id) {
+    	log.debug("Request to delete Metric : {}", id);
+    	return this.modelTaskTypeService.existsById(id);
+    }
 }
