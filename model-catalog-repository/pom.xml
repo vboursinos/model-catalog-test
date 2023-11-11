@@ -113,6 +113,11 @@
   			<artifactId>model-catalog-entity</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-dto</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

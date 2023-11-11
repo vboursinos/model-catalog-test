@@ -57,9 +57,15 @@ public class ModelCallable<T> implements Callable<T> {
     private PaginationConverter paginationConverter;
 
     public ModelPaginatedListDTO findAll(){
-        List<Model> models = modelRepository.findAll(pageable).getContent();
+        List<ModelDTO> models = modelRepository.findAllModelsWithoutRelationships();
+//        List<Model> models = modelRepository.findAll(pageable).getContent();
+//        ModelPaginatedListDTO paginatedList = paginationConverter.getPaginatedList(
+//                models.stream().map(modelMapper::toDto).toList(),
+//                pageable.getPageNumber(),
+//                pageable.getPageSize(),
+//                modelRepository.count());
         ModelPaginatedListDTO paginatedList = paginationConverter.getPaginatedList(
-                models.stream().map(modelMapper::toDto).toList(),
+                models.stream().toList(),
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 modelRepository.count());

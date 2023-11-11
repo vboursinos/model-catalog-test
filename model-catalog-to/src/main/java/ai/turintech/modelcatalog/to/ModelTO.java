@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.to;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
@@ -28,21 +29,24 @@ public class ModelTO implements Serializable {
     @NotNull(message = "must not be null")
     private Boolean decisionTree;
 
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private Set<ModelGroupTypeTO> groups = new HashSet<>();
 
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private Set<MetricTO> incompatibleMetrics = new HashSet<>();
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private List<ParameterTO> parameters = new ArrayList<>();
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private MlTaskTypeTO mlTask;
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelStructureTypeTO structure;
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelTypeTO type;
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelFamilyTypeTO familyType;
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelEnsembleTypeTO ensembleType;
+
 
     public UUID getId() {
         return id;

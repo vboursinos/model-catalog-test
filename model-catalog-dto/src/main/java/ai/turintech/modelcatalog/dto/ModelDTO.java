@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.*;
@@ -30,21 +32,36 @@ public class ModelDTO implements Serializable {
     @NotNull(message = "must not be null")
     private Boolean decisionTree;
 
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private Set<ModelGroupTypeDTO> groups = new HashSet<>();
 
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private Set<MetricDTO> incompatibleMetrics = new HashSet<>();
 
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private List<ParameterDTO> parameters = new ArrayList<>();
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private MlTaskTypeDTO mlTask;
 
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelStructureTypeDTO structure;
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelTypeDTO type;
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelFamilyTypeDTO familyType;
-
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelEnsembleTypeDTO ensembleType;
+
+    public ModelDTO(UUID id, String name, String displayName, String description, String[] advantages, String[] disadvantages, Boolean enabled, Boolean decisionTree){
+        this.id = id;
+        this.name = name;
+        this.displayName = displayName;
+        this.description = description;
+        this.advantages = advantages;
+        this.disadvantages = disadvantages;
+        this.enabled = enabled;
+        this.decisionTree = decisionTree;
+    }
 
     public UUID getId() {
         return id;

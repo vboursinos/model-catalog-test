@@ -1,9 +1,11 @@
 package ai.turintech.modelcatalog.repository;
 
+import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.entity.Model;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,4 +31,7 @@ public interface ModelRepository extends ModelRepositoryWithBagRelationships, Jp
     default Page<Model> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    @Query("SELECT new ai.turintech.modelcatalog.dto.ModelDTO(m.id, m.name, m.displayName, m.description, m.advantages, m.disadvantages, m.enabled, m.decisionTree) FROM Model m")
+    List<ModelDTO> findAllModelsWithoutRelationships();
 }
