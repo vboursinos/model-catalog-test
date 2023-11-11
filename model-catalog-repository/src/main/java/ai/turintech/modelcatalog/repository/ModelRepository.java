@@ -32,6 +32,6 @@ public interface ModelRepository extends ModelRepositoryWithBagRelationships, Jp
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 
-    @Query("SELECT new ai.turintech.modelcatalog.dto.ModelDTO(m.id, m.name, m.displayName, m.description, m.advantages, m.disadvantages, m.enabled, m.decisionTree) FROM Model m")
-    List<ModelDTO> findAllModelsWithoutRelationships();
+    @Query("SELECT new ai.turintech.modelcatalog.dto.ModelDTO(m.id, m.name, m.displayName, m.description, m.advantages, m.disadvantages, m.enabled, m.decisionTree, t.name) FROM Model m JOIN m.mlTask t")
+    List<ModelDTO> findAllModelsWithoutRelationships(Pageable pageable);
 }
