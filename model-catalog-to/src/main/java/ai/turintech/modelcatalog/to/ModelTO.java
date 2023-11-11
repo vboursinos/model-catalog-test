@@ -46,7 +46,7 @@ public class ModelTO implements Serializable {
     private ModelFamilyTypeTO familyType;
     @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelEnsembleTypeTO ensembleType;
-    private String taskName;
+    private String mlTaskName;
 
     public UUID getId() {
         return id;
@@ -176,12 +176,12 @@ public class ModelTO implements Serializable {
         this.parameters = parameters;
     }
 
-    public String getTaskName() {
-        return taskName;
+    public String getMlTaskName() {
+        return mlTaskName;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setMlTaskName(String mlTaskName) {
+        this.mlTaskName = mlTaskName;
     }
 
     @Override

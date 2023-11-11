@@ -51,9 +51,9 @@ public class ModelDTO implements Serializable {
     private ModelFamilyTypeDTO familyType;
     @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     private ModelEnsembleTypeDTO ensembleType;
-    private String taskName;
+    private String mlTaskName;
 
-    public ModelDTO(UUID id, String name, String displayName, String description, String[] advantages, String[] disadvantages, Boolean enabled, Boolean decisionTree, String taskName){
+    public ModelDTO(UUID id, String name, String displayName, String description, String[] advantages, String[] disadvantages, Boolean enabled, Boolean decisionTree, String mlTaskName){
         this.id = id;
         this.name = name;
         this.displayName = displayName;
@@ -62,7 +62,7 @@ public class ModelDTO implements Serializable {
         this.disadvantages = disadvantages;
         this.enabled = enabled;
         this.decisionTree = decisionTree;
-        this.taskName = taskName;
+        this.mlTaskName = mlTaskName;
     }
 
     public UUID getId() {
@@ -193,12 +193,12 @@ public class ModelDTO implements Serializable {
         this.parameters = parameters;
     }
 
-    public String getTaskName() {
-        return taskName;
+    public String getMlTaskName() {
+        return mlTaskName;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setMlTaskName(String mlTaskName) {
+        this.mlTaskName = mlTaskName;
     }
 
     @Override
@@ -244,7 +244,7 @@ public class ModelDTO implements Serializable {
                 ", type=" + type +
                 ", familyType=" + familyType +
                 ", ensembleType=" + ensembleType +
-                ", taskName='" + taskName + '\'' +
+                ", mlTaskName='" + mlTaskName + '\'' +
                 '}';
     }
 }
