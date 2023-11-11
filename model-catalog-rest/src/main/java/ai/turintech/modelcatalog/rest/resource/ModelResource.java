@@ -12,8 +12,10 @@ import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.service.ModelService;
 import ai.turintech.modelcatalog.service.PaginationConverter;
 import ai.turintech.modelcatalog.entity.Model;
+import ai.turintech.modelcatalog.to.ModelPaginatedListTO;
 import ai.turintech.modelcatalog.to.ModelTO;
 import ai.turintech.modelcatalog.todtomapper.ModelMapper;
+import ai.turintech.modelcatalog.todtomapper.ModelPaginatedListMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -62,6 +65,9 @@ public class ModelResource {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private ModelPaginatedListMapper modelPaginatedListMapper;
 
     /**
      * {@code POST  /models} : Create a new model.
@@ -185,7 +191,7 @@ public class ModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of models in body.
      */
     @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<ModelPaginatedListDTO>> getAllModels(
+    public Mono<ResponseEntity<ModelPaginatedListTO>> getAllModels(
             @ParameterObject Pageable pageable,
             ServerHttpRequest request,
             @RequestParam(required = false, defaultValue = "false") boolean eagerload,
@@ -203,11 +209,10 @@ public class ModelResource {
             }
         }
 
-        return modelService.findAll(pageable)
-                .map(modelPaginatedListDTO -> ResponseEntity.ok().body(modelPaginatedListDTO))
+        return modelFacade.findAll(pageable).map(modelPaginatedListMapper::toTo)
+                .map(modelPaginatedListTO -> ResponseEntity.ok().body(modelPaginatedListTO))
                 .defaultIfEmpty(ResponseEntity.notFound().build())
                 .onErrorResume(Exception.class, ex -> {
-                    // Handle exceptions here and return an appropriate response
                     log.error("Error while fetching models: " + ex.getMessage(), ex);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
                 });
