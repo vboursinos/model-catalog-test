@@ -99,9 +99,8 @@ public class ParameterService {
     @Transactional(readOnly = true)
     public Flux<ParameterDTO> findAllStream(Pageable pageable) {
         log.debug("Request to get all Parameters");
-        return Flux.defer(() -> Flux.fromIterable(parameterRepository.findAll(pageable)
-                        .map(parameterMapper::toDto).getContent()))
-                .subscribeOn(Schedulers.boundedElastic());
+        return Flux.fromIterable(parameterRepository.findAll(pageable)
+                        .map(parameterMapper::toDto).getContent());
     }
     /**
      * Get one parameter by id.

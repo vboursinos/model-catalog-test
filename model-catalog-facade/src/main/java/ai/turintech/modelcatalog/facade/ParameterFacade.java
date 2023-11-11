@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,15 +66,27 @@ public class ParameterFacade {
     }
 
     /**
+     * Get all the parameters as a stream.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public Flux<ParameterDTO> findAllStream(Pageable pageable) {
+        log.debug("Request to get all Parameters");
+        return parameterService.findAllStream(pageable);
+    }
+
+    /**
      * Get all the parameters.
      *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Flux<ParameterDTO> findAll(Pageable pageable) {
+    public Mono<List<ParameterDTO>> findAll(Pageable pageable) {
         log.debug("Request to get all Parameters");
-        return parameterService.findAllStream(pageable);
+        return parameterService.findAll(pageable);
     }
 
     /**

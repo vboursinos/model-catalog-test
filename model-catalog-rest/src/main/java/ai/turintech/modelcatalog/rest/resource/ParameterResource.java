@@ -179,18 +179,27 @@ public class ParameterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of parameters in body.
      */
     @GetMapping(value = "/parameters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<List<ParameterDTO>>> getAllParameters(
+    public Mono<ResponseEntity<List<ParameterTO>>> getAllParameters(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request
     ) {
         log.debug("REST request to get a page of Parameters");
-        return parameterService.findAll(pageable)
+        return parameterFacade.findAll(pageable).map(parameterMapper::toTo)
                 .map(updatedListParameter -> ResponseEntity.ok().body(updatedListParameter))
                 .defaultIfEmpty(ResponseEntity.notFound().build())
                 .onErrorResume(Exception.class, ex -> {
                     log.error("Error while fetching models: " + ex.getMessage(), ex);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
                 });
+    }
+
+    @GetMapping(value = "/parameters/stream", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<ParameterTO> getAllParametersAsStream(
+            @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+            ServerHttpRequest request
+    ) {
+        log.debug("REST request to get a page of Parameters");
+        return parameterFacade.findAllStream(pageable).map(parameterMapper::toTo);
     }
 
     /**
