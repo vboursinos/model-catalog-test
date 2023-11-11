@@ -52,7 +52,7 @@ public class CategoricalParameterValueResource {
     /**
      * {@code POST  /categorical-parameter-values} : Create a new categoricalParameterValue.
      *
-     * @param categoricalParameterValueDTO the categoricalParameterValueDTO to create.
+     * @param categoricalParameterValueTO the categoricalParameterValueDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new categoricalParameterValueDTO, or with status {@code 400 (Bad Request)} if the categoricalParameterValue has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -82,7 +82,7 @@ public class CategoricalParameterValueResource {
      * {@code PUT  /categorical-parameter-values/:id} : Updates an existing categoricalParameterValue.
      *
      * @param id the id of the categoricalParameterValueDTO to save.
-     * @param categoricalParameterValueDTO the categoricalParameterValueDTO to update.
+     * @param categoricalParameterValueTO the categoricalParameterValueDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated categoricalParameterValueDTO,
      * or with status {@code 400 (Bad Request)} if the categoricalParameterValueDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the categoricalParameterValueDTO couldn't be updated.
@@ -124,7 +124,7 @@ public class CategoricalParameterValueResource {
      * {@code PATCH  /categorical-parameter-values/:id} : Partial updates given fields of an existing categoricalParameterValue, field will ignore if it is null
      *
      * @param id the id of the categoricalParameterValueDTO to save.
-     * @param categoricalParameterValueDTO the categoricalParameterValueDTO to update.
+     * @param categoricalParameterValueTO the categoricalParameterValueDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated categoricalParameterValueDTO,
      * or with status {@code 400 (Bad Request)} if the categoricalParameterValueDTO is not valid,
      * or with status {@code 404 (Not Found)} if the categoricalParameterValueDTO is not found,

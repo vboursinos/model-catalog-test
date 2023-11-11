@@ -52,7 +52,7 @@ public class FloatParameterResource {
     /**
      * {@code POST  /float-parameters} : Create a new floatParameter.
      *
-     * @param floatParameterDTO the floatParameterDTO to create.
+     * @param floatParameterTO the floatParameterDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new floatParameterDTO, or with status {@code 400 (Bad Request)} if the floatParameter has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -81,7 +81,7 @@ public class FloatParameterResource {
      * {@code PUT  /float-parameters/:id} : Updates an existing floatParameter.
      *
      * @param id the id of the floatParameterDTO to save.
-     * @param floatParameterDTO the floatParameterDTO to update.
+     * @param floatParameterTO the floatParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated floatParameterDTO,
      * or with status {@code 400 (Bad Request)} if the floatParameterDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the floatParameterDTO couldn't be updated.
@@ -123,7 +123,7 @@ public class FloatParameterResource {
      * {@code PATCH  /float-parameters/:id} : Partial updates given fields of an existing floatParameter, field will ignore if it is null
      *
      * @param id the id of the floatParameterDTO to save.
-     * @param floatParameterDTO the floatParameterDTO to update.
+     * @param floatParameterTO the floatParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated floatParameterDTO,
      * or with status {@code 400 (Bad Request)} if the floatParameterDTO is not valid,
      * or with status {@code 404 (Not Found)} if the floatParameterDTO is not found,

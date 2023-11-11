@@ -53,7 +53,7 @@ public class ModelStructureTypeResource {
     /**
      * {@code POST  /model-structure-types} : Create a new modelStructureType.
      *
-     * @param ModelStructureTypeTO the ModelStructureTypeTO to create.
+     * @param modelStructureTypeTO the ModelStructureTypeTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ModelStructureTypeTO, or with status {@code 400 (Bad Request)} if the modelStructureType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -84,7 +84,7 @@ public class ModelStructureTypeResource {
      * {@code PUT  /model-structure-types/:id} : Updates an existing modelStructureType.
      *
      * @param id the id of the ModelStructureTypeTO to save.
-     * @param ModelStructureTypeTO the ModelStructureTypeTO to update.
+     * @param modelStructureTypeTO the ModelStructureTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ModelStructureTypeTO,
      * or with status {@code 400 (Bad Request)} if the ModelStructureTypeTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the ModelStructureTypeTO couldn't be updated.
@@ -126,7 +126,7 @@ public class ModelStructureTypeResource {
      * {@code PATCH  /model-structure-types/:id} : Partial updates given fields of an existing modelStructureType, field will ignore if it is null
      *
      * @param id the id of the ModelStructureTypeTO to save.
-     * @param ModelStructureTypeTO the ModelStructureTypeTO to update.
+     * @param modelStructureTypeTO the ModelStructureTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ModelStructureTypeTO,
      * or with status {@code 400 (Bad Request)} if the ModelStructureTypeTO is not valid,
      * or with status {@code 404 (Not Found)} if the ModelStructureTypeTO is not found,

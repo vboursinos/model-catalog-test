@@ -52,7 +52,7 @@ public class FloatParameterRangeResource {
     /**
      * {@code POST  /float-parameter-ranges} : Create a new floatParameterRange.
      *
-     * @param floatParameterRangeDTO the floatParameterRangeDTO to create.
+     * @param floatParameterRangeTO the floatParameterRangeDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new floatParameterRangeDTO, or with status {@code 400 (Bad Request)} if the floatParameterRange has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -82,7 +82,7 @@ public class FloatParameterRangeResource {
      * {@code PUT  /float-parameter-ranges/:id} : Updates an existing floatParameterRange.
      *
      * @param id the id of the floatParameterRangeDTO to save.
-     * @param floatParameterRangeDTO the floatParameterRangeDTO to update.
+     * @param floatParameterRangeTO the floatParameterRangeDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated floatParameterRangeDTO,
      * or with status {@code 400 (Bad Request)} if the floatParameterRangeDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the floatParameterRangeDTO couldn't be updated.
@@ -124,7 +124,7 @@ public class FloatParameterRangeResource {
      * {@code PATCH  /float-parameter-ranges/:id} : Partial updates given fields of an existing floatParameterRange, field will ignore if it is null
      *
      * @param id the id of the floatParameterRangeDTO to save.
-     * @param floatParameterRangeDTO the floatParameterRangeDTO to update.
+     * @param floatParameterRangeTO the floatParameterRangeDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated floatParameterRangeDTO,
      * or with status {@code 400 (Bad Request)} if the floatParameterRangeDTO is not valid,
      * or with status {@code 404 (Not Found)} if the floatParameterRangeDTO is not found,

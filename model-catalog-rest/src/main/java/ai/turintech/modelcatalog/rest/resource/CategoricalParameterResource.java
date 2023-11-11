@@ -53,7 +53,7 @@ public class CategoricalParameterResource {
     /**
      * {@code POST  /categorical-parameters} : Create a new categoricalParameter.
      *
-     * @param categoricalParameterDTO the categoricalParameterDTO to create.
+     * @param categoricalParameterTO the categoricalParameterDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new categoricalParameterDTO, or with status {@code 400 (Bad Request)} if the categoricalParameter has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -83,7 +83,7 @@ public class CategoricalParameterResource {
      * {@code PUT  /categorical-parameters/:id} : Updates an existing categoricalParameter.
      *
      * @param id the id of the categoricalParameterDTO to save.
-     * @param categoricalParameterDTO the categoricalParameterDTO to update.
+     * @param categoricalParameterTO the categoricalParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated categoricalParameterDTO,
      * or with status {@code 400 (Bad Request)} if the categoricalParameterDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the categoricalParameterDTO couldn't be updated.
@@ -125,7 +125,7 @@ public class CategoricalParameterResource {
      * {@code PATCH  /categorical-parameters/:id} : Partial updates given fields of an existing categoricalParameter, field will ignore if it is null
      *
      * @param id the id of the categoricalParameterDTO to save.
-     * @param categoricalParameterDTO the categoricalParameterDTO to update.
+     * @param categoricalParameterTO the categoricalParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated categoricalParameterDTO,
      * or with status {@code 400 (Bad Request)} if the categoricalParameterDTO is not valid,
      * or with status {@code 404 (Not Found)} if the categoricalParameterDTO is not found,

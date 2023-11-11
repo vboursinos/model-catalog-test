@@ -51,7 +51,7 @@ public class MetricResource {
     /**
      * {@code POST  /metrics} : Create a new metric.
      *
-     * @param metricDTO the metricDTO to create.
+     * @param metricTO the metricDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new metricDTO, or with status {@code 400 (Bad Request)} if the metric has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -80,7 +80,7 @@ public class MetricResource {
      * {@code PUT  /metrics/:id} : Updates an existing metric.
      *
      * @param id the id of the metricDTO to save.
-     * @param metricDTO the metricDTO to update.
+     * @param metricTO the metricDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metricDTO,
      * or with status {@code 400 (Bad Request)} if the metricDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the metricDTO couldn't be updated.
@@ -122,7 +122,7 @@ public class MetricResource {
      * {@code PATCH  /metrics/:id} : Partial updates given fields of an existing metric, field will ignore if it is null
      *
      * @param id the id of the metricTO to save.
-     * @param metricDTO the metricTO to update.
+     * @param metricTO the metricTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metricTO,
      * or with status {@code 400 (Bad Request)} if the metricTO is not valid,
      * or with status {@code 404 (Not Found)} if the metricTO is not found,

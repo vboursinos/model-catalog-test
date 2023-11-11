@@ -1,13 +1,11 @@
 package ai.turintech.modelcatalog.rest.resource;
 
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
+import ai.turintech.modelcatalog.entity.BooleanParameter;
 import ai.turintech.modelcatalog.facade.BooleanParameterFacade;
-import ai.turintech.modelcatalog.repository.BooleanParameterRepository;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
-import ai.turintech.modelcatalog.service.BooleanParameterService;
-import ai.turintech.modelcatalog.entity.BooleanParameter;
 import ai.turintech.modelcatalog.to.BooleanParameterTO;
 import ai.turintech.modelcatalog.todtomapper.BooleanParameterMapper;
 import org.slf4j.Logger;
@@ -52,7 +50,7 @@ public class BooleanParameterResource {
     /**
      * {@code POST  /boolean-parameters} : Create a new booleanParameter.
      *
-     * @param booleanParameterDTO the booleanParameterDTO to create.
+     * @param booleanParameterTO the booleanParameterDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new booleanParameterDTO, or with status {@code 400 (Bad Request)} if the booleanParameter has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -81,7 +79,7 @@ public class BooleanParameterResource {
      * {@code PUT  /boolean-parameters/:id} : Updates an existing booleanParameter.
      *
      * @param id the id of the booleanParameterDTO to save.
-     * @param booleanParameterDTO the booleanParameterDTO to update.
+     * @param booleanParameterTO the booleanParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated booleanParameterDTO,
      * or with status {@code 400 (Bad Request)} if the booleanParameterDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the booleanParameterDTO couldn't be updated.
@@ -122,7 +120,7 @@ public class BooleanParameterResource {
      * {@code PATCH  /boolean-parameters/:id} : Partial updates given fields of an existing booleanParameter, field will ignore if it is null
      *
      * @param id the id of the booleanParameterDTO to save.
-     * @param booleanParameterDTO the booleanParameterDTO to update.
+     * @param booleanParameterTO the booleanParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated booleanParameterDTO,
      * or with status {@code 400 (Bad Request)} if the booleanParameterDTO is not valid,
      * or with status {@code 404 (Not Found)} if the booleanParameterDTO is not found,

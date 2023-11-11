@@ -83,7 +83,7 @@ public class ModelGroupTypeResource {
      * {@code PUT  /model-group-types/:id} : Updates an existing modelGroupType.
      *
      * @param id the id of the modelGroupTypeTO to save.
-     * @param modelGroupTypeDTO the modelGroupTypeTO to update.
+     * @param modelGroupTypeTO the modelGroupTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelGroupTypeTO,
      * or with status {@code 400 (Bad Request)} if the modelGroupTypeTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the modelGroupTypeTO couldn't be updated.

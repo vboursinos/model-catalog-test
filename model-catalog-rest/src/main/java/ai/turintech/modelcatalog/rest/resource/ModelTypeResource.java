@@ -52,7 +52,7 @@ public class ModelTypeResource {
     /**
      * {@code POST  /model-types} : Create a new modelType.
      *
-     * @param ModelTypeTO the ModelTypeTO to create.
+     * @param modelTypeTO the ModelTypeTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ModelTypeTO, or with status {@code 400 (Bad Request)} if the modelType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -81,7 +81,7 @@ public class ModelTypeResource {
      * {@code PUT  /model-types/:id} : Updates an existing modelType.
      *
      * @param id the id of the ModelTypeTO to save.
-     * @param ModelTypeTO the ModelTypeTO to update.
+     * @param modelTypeTO the ModelTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ModelTypeTO,
      * or with status {@code 400 (Bad Request)} if the ModelTypeTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the ModelTypeTO couldn't be updated.
@@ -123,7 +123,7 @@ public class ModelTypeResource {
      * {@code PATCH  /model-types/:id} : Partial updates given fields of an existing modelType, field will ignore if it is null
      *
      * @param id the id of the ModelTypeTO to save.
-     * @param ModelTypeTO the ModelTypeTO to update.
+     * @param modelTypeTO the ModelTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ModelTypeTO,
      * or with status {@code 400 (Bad Request)} if the ModelTypeTO is not valid,
      * or with status {@code 404 (Not Found)} if the ModelTypeTO is not found,

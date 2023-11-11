@@ -55,7 +55,7 @@ public class ModelFamilyTypeResource {
     /**
      * {@code POST  /model-family-types} : Create a new modelFamilyType.
      *
-     * @param modelFamilyTypeDTO the modelFamilyTypeTO to create.
+     * @param modelFamilyTypeTO the modelFamilyTypeTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new modelFamilyTypeTO, or with status {@code 400 (Bad Request)} if the modelFamilyType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -85,7 +85,7 @@ public class ModelFamilyTypeResource {
      * {@code PUT  /model-family-types/:id} : Updates an existing modelFamilyType.
      *
      * @param id the id of the modelFamilyTypeTO to save.
-     * @param modelFamilyTypeDTO the modelFamilyTypeTO to update.
+     * @param modelFamilyTypeTO the modelFamilyTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelFamilyTypeTO,
      * or with status {@code 400 (Bad Request)} if the modelFamilyTypeDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the modelFamilyTypeTO couldn't be updated.

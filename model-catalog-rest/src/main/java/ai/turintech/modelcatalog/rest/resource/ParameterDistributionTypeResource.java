@@ -53,7 +53,7 @@ public class ParameterDistributionTypeResource {
     /**
      * {@code POST  /parameter-distribution-types} : Create a new parameterDistributionType.
      *
-     * @param ParameterDistributionTypeTO the ParameterDistributionTypeTO to create.
+     * @param parameterDistributionTypeTO the ParameterDistributionTypeTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ParameterDistributionTypeTO, or with status {@code 400 (Bad Request)} if the parameterDistributionType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -84,7 +84,7 @@ public class ParameterDistributionTypeResource {
      * {@code PUT  /parameter-distribution-types/:id} : Updates an existing parameterDistributionType.
      *
      * @param id the id of the ParameterDistributionTypeTO to save.
-     * @param ParameterDistributionTypeTO the ParameterDistributionTypeTO to update.
+     * @param parameterDistributionTypeTO the ParameterDistributionTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ParameterDistributionTypeTO,
      * or with status {@code 400 (Bad Request)} if the ParameterDistributionTypeTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the ParameterDistributionTypeTO couldn't be updated.
@@ -126,7 +126,7 @@ public class ParameterDistributionTypeResource {
      * {@code PATCH  /parameter-distribution-types/:id} : Partial updates given fields of an existing parameterDistributionType, field will ignore if it is null
      *
      * @param id the id of the ParameterDistributionTypeTO to save.
-     * @param ParameterDistributionTypeTO the ParameterDistributionTypeTO to update.
+     * @param parameterDistributionTypeTO the ParameterDistributionTypeTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ParameterDistributionTypeTO,
      * or with status {@code 400 (Bad Request)} if the ParameterDistributionTypeTO is not valid,
      * or with status {@code 404 (Not Found)} if the ParameterDistributionTypeTO is not found,

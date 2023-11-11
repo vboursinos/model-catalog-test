@@ -122,7 +122,7 @@ public class IntegerParameterValueResource {
      * {@code PATCH  /integer-parameter-values/:id} : Partial updates given fields of an existing integerParameterValue, field will ignore if it is null
      *
      * @param id the id of the integerParameterValueTO to save.
-     * @param integerParameterValueDTO the integerParameterValueDTO to update.
+     * @param integerParameterValueTO the integerParameterValueDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated integerParameterValueTO,
      * or with status {@code 400 (Bad Request)} if the integerParameterValueDTO is not valid,
      * or with status {@code 404 (Not Found)} if the integerParameterValueDTO is not found,

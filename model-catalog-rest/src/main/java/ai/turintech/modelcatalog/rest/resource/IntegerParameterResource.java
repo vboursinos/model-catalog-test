@@ -50,7 +50,7 @@ public class IntegerParameterResource {
     /**
      * {@code POST  /integer-parameters} : Create a new integerParameter.
      *
-     * @param integerParameterDTO the integerParameterDTO to create.
+     * @param integerParameterTO the integerParameterDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new integerParameterDTO, or with status {@code 400 (Bad Request)} if the integerParameter has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
@@ -79,7 +79,7 @@ public class IntegerParameterResource {
      * {@code PUT  /integer-parameters/:id} : Updates an existing integerParameter.
      *
      * @param id the id of the integerParameterDTO to save.
-     * @param integerParameterDTO the integerParameterDTO to update.
+     * @param integerParameterTO the integerParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated integerParameterDTO,
      * or with status {@code 400 (Bad Request)} if the integerParameterDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the integerParameterDTO couldn't be updated.
@@ -121,7 +121,7 @@ public class IntegerParameterResource {
      * {@code PATCH  /integer-parameters/:id} : Partial updates given fields of an existing integerParameter, field will ignore if it is null
      *
      * @param id the id of the integerParameterDTO to save.
-     * @param integerParameterDTO the integerParameterDTO to update.
+     * @param integerParameterTO the integerParameterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated integerParameterDTO,
      * or with status {@code 400 (Bad Request)} if the integerParameterDTO is not valid,
      * or with status {@code 404 (Not Found)} if the integerParameterDTO is not found,

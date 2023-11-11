@@ -125,7 +125,7 @@ public class ModelEnsembleTypeResource {
      * {@code PATCH  /model-ensemble-types/:id} : Partial updates given fields of an existing modelEnsembleType, field will ignore if it is null
      *
      * @param id the id of the modelEnsembleTypeDTO to save.
-     * @param modelEnsembleTypeDTO the modelEnsembleTypeDTO to update.
+     * @param modelEnsembleTypeTO the modelEnsembleTypeDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated modelEnsembleTypeDTO,
      * or with status {@code 400 (Bad Request)} if the modelEnsembleTypeDTO is not valid,
      * or with status {@code 404 (Not Found)} if the modelEnsembleTypeDTO is not found,
