@@ -132,6 +132,7 @@ public class MetricService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(metricRepository.existsById(id));
+        GenericCallable<Boolean, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "existsById", id, metricRepository, metricMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }

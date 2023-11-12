@@ -129,6 +129,7 @@ public class CategoricalParameterValueService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(categoricalParameterValueRepository.existsById(id));
+        GenericCallable<Boolean, CategoricalParameterValueDTO, CategoricalParameterValue> callable = context.getBean(GenericCallable.class, "existsById", id, categoricalParameterValueRepository, categoricalParameterValueMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }

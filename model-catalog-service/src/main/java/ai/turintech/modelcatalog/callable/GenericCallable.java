@@ -55,6 +55,10 @@ public class GenericCallable<T, DTO, ENTITY> implements Callable<T> {
         return mapper.toDto(entity.get());
     }
 
+    public Boolean existsById() throws Exception {
+        return repository.existsById(id);
+    }
+
     public DTO create() throws Exception {
         ENTITY entity = mapper.toEntity(dto);
         entity = repository.save(entity);
@@ -96,6 +100,8 @@ public class GenericCallable<T, DTO, ENTITY> implements Callable<T> {
                 return (T) update();
             case "partialupdate":
                 return (T) partialUpdate();
+            case "existsbyid":
+                return (T) existsById();
             case "delete":
                 delete();
                 break;

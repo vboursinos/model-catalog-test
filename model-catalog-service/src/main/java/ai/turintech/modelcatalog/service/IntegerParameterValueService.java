@@ -130,6 +130,7 @@ public class IntegerParameterValueService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(integerParameterValueRepository.existsById(id));
+        GenericCallable<Boolean, IntegerParameterValueDTO, IntegerParameterValue> callable = context.getBean(GenericCallable.class, "existsById", id, integerParameterValueRepository, integerParameterValueMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }

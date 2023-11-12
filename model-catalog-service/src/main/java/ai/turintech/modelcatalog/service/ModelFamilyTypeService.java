@@ -130,6 +130,7 @@ public class ModelFamilyTypeService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(modelFamilyTypeRepository.existsById(id));
+        GenericCallable<Boolean, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "existsById", id, modelFamilyTypeRepository, modelFamilyTypeMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }

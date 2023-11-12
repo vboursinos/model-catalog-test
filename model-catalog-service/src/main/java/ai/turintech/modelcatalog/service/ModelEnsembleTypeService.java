@@ -131,6 +131,7 @@ public class ModelEnsembleTypeService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(modelEnsembleTypeRepository.existsById(id));
+        GenericCallable<Boolean, ModelEnsembleTypeDTO, ModelEnsembleType> callable = context.getBean(GenericCallable.class, "existsById", id, modelEnsembleTypeRepository, modelEnsembleTypeMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }

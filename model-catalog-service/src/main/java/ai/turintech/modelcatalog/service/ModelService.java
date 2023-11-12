@@ -133,7 +133,7 @@ public class ModelService {
     @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete Model : {}", id);
-        GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "delete", id, modelRepository, modelMapper);
+        GenericCallable<Void, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "delete", id, modelRepository, modelMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;
@@ -143,6 +143,7 @@ public class ModelService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(modelRepository.existsById(id));
+        GenericCallable<Boolean, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "existsById", id, modelRepository, modelMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }

@@ -134,6 +134,8 @@ public class ModelStructureTypeService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(modelStructureTypeRepository.existsById(id));
+        GenericCallable<Boolean, ModelStructureTypeDTO, ModelStructureType> callable = context.getBean(GenericCallable.class, "existsById", id, modelStructureTypeRepository, modelStructureTypeMapper);
+        return Mono.fromCallable(callable)
+                .subscribeOn(jdbcScheduler);
     }
 }

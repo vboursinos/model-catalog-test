@@ -127,6 +127,7 @@ public class FloatParameterRangeService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(floatParameterRangeRepository.existsById(id));
+        GenericCallable<Boolean, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "existsById", id, floatParameterRangeRepository, floatParameterRangeMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }

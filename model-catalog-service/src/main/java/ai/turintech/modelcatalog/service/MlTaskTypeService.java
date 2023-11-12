@@ -129,6 +129,7 @@ public class MlTaskTypeService {
     @Transactional
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
-        return Mono.just(mlTaskTypeRepository.existsById(id));
+        GenericCallable<Boolean, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "existsById", id, mlTaskTypeRepository, mlTaskTypeMapper);
+        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 }
