@@ -1,10 +1,10 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.ModelFamilyCallable;
+import ai.turintech.modelcatalog.callable.GenericCallable;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelFamilyTypeMapper;
-import ai.turintech.modelcatalog.repository.ModelFamilyTypeRepository;
 import ai.turintech.modelcatalog.entity.ModelFamilyType;
+import ai.turintech.modelcatalog.repository.ModelFamilyTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 /**
  * Service Implementation for managing {@link ModelFamilyType}.
@@ -49,7 +48,7 @@ public class ModelFamilyTypeService {
     @Transactional
     public Mono<ModelFamilyTypeDTO> save(ModelFamilyTypeDTO modelFamilyTypeDTO) {
         log.debug("Request to save ModelFamilyType : {}", modelFamilyTypeDTO);
-        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "create", modelFamilyTypeDTO);
+        GenericCallable<ModelFamilyTypeDTO, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "create", modelFamilyTypeDTO, modelFamilyTypeRepository, modelFamilyTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -62,7 +61,7 @@ public class ModelFamilyTypeService {
     @Transactional
     public Mono<ModelFamilyTypeDTO> update(ModelFamilyTypeDTO modelFamilyTypeDTO) {
         log.debug("Request to update ModelFamilyType : {}", modelFamilyTypeDTO);
-        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "update", modelFamilyTypeDTO);
+        GenericCallable<ModelFamilyTypeDTO, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "update", modelFamilyTypeDTO, modelFamilyTypeRepository, modelFamilyTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -75,7 +74,7 @@ public class ModelFamilyTypeService {
     @Transactional
     public Mono<ModelFamilyTypeDTO> partialUpdate(ModelFamilyTypeDTO modelFamilyTypeDTO) {
         log.debug("Request to partially update ModelFamilyType : {}", modelFamilyTypeDTO);
-        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "partialUpdate", modelFamilyTypeDTO);
+        GenericCallable<ModelFamilyTypeDTO, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "partialUpdate", modelFamilyTypeDTO, modelFamilyTypeRepository, modelFamilyTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -87,7 +86,7 @@ public class ModelFamilyTypeService {
     @Transactional(readOnly = true)
     public Mono<List<ModelFamilyTypeDTO>> findAll() {
         log.debug("Request to get all ModelFamilyTypes");
-        Callable<List<ModelFamilyTypeDTO>> callable = context.getBean(ModelFamilyCallable.class, "findAll");
+        GenericCallable<List<ModelFamilyTypeDTO>, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "findAll", modelFamilyTypeRepository, modelFamilyTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -110,7 +109,7 @@ public class ModelFamilyTypeService {
     @Transactional(readOnly = true)
     public Mono<ModelFamilyTypeDTO> findOne(UUID id) {
         log.debug("Request to get ModelFamilyType : {}", id);
-        Callable<ModelFamilyTypeDTO> callable = context.getBean(ModelFamilyCallable.class, "findById", id);
+        GenericCallable<ModelFamilyTypeDTO, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "findById", id, modelFamilyTypeRepository, modelFamilyTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -121,7 +120,7 @@ public class ModelFamilyTypeService {
      */
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelFamilyType : {}", id);
-        Callable<Void> callable = context.getBean(ModelFamilyCallable.class, "delete", id);
+        GenericCallable<Void, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "delete", id, modelFamilyTypeRepository, modelFamilyTypeMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;

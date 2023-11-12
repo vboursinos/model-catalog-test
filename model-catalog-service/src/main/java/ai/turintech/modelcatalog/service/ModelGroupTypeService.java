@@ -1,10 +1,10 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.ModelGroupTypeCallable;
+import ai.turintech.modelcatalog.callable.GenericCallable;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelGroupTypeMapper;
-import ai.turintech.modelcatalog.repository.ModelGroupTypeRepository;
 import ai.turintech.modelcatalog.entity.ModelGroupType;
+import ai.turintech.modelcatalog.repository.ModelGroupTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 /**
  * Service Implementation for managing {@link ModelGroupType}.
@@ -50,7 +49,7 @@ public class ModelGroupTypeService {
     @Transactional
     public Mono<ModelGroupTypeDTO> save(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to save ModelGroupType : {}", modelGroupTypeDTO);
-        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "create", modelGroupTypeDTO);
+        GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "create", modelGroupTypeDTO, modelGroupTypeRepository, modelGroupTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -63,7 +62,7 @@ public class ModelGroupTypeService {
     @Transactional
     public Mono<ModelGroupTypeDTO> update(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to update ModelGroupType : {}", modelGroupTypeDTO);
-        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "update", modelGroupTypeDTO);
+        GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "update", modelGroupTypeDTO, modelGroupTypeRepository, modelGroupTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -76,7 +75,7 @@ public class ModelGroupTypeService {
     @Transactional
     public Mono<ModelGroupTypeDTO> partialUpdate(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to partially update ModelGroupType : {}", modelGroupTypeDTO);
-        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "partialUpdate", modelGroupTypeDTO);
+        GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "partialUpdate", modelGroupTypeDTO, modelGroupTypeRepository, modelGroupTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -88,7 +87,7 @@ public class ModelGroupTypeService {
     @Transactional(readOnly = true)
     public Mono<List<ModelGroupTypeDTO>> findAll() {
         log.debug("Request to get all ModelGroupTypes");
-        Callable<List<ModelGroupTypeDTO>> callable = context.getBean(ModelGroupTypeCallable.class, "findAll");
+        GenericCallable<List<ModelGroupTypeDTO>, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "findAll", modelGroupTypeRepository, modelGroupTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -111,7 +110,7 @@ public class ModelGroupTypeService {
     @Transactional(readOnly = true)
     public Mono<ModelGroupTypeDTO> findOne(UUID id) {
         log.debug("Request to get ModelGroupType : {}", id);
-        Callable<ModelGroupTypeDTO> callable = context.getBean(ModelGroupTypeCallable.class, "findById", id);
+        GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "findById", id, modelGroupTypeRepository, modelGroupTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -123,7 +122,7 @@ public class ModelGroupTypeService {
     @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelGroupType : {}", id);
-        Callable<Void> callable = context.getBean(ModelGroupTypeCallable.class, "delete", id);
+        GenericCallable<Void, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "delete", id, modelGroupTypeRepository, modelGroupTypeMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;

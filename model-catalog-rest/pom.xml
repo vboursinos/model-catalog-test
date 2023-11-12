@@ -152,6 +152,11 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+<!--        <dependency>-->
+<!--            <groupId>ai.turintech.components</groupId>-->
+<!--            <artifactId>jpa-search</artifactId>-->
+<!--            <version>01.00.00-a0-SNAPSHOT</version>-->
+<!--        </dependency>-->
 	</dependencies>
 
 <!-- 	<build> -->

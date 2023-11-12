@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericCallable;
 import ai.turintech.modelcatalog.callable.ModelCallable;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
@@ -53,7 +54,7 @@ public class ModelService {
     @Transactional
     public Mono<ModelDTO> save(ModelDTO modelDTO) {
         log.debug("Request to save Model : {}", modelDTO);
-        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "create", modelDTO);
+        GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "create", modelDTO, modelRepository, modelMapper);
         return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
@@ -67,7 +68,7 @@ public class ModelService {
     @Transactional
     public Mono<ModelDTO> update(ModelDTO modelDTO) {
         log.debug("Request to update Model : {}", modelDTO);
-        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "update", modelDTO);
+        GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "update", modelDTO, modelRepository, modelMapper);
         return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
@@ -81,7 +82,7 @@ public class ModelService {
     @Transactional
     public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO) {
         log.debug("Request to partially update Model : {}", modelDTO);
-        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "partialUpdate", modelDTO);
+        GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "partialUpdate", modelDTO, modelRepository, modelMapper);
         return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
@@ -120,7 +121,7 @@ public class ModelService {
     @Transactional(readOnly = true)
     public Mono<ModelDTO> findOne(UUID id) throws Exception {
         log.debug("Request to get Model : {}", id);
-        Callable<ModelDTO> callable = context.getBean(ModelCallable.class, "findById", id);
+        GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "findById", id, modelRepository, modelMapper);
         return Mono.fromCallable(callable);
     }
 
@@ -132,7 +133,7 @@ public class ModelService {
     @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete Model : {}", id);
-        Callable<Void> callable = context.getBean(ModelCallable.class, "delete", id);
+        GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "delete", id, modelRepository, modelMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;

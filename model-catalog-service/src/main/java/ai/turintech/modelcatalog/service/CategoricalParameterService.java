@@ -1,8 +1,10 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.CategoricalParameterCallable;
+import ai.turintech.modelcatalog.callable.GenericCallable;
+import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.CategoricalParameterMapper;
+import ai.turintech.modelcatalog.entity.BooleanParameter;
 import ai.turintech.modelcatalog.repository.CategoricalParameterRepository;
 import ai.turintech.modelcatalog.entity.CategoricalParameter;
 import org.slf4j.Logger;
@@ -49,7 +51,7 @@ public class CategoricalParameterService {
     @Transactional
     public Mono<CategoricalParameterDTO> save(CategoricalParameterDTO categoricalParameterDTO) {
         log.debug("Request to save CategoricalParameter : {}", categoricalParameterDTO);
-        Callable<CategoricalParameterDTO> callable = context.getBean(CategoricalParameterCallable.class, "create", categoricalParameterDTO);
+        GenericCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "create", categoricalParameterDTO, categoricalParameterRepository, categoricalParameterMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -62,7 +64,7 @@ public class CategoricalParameterService {
     @Transactional
     public Mono<CategoricalParameterDTO> update(CategoricalParameterDTO categoricalParameterDTO) {
         log.debug("Request to update CategoricalParameter : {}", categoricalParameterDTO);
-        Callable<CategoricalParameterDTO> callable = context.getBean(CategoricalParameterCallable.class, "update", categoricalParameterDTO);
+        GenericCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "update", categoricalParameterDTO, categoricalParameterRepository, categoricalParameterMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -75,7 +77,7 @@ public class CategoricalParameterService {
     @Transactional
     public Mono<CategoricalParameterDTO> partialUpdate(CategoricalParameterDTO categoricalParameterDTO) {
         log.debug("Request to partially update CategoricalParameter : {}", categoricalParameterDTO);
-        Callable<CategoricalParameterDTO> callable = context.getBean(CategoricalParameterCallable.class, "partialUpdate", categoricalParameterDTO);
+        GenericCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "partialUpdate", categoricalParameterDTO, categoricalParameterRepository, categoricalParameterMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -87,7 +89,7 @@ public class CategoricalParameterService {
     @Transactional(readOnly = true)
     public Mono<List<CategoricalParameterDTO>> findAll() {
         log.debug("Request to get all CategoricalParameters");
-        Callable<List<CategoricalParameterDTO>> callable = context.getBean(CategoricalParameterCallable.class, "findAll");
+        GenericCallable<List<CategoricalParameterDTO>, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "findAll", categoricalParameterRepository, categoricalParameterMapper);
         return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
@@ -109,7 +111,7 @@ public class CategoricalParameterService {
     @Transactional(readOnly = true)
     public Mono<CategoricalParameterDTO> findOne(UUID id) {
         log.debug("Request to get CategoricalParameter : {}", id);
-        Callable<CategoricalParameterDTO> callable = context.getBean(CategoricalParameterCallable.class, "findById", id);
+        GenericCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "findById", id, categoricalParameterRepository, categoricalParameterMapper);
         return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
@@ -121,7 +123,7 @@ public class CategoricalParameterService {
     @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete CategoricalParameter : {}", id);
-        Callable<CategoricalParameterDTO> callable = context.getBean(CategoricalParameterCallable.class, "delete", id);
+        GenericCallable<Void, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "delete", id, categoricalParameterRepository, categoricalParameterMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;

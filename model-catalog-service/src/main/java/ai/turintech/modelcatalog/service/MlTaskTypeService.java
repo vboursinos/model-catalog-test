@@ -1,10 +1,10 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.MlTaskTypeCallable;
+import ai.turintech.modelcatalog.callable.GenericCallable;
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.MlTaskTypeMapper;
-import ai.turintech.modelcatalog.repository.MlTaskTypeRepository;
 import ai.turintech.modelcatalog.entity.MlTaskType;
+import ai.turintech.modelcatalog.repository.MlTaskTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 /**
  * Service Implementation for managing {@link MlTaskType}.
@@ -49,7 +48,7 @@ public class MlTaskTypeService {
     @Transactional
     public Mono<MlTaskTypeDTO> save(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to save MlTaskType : {}", mlTaskTypeDTO);
-        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "create", mlTaskTypeDTO);
+        GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "create", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -62,7 +61,7 @@ public class MlTaskTypeService {
     @Transactional
     public Mono<MlTaskTypeDTO> update(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to update MlTaskType : {}", mlTaskTypeDTO);
-        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "update", mlTaskTypeDTO);
+        GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "update", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -75,7 +74,7 @@ public class MlTaskTypeService {
     @Transactional
     public Mono<MlTaskTypeDTO> partialUpdate(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to partially update MlTaskType : {}", mlTaskTypeDTO);
-        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "partialUpdate", mlTaskTypeDTO);
+        GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "partialUpdate", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -87,7 +86,7 @@ public class MlTaskTypeService {
     @Transactional(readOnly = true)
     public Mono<List<MlTaskTypeDTO>> findAll() {
         log.debug("Request to get all MlTaskTypes");
-        Callable<List<MlTaskTypeDTO>> callable = context.getBean(MlTaskTypeCallable.class, "findAll");
+        GenericCallable<List<MlTaskTypeDTO>, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "findAll", mlTaskTypeRepository, mlTaskTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -109,7 +108,7 @@ public class MlTaskTypeService {
     @Transactional(readOnly = true)
     public Mono<MlTaskTypeDTO> findOne(UUID id) {
         log.debug("Request to get MlTaskType : {}", id);
-        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "findById", id);
+        GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "findById", id, mlTaskTypeRepository, mlTaskTypeMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -121,7 +120,7 @@ public class MlTaskTypeService {
     @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete MlTaskType : {}", id);
-        Callable<MlTaskTypeDTO> callable = context.getBean(MlTaskTypeCallable.class, "delete", id);
+        GenericCallable<Void, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "create", id, mlTaskTypeRepository, mlTaskTypeMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;

@@ -1,10 +1,10 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.BooleanParameterCallable;
+import ai.turintech.modelcatalog.callable.GenericCallable;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.BooleanParameterMapper;
-import ai.turintech.modelcatalog.repository.BooleanParameterRepository;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
+import ai.turintech.modelcatalog.repository.BooleanParameterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 /**
  * Service Implementation for managing {@link BooleanParameter}.
@@ -48,7 +47,7 @@ public class BooleanParameterService {
     @Transactional
     public Mono<BooleanParameterDTO> save(BooleanParameterDTO booleanParameterDTO) {
         log.debug("Request to save BooleanParameter : {}", booleanParameterDTO);
-        Callable<BooleanParameterDTO> callable = context.getBean(BooleanParameterCallable.class, "create", booleanParameterDTO);
+        GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "create", booleanParameterDTO, booleanParameterRepository, booleanParameterMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -61,7 +60,7 @@ public class BooleanParameterService {
     @Transactional
     public Mono<BooleanParameterDTO> update(BooleanParameterDTO booleanParameterDTO) {
         log.debug("Request to update BooleanParameter : {}", booleanParameterDTO);
-        Callable<BooleanParameterDTO> callable = context.getBean(BooleanParameterCallable.class, "update", booleanParameterDTO);
+        GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "update", booleanParameterDTO, booleanParameterRepository, booleanParameterMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -74,7 +73,7 @@ public class BooleanParameterService {
     @Transactional
     public Mono<BooleanParameterDTO> partialUpdate(BooleanParameterDTO booleanParameterDTO) {
         log.debug("Request to partially update BooleanParameter : {}", booleanParameterDTO);
-        Callable<BooleanParameterDTO> callable = context.getBean(BooleanParameterCallable.class, "partialUpdate", booleanParameterDTO);
+        GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "partialUpdate", booleanParameterDTO, booleanParameterRepository, booleanParameterMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -86,7 +85,7 @@ public class BooleanParameterService {
     @Transactional(readOnly = true)
     public Mono<List<BooleanParameterDTO>> findAll() {
         log.debug("Request to get all BooleanParameters");
-        Callable<List<BooleanParameterDTO>> callable = context.getBean(BooleanParameterCallable.class);
+        GenericCallable<List<BooleanParameterDTO>, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "findAll", booleanParameterRepository, booleanParameterMapper);
         return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
@@ -110,7 +109,7 @@ public class BooleanParameterService {
     @Transactional(readOnly = true)
     public Mono<BooleanParameterDTO> findOne(UUID id) {
         log.debug("Request to get BooleanParameter : {}", id);
-        Callable<BooleanParameterDTO> callable = context.getBean(BooleanParameterCallable.class, "findById", id);
+        GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "findById", id, booleanParameterRepository, booleanParameterMapper);
         return Mono.fromCallable(callable).publishOn(jdbcScheduler);
     }
 
@@ -122,7 +121,7 @@ public class BooleanParameterService {
     @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete BooleanParameter : {}", id);
-        Callable<BooleanParameterDTO> callable = context.getBean(BooleanParameterCallable.class, "delete", id);
+        GenericCallable<Void, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "delete", id, booleanParameterRepository, booleanParameterMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;

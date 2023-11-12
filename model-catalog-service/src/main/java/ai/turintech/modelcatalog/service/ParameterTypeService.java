@@ -1,10 +1,10 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.ParameterTypeCallable;
+import ai.turintech.modelcatalog.callable.GenericCallable;
 import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterTypeMapper;
-import ai.turintech.modelcatalog.repository.ParameterTypeRepository;
 import ai.turintech.modelcatalog.entity.ParameterType;
+import ai.turintech.modelcatalog.repository.ParameterTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 /**
  * Service Implementation for managing {@link ParameterType}.
@@ -50,8 +49,8 @@ public class ParameterTypeService {
     @Transactional
     public Mono<ParameterTypeDTO> save(ParameterTypeDTO parameterTypeDTO) {
         log.debug("Request to save ParameterType : {}", parameterTypeDTO);
-        Callable<ParameterTypeDTO> parameterTypeCallable = context.getBean(ParameterTypeCallable.class, "create", parameterTypeDTO);
-        return Mono.fromCallable(parameterTypeCallable)
+        GenericCallable<ParameterTypeDTO, ParameterTypeDTO, ParameterType> callable = context.getBean(GenericCallable.class, "create", parameterTypeDTO, parameterTypeRepository, parameterTypeMapper);
+        return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
 
@@ -64,8 +63,8 @@ public class ParameterTypeService {
     @Transactional
     public Mono<ParameterTypeDTO> update(ParameterTypeDTO parameterTypeDTO) {
         log.debug("Request to update ParameterType : {}", parameterTypeDTO);
-        Callable<ParameterTypeDTO> parameterTypeCallable = context.getBean(ParameterTypeCallable.class, "update", parameterTypeDTO);
-        return Mono.fromCallable(parameterTypeCallable)
+        GenericCallable<ParameterTypeDTO, ParameterTypeDTO, ParameterType> callable = context.getBean(GenericCallable.class, "update", parameterTypeDTO, parameterTypeRepository, parameterTypeMapper);
+        return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
 
@@ -78,8 +77,8 @@ public class ParameterTypeService {
     @Transactional
     public Mono<ParameterTypeDTO> partialUpdate(ParameterTypeDTO parameterTypeDTO) {
         log.debug("Request to partially update ParameterType : {}", parameterTypeDTO);
-        Callable<ParameterTypeDTO> parameterTypeCallable = context.getBean(ParameterTypeCallable.class, "partialUpdate", parameterTypeDTO);
-        return Mono.fromCallable(parameterTypeCallable)
+        GenericCallable<ParameterTypeDTO, ParameterTypeDTO, ParameterType> callable = context.getBean(GenericCallable.class, "partialUpdate", parameterTypeDTO, parameterTypeRepository, parameterTypeMapper);
+        return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
 
@@ -91,8 +90,8 @@ public class ParameterTypeService {
     @Transactional(readOnly = true)
     public Mono<List<ParameterTypeDTO>> findAll() {
         log.debug("Request to get all ParameterTypes");
-        Callable<List<ParameterTypeDTO>> parameterTypeCallable = context.getBean(ParameterTypeCallable.class, "findAll");
-        return Mono.fromCallable(parameterTypeCallable)
+        GenericCallable<List<ParameterTypeDTO>, ParameterTypeDTO, ParameterType> callable = context.getBean(GenericCallable.class, "findAll", parameterTypeRepository, parameterTypeMapper);
+        return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
 
@@ -116,8 +115,8 @@ public class ParameterTypeService {
     @Transactional(readOnly = true)
     public Mono<ParameterTypeDTO> findOne(UUID id) {
         log.debug("Request to get ParameterType : {}", id);
-        Callable<ParameterTypeDTO> parameterTypeCallable = context.getBean(ParameterTypeCallable.class, "findById", id);
-        return Mono.fromCallable(parameterTypeCallable)
+        GenericCallable<ParameterTypeDTO, ParameterTypeDTO, ParameterType> callable = context.getBean(GenericCallable.class, "findById", id, parameterTypeRepository, parameterTypeMapper);
+        return Mono.fromCallable(callable)
                 .subscribeOn(jdbcScheduler);
     }
 
@@ -129,7 +128,7 @@ public class ParameterTypeService {
     @Transactional
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ParameterType : {}", id);
-        Callable<ParameterTypeDTO> callable = context.getBean(ParameterTypeCallable.class, "delete", id);
+        GenericCallable<Void, ParameterTypeDTO, ParameterType> callable = context.getBean(GenericCallable.class, "delete", id, parameterTypeRepository, parameterTypeMapper);
         Mono delete = Mono.fromCallable(callable);
         delete.subscribe();
         return delete;
