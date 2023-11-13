@@ -52,7 +52,7 @@ public class CategoricalParameterService {
     public Mono<CategoricalParameterDTO> save(CategoricalParameterDTO categoricalParameterDTO) {
         log.debug("Request to save CategoricalParameter : {}", categoricalParameterDTO);
         GenericCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "create", categoricalParameterDTO, categoricalParameterRepository, categoricalParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -65,7 +65,7 @@ public class CategoricalParameterService {
     public Mono<CategoricalParameterDTO> update(CategoricalParameterDTO categoricalParameterDTO) {
         log.debug("Request to update CategoricalParameter : {}", categoricalParameterDTO);
         GenericCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "update", categoricalParameterDTO, categoricalParameterRepository, categoricalParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -78,7 +78,7 @@ public class CategoricalParameterService {
     public Mono<CategoricalParameterDTO> partialUpdate(CategoricalParameterDTO categoricalParameterDTO) {
         log.debug("Request to partially update CategoricalParameter : {}", categoricalParameterDTO);
         GenericCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "partialUpdate", categoricalParameterDTO, categoricalParameterRepository, categoricalParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**

@@ -48,7 +48,7 @@ public class IntegerParameterValueService {
     public Mono<IntegerParameterValueDTO> save(IntegerParameterValueDTO integerParameterValueDTO) {
         log.debug("Request to save IntegerParameterValue : {}", integerParameterValueDTO);
         GenericCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue> callable = context.getBean(GenericCallable.class, "create", integerParameterValueDTO, integerParameterValueRepository, integerParameterValueMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -61,7 +61,7 @@ public class IntegerParameterValueService {
     public Mono<IntegerParameterValueDTO> update(IntegerParameterValueDTO integerParameterValueDTO) {
         log.debug("Request to update IntegerParameterValue : {}", integerParameterValueDTO);
         GenericCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue> callable = context.getBean(GenericCallable.class, "update", integerParameterValueDTO, integerParameterValueRepository, integerParameterValueMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -74,7 +74,7 @@ public class IntegerParameterValueService {
     public Mono<IntegerParameterValueDTO> partialUpdate(IntegerParameterValueDTO integerParameterValueDTO) {
         log.debug("Request to partially update IntegerParameterValue : {}", integerParameterValueDTO);
         GenericCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue> callable = context.getBean(GenericCallable.class, "partialUpdate", integerParameterValueDTO, integerParameterValueRepository, integerParameterValueMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -86,7 +86,7 @@ public class IntegerParameterValueService {
     public Mono<List<IntegerParameterValueDTO>> findAll() {
         log.debug("Request to get all IntegerParameterValues");
         GenericCallable<List<IntegerParameterValueDTO>, IntegerParameterValueDTO, IntegerParameterValue> callable = context.getBean(GenericCallable.class, "findAll", integerParameterValueRepository, integerParameterValueMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     @Transactional(readOnly = true)
@@ -109,7 +109,7 @@ public class IntegerParameterValueService {
     public Mono<IntegerParameterValueDTO> findOne(UUID id) {
         log.debug("Request to get IntegerParameterValue : {}", id);
         GenericCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue> callable = context.getBean(GenericCallable.class, "findById", id, integerParameterValueRepository, integerParameterValueMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -131,6 +131,6 @@ public class IntegerParameterValueService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, IntegerParameterValueDTO, IntegerParameterValue> callable = context.getBean(GenericCallable.class, "existsById", id, integerParameterValueRepository, integerParameterValueMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }

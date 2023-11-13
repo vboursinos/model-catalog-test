@@ -122,7 +122,7 @@ public class ModelService {
     public Mono<ModelDTO> findOne(UUID id) throws Exception {
         log.debug("Request to get Model : {}", id);
         GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "findById", id, modelRepository, modelMapper);
-        return Mono.fromCallable(callable);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -144,6 +144,6 @@ public class ModelService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "existsById", id, modelRepository, modelMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }

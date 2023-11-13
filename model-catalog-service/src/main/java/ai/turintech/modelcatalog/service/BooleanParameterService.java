@@ -48,7 +48,7 @@ public class BooleanParameterService {
     public Mono<BooleanParameterDTO> save(BooleanParameterDTO booleanParameterDTO) {
         log.debug("Request to save BooleanParameter : {}", booleanParameterDTO);
         GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "create", booleanParameterDTO, booleanParameterRepository, booleanParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -61,7 +61,7 @@ public class BooleanParameterService {
     public Mono<BooleanParameterDTO> update(BooleanParameterDTO booleanParameterDTO) {
         log.debug("Request to update BooleanParameter : {}", booleanParameterDTO);
         GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "update", booleanParameterDTO, booleanParameterRepository, booleanParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -74,7 +74,7 @@ public class BooleanParameterService {
     public Mono<BooleanParameterDTO> partialUpdate(BooleanParameterDTO booleanParameterDTO) {
         log.debug("Request to partially update BooleanParameter : {}", booleanParameterDTO);
         GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "partialUpdate", booleanParameterDTO, booleanParameterRepository, booleanParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -110,7 +110,7 @@ public class BooleanParameterService {
     public Mono<BooleanParameterDTO> findOne(UUID id) {
         log.debug("Request to get BooleanParameter : {}", id);
         GenericCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "findById", id, booleanParameterRepository, booleanParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -132,6 +132,6 @@ public class BooleanParameterService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "existsById", id, booleanParameterRepository, booleanParameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }

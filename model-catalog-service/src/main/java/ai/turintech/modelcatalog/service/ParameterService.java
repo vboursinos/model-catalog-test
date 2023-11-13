@@ -130,6 +130,6 @@ public class ParameterService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, ParameterDTO, Parameter> callable = context.getBean(GenericCallable.class, "existsById", id, parameterRepository, parameterMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }

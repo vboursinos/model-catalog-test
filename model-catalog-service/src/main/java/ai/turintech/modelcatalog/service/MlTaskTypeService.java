@@ -49,7 +49,7 @@ public class MlTaskTypeService {
     public Mono<MlTaskTypeDTO> save(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to save MlTaskType : {}", mlTaskTypeDTO);
         GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "create", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -62,7 +62,7 @@ public class MlTaskTypeService {
     public Mono<MlTaskTypeDTO> update(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to update MlTaskType : {}", mlTaskTypeDTO);
         GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "update", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -75,7 +75,7 @@ public class MlTaskTypeService {
     public Mono<MlTaskTypeDTO> partialUpdate(MlTaskTypeDTO mlTaskTypeDTO) {
         log.debug("Request to partially update MlTaskType : {}", mlTaskTypeDTO);
         GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "partialUpdate", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -87,7 +87,7 @@ public class MlTaskTypeService {
     public Mono<List<MlTaskTypeDTO>> findAll() {
         log.debug("Request to get all MlTaskTypes");
         GenericCallable<List<MlTaskTypeDTO>, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "findAll", mlTaskTypeRepository, mlTaskTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     @Transactional(readOnly = true)
@@ -109,7 +109,7 @@ public class MlTaskTypeService {
     public Mono<MlTaskTypeDTO> findOne(UUID id) {
         log.debug("Request to get MlTaskType : {}", id);
         GenericCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "findById", id, mlTaskTypeRepository, mlTaskTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -130,6 +130,6 @@ public class MlTaskTypeService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "existsById", id, mlTaskTypeRepository, mlTaskTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }

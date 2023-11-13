@@ -50,7 +50,7 @@ public class MetricService {
     public Mono<MetricDTO> save(MetricDTO metricDTO) {
         log.debug("Request to save Metric : {}", metricDTO);
         GenericCallable<MetricDTO, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "create", metricDTO, metricRepository, metricMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -63,7 +63,7 @@ public class MetricService {
     public Mono<MetricDTO> update(MetricDTO metricDTO) {
         log.debug("Request to update Metric : {}", metricDTO);
         GenericCallable<MetricDTO, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "update", metricDTO, metricRepository, metricMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -76,7 +76,7 @@ public class MetricService {
     public Mono<MetricDTO> partialUpdate(MetricDTO metricDTO) {
         log.debug("Request to partially update Metric : {}", metricDTO);
         GenericCallable<MetricDTO, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "partialUpdate", metricDTO, metricRepository, metricMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -88,7 +88,7 @@ public class MetricService {
     public Mono<List<MetricDTO>> findAll() {
         log.debug("Request to get all Metrics");
         GenericCallable<List<MetricDTO>, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "findAll", metricRepository, metricMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     @Transactional(readOnly = true)
@@ -111,7 +111,7 @@ public class MetricService {
     public Mono<MetricDTO> findOne(UUID id) {
         log.debug("Request to get Metric : {}", id);
         GenericCallable<MetricDTO, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "findById", id, metricRepository, metricMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -133,6 +133,6 @@ public class MetricService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "existsById", id, metricRepository, metricMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }

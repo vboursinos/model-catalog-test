@@ -46,7 +46,7 @@ public class FloatParameterRangeService {
     public Mono<FloatParameterRangeDTO> save(FloatParameterRangeDTO floatParameterRangeDTO) {
         log.debug("Request to save FloatParameterRange : {}", floatParameterRangeDTO);
         GenericCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "create", floatParameterRangeDTO, floatParameterRangeRepository, floatParameterRangeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -59,7 +59,7 @@ public class FloatParameterRangeService {
     public Mono<FloatParameterRangeDTO> update(FloatParameterRangeDTO floatParameterRangeDTO) {
         log.debug("Request to update FloatParameterRange : {}", floatParameterRangeDTO);
         GenericCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "update", floatParameterRangeDTO, floatParameterRangeRepository, floatParameterRangeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -72,7 +72,7 @@ public class FloatParameterRangeService {
     public Mono<FloatParameterRangeDTO> partialUpdate(FloatParameterRangeDTO floatParameterRangeDTO) {
         log.debug("Request to partially update FloatParameterRange : {}", floatParameterRangeDTO);
         GenericCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "partialUpdate", floatParameterRangeDTO, floatParameterRangeRepository, floatParameterRangeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -84,7 +84,7 @@ public class FloatParameterRangeService {
     public Mono<List<FloatParameterRangeDTO>> findAll() {
         log.debug("Request to get all FloatParameterRanges");
         GenericCallable<List<FloatParameterRangeDTO>, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "findAll", floatParameterRangeRepository, floatParameterRangeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     @Transactional(readOnly = true)
@@ -106,7 +106,7 @@ public class FloatParameterRangeService {
     public Mono<FloatParameterRangeDTO> findOne(UUID id) {
         log.debug("Request to get FloatParameterRange : {}", id);
         GenericCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "findById", id, floatParameterRangeRepository, floatParameterRangeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -128,6 +128,6 @@ public class FloatParameterRangeService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "existsById", id, floatParameterRangeRepository, floatParameterRangeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }

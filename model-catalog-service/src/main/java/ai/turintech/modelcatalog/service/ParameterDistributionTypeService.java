@@ -139,6 +139,6 @@ public class ParameterDistributionTypeService {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, ParameterDistributionTypeDTO, ParameterDistributionType> callable = context.getBean(GenericCallable.class, "existsById", id, parameterDistributionTypeRepository, parameterDistributionTypeMapper);
         return Mono.fromCallable(callable)
-                .publishOn(jdbcScheduler);
+                .subscribeOn(jdbcScheduler);
     }
 }

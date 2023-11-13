@@ -105,7 +105,7 @@ public class ParameterTypeDefinitionService {
                 .findAll()
                 .stream()
                 .map(parameterTypeDefinitionMapper::toDto)
-                .collect(Collectors.toCollection(LinkedList::new)));
+                .collect(Collectors.toCollection(LinkedList::new))).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -119,7 +119,7 @@ public class ParameterTypeDefinitionService {
             .stream(parameterTypeDefinitionRepository.findAll().spliterator(), false)
             .filter(parameterTypeDefinition -> parameterTypeDefinition.getIntegerParameter() == null)
             .map(parameterTypeDefinitionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new)));
+            .collect(Collectors.toCollection(LinkedList::new))).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -133,7 +133,7 @@ public class ParameterTypeDefinitionService {
             .stream(parameterTypeDefinitionRepository.findAll().spliterator(), false)
             .filter(parameterTypeDefinition -> parameterTypeDefinition.getFloatParameter() == null)
             .map(parameterTypeDefinitionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new)));
+            .collect(Collectors.toCollection(LinkedList::new))).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -147,7 +147,7 @@ public class ParameterTypeDefinitionService {
             .stream(parameterTypeDefinitionRepository.findAll().spliterator(), false)
             .filter(parameterTypeDefinition -> parameterTypeDefinition.getCategoricalParameter() == null)
             .map(parameterTypeDefinitionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new)));
+            .collect(Collectors.toCollection(LinkedList::new))).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -198,6 +198,6 @@ public class ParameterTypeDefinitionService {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, ParameterTypeDefinitionDTO, ParameterTypeDefinition> callable = context.getBean(GenericCallable.class, "existsById", id, parameterTypeDefinitionRepository, parameterTypeDefinitionMapper);
         return Mono.fromCallable(callable)
-                .publishOn(jdbcScheduler);
+                .subscribeOn(jdbcScheduler);
     }
 }

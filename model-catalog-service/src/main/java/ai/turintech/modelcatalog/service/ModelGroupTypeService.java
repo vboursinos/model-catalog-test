@@ -50,7 +50,7 @@ public class ModelGroupTypeService {
     public Mono<ModelGroupTypeDTO> save(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to save ModelGroupType : {}", modelGroupTypeDTO);
         GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "create", modelGroupTypeDTO, modelGroupTypeRepository, modelGroupTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -63,7 +63,7 @@ public class ModelGroupTypeService {
     public Mono<ModelGroupTypeDTO> update(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to update ModelGroupType : {}", modelGroupTypeDTO);
         GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "update", modelGroupTypeDTO, modelGroupTypeRepository, modelGroupTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -76,7 +76,7 @@ public class ModelGroupTypeService {
     public Mono<ModelGroupTypeDTO> partialUpdate(ModelGroupTypeDTO modelGroupTypeDTO) {
         log.debug("Request to partially update ModelGroupType : {}", modelGroupTypeDTO);
         GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "partialUpdate", modelGroupTypeDTO, modelGroupTypeRepository, modelGroupTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -88,7 +88,7 @@ public class ModelGroupTypeService {
     public Mono<List<ModelGroupTypeDTO>> findAll() {
         log.debug("Request to get all ModelGroupTypes");
         GenericCallable<List<ModelGroupTypeDTO>, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "findAll", modelGroupTypeRepository, modelGroupTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     @Transactional(readOnly = true)
@@ -111,7 +111,7 @@ public class ModelGroupTypeService {
     public Mono<ModelGroupTypeDTO> findOne(UUID id) {
         log.debug("Request to get ModelGroupType : {}", id);
         GenericCallable<ModelGroupTypeDTO, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "findById", id, modelGroupTypeRepository, modelGroupTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     /**
@@ -132,6 +132,6 @@ public class ModelGroupTypeService {
     public Mono<Boolean> existsById(UUID id) {
         log.debug("Request to check if ModelGroupType exists : {}", id);
         GenericCallable<Boolean, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "existsById", id, modelGroupTypeRepository, modelGroupTypeMapper);
-        return Mono.fromCallable(callable).publishOn(jdbcScheduler);
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 }
