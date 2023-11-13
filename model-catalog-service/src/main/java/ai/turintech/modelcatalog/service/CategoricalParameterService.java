@@ -124,9 +124,7 @@ public class CategoricalParameterService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete CategoricalParameter : {}", id);
         GenericCallable<Void, CategoricalParameterDTO, CategoricalParameter> callable = context.getBean(GenericCallable.class, "delete", id, categoricalParameterRepository, categoricalParameterMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

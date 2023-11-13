@@ -122,9 +122,7 @@ public class BooleanParameterService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete BooleanParameter : {}", id);
         GenericCallable<Void, BooleanParameterDTO, BooleanParameter> callable = context.getBean(GenericCallable.class, "delete", id, booleanParameterRepository, booleanParameterMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

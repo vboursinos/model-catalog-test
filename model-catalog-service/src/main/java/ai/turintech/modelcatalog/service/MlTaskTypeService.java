@@ -121,9 +121,7 @@ public class MlTaskTypeService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete MlTaskType : {}", id);
         GenericCallable<Void, MlTaskTypeDTO, MlTaskType> callable = context.getBean(GenericCallable.class, "create", id, mlTaskTypeRepository, mlTaskTypeMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     @Transactional

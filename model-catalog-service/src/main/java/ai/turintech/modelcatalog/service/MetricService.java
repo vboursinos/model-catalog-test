@@ -123,9 +123,7 @@ public class MetricService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete Metric : {}", id);
         GenericCallable<Void, MetricDTO, Metric> callable = context.getBean(GenericCallable.class, "delete", id, metricRepository, metricMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

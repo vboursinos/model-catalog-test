@@ -125,9 +125,7 @@ public class ModelStructureTypeService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelStructureType : {}", id);
         GenericCallable<Void, ModelStructureTypeDTO, ModelStructureType> callable = context.getBean(GenericCallable.class, "delete", id, modelStructureTypeRepository, modelStructureTypeMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

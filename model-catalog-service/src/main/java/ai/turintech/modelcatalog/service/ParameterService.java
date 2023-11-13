@@ -120,9 +120,7 @@ public class ParameterService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete Parameter : {}", id);
         GenericCallable<Void, ParameterDTO, Parameter> callable = context.getBean(GenericCallable.class, "delete", id, parameterRepository, parameterMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

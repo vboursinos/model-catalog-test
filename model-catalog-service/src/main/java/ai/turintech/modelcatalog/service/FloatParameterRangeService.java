@@ -118,9 +118,7 @@ public class FloatParameterRangeService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete FloatParameterRange : {}", id);
         GenericCallable<Void, FloatParameterRangeDTO, FloatParameterRange> callable = context.getBean(GenericCallable.class, "delete", id, floatParameterRangeRepository, floatParameterRangeMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

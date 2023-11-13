@@ -123,9 +123,7 @@ public class ModelGroupTypeService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelGroupType : {}", id);
         GenericCallable<Void, ModelGroupTypeDTO, ModelGroupType> callable = context.getBean(GenericCallable.class, "delete", id, modelGroupTypeRepository, modelGroupTypeMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
     @Transactional

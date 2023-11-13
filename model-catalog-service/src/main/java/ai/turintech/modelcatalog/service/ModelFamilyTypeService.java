@@ -121,9 +121,7 @@ public class ModelFamilyTypeService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelFamilyType : {}", id);
         GenericCallable<Void, ModelFamilyTypeDTO, ModelFamilyType> callable = context.getBean(GenericCallable.class, "delete", id, modelFamilyTypeRepository, modelFamilyTypeMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

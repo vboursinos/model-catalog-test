@@ -125,9 +125,7 @@ public class IntegerParameterService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete IntegerParameter : {}", id);
         GenericCallable<Void, IntegerParameterDTO, IntegerParameter> callable = context.getBean(GenericCallable.class, "delete", id, integerParameterRepository, integerParameterMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 

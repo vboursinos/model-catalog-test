@@ -122,9 +122,7 @@ public class ModelEnsembleTypeService {
     public Mono<Void> delete(UUID id) {
         log.debug("Request to delete ModelEnsembleType : {}", id);
         GenericCallable<Void, ModelEnsembleTypeDTO, ModelEnsembleType> callable = context.getBean(GenericCallable.class, "delete", id, modelEnsembleTypeRepository, modelEnsembleTypeMapper);
-        Mono delete = Mono.fromCallable(callable);
-        delete.subscribe();
-        return delete;
+        return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
     }
 
 
