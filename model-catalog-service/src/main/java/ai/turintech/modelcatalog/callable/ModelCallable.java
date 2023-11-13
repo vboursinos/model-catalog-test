@@ -57,7 +57,7 @@ public class ModelCallable<T> implements Callable<T> {
     }
 
     @Override
-    public T call() throws Exception {
+    public T call() {
         if (name.equalsIgnoreCase("findAll")) {
             return (T) findAll();
         }

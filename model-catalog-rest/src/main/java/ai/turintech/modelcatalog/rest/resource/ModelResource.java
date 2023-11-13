@@ -4,6 +4,7 @@ import ai.turintech.modelcatalog.dto.FilterDTO;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.dto.SearchDTO;
+import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.facade.ModelFacade;
 import ai.turintech.modelcatalog.repository.ModelRepository;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
@@ -225,7 +226,7 @@ public class ModelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the modelTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/models/{id}")
-    public Mono<ResponseEntity<ModelTO>> getModel(@PathVariable UUID id) throws Exception {
+    public Mono<ResponseEntity<ModelTO>> getModel(@PathVariable UUID id) throws FindOneException {
         log.debug("REST request to get Model : {}", id);
         Mono<ModelTO> modelTO = modelFacade.findOne(id).map(modelMapper::toTo);
         return ResponseUtil.wrapOrNotFound(modelTO);

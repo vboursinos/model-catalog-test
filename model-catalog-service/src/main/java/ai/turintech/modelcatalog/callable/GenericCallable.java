@@ -1,6 +1,7 @@
 package ai.turintech.modelcatalog.callable;
 
 import ai.turintech.modelcatalog.dtoentitymapper.EntityMapper;
+import ai.turintech.modelcatalog.exceptions.FindOneException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
@@ -47,31 +48,31 @@ public class GenericCallable<T, DTO, ENTITY> implements Callable<T> {
         return repository.findAll().stream().map(mapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public DTO findById() throws Exception {
+    public DTO findById() throws FindOneException {
         Optional<ENTITY> entity = repository.findById(id);
         if (!entity.isPresent()) {
-            throw new Exception(name + " with ID " + id + " not found.");
+            throw new FindOneException(name + " with ID " + id + " not found.");
         }
         return mapper.toDto(entity.get());
     }
 
-    public Boolean existsById() throws Exception {
+    public Boolean existsById() {
         return repository.existsById(id);
     }
 
-    public DTO create() throws Exception {
+    public DTO create() {
         ENTITY entity = mapper.toEntity(dto);
         entity = repository.save(entity);
         return mapper.toDto(entity);
     }
 
-    public DTO update() throws Exception {
+    public DTO update() {
         ENTITY entity = mapper.toEntity(dto);
         entity = repository.save(entity);
         return mapper.toDto(entity);
     }
 
-    public DTO partialUpdate() throws Exception {
+    public DTO partialUpdate() throws FindOneException {
         return repository
                 .findById(id)
                 .map(existingEntity -> {
@@ -80,15 +81,15 @@ public class GenericCallable<T, DTO, ENTITY> implements Callable<T> {
                 })
                 .map(repository::save)
                 .map(mapper::toDto)
-                .orElseThrow(() -> new Exception(name + " with ID " + id + " not found."));
+                .orElseThrow(() -> new FindOneException(name + " with ID " + id + " not found."));
     }
 
-    public void delete() throws Exception {
+    public void delete() {
         repository.deleteById(id);
     }
 
     @Override
-    public T call() throws Exception {
+    public T call() throws FindOneException {
         switch (name.toLowerCase()) {
             case "create":
                 return (T) create();

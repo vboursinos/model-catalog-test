@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import java.util.UUID;
 
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
+import ai.turintech.modelcatalog.exceptions.FindOneException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -83,7 +84,7 @@ public class ModelFacade {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Mono<ModelDTO> findOne(UUID id) throws Exception {
+    public Mono<ModelDTO> findOne(UUID id) throws FindOneException {
         log.debug("Request to get Model : {}", id);
         return modelService.findOne(id);
     }
