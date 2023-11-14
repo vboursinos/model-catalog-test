@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>ai.turintech.components</groupId>
 			<artifactId>jpa-search</artifactId>
-			<version>01.00.00-a0-SNAPSHOT</version>
+			<version>01.00.00-a0-20231114.164359-5</version>
 		</dependency>
 	</dependencies>
 
