@@ -1,5 +1,8 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.jpa.search.service.AbstractSearchService;
+import ai.turintech.components.jpa.search.service.SearchEngine;
+import ai.turintech.components.jpa.search.service.SearchService;
 import ai.turintech.modelcatalog.callable.GenericCallable;
 import ai.turintech.modelcatalog.callable.ModelCallable;
 import ai.turintech.modelcatalog.dto.ModelDTO;
@@ -28,24 +31,34 @@ import java.util.concurrent.Callable;
  */
 @Service
 @Transactional
-public class ModelService {
+public class ModelService extends AbstractSearchService<Model,ModelDTO> implements SearchService<ModelDTO> {
 
-    @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    private Scheduler jdbcScheduler;
-
+    private final ApplicationContext context;
+    private final Scheduler jdbcScheduler;
     private final Logger log = LoggerFactory.getLogger(ModelService.class);
-    @Autowired
-    private ModelRepository modelRepository;
+    private final ModelRepository modelRepository;
+    private final ModelMapper modelMapper;
+    private final PaginationConverter paginationConverter;
+    private final Class<Model> clazzEntity;
+    private final Class<ModelDTO> clazzDTO;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    public ModelService(ApplicationContext context,
+                        Scheduler jdbcScheduler,
+                        ModelRepository modelRepository,
+                        ModelMapper modelMapper,
+                        PaginationConverter paginationConverter,
+                        Class<Model> clazzEntity,
+                        Class<ModelDTO> clazzDTO) {
 
-    @Autowired
-    private PaginationConverter paginationConverter;
-
+        super(clazzEntity, clazzDTO);
+        this.context = context;
+        this.jdbcScheduler = jdbcScheduler;
+        this.modelRepository = modelRepository;
+        this.modelMapper = modelMapper;
+        this.paginationConverter = paginationConverter;
+        this.clazzEntity = clazzEntity;
+        this.clazzDTO = clazzDTO;
+    }
     /**
      * Save a model.
      *

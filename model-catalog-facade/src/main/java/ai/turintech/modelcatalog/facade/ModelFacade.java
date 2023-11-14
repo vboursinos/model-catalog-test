@@ -1,27 +1,27 @@
 package ai.turintech.modelcatalog.facade;
 
-import java.util.UUID;
-
+import ai.turintech.components.jpa.search.facade.AbstractSearchFacade;
+import ai.turintech.components.jpa.search.facade.SearchFacade;
+import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
+import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.exceptions.FindOneException;
+import ai.turintech.modelcatalog.service.ModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.service.ModelService;
-import ai.turintech.modelcatalog.entity.Model;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /**
  * Service Implementation for managing {@link Model}.
  */
 @Service
 @Transactional
-public class ModelFacade {
+public class ModelFacade extends AbstractSearchFacade<ModelDTO, ModelService> implements SearchFacade<ModelDTO> {
 
     private final Logger log = LoggerFactory.getLogger(ModelFacade.class);
 

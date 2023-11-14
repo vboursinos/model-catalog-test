@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.rest.config;
 
+import ai.turintech.components.jpa.search.JpaSearchPackage;
+import ai.turintech.components.jpa.search.repository.IgvSearchRepositoryPackage;
 import ai.turintech.modelcatalog.callable.ModelCatalogCallablePackage;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelCatalogDtoEntityMapperPackage;
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
@@ -20,7 +22,9 @@ import org.springframework.context.annotation.Configuration;
         ModelCatalogDtoEntityMapperPackage.class,
         ModelCatalogRepositoryPackage.class,
         ModelCatalogEntityPackage.class,
-        ModelCatalogCallablePackage.class})
+        ModelCatalogCallablePackage.class,
+        IgvSearchRepositoryPackage.class,
+        JpaSearchPackage.class})
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class})
 public class PackageScanningConfig {
 

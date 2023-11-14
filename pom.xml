@@ -82,6 +82,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>ai.turintech.components</groupId>
+			<artifactId>jpa-search</artifactId>
+			<version>01.00.00-a0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -103,6 +109,27 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<repositories>
+		<repository>
+			<id>MAVEN_CENTRAL</id>
+			<name>Maven Repository Switchboard</name>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>dataspartan-turintech-maven-releases</id>
+			<url>https://nexus.dataspartan.com/repository/maven-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>dataspartan-turintech-maven-snapshots</id>
+			<url>https://nexus.dataspartan.com/repository/maven-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<modules>
 		<!-- Interfaces for all relevant layers -->
 		<module>model-catalog-api</module>

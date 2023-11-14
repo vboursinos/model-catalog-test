@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.repository;
 
+import ai.turintech.components.jpa.search.repository.SearchRepository;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.entity.Model;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import java.util.UUID;
  * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface ModelRepository extends ModelRepositoryWithBagRelationships, JpaRepository<Model, UUID> {
+public interface ModelRepository extends ModelRepositoryWithBagRelationships, JpaRepository<Model, UUID>, SearchRepository<Model> {
     default Optional<Model> findOneWithEagerRelationships(UUID id) {
         return this.fetchBagRelationships(this.findById(id));
     }

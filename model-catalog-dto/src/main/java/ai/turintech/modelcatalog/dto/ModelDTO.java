@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
@@ -10,7 +11,7 @@ import java.util.*;
  * A DTO for the Model entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelDTO implements Serializable {
+public class ModelDTO extends AbstractDTO implements Serializable {
 
     private UUID id;
 

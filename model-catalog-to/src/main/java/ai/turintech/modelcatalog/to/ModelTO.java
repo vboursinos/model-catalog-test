@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.to;
 
+import ai.turintech.components.data.common.to.AbstractTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
 
@@ -7,7 +8,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelTO implements Serializable {
+public class ModelTO extends AbstractTO implements Serializable {
 
     private UUID id;
 

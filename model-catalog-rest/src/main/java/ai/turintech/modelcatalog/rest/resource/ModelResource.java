@@ -1,18 +1,20 @@
 package ai.turintech.modelcatalog.rest.resource;
 
+import ai.turintech.components.jpa.search.controller.AbstractPageableRestController;
+import ai.turintech.components.jpa.search.data.to.PageTO;
+import ai.turintech.components.jpa.search.data.to.PageableQueryRequestTO;
+import ai.turintech.components.jpa.search.exception.PageableRequestException;
 import ai.turintech.modelcatalog.dto.FilterDTO;
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.dto.SearchDTO;
+import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.facade.ModelFacade;
-import ai.turintech.modelcatalog.repository.ModelRepository;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.service.ModelService;
 import ai.turintech.modelcatalog.service.PaginationConverter;
-import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.to.ModelPaginatedListTO;
 import ai.turintech.modelcatalog.to.ModelTO;
 import ai.turintech.modelcatalog.todtomapper.ModelMapper;
@@ -24,21 +26,21 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +49,7 @@ import java.util.regex.Pattern;
  */
 @RestController
 @RequestMapping("/api")
-public class ModelResource {
+public class ModelResource extends AbstractPageableRestController<ModelTO, ModelDTO, ModelFacade> {
 
     private final Logger log = LoggerFactory.getLogger(ModelResource.class);
 
@@ -56,19 +58,25 @@ public class ModelResource {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @Autowired
-    private PaginationConverter paginationConverter;
-    @Autowired
-    private ModelService modelService;
+    private final PaginationConverter paginationConverter;
+    private final ModelService modelService;
+    private final ModelFacade modelFacade;
+    private final ModelMapper modelMapper;
+    private final ModelPaginatedListMapper modelPaginatedListMapper;
 
-    @Autowired
-    private ModelFacade modelFacade;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private ModelPaginatedListMapper modelPaginatedListMapper;
+    public ModelResource(Class<ModelTO> clazzTO,
+                         PaginationConverter paginationConverter,
+                         ModelService modelService,
+                         ModelFacade modelFacade,
+                         ModelMapper modelMapper,
+                         ModelPaginatedListMapper modelPaginatedListMapper) {
+        super(clazzTO);
+        this.paginationConverter = paginationConverter;
+        this.modelService = modelService;
+        this.modelFacade = modelFacade;
+        this.modelMapper = modelMapper;
+        this.modelPaginatedListMapper = modelPaginatedListMapper;
+    }
 
     /**
      * {@code POST  /models} : Create a new model.
@@ -217,6 +225,19 @@ public class ModelResource {
                     log.error("Error while fetching models: " + ex.getMessage(), ex);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
                 });
+    }
+
+    /**
+     * Custom search endpoint for models.
+     *
+     * @param filter the pageable query request.
+     * @return the ResponseEntity with status OK and the paged list of models in body.
+     * @throws PageableRequestException if there is an issue with the pageable request.
+     */
+    @Override
+    @GetMapping(value = "/models/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageTO<ModelTO>> findPagedByQuery(PageableQueryRequestTO filter) throws PageableRequestException {
+        return super.findPagedByQuery(filter);
     }
 
     /**
