@@ -44,30 +44,30 @@ public class AppConfig {
         return DozerBeanMapperBuilder.buildDefault();
     }
 
-    @Bean
-    public SearchConfigRepository searchConfigRepository(){
-        return new SearchConfigRepository() {
-            @Override
-            public Iterable<SearchConfig> findAll(Sort sort) {
-                return null;
-            }
-
-            @Override
-            public Page<SearchConfig> findAll(Pageable pageable) {
-                return null;
-            }
-
-            @Override
-            public List<SearchConfig> findByClase(String nombreClase) {
-                return null;
-            }
-
-            @Override
-            public SearchConfig findByFilter(String nombreClase, String nombreFiltro) {
-                return null;
-            }
-        };
-    }
+//    @Bean
+//    public SearchConfigRepository searchConfigRepository(){
+//        return new SearchConfigRepository() {
+//            @Override
+//            public Iterable<SearchConfig> findAll(Sort sort) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Page<SearchConfig> findAll(Pageable pageable) {
+//                return null;
+//            }
+//
+//            @Override
+//            public List<SearchConfig> findByClase(String nombreClase) {
+//                return null;
+//            }
+//
+//            @Override
+//            public SearchConfig findByFilter(String nombreClase, String nombreFiltro) {
+//                return null;
+//            }
+//        };
+//    }
 
     @Bean
     public RsqlMapper rsqlMapper(){
