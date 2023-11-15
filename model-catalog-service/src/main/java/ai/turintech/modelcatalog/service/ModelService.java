@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import ai.turintech.components.mapper.GlobalMapper;
+import ai.turintech.components.mapper.api.MapperInterface;
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +57,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	@Transactional
 	public Mono<ModelDTO> save(ModelDTO modelDTO) {
 		log.debug("Request to save Model : {}", modelDTO);
-		GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "create", modelDTO,
+		GenericModelCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "create", modelDTO,
 				modelRepository, modelMapper);
 		return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
 	}
@@ -68,7 +71,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	@Transactional
 	public Mono<ModelDTO> update(ModelDTO modelDTO) {
 		log.debug("Request to update Model : {}", modelDTO);
-		GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "update", modelDTO,
+		GenericModelCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "update", modelDTO,
 				modelRepository, modelMapper);
 		return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
 	}
@@ -82,7 +85,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	@Transactional
 	public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO) {
 		log.debug("Request to partially update Model : {}", modelDTO);
-		GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "partialUpdate",
+		GenericModelCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "partialUpdate",
 				modelDTO, modelRepository, modelMapper);
 		return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
 	}
@@ -119,7 +122,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	@Transactional(readOnly = true)
 	public Mono<ModelDTO> findOne(UUID id) throws FindOneException {
 		log.debug("Request to get Model : {}", id);
-		GenericCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "findById", id,
+		GenericModelCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "findById", id,
 				modelRepository, modelMapper);
 		return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
 	}
@@ -132,7 +135,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	@Transactional
 	public Mono<Void> delete(UUID id) {
 		log.debug("Request to delete Model : {}", id);
-		GenericCallable<Void, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "delete", id,
+		GenericModelCallable<Void, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "delete", id,
 				modelRepository, modelMapper);
 		return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
 	}
@@ -140,7 +143,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	@Transactional
 	public Mono<Boolean> existsById(UUID id) {
 		log.debug("Request to check if ModelGroupType exists : {}", id);
-		GenericCallable<Boolean, ModelDTO, Model> callable = context.getBean(GenericCallable.class, "existsById", id,
+		GenericModelCallable<Boolean, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "existsById", id,
 				modelRepository, modelMapper);
 		return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
 	}
