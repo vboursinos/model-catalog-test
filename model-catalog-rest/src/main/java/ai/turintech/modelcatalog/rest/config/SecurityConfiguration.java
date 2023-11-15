@@ -15,17 +15,10 @@ import org.springframework.security.web.server.util.matcher.NegatedServerWebExch
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 
 import ai.turintech.modelcatalog.rest.support.security.AuthoritiesConstants;
-//import tech.jhipster.config.JHipsterProperties;
 
 @Configuration
 @EnableReactiveMethodSecurity
 public class SecurityConfiguration {
-
-    //private final JHipsterProperties jHipsterProperties;
-
-    //public SecurityConfiguration(JHipsterProperties jHipsterProperties) {
-    //    this.jHipsterProperties = jHipsterProperties;
-    //}
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
@@ -56,6 +49,9 @@ public class SecurityConfiguration {
                     .pathMatchers("/api/authenticate").permitAll()
                     .pathMatchers("/api/admin/**").permitAll()
                     .pathMatchers("/api/**").permitAll()
+                    //swagger-ui open public config
+                    .pathMatchers("/swagger-ui/**").permitAll()
+                    .pathMatchers("/webjars/swagger-ui/**").permitAll()
                     .pathMatchers("/v3/api-docs/**").permitAll()
                     .pathMatchers("/management/health").permitAll()
                     .pathMatchers("/management/health/**").permitAll()

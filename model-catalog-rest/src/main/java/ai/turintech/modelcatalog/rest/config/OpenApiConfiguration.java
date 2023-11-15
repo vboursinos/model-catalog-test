@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import ai.turintech.modelcatalog.rest.resource.ModelCatalogRestResourcesPackage;
 import ai.turintech.modelcatalog.rest.support.apidoc.customizer.CustomOpenApiCustomizer;
 import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 
@@ -14,7 +15,7 @@ import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 @Profile(ApplicationProfiles.SPRING_PROFILE_API_DOCS)
 public class OpenApiConfiguration {
 
-    public static final String API_FIRST_PACKAGE = "ai.turintech.modelcatalog.rest.api";
+    public static final String API_FIRST_PACKAGE = ModelCatalogRestResourcesPackage.class.getPackageName();
 
     @Bean
     @ConditionalOnMissingBean(name = "apiFirstGroupedOpenAPI")

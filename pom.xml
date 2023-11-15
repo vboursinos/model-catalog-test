@@ -20,6 +20,7 @@
 	<properties>
 		<spring-boot.version>3.1.4</spring-boot.version>
 		<springdoc-openapi-starter-webflux-api.version>2.2.0</springdoc-openapi-starter-webflux-api.version>
+		<springdoc-openapi-starter-webflux-ui.version>2.2.0</springdoc-openapi-starter-webflux-ui.version>
 		<springdoc-openapi-common.version>1.7.0</springdoc-openapi-common.version>
 		<maven.version>3.2.5</maven.version>
 		<java.version>17</java.version>
@@ -122,6 +123,11 @@
 				<artifactId>springdoc-openapi-starter-webflux-api</artifactId>
 				<version>${springdoc-openapi-starter-webflux-api.version}</version>
 			</dependency>
+			<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+			<version>${springdoc-openapi-starter-webflux-ui.version}</version>
+		</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-common</artifactId>
