@@ -4,8 +4,6 @@ import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelGroupType;
 import org.mapstruct.*;
 
-/**
- * Mapper for the entity {@link ModelGroupType} and its DTO {@link ModelGroupTypeDTO}.
- */
+/** Mapper for the entity {@link ModelGroupType} and its DTO {@link ModelGroupTypeDTO}. */
 @Mapper(componentModel = "spring")
 public interface ModelGroupTypeMapper extends EntityMapper<ModelGroupTypeDTO, ModelGroupType> {}

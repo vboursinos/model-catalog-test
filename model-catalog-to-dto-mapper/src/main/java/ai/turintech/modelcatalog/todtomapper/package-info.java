@@ -1,4 +1,2 @@
-/**
- * Transfer objects mappers.
- */
+/** Transfer objects mappers. */
 package ai.turintech.modelcatalog.todtomapper;

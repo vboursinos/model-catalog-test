@@ -4,59 +4,54 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * A DTO for the Metric entity.
- */
+/** A DTO for the Metric entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class MetricDTO implements Serializable {
 
-    private UUID id;
+  private UUID id;
 
-    private String metric;
+  private String metric;
 
-    public UUID getId() {
-        return id;
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
+
+  public String getMetric() {
+    return metric;
+  }
+
+  public void setMetric(String metric) {
+    this.metric = metric;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof MetricDTO)) {
+      return false;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    MetricDTO metricDTO = (MetricDTO) o;
+    if (this.id == null) {
+      return false;
     }
+    return Objects.equals(this.id, metricDTO.id);
+  }
 
-    public String getMetric() {
-        return metric;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id);
+  }
 
-    public void setMetric(String metric) {
-        this.metric = metric;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof MetricDTO)) {
-            return false;
-        }
-
-        MetricDTO metricDTO = (MetricDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, metricDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "MetricDTO{" +
-            "id='" + getId() + "'" +
-            ", metric='" + getMetric() + "'" +
-            "}";
-    }
+  // prettier-ignore
+  @Override
+  public String toString() {
+    return "MetricDTO{" + "id='" + getId() + "'" + ", metric='" + getMetric() + "'" + "}";
+  }
 }

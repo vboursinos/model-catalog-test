@@ -11,30 +11,33 @@ import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity {@link ParameterTypeDefinition} and its DTO {@link ParameterTypeDefinitionDTO}.
+ * Mapper for the entity {@link ParameterTypeDefinition} and its DTO {@link
+ * ParameterTypeDefinitionDTO}.
  */
 @Mapper(componentModel = "spring")
-public interface ParameterTypeDefinitionMapper extends EntityMapper<ParameterTypeDefinitionDTO, ParameterTypeDefinition> {
-    @Mapping(target = "distribution", source = "distribution")
-    @Mapping(target = "type", source = "type")
-    @Mapping(target = "categoricalParameter", source = "categoricalParameter")
-    @Mapping(target = "booleanParameter", source = "booleanParameter")
-    @Mapping(target = "floatParameter", source = "floatParameter")
-    @Mapping(target = "integerParameter", source = "integerParameter")
-    ParameterTypeDefinitionDTO toDto(ParameterTypeDefinition s);
+public interface ParameterTypeDefinitionMapper
+    extends EntityMapper<ParameterTypeDefinitionDTO, ParameterTypeDefinition> {
+  @Mapping(target = "distribution", source = "distribution")
+  @Mapping(target = "type", source = "type")
+  @Mapping(target = "categoricalParameter", source = "categoricalParameter")
+  @Mapping(target = "booleanParameter", source = "booleanParameter")
+  @Mapping(target = "floatParameter", source = "floatParameter")
+  @Mapping(target = "integerParameter", source = "integerParameter")
+  ParameterTypeDefinitionDTO toDto(ParameterTypeDefinition s);
 
-    @Named("parameterDistributionTypeId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ParameterDistributionTypeDTO toDtoParameterDistributionTypeId(ParameterDistributionType parameterDistributionType);
+  @Named("parameterDistributionTypeId")
+  @BeanMapping(ignoreByDefault = true)
+  @Mapping(target = "id", source = "id")
+  ParameterDistributionTypeDTO toDtoParameterDistributionTypeId(
+      ParameterDistributionType parameterDistributionType);
 
-    @Named("parameterId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ParameterDTO toDtoParameterId(Parameter parameter);
+  @Named("parameterId")
+  @BeanMapping(ignoreByDefault = true)
+  @Mapping(target = "id", source = "id")
+  ParameterDTO toDtoParameterId(Parameter parameter);
 
-    @Named("parameterTypeId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ParameterTypeDTO toDtoParameterTypeId(ParameterType parameterType);
+  @Named("parameterTypeId")
+  @BeanMapping(ignoreByDefault = true)
+  @Mapping(target = "id", source = "id")
+  ParameterTypeDTO toDtoParameterTypeId(ParameterType parameterType);
 }

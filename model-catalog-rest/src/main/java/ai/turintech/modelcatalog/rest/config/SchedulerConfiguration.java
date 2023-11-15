@@ -7,8 +7,8 @@ import reactor.core.scheduler.Schedulers;
 
 @Configuration
 public class SchedulerConfiguration {
-    @Bean
-    public Scheduler jdbcScheduler() {
-        return Schedulers.immediate();
-    }
+  @Bean
+  public Scheduler jdbcScheduler() {
+    return Schedulers.immediate();
+  }
 }

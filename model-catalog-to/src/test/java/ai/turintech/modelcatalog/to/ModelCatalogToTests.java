@@ -1,13 +1,10 @@
 package ai.turintech.modelcatalog.to;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest
+// @SpringBootTest
 class ModelCatalogToTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+  @Test
+  void contextLoads() {}
 }

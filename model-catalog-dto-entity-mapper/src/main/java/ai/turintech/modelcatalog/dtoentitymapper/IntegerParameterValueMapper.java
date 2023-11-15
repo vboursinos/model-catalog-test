@@ -10,11 +10,12 @@ import org.mapstruct.*;
  * Mapper for the entity {@link IntegerParameterValue} and its DTO {@link IntegerParameterValueDTO}.
  */
 @Mapper(componentModel = "spring")
-public interface IntegerParameterValueMapper extends EntityMapper<IntegerParameterValueDTO, IntegerParameterValue> {
+public interface IntegerParameterValueMapper
+    extends EntityMapper<IntegerParameterValueDTO, IntegerParameterValue> {
 
-    IntegerParameterValueDTO toDto(IntegerParameterValue s);
+  IntegerParameterValueDTO toDto(IntegerParameterValue s);
 
-    @Named("integerParameterId")
-    @BeanMapping(ignoreByDefault = true)
-    IntegerParameterDTO toDtoIntegerParameterId(IntegerParameter integerParameter);
+  @Named("integerParameterId")
+  @BeanMapping(ignoreByDefault = true)
+  IntegerParameterDTO toDtoIntegerParameterId(IntegerParameter integerParameter);
 }

@@ -46,6 +46,7 @@
 		<!-- Components -->
 		<jpa-search.version>01.00.00-a0-SNAPSHOT</jpa-search.version>
 		<common-data.version>01.00.00-a0-SNAPSHOT</common-data.version>
+		<mapper.version>01.00.00-a0-SNAPSHOT</mapper.version>
 
 
 		<!-- Additional props copied from jhipster pom.xml -->
@@ -188,6 +189,11 @@
 				<groupId>ai.turintech.components</groupId>
 				<artifactId>common-data</artifactId>
 				<version>${common-data.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>mapper</artifactId>
+				<version>${mapper.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

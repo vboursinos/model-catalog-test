@@ -1,75 +1,77 @@
 package ai.turintech.modelcatalog.to;
 
+import ai.turintech.components.data.common.to.AbstractTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import ai.turintech.components.data.common.to.AbstractTO;
-
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class IntegerParameterTO extends AbstractTO implements Serializable {
 
-    private static final long serialVersionUID = -1708744270555813607L;
+  private static final long serialVersionUID = -1708744270555813607L;
 
-	private UUID parameterTypeDefinitionId;
+  private UUID parameterTypeDefinitionId;
 
-    private Integer defaultValue;
+  private Integer defaultValue;
 
-    private List<IntegerParameterValueTO> integerParameterValues = new ArrayList<>();
+  private List<IntegerParameterValueTO> integerParameterValues = new ArrayList<>();
 
-    public UUID getParameterTypeDefinitionId() {
-        return parameterTypeDefinitionId;
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+  }
+
+  public Integer getDefaultValue() {
+    return defaultValue;
+  }
+
+  public void setDefaultValue(Integer defaultValue) {
+    this.defaultValue = defaultValue;
+  }
+
+  public List<IntegerParameterValueTO> getIntegerParameterValues() {
+    return integerParameterValues;
+  }
+
+  public void setIntegerParameterValues(List<IntegerParameterValueTO> integerParameterValues) {
+    this.integerParameterValues = integerParameterValues;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof IntegerParameterTO)) {
+      return false;
     }
 
-    public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-        this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+    IntegerParameterTO integerParameterDTO = (IntegerParameterTO) o;
+    if (this.parameterTypeDefinitionId == null) {
+      return false;
     }
+    return Objects.equals(
+        this.parameterTypeDefinitionId, integerParameterDTO.parameterTypeDefinitionId);
+  }
 
-    public Integer getDefaultValue() {
-        return defaultValue;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.parameterTypeDefinitionId);
+  }
 
-    public void setDefaultValue(Integer defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
-    public List<IntegerParameterValueTO> getIntegerParameterValues() {
-        return integerParameterValues;
-    }
-
-    public void setIntegerParameterValues(List<IntegerParameterValueTO> integerParameterValues) {
-        this.integerParameterValues = integerParameterValues;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof IntegerParameterTO)) {
-            return false;
-        }
-
-        IntegerParameterTO integerParameterDTO = (IntegerParameterTO) o;
-        if (this.parameterTypeDefinitionId == null) {
-            return false;
-        }
-        return Objects.equals(this.parameterTypeDefinitionId, integerParameterDTO.parameterTypeDefinitionId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.parameterTypeDefinitionId);
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "IntegerParameterDTO{" +
-            "parameterTypeDefinitionId" + getParameterTypeDefinitionId() +
-            ", defaultValue=" + getDefaultValue() +
-            "}";
-    }
+  // prettier-ignore
+  @Override
+  public String toString() {
+    return "IntegerParameterDTO{"
+        + "parameterTypeDefinitionId"
+        + getParameterTypeDefinitionId()
+        + ", defaultValue="
+        + getDefaultValue()
+        + "}";
+  }
 }

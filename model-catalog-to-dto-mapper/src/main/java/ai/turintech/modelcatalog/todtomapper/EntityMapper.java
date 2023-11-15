@@ -12,17 +12,16 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
  * @param <T> - TO type parameter.
  * @param <D> - DTO type parameter.
  */
-
 public interface EntityMapper<T, D> {
-    T toTo(D dto);
+  T toTo(D dto);
 
-    D toDto(T to);
+  D toDto(T to);
 
-    List<T> toTo(List<D> dtoList);
+  List<T> toTo(List<D> dtoList);
 
-    List<D> toDto(List<D> entityList);
+  List<D> toDto(List<D> entityList);
 
-    @Named("partialUpdate")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void partialUpdate(@MappingTarget T to, D dto);
+  @Named("partialUpdate")
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  void partialUpdate(@MappingTarget T to, D dto);
 }

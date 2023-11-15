@@ -1,11 +1,9 @@
 package ai.turintech.modelcatalog.rest.config;
 
-/**
- * Application constants.
- */
+/** Application constants. */
 public final class Constants {
 
-    public static final String SYSTEM = "system";
+  public static final String SYSTEM = "system";
 
-    private Constants() {}
+  private Constants() {}
 }

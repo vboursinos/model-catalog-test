@@ -1,58 +1,55 @@
 package ai.turintech.modelcatalog.dto;
 
 import jakarta.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.util.UUID;
 
-/**
- * A DTO for the IntegerParameterValue entity.
- */
+/** A DTO for the IntegerParameterValue entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class IntegerParameterValueDTO implements Serializable {
 
-    private UUID id;
+  private UUID id;
 
-    @NotNull(message = "must not be null")
-    private Integer lower;
+  @NotNull(message = "must not be null")
+  private Integer lower;
 
-    @NotNull(message = "must not be null")
-    private Integer upper;
+  @NotNull(message = "must not be null")
+  private Integer upper;
 
+  public UUID getId() {
+    return id;
+  }
 
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
-    public UUID getId() {
-        return id;
-    }
+  public Integer getLower() {
+    return lower;
+  }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+  public void setLower(Integer lower) {
+    this.lower = lower;
+  }
 
-    public Integer getLower() {
-        return lower;
-    }
+  public Integer getUpper() {
+    return upper;
+  }
 
-    public void setLower(Integer lower) {
-        this.lower = lower;
-    }
+  public void setUpper(Integer upper) {
+    this.upper = upper;
+  }
 
-    public Integer getUpper() {
-        return upper;
-    }
-
-    public void setUpper(Integer upper) {
-        this.upper = upper;
-    }
-
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "IntegerParameterValueDTO{" +
-            "id=" + getId() +
-            ", lower=" + getLower() +
-            ", upper=" + getUpper() +
-            "}";
-    }
+  // prettier-ignore
+  @Override
+  public String toString() {
+    return "IntegerParameterValueDTO{"
+        + "id="
+        + getId()
+        + ", lower="
+        + getLower()
+        + ", upper="
+        + getUpper()
+        + "}";
+  }
 }

@@ -6,14 +6,13 @@ import ai.turintech.modelcatalog.entity.FloatParameter;
 import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import org.mapstruct.*;
 
-/**
- * Mapper for the entity {@link FloatParameterRange} and its DTO {@link FloatParameterRangeDTO}.
- */
+/** Mapper for the entity {@link FloatParameterRange} and its DTO {@link FloatParameterRangeDTO}. */
 @Mapper(componentModel = "spring")
-public interface FloatParameterRangeMapper extends EntityMapper<FloatParameterRangeDTO, FloatParameterRange> {
-    FloatParameterRangeDTO toDto(FloatParameterRange s);
+public interface FloatParameterRangeMapper
+    extends EntityMapper<FloatParameterRangeDTO, FloatParameterRange> {
+  FloatParameterRangeDTO toDto(FloatParameterRange s);
 
-    @Named("floatParameterId")
-    @BeanMapping(ignoreByDefault = true)
-    FloatParameterDTO toDtoFloatParameterId(FloatParameter floatParameter);
+  @Named("floatParameterId")
+  @BeanMapping(ignoreByDefault = true)
+  FloatParameterDTO toDtoFloatParameterId(FloatParameter floatParameter);
 }

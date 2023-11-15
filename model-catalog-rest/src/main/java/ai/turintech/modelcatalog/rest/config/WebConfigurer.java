@@ -1,5 +1,10 @@
 package ai.turintech.modelcatalog.rest.config;
 
+import ai.turintech.modelcatalog.rest.errors.ExceptionTranslator;
+import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
+import ai.turintech.modelcatalog.rest.support.database.h2.H2ConfigurationHelper;
+import ai.turintech.modelcatalog.rest.support.errors.ReactiveWebExceptionHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -17,64 +22,58 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.server.WebExceptionHandler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ai.turintech.modelcatalog.rest.errors.ExceptionTranslator;
-import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
-import ai.turintech.modelcatalog.rest.support.database.h2.H2ConfigurationHelper;
-import ai.turintech.modelcatalog.rest.support.errors.ReactiveWebExceptionHandler;
-
-
-/**
- * Configuration of web application with Servlet 3.0 APIs.
- */
+/** Configuration of web application with Servlet 3.0 APIs. */
 @Configuration
 public class WebConfigurer implements WebFluxConfigurer {
 
-    private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
+  private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
-    public WebConfigurer(Environment env) {
-        
-        if (env.acceptsProfiles(Profiles.of(ApplicationProfiles.SPRING_PROFILE_DEVELOPMENT))) {
-            try {
-                H2ConfigurationHelper.initH2Console();
-            } catch (Exception e) {
-                // Console may already be running on another app or after a refresh.
-                e.printStackTrace();
-            }
-        }
-    }
+  public WebConfigurer(Environment env) {
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        //TODO- Apply or provide this configuration using application properties file
-        CorsConfiguration config = new CorsConfiguration();
-        if (!CollectionUtils.isEmpty(config.getAllowedOrigins()) || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
-            log.debug("Registering CORS filter");
-            source.registerCorsConfiguration("/api/**", config);
-            source.registerCorsConfiguration("/management/**", config);
-            source.registerCorsConfiguration("/v3/api-docs", config);
-            source.registerCorsConfiguration("/swagger-ui/**", config);
-        }
-        return source;
+    if (env.acceptsProfiles(Profiles.of(ApplicationProfiles.SPRING_PROFILE_DEVELOPMENT))) {
+      try {
+        H2ConfigurationHelper.initH2Console();
+      } catch (Exception e) {
+        // Console may already be running on another app or after a refresh.
+        e.printStackTrace();
+      }
     }
+  }
 
-    // TODO: remove when this is supported in spring-boot
-    @Bean
-    HandlerMethodArgumentResolver reactivePageableHandlerMethodArgumentResolver() {
-        return new ReactivePageableHandlerMethodArgumentResolver();
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    // TODO- Apply or provide this configuration using application properties file
+    CorsConfiguration config = new CorsConfiguration();
+    if (!CollectionUtils.isEmpty(config.getAllowedOrigins())
+        || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
+      log.debug("Registering CORS filter");
+      source.registerCorsConfiguration("/api/**", config);
+      source.registerCorsConfiguration("/management/**", config);
+      source.registerCorsConfiguration("/v3/api-docs", config);
+      source.registerCorsConfiguration("/swagger-ui/**", config);
     }
+    return source;
+  }
 
-    // TODO: remove when this is supported in spring-boot
-    @Bean
-    HandlerMethodArgumentResolver reactiveSortHandlerMethodArgumentResolver() {
-        return new ReactiveSortHandlerMethodArgumentResolver();
-    }
+  // TODO: remove when this is supported in spring-boot
+  @Bean
+  HandlerMethodArgumentResolver reactivePageableHandlerMethodArgumentResolver() {
+    return new ReactivePageableHandlerMethodArgumentResolver();
+  }
 
-    @Bean
-    @Order(-2) // The handler must have precedence over WebFluxResponseStatusExceptionHandler and Spring Boot's ErrorWebExceptionHandler
-    public WebExceptionHandler problemExceptionHandler(ObjectMapper mapper, ExceptionTranslator problemHandling) {
-        return new ReactiveWebExceptionHandler(problemHandling, mapper);
-    }
+  // TODO: remove when this is supported in spring-boot
+  @Bean
+  HandlerMethodArgumentResolver reactiveSortHandlerMethodArgumentResolver() {
+    return new ReactiveSortHandlerMethodArgumentResolver();
+  }
+
+  @Bean
+  @Order(
+      -2) // The handler must have precedence over WebFluxResponseStatusExceptionHandler and Spring
+  // Boot's ErrorWebExceptionHandler
+  public WebExceptionHandler problemExceptionHandler(
+      ObjectMapper mapper, ExceptionTranslator problemHandling) {
+    return new ReactiveWebExceptionHandler(problemHandling, mapper);
+  }
 }
