@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.*;
 import ai.turintech.modelcatalog.entity.*;
 import java.util.Set;
@@ -8,7 +9,7 @@ import org.mapstruct.*;
 
 /** Mapper for the entity {@link Model} and its DTO {@link ModelDTO}. */
 @Mapper(componentModel = "spring")
-public interface ModelMapper extends EntityMapper<ModelDTO, Model> {
+public interface ModelMapper extends MapperInterface<ModelDTO, Model> {
   @Mapping(target = "groups", source = "groups")
   @Mapping(target = "incompatibleMetrics", source = "incompatibleMetrics")
   @Mapping(target = "mlTask", source = "mlTask")

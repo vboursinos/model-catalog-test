@@ -48,6 +48,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Components -->
+		<dependency>
+			<groupId>ai.turintech.components</groupId>
+			<artifactId>mapper</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
