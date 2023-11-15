@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
@@ -42,7 +41,6 @@ public class FloatParameterRange implements Serializable {
     private Double upper;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "parameterTypeDefinition", "floatParameterRanges" }, allowSetters = true)
     @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "parameter_type_definition_id")
     private FloatParameter floatParameter;
 

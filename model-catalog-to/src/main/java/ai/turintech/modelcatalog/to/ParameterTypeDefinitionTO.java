@@ -1,6 +1,8 @@
 package ai.turintech.modelcatalog.to;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import ai.turintech.components.data.common.to.AbstractTO;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
@@ -9,9 +11,11 @@ import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ParameterTypeDefinitionTO implements Serializable {
+public class ParameterTypeDefinitionTO extends AbstractTO implements Serializable {
 
-    private UUID id;
+    private static final long serialVersionUID = 5585810515555669383L;
+
+	private UUID id;
 
     @NotNull(message = "must not be null")
     private Integer ordering;

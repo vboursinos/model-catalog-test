@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -27,17 +26,12 @@ public class IntegerParameter implements Serializable {
     @Column(name = "default_value")
     private Integer defaultValue;
 
-    @JsonIgnoreProperties(
-        value = { "integerParameter", "floatParameter", "categoricalParameter", "booleanParameter", "distribution", "parameter", "type" },
-        allowSetters = true
-    )
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parameter_type_definition_id", unique = true)
     private ParameterTypeDefinition parameterTypeDefinition;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "integerParameter")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "integerParameter" }, allowSetters = true)
     private Set<IntegerParameterValue> integerParameterValues = new HashSet<>();
 
 // jhipster-needle-entity-add-field - JHipster will add fields here

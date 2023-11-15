@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -28,17 +27,12 @@ public class FloatParameter implements Serializable {
     @Column(name = "default_value")
     private Double defaultValue;
 
-    @JsonIgnoreProperties(
-        value = { "integerParameter", "floatParameter", "categoricalParameter", "booleanParameter", "distribution", "parameter", "type" },
-        allowSetters = true
-    )
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parameter_type_definition_id", unique = true)
     private ParameterTypeDefinition parameterTypeDefinition;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "floatParameter")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "floatParameter" }, allowSetters = true)
     private Set<FloatParameterRange> floatParameterRanges = new HashSet<>();
 
     public FloatParameter() {

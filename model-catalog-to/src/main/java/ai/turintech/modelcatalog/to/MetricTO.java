@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-@SuppressWarnings("common-java:DuplicatedBlocks")
-public class MetricTO implements Serializable {
+import ai.turintech.components.data.common.to.AbstractTO;
 
-    private UUID id;
+@SuppressWarnings("common-java:DuplicatedBlocks")
+public class MetricTO extends AbstractTO implements Serializable {
+
+    private static final long serialVersionUID = 4206079281795273477L;
+
+	private UUID id;
 
     private String metric;
 

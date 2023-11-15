@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -31,10 +30,6 @@ public class Metric implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "incompatibleMetrics")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(
-        value = { "parameters", "groups", "incompatibleMetrics", "mlTask", "structure", "type", "familyType", "ensembleType" },
-        allowSetters = true
-    )
     private Set<Model> models = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

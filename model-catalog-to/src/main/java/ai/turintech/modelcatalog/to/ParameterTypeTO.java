@@ -6,11 +6,15 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
+import ai.turintech.components.data.common.to.AbstractTO;
+
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterTypeTO implements Serializable {
+public class ParameterTypeTO extends AbstractTO implements Serializable {
 
-    private UUID id;
+    private static final long serialVersionUID = 5395410671139921508L;
+
+	private UUID id;
 
     @NotNull(message = "must not be null")
     private String name;

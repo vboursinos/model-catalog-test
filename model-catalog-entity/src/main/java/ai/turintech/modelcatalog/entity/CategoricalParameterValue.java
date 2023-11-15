@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
@@ -30,7 +29,6 @@ public class CategoricalParameterValue implements Serializable {
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "parameterTypeDefinition", "categoricalParameterValues" }, allowSetters = true)
     @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "parameter_type_definition_id")
     private CategoricalParameter categoricalParameter;
 

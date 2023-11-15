@@ -2,11 +2,16 @@ package ai.turintech.modelcatalog.to;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import ai.turintech.components.data.common.to.AbstractTO;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelPaginatedListTO {
-    @JsonInclude(JsonInclude.Include.ALWAYS)
+public class ModelPaginatedListTO extends AbstractTO implements Serializable{
+    private static final long serialVersionUID = -6078657183320503265L;
+
+	@JsonInclude(JsonInclude.Include.ALWAYS)
     private List<ModelTO> docs = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)

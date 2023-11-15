@@ -5,10 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-@SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterValueTO implements Serializable {
+import ai.turintech.components.data.common.to.AbstractTO;
 
-    private UUID id;
+@SuppressWarnings("common-java:DuplicatedBlocks")
+public class IntegerParameterValueTO extends AbstractTO implements Serializable {
+
+    private static final long serialVersionUID = 4737079565447734718L;
+
+	private UUID id;
 
     @NotNull(message = "must not be null")
     private Integer lower;

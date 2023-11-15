@@ -10,7 +10,9 @@ import java.util.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ModelTO extends AbstractTO implements Serializable {
 
-    private UUID id;
+    private static final long serialVersionUID = 1294639702776637323L;
+
+	private UUID id;
 
     @NotNull(message = "must not be null")
     private String name;

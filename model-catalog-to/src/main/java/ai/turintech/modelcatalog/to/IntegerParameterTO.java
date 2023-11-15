@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterTO implements Serializable {
+import ai.turintech.components.data.common.to.AbstractTO;
 
-    private UUID parameterTypeDefinitionId;
+@SuppressWarnings("common-java:DuplicatedBlocks")
+public class IntegerParameterTO extends AbstractTO implements Serializable {
+
+    private static final long serialVersionUID = -1708744270555813607L;
+
+	private UUID parameterTypeDefinitionId;
 
     private Integer defaultValue;
 

@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -66,7 +65,6 @@ public class Model implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "model")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "definitions", "model" }, allowSetters = true)
     private Set<Parameter> parameters = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -76,7 +74,6 @@ public class Model implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "group_id")
     )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "models" }, allowSetters = true)
     private Set<ModelGroupType> groups = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -86,31 +83,25 @@ public class Model implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "metric_id")
     )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "models" }, allowSetters = true)
     private Set<Metric> incompatibleMetrics = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "models" }, allowSetters = true)
     @JoinColumn(name = "ml_task_id", referencedColumnName = "id")
     private MlTaskType mlTask;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "models" }, allowSetters = true)
     @JoinColumn(name = "structure_id", referencedColumnName = "id")
     private ModelStructureType structure;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "models" }, allowSetters = true)
     @JoinColumn(name = "model_type_id", referencedColumnName = "id")
     private ModelType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "models" }, allowSetters = true)
     @JoinColumn(name = "family_type_id", referencedColumnName = "id")
     private ModelFamilyType familyType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "models" }, allowSetters = true)
     @JoinColumn(name = "ensemble_type_id", referencedColumnName = "id")
     private ModelEnsembleType ensembleType;
 

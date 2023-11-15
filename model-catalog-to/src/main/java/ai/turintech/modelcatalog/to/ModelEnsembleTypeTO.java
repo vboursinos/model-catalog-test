@@ -6,10 +6,14 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-@SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelEnsembleTypeTO implements Serializable {
+import ai.turintech.components.data.common.to.AbstractTO;
 
-    private UUID id;
+@SuppressWarnings("common-java:DuplicatedBlocks")
+public class ModelEnsembleTypeTO extends AbstractTO implements Serializable {
+
+    private static final long serialVersionUID = -8395745927703226088L;
+
+	private UUID id;
 
     @NotNull(message = "must not be null")
     private String name;
