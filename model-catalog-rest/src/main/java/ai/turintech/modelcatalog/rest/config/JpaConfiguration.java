@@ -17,7 +17,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-// @EnableJpaRepositories(basePackages = "ai.turintech.modelcatalog.repository")
 public class JpaConfiguration {
 
   @Value("${spring.datasource.url}")
@@ -45,24 +44,6 @@ public class JpaConfiguration {
     return dataSource;
   }
 
-  //    @Bean(name = "entityManagerFactory")
-  //    public LocalSessionFactoryBean sessionFactory() {
-  //        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-  //
-  // sessionFactory.setPackagesToScan(ModelCatalogEntityPackage.class.getPackage().getName(),IgvSearchEntityPackage.class.getPackage().getName());
-  //        sessionFactory.setDataSource(dataSource());
-  //
-  //        return sessionFactory;
-  //    }
-
-  //    @Primary
-  //    @Bean
-  //    public PlatformTransactionManager transactionManager() {
-  //        JpaTransactionManager transactionManager = new JpaTransactionManager();
-  //        transactionManager.setEntityManagerFactory(sessionFactory().getObject());
-  //        return transactionManager;
-  //    }
-
   @Bean
   public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
     LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -71,7 +52,6 @@ public class JpaConfiguration {
         ModelCatalogEntityPackage.class.getPackage().getName(),
         IgvSearchEntityPackage.class.getPackage().getName());
     em.setJpaVendorAdapter(vendorAdapter(Boolean.valueOf(true), postgresDialect));
-    //        em.setJpaProperties(additionalProperties(JPA_PROPERTIES));
     return em;
   }
 
@@ -90,11 +70,4 @@ public class JpaConfiguration {
     vendorAdapter.setDatabasePlatform(dialect);
     return vendorAdapter;
   }
-
-  //    private Properties additionalProperties(String hbm2dllAuto) {
-  //        Properties properties = new Properties();
-  //        properties.setProperty(Environment.HBM2DDL_AUTO, hbm2dllAuto);
-  //        return properties;
-  //    }
-
 }
