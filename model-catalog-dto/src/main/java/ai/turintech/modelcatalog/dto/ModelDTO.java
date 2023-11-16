@@ -54,8 +54,6 @@ public class ModelDTO extends AbstractDTO implements Serializable {
   @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
   private ModelEnsembleTypeDTO ensembleType;
 
-  private String mlTaskName;
-
   public ModelDTO(
       UUID id,
       String name,
@@ -64,8 +62,7 @@ public class ModelDTO extends AbstractDTO implements Serializable {
       String[] advantages,
       String[] disadvantages,
       Boolean enabled,
-      Boolean decisionTree,
-      String mlTaskName) {
+      Boolean decisionTree) {
     this.id = id;
     this.name = name;
     this.displayName = displayName;
@@ -74,7 +71,6 @@ public class ModelDTO extends AbstractDTO implements Serializable {
     this.disadvantages = disadvantages;
     this.enabled = enabled;
     this.decisionTree = decisionTree;
-    this.mlTaskName = mlTaskName;
   }
 
   public UUID getId() {
@@ -205,14 +201,6 @@ public class ModelDTO extends AbstractDTO implements Serializable {
     this.parameters = parameters;
   }
 
-  public String getMlTaskName() {
-    return mlTaskName;
-  }
-
-  public void setMlTaskName(String mlTaskName) {
-    this.mlTaskName = mlTaskName;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -276,8 +264,6 @@ public class ModelDTO extends AbstractDTO implements Serializable {
         + familyType
         + ", ensembleType="
         + ensembleType
-        + ", mlTaskName='"
-        + mlTaskName
         + '\''
         + '}';
   }

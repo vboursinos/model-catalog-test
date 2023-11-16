@@ -55,8 +55,6 @@ public class ModelTO extends AbstractTO implements Serializable {
   @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
   private ModelEnsembleTypeTO ensembleType;
 
-  private String mlTaskName;
-
   public UUID getId() {
     return id;
   }
@@ -183,14 +181,6 @@ public class ModelTO extends AbstractTO implements Serializable {
 
   public void setParameters(List<ParameterTO> parameters) {
     this.parameters = parameters;
-  }
-
-  public String getMlTaskName() {
-    return mlTaskName;
-  }
-
-  public void setMlTaskName(String mlTaskName) {
-    this.mlTaskName = mlTaskName;
   }
 
   @Override
