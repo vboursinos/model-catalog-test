@@ -17,6 +17,7 @@
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="config/liquibase/changelog/setup.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/search_config_create.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/insert_distribution.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/insert_ensemble_family.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/insert_group_type.sql" relativeToChangelogFile="false"/>
