@@ -59,8 +59,8 @@ public class BooleanParameterResource {
           "A new booleanParameter cannot already have an ID", ENTITY_NAME, "idexists");
     }
     return booleanParameterFacade
-        .save(this.booleanParameterMapper.toDto(booleanParameterTO))
-        .map(booleanParameterMapper::toTo)
+        .save(this.booleanParameterMapper.from(booleanParameterTO))
+        .map(booleanParameterMapper::to)
         .map(
             result -> {
               try {
@@ -113,8 +113,8 @@ public class BooleanParameterResource {
               }
 
               return booleanParameterFacade
-                  .update(booleanParameterMapper.toDto(booleanParameterTO))
-                  .map(booleanParameterMapper::toTo)
+                  .update(booleanParameterMapper.from(booleanParameterTO))
+                  .map(booleanParameterMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -171,8 +171,8 @@ public class BooleanParameterResource {
 
               Mono<BooleanParameterTO> result =
                   booleanParameterFacade
-                      .partialUpdate(booleanParameterMapper.toDto(booleanParameterTO))
-                      .map(booleanParameterMapper::toTo);
+                      .partialUpdate(booleanParameterMapper.from(booleanParameterTO))
+                      .map(booleanParameterMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -209,7 +209,7 @@ public class BooleanParameterResource {
   @GetMapping(value = "/boolean-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<BooleanParameterTO> getAllBooleanParametersAsStream() {
     log.debug("REST request to get all BooleanParameters as a stream");
-    return booleanParameterFacade.findAll().map(booleanParameterMapper::toTo);
+    return booleanParameterFacade.findAll().map(booleanParameterMapper::to);
   }
 
   /**
@@ -223,7 +223,7 @@ public class BooleanParameterResource {
   public Mono<ResponseEntity<BooleanParameterTO>> getBooleanParameter(@PathVariable UUID id) {
     log.debug("REST request to get BooleanParameter : {}", id);
     Mono<BooleanParameterTO> booleanParameterTO =
-        booleanParameterFacade.findOne(id).map(booleanParameterMapper::toTo);
+        booleanParameterFacade.findOne(id).map(booleanParameterMapper::to);
     return ResponseUtil.wrapOrNotFound(booleanParameterTO);
   }
   /**

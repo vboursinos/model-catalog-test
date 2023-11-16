@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.GenericCallable;
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterMapper;
 import ai.turintech.modelcatalog.entity.Parameter;
@@ -41,9 +41,9 @@ public class ParameterService {
   @Transactional
   public Mono<ParameterDTO> save(ParameterDTO parameterDTO) {
     log.debug("Request to save Parameter : {}", parameterDTO);
-    GenericCallable<ParameterDTO, ParameterDTO, Parameter> callable =
+    GenericModelCallable<ParameterDTO, ParameterDTO, Parameter> callable =
         context.getBean(
-            GenericCallable.class, "create", parameterDTO, parameterRepository, parameterMapper);
+                GenericModelCallable.class, "create", parameterDTO, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -56,9 +56,9 @@ public class ParameterService {
   @Transactional
   public Mono<ParameterDTO> update(ParameterDTO parameterDTO) {
     log.debug("Request to update Parameter : {}", parameterDTO);
-    GenericCallable<ParameterDTO, ParameterDTO, Parameter> callable =
+    GenericModelCallable<ParameterDTO, ParameterDTO, Parameter> callable =
         context.getBean(
-            GenericCallable.class, "update", parameterDTO, parameterRepository, parameterMapper);
+                GenericModelCallable.class, "update", parameterDTO, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -70,9 +70,9 @@ public class ParameterService {
    */
   public Mono<Optional<ParameterDTO>> partialUpdate(ParameterDTO parameterDTO) {
     log.debug("Request to partially update Parameter : {}", parameterDTO);
-    GenericCallable<Optional<ParameterDTO>, ParameterDTO, Parameter> callable =
+    GenericModelCallable<Optional<ParameterDTO>, ParameterDTO, Parameter> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "partialUpdate",
             parameterDTO,
             parameterRepository,
@@ -89,8 +89,8 @@ public class ParameterService {
   @Transactional(readOnly = true)
   public Mono<List<ParameterDTO>> findAll(Pageable pageable) {
     log.debug("Request to get all Parameters");
-    GenericCallable<List<ParameterDTO>, ParameterDTO, Parameter> callable =
-        context.getBean(GenericCallable.class, "findAll", parameterRepository, parameterMapper);
+    GenericModelCallable<List<ParameterDTO>, ParameterDTO, Parameter> callable =
+        context.getBean(GenericModelCallable.class, "findAll", parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -98,7 +98,7 @@ public class ParameterService {
   public Flux<ParameterDTO> findAllStream(Pageable pageable) {
     log.debug("Request to get all Parameters");
     return Flux.fromIterable(
-        parameterRepository.findAll(pageable).map(parameterMapper::toDto).getContent());
+        parameterRepository.findAll(pageable).map(parameterMapper::to).getContent());
   }
   /**
    * Get one parameter by id.
@@ -109,9 +109,9 @@ public class ParameterService {
   @Transactional(readOnly = true)
   public Mono<ParameterDTO> findOne(UUID id) {
     log.debug("Request to get Parameter : {}", id);
-    GenericCallable<ParameterDTO, ParameterDTO, Parameter> callable =
+    GenericModelCallable<ParameterDTO, ParameterDTO, Parameter> callable =
         context.getBean(
-            GenericCallable.class, "findById", id, parameterRepository, parameterMapper);
+                GenericModelCallable.class, "findById", id, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -123,17 +123,17 @@ public class ParameterService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete Parameter : {}", id);
-    GenericCallable<Void, ParameterDTO, Parameter> callable =
-        context.getBean(GenericCallable.class, "delete", id, parameterRepository, parameterMapper);
+    GenericModelCallable<Void, ParameterDTO, Parameter> callable =
+        context.getBean(GenericModelCallable.class, "delete", id, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericCallable<Boolean, ParameterDTO, Parameter> callable =
+    GenericModelCallable<Boolean, ParameterDTO, Parameter> callable =
         context.getBean(
-            GenericCallable.class, "existsById", id, parameterRepository, parameterMapper);
+                GenericModelCallable.class, "existsById", id, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

@@ -57,8 +57,8 @@ public class FloatParameterResource {
           "A new floatParameter cannot already have an ID", ENTITY_NAME, "idexists");
     }
     return floatParameterFacade
-        .save(floatParameterMapper.toDto(floatParameterTO))
-        .map(floatParameterMapper::toTo)
+        .save(floatParameterMapper.from(floatParameterTO))
+        .map(floatParameterMapper::to)
         .map(
             result -> {
               try {
@@ -111,8 +111,8 @@ public class FloatParameterResource {
               }
 
               return floatParameterFacade
-                  .update(floatParameterMapper.toDto(floatParameterTO))
-                  .map(floatParameterMapper::toTo)
+                  .update(floatParameterMapper.from(floatParameterTO))
+                  .map(floatParameterMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -167,8 +167,8 @@ public class FloatParameterResource {
 
               Mono<FloatParameterTO> result =
                   floatParameterFacade
-                      .partialUpdate(floatParameterMapper.toDto(floatParameterTO))
-                      .map(floatParameterMapper::toTo);
+                      .partialUpdate(floatParameterMapper.from(floatParameterTO))
+                      .map(floatParameterMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -194,7 +194,7 @@ public class FloatParameterResource {
   @GetMapping(value = "/float-parameters", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<FloatParameterTO>> getAllFloatParameters() {
     log.debug("REST request to get all FloatParameters");
-    return floatParameterFacade.findAll().collectList().map(floatParameterMapper::toTo);
+    return floatParameterFacade.findAll().collectList().map(floatParameterMapper::toTO);
   }
 
   /**
@@ -205,7 +205,7 @@ public class FloatParameterResource {
   @GetMapping(value = "/float-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<FloatParameterTO> getAllFloatParametersAsStream() {
     log.debug("REST request to get all FloatParameters as a stream");
-    return floatParameterFacade.findAll().map(floatParameterMapper::toTo);
+    return floatParameterFacade.findAll().map(floatParameterMapper::to);
   }
 
   /**
@@ -219,7 +219,7 @@ public class FloatParameterResource {
   public Mono<ResponseEntity<FloatParameterTO>> getFloatParameter(@PathVariable UUID id) {
     log.debug("REST request to get FloatParameter : {}", id);
     Mono<FloatParameterTO> floatParameterTO =
-        floatParameterFacade.findOne(id).map(floatParameterMapper::toTo);
+        floatParameterFacade.findOne(id).map(floatParameterMapper::to);
     return ResponseUtil.wrapOrNotFound(floatParameterTO);
   }
 

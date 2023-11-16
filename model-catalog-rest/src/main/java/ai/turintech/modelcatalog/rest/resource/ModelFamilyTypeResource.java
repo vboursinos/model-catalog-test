@@ -60,8 +60,8 @@ public class ModelFamilyTypeResource {
     }
     modelFamilyTypeTO.setId(UUID.randomUUID());
     return modelFamilyTypeFacade
-        .save(modelFamilyTypeMapper.toDto(modelFamilyTypeTO))
-        .map(modelFamilyTypeMapper::toTo)
+        .save(modelFamilyTypeMapper.from(modelFamilyTypeTO))
+        .map(modelFamilyTypeMapper::to)
         .map(
             result -> {
               try {
@@ -110,8 +110,8 @@ public class ModelFamilyTypeResource {
               }
 
               return modelFamilyTypeFacade
-                  .update(modelFamilyTypeMapper.toDto(modelFamilyTypeTO))
-                  .map(modelFamilyTypeMapper::toTo)
+                  .update(modelFamilyTypeMapper.from(modelFamilyTypeTO))
+                  .map(modelFamilyTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -166,8 +166,8 @@ public class ModelFamilyTypeResource {
 
               Mono<ModelFamilyTypeTO> result =
                   modelFamilyTypeFacade
-                      .partialUpdate(modelFamilyTypeMapper.toDto(modelFamilyTypeTO))
-                      .map(modelFamilyTypeMapper::toTo);
+                      .partialUpdate(modelFamilyTypeMapper.from(modelFamilyTypeTO))
+                      .map(modelFamilyTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -190,7 +190,7 @@ public class ModelFamilyTypeResource {
   @GetMapping(value = "/model-family-types", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<ModelFamilyTypeTO>> getAllModelFamilyTypes() {
     log.debug("REST request to get all ModelFamilyTypes");
-    return modelFamilyTypeFacade.findAll().collectList().map(modelFamilyTypeMapper::toTo);
+    return modelFamilyTypeFacade.findAll().collectList().map(modelFamilyTypeMapper::toTO);
   }
 
   /**
@@ -201,7 +201,7 @@ public class ModelFamilyTypeResource {
   @GetMapping(value = "/model-family-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ModelFamilyTypeTO> getAllModelFamilyTypesAsStream() {
     log.debug("REST request to get all ModelFamilyTypes as a stream");
-    return modelFamilyTypeFacade.findAll().map(modelFamilyTypeMapper::toTo);
+    return modelFamilyTypeFacade.findAll().map(modelFamilyTypeMapper::to);
   }
 
   /**
@@ -215,7 +215,7 @@ public class ModelFamilyTypeResource {
   public Mono<ResponseEntity<ModelFamilyTypeTO>> getModelFamilyType(@PathVariable UUID id) {
     log.debug("REST request to get ModelFamilyType : {}", id);
     Mono<ModelFamilyTypeTO> modelFamilyTypeTO =
-        modelFamilyTypeFacade.findOne(id).map(modelFamilyTypeMapper::toTo);
+        modelFamilyTypeFacade.findOne(id).map(modelFamilyTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(modelFamilyTypeTO);
   }
 

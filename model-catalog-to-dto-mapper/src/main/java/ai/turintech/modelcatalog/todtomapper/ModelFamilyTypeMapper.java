@@ -1,18 +1,18 @@
 package ai.turintech.modelcatalog.todtomapper;
 
-import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.to.ModelFamilyTypeTO;
-import ai.turintech.modelcatalog.to.ModelTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
-/** Mapper for the entity {@link ModelFamilyType} and its DTO {@link ModelFamilyTypeDTO}. */
+import java.util.List;
+
+/**
+ * Mapper for the entity {@link ModelFamilyType} and its DTO {@link ModelFamilyTypeDTO}.
+ */
 @Mapper(componentModel = "spring", implementationName = "ModelFamilyTypeMapperTOImpl")
-public interface ModelFamilyTypeMapper extends EntityMapper<ModelFamilyTypeTO, ModelFamilyTypeDTO> {
-  ModelFamilyTypeDTO toDto(ModelFamilyTypeTO s);
+public interface ModelFamilyTypeMapper extends MapperInterface<ModelFamilyTypeTO, ModelFamilyTypeDTO> {
+    List<ModelFamilyTypeDTO> toDto(List<ModelFamilyTypeTO> s);
 
-  @Named("modelId")
-  @BeanMapping(ignoreByDefault = true)
-  @Mapping(target = "id", source = "id")
-  ModelDTO toDtoModelId(ModelTO model);
+    List<ModelFamilyTypeTO> toTO(List<ModelFamilyTypeDTO> s);
 }

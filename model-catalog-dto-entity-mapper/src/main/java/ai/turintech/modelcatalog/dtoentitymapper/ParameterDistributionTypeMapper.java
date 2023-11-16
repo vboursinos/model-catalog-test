@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import org.mapstruct.*;
@@ -10,4 +11,4 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ParameterDistributionTypeMapper
-    extends EntityMapper<ParameterDistributionTypeDTO, ParameterDistributionType> {}
+    extends MapperInterface<ParameterDistributionTypeDTO, ParameterDistributionType> {}

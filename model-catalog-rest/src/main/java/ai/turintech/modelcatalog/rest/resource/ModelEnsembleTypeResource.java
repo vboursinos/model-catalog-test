@@ -61,8 +61,8 @@ public class ModelEnsembleTypeResource {
     }
     modelEnsembleTypeTO.setId(UUID.randomUUID());
     return modelEnsembleTypeFacade
-        .save(modelEnsembleTypeMapper.toDto(modelEnsembleTypeTO))
-        .map(modelEnsembleTypeMapper::toTo)
+        .save(modelEnsembleTypeMapper.from(modelEnsembleTypeTO))
+        .map(modelEnsembleTypeMapper::to)
         .map(
             result -> {
               try {
@@ -112,8 +112,8 @@ public class ModelEnsembleTypeResource {
               }
 
               return modelEnsembleTypeFacade
-                  .update(modelEnsembleTypeMapper.toDto(modelEnsembleTypeTO))
-                  .map(modelEnsembleTypeMapper::toTo)
+                  .update(modelEnsembleTypeMapper.from(modelEnsembleTypeTO))
+                  .map(modelEnsembleTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -170,8 +170,8 @@ public class ModelEnsembleTypeResource {
 
               Mono<ModelEnsembleTypeTO> result =
                   modelEnsembleTypeFacade
-                      .partialUpdate(modelEnsembleTypeMapper.toDto(modelEnsembleTypeTO))
-                      .map(modelEnsembleTypeMapper::toTo);
+                      .partialUpdate(modelEnsembleTypeMapper.from(modelEnsembleTypeTO))
+                      .map(modelEnsembleTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -194,7 +194,7 @@ public class ModelEnsembleTypeResource {
   @GetMapping(value = "/model-ensemble-types", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<ModelEnsembleTypeTO>> getAllModelEnsembleTypes() {
     log.debug("REST request to get all ModelEnsembleTypes");
-    return modelEnsembleTypeFacade.findAll().collectList().map(modelEnsembleTypeMapper::toTo);
+    return modelEnsembleTypeFacade.findAll().collectList().map(modelEnsembleTypeMapper::toTO);
   }
 
   /**
@@ -205,7 +205,7 @@ public class ModelEnsembleTypeResource {
   @GetMapping(value = "/model-ensemble-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ModelEnsembleTypeTO> getAllModelEnsembleTypesAsStream() {
     log.debug("REST request to get all ModelEnsembleTypes as a stream");
-    return modelEnsembleTypeFacade.findAll().map(modelEnsembleTypeMapper::toTo);
+    return modelEnsembleTypeFacade.findAll().map(modelEnsembleTypeMapper::to);
   }
 
   /**
@@ -219,7 +219,7 @@ public class ModelEnsembleTypeResource {
   public Mono<ResponseEntity<ModelEnsembleTypeTO>> getModelEnsembleType(@PathVariable UUID id) {
     log.debug("REST request to get ModelEnsembleType : {}", id);
     Mono<ModelEnsembleTypeTO> modelEnsembleTypeTO =
-        modelEnsembleTypeFacade.findOne(id).map(modelEnsembleTypeMapper::toTo);
+        modelEnsembleTypeFacade.findOne(id).map(modelEnsembleTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(modelEnsembleTypeTO);
   }
 

@@ -59,8 +59,8 @@ public class FloatParameterRangeResource {
           "A new floatParameterRange cannot already have an ID", ENTITY_NAME, "idexists");
     }
     return floatParameterRangeFacade
-        .save(floatParameterRangeMapper.toDto(floatParameterRangeTO))
-        .map(floatParameterRangeMapper::toTo)
+        .save(floatParameterRangeMapper.from(floatParameterRangeTO))
+        .map(floatParameterRangeMapper::to)
         .map(
             result -> {
               try {
@@ -110,8 +110,8 @@ public class FloatParameterRangeResource {
               }
 
               return floatParameterRangeFacade
-                  .update(floatParameterRangeMapper.toDto(floatParameterRangeTO))
-                  .map(floatParameterRangeMapper::toTo)
+                  .update(floatParameterRangeMapper.from(floatParameterRangeTO))
+                  .map(floatParameterRangeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -168,8 +168,8 @@ public class FloatParameterRangeResource {
 
               Mono<FloatParameterRangeTO> result =
                   floatParameterRangeFacade
-                      .partialUpdate(floatParameterRangeMapper.toDto(floatParameterRangeTO))
-                      .map(floatParameterRangeMapper::toTo);
+                      .partialUpdate(floatParameterRangeMapper.from(floatParameterRangeTO))
+                      .map(floatParameterRangeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -192,7 +192,7 @@ public class FloatParameterRangeResource {
   @GetMapping(value = "/float-parameter-ranges", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<FloatParameterRangeTO>> getAllFloatParameterRanges() {
     log.debug("REST request to get all FloatParameterRanges");
-    return floatParameterRangeFacade.findAll().collectList().map(floatParameterRangeMapper::toTo);
+    return floatParameterRangeFacade.findAll().collectList().map(floatParameterRangeMapper::toTO);
   }
 
   /**
@@ -203,7 +203,7 @@ public class FloatParameterRangeResource {
   @GetMapping(value = "/float-parameter-ranges", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<FloatParameterRangeTO> getAllFloatParameterRangesAsStream() {
     log.debug("REST request to get all FloatParameterRanges as a stream");
-    return floatParameterRangeFacade.findAll().map(floatParameterRangeMapper::toTo);
+    return floatParameterRangeFacade.findAll().map(floatParameterRangeMapper::to);
   }
 
   /**
@@ -217,7 +217,7 @@ public class FloatParameterRangeResource {
   public Mono<ResponseEntity<FloatParameterRangeTO>> getFloatParameterRange(@PathVariable UUID id) {
     log.debug("REST request to get FloatParameterRange : {}", id);
     Mono<FloatParameterRangeTO> floatParameterRangeTO =
-        floatParameterRangeFacade.findOne(id).map(floatParameterRangeMapper::toTo);
+        floatParameterRangeFacade.findOne(id).map(floatParameterRangeMapper::to);
     return ResponseUtil.wrapOrNotFound(floatParameterRangeTO);
   }
 

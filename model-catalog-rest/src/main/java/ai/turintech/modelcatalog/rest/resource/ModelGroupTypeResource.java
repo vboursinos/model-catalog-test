@@ -60,8 +60,8 @@ public class ModelGroupTypeResource {
     }
     modelGroupTypeTO.setId(UUID.randomUUID());
     return modelGroupTypeFacade
-        .save(modelGroupTypeMapper.toDto(modelGroupTypeTO))
-        .map(modelGroupTypeMapper::toTo)
+        .save(modelGroupTypeMapper.from(modelGroupTypeTO))
+        .map(modelGroupTypeMapper::to)
         .map(
             result -> {
               try {
@@ -110,8 +110,8 @@ public class ModelGroupTypeResource {
               }
 
               return modelGroupTypeFacade
-                  .update(modelGroupTypeMapper.toDto(modelGroupTypeTO))
-                  .map(modelGroupTypeMapper::toTo)
+                  .update(modelGroupTypeMapper.from(modelGroupTypeTO))
+                  .map(modelGroupTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -165,8 +165,8 @@ public class ModelGroupTypeResource {
 
               Mono<ModelGroupTypeTO> result =
                   modelGroupTypeFacade
-                      .partialUpdate(modelGroupTypeMapper.toDto(modelGroupTypeTO))
-                      .map(modelGroupTypeMapper::toTo);
+                      .partialUpdate(modelGroupTypeMapper.from(modelGroupTypeTO))
+                      .map(modelGroupTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -189,7 +189,7 @@ public class ModelGroupTypeResource {
   @GetMapping(value = "/model-group-types", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<ModelGroupTypeTO>> getAllModelGroupTypes() {
     log.debug("REST request to get all ModelGroupTypes");
-    return modelGroupTypeFacade.findAll().collectList().map(modelGroupTypeMapper::toTo);
+    return modelGroupTypeFacade.findAll().collectList().map(modelGroupTypeMapper::toTO);
   }
 
   /**
@@ -200,7 +200,7 @@ public class ModelGroupTypeResource {
   @GetMapping(value = "/model-group-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ModelGroupTypeTO> getAllModelGroupTypesAsStream() {
     log.debug("REST request to get all ModelGroupTypes as a stream");
-    return modelGroupTypeFacade.findAll().map(modelGroupTypeMapper::toTo);
+    return modelGroupTypeFacade.findAll().map(modelGroupTypeMapper::to);
   }
 
   /**
@@ -214,7 +214,7 @@ public class ModelGroupTypeResource {
   public Mono<ResponseEntity<ModelGroupTypeTO>> getModelGroupType(@PathVariable UUID id) {
     log.debug("REST request to get ModelGroupType : {}", id);
     Mono<ModelGroupTypeTO> modelGroupTypeTO =
-        modelGroupTypeFacade.findOne(id).map(modelGroupTypeMapper::toTo);
+        modelGroupTypeFacade.findOne(id).map(modelGroupTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(modelGroupTypeTO);
   }
 

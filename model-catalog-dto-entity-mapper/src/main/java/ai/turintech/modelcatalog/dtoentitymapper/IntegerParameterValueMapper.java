@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.IntegerParameter;
@@ -11,11 +12,4 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface IntegerParameterValueMapper
-    extends EntityMapper<IntegerParameterValueDTO, IntegerParameterValue> {
-
-  IntegerParameterValueDTO toDto(IntegerParameterValue s);
-
-  @Named("integerParameterId")
-  @BeanMapping(ignoreByDefault = true)
-  IntegerParameterDTO toDtoIntegerParameterId(IntegerParameter integerParameter);
-}
+    extends MapperInterface<IntegerParameterValueDTO, IntegerParameterValue> {}

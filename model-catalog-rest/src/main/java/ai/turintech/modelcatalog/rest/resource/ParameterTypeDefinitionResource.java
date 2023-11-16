@@ -62,8 +62,8 @@ public class ParameterTypeDefinitionResource {
     }
     parameterTypeDefinitionTO.setId(UUID.randomUUID());
     return parameterTypeDefinitionFacade
-        .save(parameterTypeDefinitionMapper.toDto(parameterTypeDefinitionTO))
-        .map(parameterTypeDefinitionMapper::toTo)
+        .save(parameterTypeDefinitionMapper.from(parameterTypeDefinitionTO))
+        .map(parameterTypeDefinitionMapper::to)
         .map(
             result -> {
               try {
@@ -114,8 +114,8 @@ public class ParameterTypeDefinitionResource {
               }
 
               return parameterTypeDefinitionFacade
-                  .update(parameterTypeDefinitionMapper.toDto(parameterTypeDefinitionTO))
-                  .map(parameterTypeDefinitionMapper::toTo)
+                  .update(parameterTypeDefinitionMapper.from(parameterTypeDefinitionTO))
+                  .map(parameterTypeDefinitionMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -172,8 +172,8 @@ public class ParameterTypeDefinitionResource {
 
               Mono<ParameterTypeDefinitionTO> result =
                   parameterTypeDefinitionFacade
-                      .partialUpdate(parameterTypeDefinitionMapper.toDto(parameterTypeDefinitionTO))
-                      .map(parameterTypeDefinitionMapper::toTo);
+                      .partialUpdate(parameterTypeDefinitionMapper.from(parameterTypeDefinitionTO))
+                      .map(parameterTypeDefinitionMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -199,7 +199,7 @@ public class ParameterTypeDefinitionResource {
     return parameterTypeDefinitionFacade
         .findAll()
         .collectList()
-        .map(parameterTypeDefinitionMapper::toTo);
+        .map(parameterTypeDefinitionMapper::toTO);
   }
 
   /**
@@ -210,7 +210,7 @@ public class ParameterTypeDefinitionResource {
   @GetMapping(value = "/parameter-type-definitions", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ParameterTypeDefinitionTO> getAllParameterTypeDefinitionsAsStream() {
     log.debug("REST request to get all ParameterTypeDefinitions as a stream");
-    return parameterTypeDefinitionFacade.findAll().map(parameterTypeDefinitionMapper::toTo);
+    return parameterTypeDefinitionFacade.findAll().map(parameterTypeDefinitionMapper::to);
   }
 
   /**
@@ -225,7 +225,7 @@ public class ParameterTypeDefinitionResource {
       @PathVariable UUID id) {
     log.debug("REST request to get ParameterTypeDefinition : {}", id);
     Mono<ParameterTypeDefinitionTO> parameterTypeDefinitionTO =
-        parameterTypeDefinitionFacade.findOne(id).map(parameterTypeDefinitionMapper::toTo);
+        parameterTypeDefinitionFacade.findOne(id).map(parameterTypeDefinitionMapper::to);
     return ResponseUtil.wrapOrNotFound(parameterTypeDefinitionTO);
   }
 

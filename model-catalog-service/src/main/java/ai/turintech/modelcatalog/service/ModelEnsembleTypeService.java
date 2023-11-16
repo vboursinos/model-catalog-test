@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.GenericCallable;
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelEnsembleTypeMapper;
 import ai.turintech.modelcatalog.entity.ModelEnsembleType;
@@ -42,9 +42,9 @@ public class ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> save(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to save ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "create",
             modelEnsembleTypeDTO,
             modelEnsembleTypeRepository,
@@ -61,9 +61,9 @@ public class ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> update(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to update ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "update",
             modelEnsembleTypeDTO,
             modelEnsembleTypeRepository,
@@ -80,9 +80,9 @@ public class ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> partialUpdate(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to partially update ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "partialUpdate",
             modelEnsembleTypeDTO,
             modelEnsembleTypeRepository,
@@ -98,9 +98,9 @@ public class ModelEnsembleTypeService {
   @Transactional(readOnly = true)
   public Mono<List<ModelEnsembleTypeDTO>> findAll() {
     log.debug("Request to get all ModelEnsembleTypes");
-    GenericCallable<List<ModelEnsembleTypeDTO>, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<List<ModelEnsembleTypeDTO>, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
-            GenericCallable.class, "findAll", modelEnsembleTypeRepository, modelEnsembleTypeMapper);
+                GenericModelCallable.class, "findAll", modelEnsembleTypeRepository, modelEnsembleTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -112,7 +112,7 @@ public class ModelEnsembleTypeService {
             () ->
                 Flux.fromStream(
                     modelEnsembleTypeRepository.findAll().stream()
-                        .map(modelEnsembleTypeMapper::toDto)))
+                        .map(modelEnsembleTypeMapper::to)))
         .subscribeOn(Schedulers.boundedElastic());
   }
   /**
@@ -124,9 +124,9 @@ public class ModelEnsembleTypeService {
   @Transactional(readOnly = true)
   public Mono<ModelEnsembleTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelEnsembleType : {}", id);
-    GenericCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "findById",
             id,
             modelEnsembleTypeRepository,
@@ -142,9 +142,9 @@ public class ModelEnsembleTypeService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelEnsembleType : {}", id);
-    GenericCallable<Void, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<Void, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "delete",
             id,
             modelEnsembleTypeRepository,
@@ -155,9 +155,9 @@ public class ModelEnsembleTypeService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericCallable<Boolean, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<Boolean, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "existsById",
             id,
             modelEnsembleTypeRepository,

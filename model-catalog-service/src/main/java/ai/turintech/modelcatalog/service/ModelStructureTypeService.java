@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.GenericCallable;
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.dto.ModelStructureTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelStructureTypeMapper;
 import ai.turintech.modelcatalog.entity.ModelStructureType;
@@ -40,9 +40,9 @@ public class ModelStructureTypeService {
   @Transactional
   public Mono<ModelStructureTypeDTO> save(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to save ModelStructureType : {}", modelStructureTypeDTO);
-    GenericCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "create",
             modelStructureTypeDTO,
             modelStructureTypeRepository,
@@ -59,9 +59,9 @@ public class ModelStructureTypeService {
   @Transactional
   public Mono<ModelStructureTypeDTO> update(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to update ModelStructureType : {}", modelStructureTypeDTO);
-    GenericCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "update",
             modelStructureTypeDTO,
             modelStructureTypeRepository,
@@ -78,9 +78,9 @@ public class ModelStructureTypeService {
   @Transactional
   public Mono<ModelStructureTypeDTO> partialUpdate(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to partially update ModelStructureType : {}", modelStructureTypeDTO);
-    GenericCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "partialUpdate",
             modelStructureTypeDTO,
             modelStructureTypeRepository,
@@ -96,10 +96,10 @@ public class ModelStructureTypeService {
   @Transactional(readOnly = true)
   public Mono<List<ModelStructureTypeDTO>> findAll() {
     log.debug("Request to get all ModelStructureTypes");
-    GenericCallable<List<ModelStructureTypeDTO>, ModelStructureTypeDTO, ModelStructureType>
+    GenericModelCallable<List<ModelStructureTypeDTO>, ModelStructureTypeDTO, ModelStructureType>
         callable =
             context.getBean(
-                GenericCallable.class,
+                    GenericModelCallable.class,
                 "findAll",
                 modelStructureTypeRepository,
                 modelStructureTypeMapper);
@@ -114,7 +114,7 @@ public class ModelStructureTypeService {
             () ->
                 Flux.fromStream(
                     modelStructureTypeRepository.findAll().stream()
-                        .map(modelStructureTypeMapper::toDto)))
+                        .map(modelStructureTypeMapper::to)))
         .subscribeOn(Schedulers.boundedElastic());
   }
   /**
@@ -126,9 +126,9 @@ public class ModelStructureTypeService {
   @Transactional(readOnly = true)
   public Mono<ModelStructureTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelStructureType : {}", id);
-    GenericCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "findById",
             id,
             modelStructureTypeRepository,
@@ -144,9 +144,9 @@ public class ModelStructureTypeService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelStructureType : {}", id);
-    GenericCallable<Void, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<Void, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "delete",
             id,
             modelStructureTypeRepository,
@@ -157,9 +157,9 @@ public class ModelStructureTypeService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericCallable<Boolean, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<Boolean, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "existsById",
             id,
             modelStructureTypeRepository,

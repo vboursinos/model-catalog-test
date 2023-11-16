@@ -61,8 +61,8 @@ public class ModelStructureTypeResource {
     }
     modelStructureTypeTO.setId(UUID.randomUUID());
     return modelStructureTypeFacade
-        .save(modelStructureTypeMapper.toDto(modelStructureTypeTO))
-        .map(modelStructureTypeMapper::toTo)
+        .save(modelStructureTypeMapper.from(modelStructureTypeTO))
+        .map(modelStructureTypeMapper::to)
         .map(
             result -> {
               try {
@@ -112,8 +112,8 @@ public class ModelStructureTypeResource {
               }
 
               return modelStructureTypeFacade
-                  .update(modelStructureTypeMapper.toDto(modelStructureTypeTO))
-                  .map(modelStructureTypeMapper::toTo)
+                  .update(modelStructureTypeMapper.from(modelStructureTypeTO))
+                  .map(modelStructureTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -170,8 +170,8 @@ public class ModelStructureTypeResource {
 
               Mono<ModelStructureTypeTO> result =
                   modelStructureTypeFacade
-                      .partialUpdate(modelStructureTypeMapper.toDto(modelStructureTypeTO))
-                      .map(modelStructureTypeMapper::toTo);
+                      .partialUpdate(modelStructureTypeMapper.from(modelStructureTypeTO))
+                      .map(modelStructureTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -194,7 +194,7 @@ public class ModelStructureTypeResource {
   @GetMapping(value = "/model-structure-types", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<ModelStructureTypeTO>> getAllModelStructureTypes() {
     log.debug("REST request to get all ModelStructureTypes");
-    return modelStructureTypeFacade.findAll().collectList().map(modelStructureTypeMapper::toTo);
+    return modelStructureTypeFacade.findAll().collectList().map(modelStructureTypeMapper::toTO);
   }
 
   /**
@@ -205,7 +205,7 @@ public class ModelStructureTypeResource {
   @GetMapping(value = "/model-structure-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ModelStructureTypeTO> getAllModelStructureTypesAsStream() {
     log.debug("REST request to get all ModelStructureTypes as a stream");
-    return modelStructureTypeFacade.findAll().map(modelStructureTypeMapper::toTo);
+    return modelStructureTypeFacade.findAll().map(modelStructureTypeMapper::to);
   }
 
   /**
@@ -219,7 +219,7 @@ public class ModelStructureTypeResource {
   public Mono<ResponseEntity<ModelStructureTypeTO>> getModelStructureType(@PathVariable UUID id) {
     log.debug("REST request to get ModelStructureType : {}", id);
     Mono<ModelStructureTypeTO> modelStructureTypeTO =
-        modelStructureTypeFacade.findOne(id).map(modelStructureTypeMapper::toTo);
+        modelStructureTypeFacade.findOne(id).map(modelStructureTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(modelStructureTypeTO);
   }
 

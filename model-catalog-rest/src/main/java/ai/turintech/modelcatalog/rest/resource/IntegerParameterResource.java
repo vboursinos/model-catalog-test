@@ -57,8 +57,8 @@ public class IntegerParameterResource {
           "A new integerParameter cannot already have an ID", ENTITY_NAME, "idexists");
     }
     return integerParameterFacade
-        .save(integerParameterMapper.toDto(integerParameterTO))
-        .map(integerParameterMapper::toTo)
+        .save(integerParameterMapper.from(integerParameterTO))
+        .map(integerParameterMapper::to)
         .map(
             result -> {
               try {
@@ -111,8 +111,8 @@ public class IntegerParameterResource {
               }
 
               return integerParameterFacade
-                  .update(integerParameterMapper.toDto(integerParameterTO))
-                  .map(integerParameterMapper::toTo)
+                  .update(integerParameterMapper.from(integerParameterTO))
+                  .map(integerParameterMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -169,8 +169,8 @@ public class IntegerParameterResource {
 
               Mono<IntegerParameterTO> result =
                   integerParameterFacade
-                      .partialUpdate(integerParameterMapper.toDto(integerParameterTO))
-                      .map(integerParameterMapper::toTo);
+                      .partialUpdate(integerParameterMapper.from(integerParameterTO))
+                      .map(integerParameterMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -196,7 +196,7 @@ public class IntegerParameterResource {
   @GetMapping(value = "/integer-parameters", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<IntegerParameterTO>> getAllIntegerParameters() {
     log.debug("REST request to get all IntegerParameters");
-    return integerParameterFacade.findAll().collectList().map(integerParameterMapper::toTo);
+    return integerParameterFacade.findAll().collectList().map(integerParameterMapper::toTO);
   }
 
   /**
@@ -207,7 +207,7 @@ public class IntegerParameterResource {
   @GetMapping(value = "/integer-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<IntegerParameterTO> getAllIntegerParametersAsStream() {
     log.debug("REST request to get all IntegerParameters as a stream");
-    return integerParameterFacade.findAll().map(integerParameterMapper::toTo);
+    return integerParameterFacade.findAll().map(integerParameterMapper::to);
   }
 
   /**
@@ -221,7 +221,7 @@ public class IntegerParameterResource {
   public Mono<ResponseEntity<IntegerParameterTO>> getIntegerParameter(@PathVariable UUID id) {
     log.debug("REST request to get IntegerParameter : {}", id);
     Mono<IntegerParameterTO> integerParameterTO =
-        integerParameterFacade.findOne(id).map(integerParameterMapper::toTo);
+        integerParameterFacade.findOne(id).map(integerParameterMapper::to);
     return ResponseUtil.wrapOrNotFound(integerParameterTO);
   }
 

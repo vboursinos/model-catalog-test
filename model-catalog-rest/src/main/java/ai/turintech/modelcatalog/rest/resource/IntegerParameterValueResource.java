@@ -60,8 +60,8 @@ public class IntegerParameterValueResource {
           "A new integerParameterValue cannot already have an ID", ENTITY_NAME, "idexists");
     }
     return integerParameterValueFacade
-        .save(this.integerParameterValueMapper.toDto(integerParameterValueTO))
-        .map(integerParameterValueMapper::toTo)
+        .save(this.integerParameterValueMapper.from(integerParameterValueTO))
+        .map(integerParameterValueMapper::to)
         .map(
             result -> {
               try {
@@ -111,8 +111,8 @@ public class IntegerParameterValueResource {
               }
 
               return integerParameterValueFacade
-                  .update(integerParameterValueMapper.toDto(integerParameterValueTO))
-                  .map(integerParameterValueMapper::toTo)
+                  .update(integerParameterValueMapper.from(integerParameterValueTO))
+                  .map(integerParameterValueMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -170,7 +170,7 @@ public class IntegerParameterValueResource {
               Mono<IntegerParameterValueTO> result =
                   integerParameterValueFacade
                       .partialUpdate(integerParameterValueTO)
-                      .map(integerParameterValueMapper::toTo);
+                      .map(integerParameterValueMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -196,7 +196,7 @@ public class IntegerParameterValueResource {
     return integerParameterValueFacade
         .findAll()
         .collectList()
-        .map(integerParameterValueMapper::toTo);
+        .map(integerParameterValueMapper::toTO);
   }
 
   /**
@@ -207,7 +207,7 @@ public class IntegerParameterValueResource {
   @GetMapping(value = "/integer-parameter-values", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<IntegerParameterValueTO> getAllIntegerParameterValuesAsStream() {
     log.debug("REST request to get all IntegerParameterValues as a stream");
-    return integerParameterValueFacade.findAll().map(integerParameterValueMapper::toTo);
+    return integerParameterValueFacade.findAll().map(integerParameterValueMapper::to);
   }
 
   /**
@@ -222,7 +222,7 @@ public class IntegerParameterValueResource {
       @PathVariable UUID id) {
     log.debug("REST request to get IntegerParameterValue : {}", id);
     Mono<IntegerParameterValueTO> integerParameterValueTO =
-        integerParameterValueFacade.findOne(id).map(integerParameterValueMapper::toTo);
+        integerParameterValueFacade.findOne(id).map(integerParameterValueMapper::to);
     return ResponseUtil.wrapOrNotFound(integerParameterValueTO);
   }
 

@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.entity.CategoricalParameter;
@@ -12,10 +13,5 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface CategoricalParameterValueMapper
-    extends EntityMapper<CategoricalParameterValueDTO, CategoricalParameterValue> {
-  CategoricalParameterValueDTO toDto(CategoricalParameterValue s);
-
-  @Named("categoricalParameterId")
-  @BeanMapping(ignoreByDefault = true)
-  CategoricalParameterDTO toDtoCategoricalParameterId(CategoricalParameter categoricalParameter);
+    extends MapperInterface<CategoricalParameterValueDTO, CategoricalParameterValue> {
 }

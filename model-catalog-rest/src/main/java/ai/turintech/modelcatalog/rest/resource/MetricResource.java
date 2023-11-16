@@ -58,8 +58,8 @@ public class MetricResource {
     }
     metricTO.setId(UUID.randomUUID());
     return metricFacade
-        .save(metricMapper.toDto(metricTO))
-        .map(metricMapper::toTo)
+        .save(metricMapper.from(metricTO))
+        .map(metricMapper::to)
         .map(
             result -> {
               try {
@@ -106,8 +106,8 @@ public class MetricResource {
               }
 
               return metricFacade
-                  .update(metricMapper.toDto(metricTO))
-                  .map(metricMapper::toTo)
+                  .update(metricMapper.from(metricTO))
+                  .map(metricMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -158,7 +158,7 @@ public class MetricResource {
               }
 
               Mono<MetricTO> result =
-                  metricFacade.partialUpdate(metricMapper.toDto(metricTO)).map(metricMapper::toTo);
+                  metricFacade.partialUpdate(metricMapper.from(metricTO)).map(metricMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -181,7 +181,7 @@ public class MetricResource {
   @GetMapping(value = "/metrics", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<MetricTO>> getAllMetrics() {
     log.debug("REST request to get all Metrics");
-    return metricFacade.findAll().collectList().map(metricMapper::toTo);
+    return metricFacade.findAll().collectList().map(metricMapper::toTO);
   }
 
   /**
@@ -192,7 +192,7 @@ public class MetricResource {
   @GetMapping(value = "/metrics", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<MetricTO> getAllMetricsAsStream() {
     log.debug("REST request to get all Metrics as a stream");
-    return metricFacade.findAll().map(metricMapper::toTo);
+    return metricFacade.findAll().map(metricMapper::to);
   }
 
   /**
@@ -205,7 +205,7 @@ public class MetricResource {
   @GetMapping("/metrics/{id}")
   public Mono<ResponseEntity<MetricTO>> getMetric(@PathVariable UUID id) {
     log.debug("REST request to get Metric : {}", id);
-    Mono<MetricTO> metricTO = metricFacade.findOne(id).map(metricMapper::toTo);
+    Mono<MetricTO> metricTO = metricFacade.findOne(id).map(metricMapper::to);
     return ResponseUtil.wrapOrNotFound(metricTO);
   }
 

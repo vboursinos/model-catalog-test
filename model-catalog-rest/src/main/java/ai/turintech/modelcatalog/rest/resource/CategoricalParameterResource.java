@@ -59,8 +59,8 @@ public class CategoricalParameterResource {
           "A new categoricalParameter cannot already have an ID", ENTITY_NAME, "idexists");
     }
     return categoricalParameterFacade
-        .save(categoricalParameterMapper.toDto(categoricalParameterTO))
-        .map(categoricalParameterMapper::toTo)
+        .save(categoricalParameterMapper.from(categoricalParameterTO))
+        .map(categoricalParameterMapper::to)
         .map(
             result -> {
               try {
@@ -114,8 +114,8 @@ public class CategoricalParameterResource {
               }
 
               return categoricalParameterFacade
-                  .update(categoricalParameterMapper.toDto(categoricalParameterTO))
-                  .map(categoricalParameterMapper::toTo)
+                  .update(categoricalParameterMapper.from(categoricalParameterTO))
+                  .map(categoricalParameterMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -172,8 +172,8 @@ public class CategoricalParameterResource {
 
               Mono<CategoricalParameterTO> result =
                   categoricalParameterFacade
-                      .partialUpdate(categoricalParameterMapper.toDto(categoricalParameterTO))
-                      .map(categoricalParameterMapper::toTo);
+                      .partialUpdate(categoricalParameterMapper.from(categoricalParameterTO))
+                      .map(categoricalParameterMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -210,7 +210,7 @@ public class CategoricalParameterResource {
   @GetMapping(value = "/categorical-parameters", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<CategoricalParameterTO> getAllCategoricalParametersAsStream() {
     log.debug("REST request to get all CategoricalParameters as a stream");
-    return categoricalParameterFacade.findAll().map(categoricalParameterMapper::toTo);
+    return categoricalParameterFacade.findAll().map(categoricalParameterMapper::to);
   }
 
   /**
@@ -225,7 +225,7 @@ public class CategoricalParameterResource {
       @PathVariable UUID id) {
     log.debug("REST request to get CategoricalParameter : {}", id);
     Mono<CategoricalParameterTO> categoricalParameterTO =
-        categoricalParameterFacade.findOne(id).map(categoricalParameterMapper::toTo);
+        categoricalParameterFacade.findOne(id).map(categoricalParameterMapper::to);
     return ResponseUtil.wrapOrNotFound(categoricalParameterTO);
   }
 

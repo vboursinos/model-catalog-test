@@ -65,8 +65,8 @@ public class ParameterResource {
     }
     parameterTO.setId(UUID.randomUUID());
     return parameterFacade
-        .save(parameterMapper.toDto(parameterTO))
-        .map(parameterMapper::toTo)
+        .save(parameterMapper.from(parameterTO))
+        .map(parameterMapper::to)
         .map(
             result -> {
               try {
@@ -114,8 +114,8 @@ public class ParameterResource {
               }
 
               return parameterFacade
-                  .update(parameterMapper.toDto(parameterTO))
-                  .map(parameterMapper::toTo)
+                  .update(parameterMapper.from(parameterTO))
+                  .map(parameterMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -168,7 +168,7 @@ public class ParameterResource {
 
               Mono<ParameterTO> result =
                   parameterFacade
-                      .partialUpdate(parameterMapper.toDto(parameterTO))
+                      .partialUpdate(parameterMapper.from(parameterTO))
                       .map(parameterMapper::toTo);
 
               return result
@@ -198,7 +198,7 @@ public class ParameterResource {
     log.debug("REST request to get a page of Parameters");
     return parameterFacade
         .findAll(pageable)
-        .map(parameterMapper::toTo)
+        .map(parameterMapper::toTO)
         .map(updatedListParameter -> ResponseEntity.ok().body(updatedListParameter))
         .defaultIfEmpty(ResponseEntity.notFound().build())
         .onErrorResume(
@@ -214,7 +214,7 @@ public class ParameterResource {
       @org.springdoc.core.annotations.ParameterObject Pageable pageable,
       ServerHttpRequest request) {
     log.debug("REST request to get a page of Parameters");
-    return parameterFacade.findAllStream(pageable).map(parameterMapper::toTo);
+    return parameterFacade.findAllStream(pageable).map(parameterMapper::to);
   }
 
   /**
@@ -227,7 +227,7 @@ public class ParameterResource {
   @GetMapping("/parameters/{id}")
   public Mono<ResponseEntity<ParameterTO>> getParameter(@PathVariable UUID id) {
     log.debug("REST request to get Parameter : {}", id);
-    Mono<ParameterTO> parameterTO = parameterFacade.findOne(id).map(parameterMapper::toTo);
+    Mono<ParameterTO> parameterTO = parameterFacade.findOne(id).map(parameterMapper::to);
     return ResponseUtil.wrapOrNotFound(parameterTO);
   }
 

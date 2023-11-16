@@ -61,8 +61,8 @@ public class ParameterTypeResource {
     }
     parameterTypeTO.setId(UUID.randomUUID());
     return parameterTypeFacade
-        .save(parameterTypeMapper.toDto(parameterTypeTO))
-        .map(parameterTypeMapper::toTo)
+        .save(parameterTypeMapper.from(parameterTypeTO))
+        .map(parameterTypeMapper::to)
         .map(
             result -> {
               try {
@@ -111,8 +111,8 @@ public class ParameterTypeResource {
               }
 
               return parameterTypeFacade
-                  .update(parameterTypeMapper.toDto(parameterTypeTO))
-                  .map(parameterTypeMapper::toTo)
+                  .update(parameterTypeMapper.from(parameterTypeTO))
+                  .map(parameterTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -166,8 +166,8 @@ public class ParameterTypeResource {
 
               Mono<ParameterTypeTO> result =
                   parameterTypeFacade
-                      .partialUpdate(parameterTypeMapper.toDto(parameterTypeTO))
-                      .map(parameterTypeMapper::toTo);
+                      .partialUpdate(parameterTypeMapper.from(parameterTypeTO))
+                      .map(parameterTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -190,7 +190,7 @@ public class ParameterTypeResource {
   @GetMapping(value = "/parameter-types", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<ParameterTypeTO>> getAllParameterTypes() {
     log.debug("REST request to get all ParameterTypes");
-    return parameterTypeFacade.findAll().collectList().map(parameterTypeMapper::toTo);
+    return parameterTypeFacade.findAll().collectList().map(parameterTypeMapper::toTO);
   }
 
   /**
@@ -201,7 +201,7 @@ public class ParameterTypeResource {
   @GetMapping(value = "/parameter-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ParameterTypeTO> getAllParameterTypesAsStream() {
     log.debug("REST request to get all ParameterTypes as a stream");
-    return parameterTypeFacade.findAll().map(parameterTypeMapper::toTo);
+    return parameterTypeFacade.findAll().map(parameterTypeMapper::to);
   }
 
   /**
@@ -215,7 +215,7 @@ public class ParameterTypeResource {
   public Mono<ResponseEntity<ParameterTypeTO>> getParameterType(@PathVariable UUID id) {
     log.debug("REST request to get ParameterType : {}", id);
     Mono<ParameterTypeTO> parameterTypeTO =
-        parameterTypeFacade.findOne(id).map(parameterTypeMapper::toTo);
+        parameterTypeFacade.findOne(id).map(parameterTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(parameterTypeTO);
   }
 

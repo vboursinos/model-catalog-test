@@ -1,12 +1,15 @@
 package ai.turintech.modelcatalog.service;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-
-import ai.turintech.components.mapper.GlobalMapper;
-import ai.turintech.components.mapper.api.MapperInterface;
+import ai.turintech.components.jpa.search.service.AbstractSearchService;
+import ai.turintech.components.jpa.search.service.SearchService;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
+import ai.turintech.modelcatalog.callable.ModelCallable;
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
+import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
+import ai.turintech.modelcatalog.entity.Model;
+import ai.turintech.modelcatalog.exceptions.FindOneException;
+import ai.turintech.modelcatalog.repository.ModelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +18,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import ai.turintech.components.jpa.search.service.AbstractSearchService;
-import ai.turintech.components.jpa.search.service.SearchService;
-import ai.turintech.modelcatalog.callable.GenericCallable;
-import ai.turintech.modelcatalog.callable.ModelCallable;
-import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
-import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
-import ai.turintech.modelcatalog.entity.Model;
-import ai.turintech.modelcatalog.exceptions.FindOneException;
-import ai.turintech.modelcatalog.repository.ModelRepository;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /** Service Implementation for managing {@link Model}. */
 @Service

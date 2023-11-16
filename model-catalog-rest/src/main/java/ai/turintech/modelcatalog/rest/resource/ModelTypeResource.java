@@ -60,8 +60,8 @@ public class ModelTypeResource {
     }
     //        modelTypeTO.setId(UUID.randomUUID());
     return modelTypeFacade
-        .save(modelTypeMapper.toDto(modelTypeTO))
-        .map(modelTypeMapper::toTo)
+        .save(modelTypeMapper.from(modelTypeTO))
+        .map(modelTypeMapper::to)
         .map(
             result -> {
               try {
@@ -109,8 +109,8 @@ public class ModelTypeResource {
               }
 
               return modelTypeFacade
-                  .update(modelTypeMapper.toDto(modelTypeTO))
-                  .map(modelTypeMapper::toTo)
+                  .update(modelTypeMapper.from(modelTypeTO))
+                  .map(modelTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -163,8 +163,8 @@ public class ModelTypeResource {
 
               Mono<ModelTypeTO> result =
                   modelTypeFacade
-                      .partialUpdate(modelTypeMapper.toDto(modelTypeTO))
-                      .map(modelTypeMapper::toTo);
+                      .partialUpdate(modelTypeMapper.from(modelTypeTO))
+                      .map(modelTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -187,7 +187,7 @@ public class ModelTypeResource {
   @GetMapping(value = "/model-types", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<ModelTypeTO>> getAllModelTypes() {
     log.debug("REST request to get all ModelTypes");
-    return modelTypeFacade.findAll().collectList().map(modelTypeMapper::toTo);
+    return modelTypeFacade.findAll().collectList().map(modelTypeMapper::toTO);
   }
 
   /**
@@ -198,7 +198,7 @@ public class ModelTypeResource {
   @GetMapping(value = "/model-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ModelTypeTO> getAllModelTypesAsStream() {
     log.debug("REST request to get all ModelTypes as a stream");
-    return modelTypeFacade.findAll().map(modelTypeMapper::toTo);
+    return modelTypeFacade.findAll().map(modelTypeMapper::to);
   }
 
   /**
@@ -211,7 +211,7 @@ public class ModelTypeResource {
   @GetMapping("/model-types/{id}")
   public Mono<ResponseEntity<ModelTypeTO>> getModelType(@PathVariable UUID id) {
     log.debug("REST request to get ModelType : {}", id);
-    Mono<ModelTypeTO> modelTypeTO = modelTypeFacade.findOne(id).map(modelTypeMapper::toTo);
+    Mono<ModelTypeTO> modelTypeTO = modelTypeFacade.findOne(id).map(modelTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(modelTypeTO);
   }
 

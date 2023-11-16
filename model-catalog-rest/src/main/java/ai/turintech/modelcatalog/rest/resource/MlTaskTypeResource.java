@@ -68,8 +68,8 @@ public class MlTaskTypeResource {
     }
     mlTaskTypeTO.setId(UUID.randomUUID());
     return mlTaskTypeFacade
-        .save(mlTaskTypeMapper.toDto(mlTaskTypeTO))
-        .map(mlTaskTypeMapper::toTo)
+        .save(mlTaskTypeMapper.from(mlTaskTypeTO))
+        .map(mlTaskTypeMapper::to)
         .map(
             result -> {
               try {
@@ -118,8 +118,8 @@ public class MlTaskTypeResource {
               }
 
               return mlTaskTypeFacade
-                  .update(mlTaskTypeMapper.toDto(mlTaskTypeTO))
-                  .map(mlTaskTypeMapper::toTo)
+                  .update(mlTaskTypeMapper.from(mlTaskTypeTO))
+                  .map(mlTaskTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -172,8 +172,8 @@ public class MlTaskTypeResource {
 
               Mono<MlTaskTypeTO> result =
                   mlTaskTypeFacade
-                      .partialUpdate(mlTaskTypeMapper.toDto(mlTaskTypeTO))
-                      .map(mlTaskTypeMapper::toTo);
+                      .partialUpdate(mlTaskTypeMapper.from(mlTaskTypeTO))
+                      .map(mlTaskTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -196,7 +196,7 @@ public class MlTaskTypeResource {
   @GetMapping(value = "/ml-task-types", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<List<MlTaskTypeTO>> getAllMlTaskTypes() {
     log.debug("REST request to get all MlTaskTypes");
-    return mlTaskTypeFacade.findAll().collectList().map(mlTaskTypeMapper::toTo);
+    return mlTaskTypeFacade.findAll().collectList().map(mlTaskTypeMapper::toTO);
   }
 
   /**
@@ -207,7 +207,7 @@ public class MlTaskTypeResource {
   @GetMapping(value = "/ml-task-types", produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<MlTaskTypeTO> getAllMlTaskTypesAsStream() {
     log.debug("REST request to get all MlTaskTypes as a stream");
-    return mlTaskTypeFacade.findAll().map(mlTaskTypeMapper::toTo);
+    return mlTaskTypeFacade.findAll().map(mlTaskTypeMapper::to);
   }
 
   /**
@@ -220,7 +220,7 @@ public class MlTaskTypeResource {
   @GetMapping("/ml-task-types/{id}")
   public Mono<ResponseEntity<MlTaskTypeTO>> getMlTaskType(@PathVariable UUID id) {
     log.debug("REST request to get MlTaskType : {}", id);
-    Mono<MlTaskTypeTO> mlTaskTypeTO = mlTaskTypeFacade.findOne(id).map(mlTaskTypeMapper::toTo);
+    Mono<MlTaskTypeTO> mlTaskTypeTO = mlTaskTypeFacade.findOne(id).map(mlTaskTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(mlTaskTypeTO);
   }
 

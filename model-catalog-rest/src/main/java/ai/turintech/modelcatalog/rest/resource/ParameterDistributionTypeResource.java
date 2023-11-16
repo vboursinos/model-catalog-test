@@ -62,8 +62,8 @@ public class ParameterDistributionTypeResource {
     }
     parameterDistributionTypeTO.setId(UUID.randomUUID());
     return parameterDistributionTypeFacade
-        .save(parameterDistributionTypeMapper.toDto(parameterDistributionTypeTO))
-        .map(parameterDistributionTypeMapper::toTo)
+        .save(parameterDistributionTypeMapper.from(parameterDistributionTypeTO))
+        .map(parameterDistributionTypeMapper::to)
         .map(
             result -> {
               try {
@@ -116,8 +116,8 @@ public class ParameterDistributionTypeResource {
               }
 
               return parameterDistributionTypeFacade
-                  .update(parameterDistributionTypeMapper.toDto(parameterDistributionTypeTO))
-                  .map(parameterDistributionTypeMapper::toTo)
+                  .update(parameterDistributionTypeMapper.from(parameterDistributionTypeTO))
+                  .map(parameterDistributionTypeMapper::to)
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                   .map(
                       result ->
@@ -175,8 +175,8 @@ public class ParameterDistributionTypeResource {
               Mono<ParameterDistributionTypeTO> result =
                   parameterDistributionTypeFacade
                       .partialUpdate(
-                          parameterDistributionTypeMapper.toDto(parameterDistributionTypeTO))
-                      .map(parameterDistributionTypeMapper::toTo);
+                          parameterDistributionTypeMapper.from(parameterDistributionTypeTO))
+                      .map(parameterDistributionTypeMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -202,7 +202,7 @@ public class ParameterDistributionTypeResource {
     return parameterDistributionTypeFacade
         .findAll()
         .collectList()
-        .map(parameterDistributionTypeMapper::toTo);
+        .map(parameterDistributionTypeMapper::toTO);
   }
 
   /**
@@ -215,7 +215,7 @@ public class ParameterDistributionTypeResource {
       produces = MediaType.APPLICATION_NDJSON_VALUE)
   public Flux<ParameterDistributionTypeTO> getAllParameterDistributionTypesAsStream() {
     log.debug("REST request to get all ParameterDistributionTypes as a stream");
-    return parameterDistributionTypeFacade.findAll().map(parameterDistributionTypeMapper::toTo);
+    return parameterDistributionTypeFacade.findAll().map(parameterDistributionTypeMapper::to);
   }
 
   /**
@@ -230,7 +230,7 @@ public class ParameterDistributionTypeResource {
       @PathVariable UUID id) {
     log.debug("REST request to get ParameterDistributionType : {}", id);
     Mono<ParameterDistributionTypeTO> parameterDistributionTypeTO =
-        parameterDistributionTypeFacade.findOne(id).map(parameterDistributionTypeMapper::toTo);
+        parameterDistributionTypeFacade.findOne(id).map(parameterDistributionTypeMapper::to);
     return ResponseUtil.wrapOrNotFound(parameterDistributionTypeTO);
   }
 

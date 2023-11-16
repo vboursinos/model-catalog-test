@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.GenericCallable;
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterDistributionTypeMapper;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
@@ -43,11 +43,11 @@ public class ParameterDistributionTypeService {
   public Mono<ParameterDistributionTypeDTO> save(
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug("Request to save ParameterDistributionType : {}", parameterDistributionTypeDTO);
-    GenericCallable<
-            ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
+    GenericModelCallable<
+                ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                GenericCallable.class,
+                    GenericModelCallable.class,
                 "create",
                 parameterDistributionTypeDTO,
                 parameterDistributionTypeRepository,
@@ -65,11 +65,11 @@ public class ParameterDistributionTypeService {
   public Mono<ParameterDistributionTypeDTO> update(
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug("Request to update ParameterDistributionType : {}", parameterDistributionTypeDTO);
-    GenericCallable<
+    GenericModelCallable<
             ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                GenericCallable.class,
+                    GenericModelCallable.class,
                 "update",
                 parameterDistributionTypeDTO,
                 parameterDistributionTypeRepository,
@@ -88,11 +88,11 @@ public class ParameterDistributionTypeService {
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug(
         "Request to partially update ParameterDistributionType : {}", parameterDistributionTypeDTO);
-    GenericCallable<
+    GenericModelCallable<
             ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                GenericCallable.class,
+                    GenericModelCallable.class,
                 "partialUpdate",
                 parameterDistributionTypeDTO,
                 parameterDistributionTypeRepository,
@@ -108,13 +108,13 @@ public class ParameterDistributionTypeService {
   @Transactional(readOnly = true)
   public Mono<List<ParameterDistributionTypeDTO>> findAll() {
     log.debug("Request to get all ParameterDistributionTypes");
-    GenericCallable<
+    GenericModelCallable<
             List<ParameterDistributionTypeDTO>,
             ParameterDistributionTypeDTO,
             ParameterDistributionType>
         callable =
             context.getBean(
-                GenericCallable.class,
+                    GenericModelCallable.class,
                 "findAll",
                 parameterDistributionTypeRepository,
                 parameterDistributionTypeMapper);
@@ -129,7 +129,7 @@ public class ParameterDistributionTypeService {
             () ->
                 Flux.fromStream(
                     parameterDistributionTypeRepository.findAll().stream()
-                        .map(parameterDistributionTypeMapper::toDto)))
+                        .map(parameterDistributionTypeMapper::to)))
         .subscribeOn(Schedulers.boundedElastic());
   }
 
@@ -142,11 +142,11 @@ public class ParameterDistributionTypeService {
   @Transactional(readOnly = true)
   public Mono<ParameterDistributionTypeDTO> findOne(UUID id) {
     log.debug("Request to get ParameterDistributionType : {}", id);
-    GenericCallable<
+    GenericModelCallable<
             ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                GenericCallable.class,
+                    GenericModelCallable.class,
                 "findById",
                 id,
                 parameterDistributionTypeRepository,
@@ -162,9 +162,9 @@ public class ParameterDistributionTypeService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ParameterDistributionType : {}", id);
-    GenericCallable<Void, ParameterDistributionTypeDTO, ParameterDistributionType> callable =
+    GenericModelCallable<Void, ParameterDistributionTypeDTO, ParameterDistributionType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "delete",
             id,
             parameterDistributionTypeRepository,
@@ -175,9 +175,9 @@ public class ParameterDistributionTypeService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericCallable<Boolean, ParameterDistributionTypeDTO, ParameterDistributionType> callable =
+    GenericModelCallable<Boolean, ParameterDistributionTypeDTO, ParameterDistributionType> callable =
         context.getBean(
-            GenericCallable.class,
+                GenericModelCallable.class,
             "existsById",
             id,
             parameterDistributionTypeRepository,

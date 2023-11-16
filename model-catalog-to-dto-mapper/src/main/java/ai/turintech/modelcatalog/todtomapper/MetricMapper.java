@@ -1,9 +1,18 @@
 package ai.turintech.modelcatalog.todtomapper;
 
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.MetricDTO;
 import ai.turintech.modelcatalog.to.MetricTO;
 import org.mapstruct.*;
 
+import java.util.List;
+
 /** Mapper for the entity {@link Metric} and its DTO {@link MetricDTO}. */
 @Mapper(componentModel = "spring", implementationName = "MetricMapperTOImpl")
-public interface MetricMapper extends EntityMapper<MetricTO, MetricDTO> {}
+public interface MetricMapper extends MapperInterface<MetricTO, MetricDTO> {
+
+    List<MetricDTO> toDTO(List<MetricTO> s);
+
+    List<MetricTO> toTO(List<MetricDTO> s);
+
+}
