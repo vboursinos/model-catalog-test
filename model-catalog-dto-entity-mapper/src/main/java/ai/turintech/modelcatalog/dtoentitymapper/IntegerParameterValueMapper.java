@@ -12,4 +12,4 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface IntegerParameterValueMapper
-    extends MapperInterface<IntegerParameterValueDTO, IntegerParameterValue> {}
+    extends AbstractMapper<IntegerParameterValueDTO, IntegerParameterValue>{}

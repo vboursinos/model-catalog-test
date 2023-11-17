@@ -84,6 +84,7 @@ public class ModelGroupTypeService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            modelGroupTypeDTO.getId(),
             modelGroupTypeDTO,
             modelGroupTypeRepository,
             modelGroupTypeMapper);

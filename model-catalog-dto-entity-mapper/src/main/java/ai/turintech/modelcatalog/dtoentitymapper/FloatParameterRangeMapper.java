@@ -10,6 +10,6 @@ import org.mapstruct.*;
 /** Mapper for the entity {@link FloatParameterRange} and its DTO {@link FloatParameterRangeDTO}. */
 @Mapper(componentModel = "spring")
 public interface FloatParameterRangeMapper
-    extends MapperInterface<FloatParameterRangeDTO, FloatParameterRange> {
+    extends AbstractMapper<FloatParameterRangeDTO, FloatParameterRange> {
 
 }

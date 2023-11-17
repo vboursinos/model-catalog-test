@@ -10,7 +10,7 @@ import org.mapstruct.*;
 /** Mapper for the entity {@link BooleanParameter} and its DTO {@link BooleanParameterDTO}. */
 @Mapper(componentModel = "spring")
 public interface BooleanParameterMapper
-    extends MapperInterface<BooleanParameterDTO, BooleanParameter> {
+    extends AbstractMapper<BooleanParameterDTO,BooleanParameter> {
 
     @Named("partialUpdate")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

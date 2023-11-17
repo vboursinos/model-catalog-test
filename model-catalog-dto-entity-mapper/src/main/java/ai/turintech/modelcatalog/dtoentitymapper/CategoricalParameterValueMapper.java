@@ -13,5 +13,5 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface CategoricalParameterValueMapper
-    extends MapperInterface<CategoricalParameterValueDTO, CategoricalParameterValue> {
+    extends AbstractMapper<CategoricalParameterValueDTO, CategoricalParameterValue> {
 }

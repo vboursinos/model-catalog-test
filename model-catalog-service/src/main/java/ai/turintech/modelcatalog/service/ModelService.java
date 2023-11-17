@@ -81,7 +81,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	@Transactional
 	public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO) {
 		log.debug("Request to partially update Model : {}", modelDTO);
-		GenericModelCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "partialUpdate",
+		GenericModelCallable<ModelDTO, ModelDTO, Model> callable = context.getBean(GenericModelCallable.class, "partialUpdate", modelDTO.getId(),
 				modelDTO, modelRepository, modelMapper);
 		return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
 	}

@@ -8,4 +8,4 @@ import org.mapstruct.*;
 /** Mapper for the entity {@link ModelEnsembleType} and its DTO {@link ModelEnsembleTypeDTO}. */
 @Mapper(componentModel = "spring")
 public interface ModelEnsembleTypeMapper
-    extends MapperInterface<ModelEnsembleTypeDTO, ModelEnsembleType> {}
+    extends AbstractMapper<ModelEnsembleTypeDTO, ModelEnsembleType> {}

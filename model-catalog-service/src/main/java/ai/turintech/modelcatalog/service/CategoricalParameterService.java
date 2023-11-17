@@ -87,6 +87,7 @@ public class CategoricalParameterService {
             context.getBean(
                     GenericModelCallable.class,
                 "partialUpdate",
+                categoricalParameterDTO.getParameterTypeDefinitionId(),
                 categoricalParameterDTO,
                 categoricalParameterRepository,
                 categoricalParameterMapper);

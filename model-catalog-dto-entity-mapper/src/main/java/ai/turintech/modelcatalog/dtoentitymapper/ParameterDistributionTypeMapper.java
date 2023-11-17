@@ -11,4 +11,4 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ParameterDistributionTypeMapper
-    extends MapperInterface<ParameterDistributionTypeDTO, ParameterDistributionType> {}
+    extends AbstractMapper<ParameterDistributionTypeDTO,ParameterDistributionType> {}

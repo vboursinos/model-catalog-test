@@ -7,4 +7,4 @@ import org.mapstruct.Mapper;
 
 /** Mapper for the entity {@link MlTaskType} and its DTO {@link MlTaskTypeDTO}. */
 @Mapper(componentModel = "spring")
-public interface MlTaskTypeMapper extends MapperInterface<MlTaskTypeDTO, MlTaskType> {}
+public interface MlTaskTypeMapper extends AbstractMapper<MlTaskTypeDTO,MlTaskType> {}

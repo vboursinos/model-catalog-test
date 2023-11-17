@@ -1,6 +1,7 @@
 package ai.turintech.modelcatalog.callable;
 
 import ai.turintech.components.mapper.api.MapperInterface;
+import ai.turintech.modelcatalog.dtoentitymapper.AbstractMapper;
 import ai.turintech.modelcatalog.exceptions.FindOneException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,10 +23,10 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
   private UUID id;
   private DTO dto;
   private JpaRepository<ENTITY, UUID> repository;
-  private MapperInterface<DTO, ENTITY> mapper;
+  private AbstractMapper<DTO, ENTITY> mapper;
 
   public GenericModelCallable(
-      String name, JpaRepository<ENTITY, UUID> repository, MapperInterface<DTO, ENTITY> mapper) {
+      String name, JpaRepository<ENTITY, UUID> repository, AbstractMapper<DTO, ENTITY> mapper) {
     this.name = name;
     this.repository = repository;
     this.mapper = mapper;
@@ -35,7 +36,7 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
       String name,
       UUID id,
       JpaRepository<ENTITY, UUID> repository,
-      MapperInterface<DTO, ENTITY> mapper) {
+      AbstractMapper<DTO, ENTITY> mapper) {
     this.name = name;
     this.id = id;
     this.repository = repository;
@@ -46,8 +47,16 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
       String name,
       DTO dto,
       JpaRepository<ENTITY, UUID> repository,
-      MapperInterface<DTO, ENTITY> mapper) {
+      AbstractMapper<DTO, ENTITY> mapper) {
     this.name = name;
+    this.dto = dto;
+    this.repository = repository;
+    this.mapper = mapper;
+  }
+
+  public GenericModelCallable(String name, UUID id, DTO dto, JpaRepository<ENTITY, UUID> repository, AbstractMapper<DTO, ENTITY> mapper) {
+    this.name = name;
+    this.id = id;
     this.dto = dto;
     this.repository = repository;
     this.mapper = mapper;
@@ -84,17 +93,16 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
   }
 
   public DTO partialUpdate() throws FindOneException {
-//    return repository
-//        .findById(id)
-//        .map(
-//            existingEntity -> {
-//              mapper.partialUpdate(existingEntity, dto);
-//              return existingEntity;
-//            })
-//        .map(repository::save)
-//        .map(mapper::to)
-//        .orElseThrow(() -> new FindOneException(name + " with ID " + id + " not found."));
-    return null;
+    return repository
+        .findById(id)
+        .map(
+            existingEntity -> {
+              mapper.partialUpdate(existingEntity, dto);
+              return existingEntity;
+            })
+        .map(repository::save)
+        .map(mapper::to)
+        .orElseThrow(() -> new FindOneException(name + " with ID " + id + " not found."));
   }
 
   public void delete() {

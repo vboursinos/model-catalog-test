@@ -9,7 +9,7 @@ import org.mapstruct.*;
 
 /** Mapper for the entity {@link Model} and its DTO {@link ModelDTO}. */
 @Mapper(componentModel = "spring")
-public interface ModelMapper extends MapperInterface<ModelDTO, Model> {
+public interface ModelMapper extends AbstractMapper<ModelDTO, Model> {
   @Mapping(target = "groups", source = "groups")
   @Mapping(target = "incompatibleMetrics", source = "incompatibleMetrics")
   @Mapping(target = "mlTask", source = "mlTask")

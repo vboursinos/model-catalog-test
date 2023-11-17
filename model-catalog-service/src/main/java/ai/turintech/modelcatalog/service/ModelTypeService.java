@@ -72,6 +72,7 @@ public class ModelTypeService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            modelTypeDTO.getId(),
             modelTypeDTO,
             modelTypeRepository,
             modelTypeMapper);

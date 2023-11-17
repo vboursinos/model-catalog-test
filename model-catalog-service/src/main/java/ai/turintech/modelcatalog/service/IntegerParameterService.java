@@ -84,6 +84,7 @@ public class IntegerParameterService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            integerParameterDTO.getParameterTypeDefinitionId(),
             integerParameterDTO,
             integerParameterRepository,
             integerParameterMapper);

@@ -13,4 +13,4 @@ import org.mapstruct.Named;
 /** Mapper for the entity {@link IntegerParameter} and its DTO {@link IntegerParameterDTO}. */
 @Mapper(componentModel = "spring")
 public interface IntegerParameterMapper
-    extends MapperInterface<IntegerParameterDTO, IntegerParameter> {}
+    extends AbstractMapper<IntegerParameterDTO, IntegerParameter> {}
