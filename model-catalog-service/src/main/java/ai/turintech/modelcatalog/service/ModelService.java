@@ -8,6 +8,7 @@ import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
 import ai.turintech.modelcatalog.entity.Model;
+import ai.turintech.modelcatalog.entity.ModelLimited;
 import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.repository.ModelRepository;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ import java.util.concurrent.Callable;
 /** Service Implementation for managing {@link Model}. */
 @Service
 @Transactional
-public class ModelService extends AbstractSearchService<Model, ModelDTO> implements SearchService<ModelDTO> {
+public class ModelService extends AbstractSearchService<ModelLimited, ModelDTO> implements SearchService<ModelDTO> {
 	private Logger log = LoggerFactory.getLogger(ModelService.class);
 	
 	@Autowired
@@ -41,7 +42,7 @@ public class ModelService extends AbstractSearchService<Model, ModelDTO> impleme
 	private ModelMapper modelMapper;
 
 	public ModelService() {
-		super(Model.class, ModelDTO.class);
+		super(ModelLimited.class, ModelDTO.class);
 	}
 
 	/**
