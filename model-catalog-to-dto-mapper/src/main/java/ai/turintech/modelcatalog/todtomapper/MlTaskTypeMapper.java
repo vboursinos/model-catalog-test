@@ -5,9 +5,8 @@ import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.to.MlTaskTypeTO;
 import ai.turintech.modelcatalog.to.ModelTO;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.*;
 
 /** Mapper for the entity {@link MlTaskType} and its DTO {@link MlTaskTypeDTO}. */
 @Mapper(

@@ -3,9 +3,9 @@ package ai.turintech.modelcatalog.callable;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
+import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.repository.ModelRepository;
 import ai.turintech.modelcatalog.service.PaginationConverter;
-import ai.turintech.modelcatalog.entity.Model;
 import java.util.*;
 import java.util.concurrent.Callable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +35,16 @@ public class ModelCallable<T> implements Callable<T> {
   @Autowired private ModelMapper modelMapper;
   @Autowired private PaginationConverter paginationConverter;
 
-    public ModelPaginatedListDTO findAll(){
-        List<Model> models = modelRepository.findAll(pageable).getContent();
-        ModelPaginatedListDTO paginatedList = paginationConverter.getPaginatedList(
-                models.stream().map(modelMapper::toDto).toList(),
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                modelRepository.count());
-        return paginatedList;
-    }
+  public ModelPaginatedListDTO findAll() {
+    List<Model> models = modelRepository.findAll(pageable).getContent();
+    ModelPaginatedListDTO paginatedList =
+        paginationConverter.getPaginatedList(
+            models.stream().map(modelMapper::toDto).toList(),
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            modelRepository.count());
+    return paginatedList;
+  }
 
   @Override
   public T call() {

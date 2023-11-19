@@ -43,7 +43,11 @@ public class ParameterService {
     log.debug("Request to save Parameter : {}", parameterDTO);
     GenericModelCallable<ParameterDTO, ParameterDTO, Parameter> callable =
         context.getBean(
-                GenericModelCallable.class, "create", parameterDTO, parameterRepository, parameterMapper);
+            GenericModelCallable.class,
+            "create",
+            parameterDTO,
+            parameterRepository,
+            parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -58,7 +62,11 @@ public class ParameterService {
     log.debug("Request to update Parameter : {}", parameterDTO);
     GenericModelCallable<ParameterDTO, ParameterDTO, Parameter> callable =
         context.getBean(
-                GenericModelCallable.class, "update", parameterDTO, parameterRepository, parameterMapper);
+            GenericModelCallable.class,
+            "update",
+            parameterDTO,
+            parameterRepository,
+            parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -72,7 +80,7 @@ public class ParameterService {
     log.debug("Request to partially update Parameter : {}", parameterDTO);
     GenericModelCallable<Optional<ParameterDTO>, ParameterDTO, Parameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "partialUpdate",
             parameterDTO.getId(),
             parameterDTO,
@@ -91,7 +99,8 @@ public class ParameterService {
   public Mono<List<ParameterDTO>> findAll(Pageable pageable) {
     log.debug("Request to get all Parameters");
     GenericModelCallable<List<ParameterDTO>, ParameterDTO, Parameter> callable =
-        context.getBean(GenericModelCallable.class, "findAll", parameterRepository, parameterMapper);
+        context.getBean(
+            GenericModelCallable.class, "findAll", parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -112,7 +121,7 @@ public class ParameterService {
     log.debug("Request to get Parameter : {}", id);
     GenericModelCallable<ParameterDTO, ParameterDTO, Parameter> callable =
         context.getBean(
-                GenericModelCallable.class, "findById", id, parameterRepository, parameterMapper);
+            GenericModelCallable.class, "findById", id, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -125,7 +134,8 @@ public class ParameterService {
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete Parameter : {}", id);
     GenericModelCallable<Void, ParameterDTO, Parameter> callable =
-        context.getBean(GenericModelCallable.class, "delete", id, parameterRepository, parameterMapper);
+        context.getBean(
+            GenericModelCallable.class, "delete", id, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -134,7 +144,7 @@ public class ParameterService {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     GenericModelCallable<Boolean, ParameterDTO, Parameter> callable =
         context.getBean(
-                GenericModelCallable.class, "existsById", id, parameterRepository, parameterMapper);
+            GenericModelCallable.class, "existsById", id, parameterRepository, parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

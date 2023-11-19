@@ -40,10 +40,10 @@ public class CategoricalParameterValueService {
       CategoricalParameterValueDTO categoricalParameterValueDTO) {
     log.debug("Request to save CategoricalParameterValue : {}", categoricalParameterValueDTO);
     GenericModelCallable<
-                CategoricalParameterValueDTO, CategoricalParameterValueDTO, CategoricalParameterValue>
+            CategoricalParameterValueDTO, CategoricalParameterValueDTO, CategoricalParameterValue>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "create",
                 categoricalParameterValueDTO,
                 categoricalParameterValueRepository,
@@ -65,7 +65,7 @@ public class CategoricalParameterValueService {
             CategoricalParameterValueDTO, CategoricalParameterValueDTO, CategoricalParameterValue>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "update",
                 categoricalParameterValueDTO,
                 categoricalParameterValueRepository,
@@ -88,7 +88,7 @@ public class CategoricalParameterValueService {
             CategoricalParameterValueDTO, CategoricalParameterValueDTO, CategoricalParameterValue>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "partialUpdate",
                 categoricalParameterValueDTO.getId(),
                 categoricalParameterValueDTO,
@@ -111,7 +111,7 @@ public class CategoricalParameterValueService {
             CategoricalParameterValue>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "findAll",
                 categoricalParameterValueRepository,
                 categoricalParameterValueMapper);
@@ -143,7 +143,7 @@ public class CategoricalParameterValueService {
             CategoricalParameterValueDTO, CategoricalParameterValueDTO, CategoricalParameterValue>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "findById",
                 id,
                 categoricalParameterValueRepository,
@@ -161,7 +161,7 @@ public class CategoricalParameterValueService {
     log.debug("Request to delete CategoricalParameterValue : {}", id);
     GenericModelCallable<Void, CategoricalParameterValueDTO, CategoricalParameterValue> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "delete",
             id,
             categoricalParameterValueRepository,
@@ -172,13 +172,14 @@ public class CategoricalParameterValueService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, CategoricalParameterValueDTO, CategoricalParameterValue> callable =
-        context.getBean(
+    GenericModelCallable<Boolean, CategoricalParameterValueDTO, CategoricalParameterValue>
+        callable =
+            context.getBean(
                 GenericModelCallable.class,
-            "existsById",
-            id,
-            categoricalParameterValueRepository,
-            categoricalParameterValueMapper);
+                "existsById",
+                id,
+                categoricalParameterValueRepository,
+                categoricalParameterValueMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

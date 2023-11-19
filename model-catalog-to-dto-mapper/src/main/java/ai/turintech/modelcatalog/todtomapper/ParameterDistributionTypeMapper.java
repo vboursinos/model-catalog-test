@@ -1,13 +1,10 @@
 package ai.turintech.modelcatalog.todtomapper;
 
 import ai.turintech.components.mapper.api.MapperInterface;
-import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.to.ParameterDistributionTypeTO;
-import ai.turintech.modelcatalog.to.ParameterTO;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link ParameterDistributionType} and its DTO {@link
@@ -17,8 +14,7 @@ import java.util.List;
 public interface ParameterDistributionTypeMapper
     extends MapperInterface<ParameterDistributionTypeTO, ParameterDistributionTypeDTO> {
 
-    List<ParameterDistributionTypeDTO> toDto(List<ParameterDistributionTypeTO> s);
+  List<ParameterDistributionTypeDTO> toDto(List<ParameterDistributionTypeTO> s);
 
-    List<ParameterDistributionTypeTO> toTO(List<ParameterDistributionTypeDTO> s);
-
+  List<ParameterDistributionTypeTO> toTO(List<ParameterDistributionTypeDTO> s);
 }

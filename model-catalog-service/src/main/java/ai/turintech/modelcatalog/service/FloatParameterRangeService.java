@@ -38,13 +38,14 @@ public class FloatParameterRangeService {
   @Transactional
   public Mono<FloatParameterRangeDTO> save(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to save FloatParameterRange : {}", floatParameterRangeDTO);
-    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable =
-        context.getBean(
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+        callable =
+            context.getBean(
                 GenericModelCallable.class,
-            "create",
-            floatParameterRangeDTO,
-            floatParameterRangeRepository,
-            floatParameterRangeMapper);
+                "create",
+                floatParameterRangeDTO,
+                floatParameterRangeRepository,
+                floatParameterRangeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -57,13 +58,14 @@ public class FloatParameterRangeService {
   @Transactional
   public Mono<FloatParameterRangeDTO> update(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to update FloatParameterRange : {}", floatParameterRangeDTO);
-    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable =
-        context.getBean(
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+        callable =
+            context.getBean(
                 GenericModelCallable.class,
-            "update",
-            floatParameterRangeDTO,
-            floatParameterRangeRepository,
-            floatParameterRangeMapper);
+                "update",
+                floatParameterRangeDTO,
+                floatParameterRangeRepository,
+                floatParameterRangeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -76,14 +78,15 @@ public class FloatParameterRangeService {
   @Transactional
   public Mono<FloatParameterRangeDTO> partialUpdate(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to partially update FloatParameterRange : {}", floatParameterRangeDTO);
-    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable =
-        context.getBean(
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+        callable =
+            context.getBean(
                 GenericModelCallable.class,
-            "partialUpdate",
-            floatParameterRangeDTO.getId(),
-            floatParameterRangeDTO,
-            floatParameterRangeRepository,
-            floatParameterRangeMapper);
+                "partialUpdate",
+                floatParameterRangeDTO.getId(),
+                floatParameterRangeDTO,
+                floatParameterRangeRepository,
+                floatParameterRangeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -98,7 +101,7 @@ public class FloatParameterRangeService {
     GenericModelCallable<List<FloatParameterRangeDTO>, FloatParameterRangeDTO, FloatParameterRange>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "findAll",
                 floatParameterRangeRepository,
                 floatParameterRangeMapper);
@@ -125,13 +128,14 @@ public class FloatParameterRangeService {
   @Transactional(readOnly = true)
   public Mono<FloatParameterRangeDTO> findOne(UUID id) {
     log.debug("Request to get FloatParameterRange : {}", id);
-    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange> callable =
-        context.getBean(
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+        callable =
+            context.getBean(
                 GenericModelCallable.class,
-            "findById",
-            id,
-            floatParameterRangeRepository,
-            floatParameterRangeMapper);
+                "findById",
+                id,
+                floatParameterRangeRepository,
+                floatParameterRangeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -145,7 +149,7 @@ public class FloatParameterRangeService {
     log.debug("Request to delete FloatParameterRange : {}", id);
     GenericModelCallable<Void, FloatParameterRangeDTO, FloatParameterRange> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "delete",
             id,
             floatParameterRangeRepository,
@@ -158,7 +162,7 @@ public class FloatParameterRangeService {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     GenericModelCallable<Boolean, FloatParameterRangeDTO, FloatParameterRange> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "existsById",
             id,
             floatParameterRangeRepository,

@@ -42,7 +42,8 @@ public class MetricService {
   public Mono<MetricDTO> save(MetricDTO metricDTO) {
     log.debug("Request to save Metric : {}", metricDTO);
     GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
-        context.getBean(GenericModelCallable.class, "create", metricDTO, metricRepository, metricMapper);
+        context.getBean(
+            GenericModelCallable.class, "create", metricDTO, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -56,7 +57,8 @@ public class MetricService {
   public Mono<MetricDTO> update(MetricDTO metricDTO) {
     log.debug("Request to update Metric : {}", metricDTO);
     GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
-        context.getBean(GenericModelCallable.class, "update", metricDTO, metricRepository, metricMapper);
+        context.getBean(
+            GenericModelCallable.class, "update", metricDTO, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -71,7 +73,12 @@ public class MetricService {
     log.debug("Request to partially update Metric : {}", metricDTO);
     GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
         context.getBean(
-                GenericModelCallable.class, "partialUpdate", metricDTO.getId(), metricDTO, metricRepository, metricMapper);
+            GenericModelCallable.class,
+            "partialUpdate",
+            metricDTO.getId(),
+            metricDTO,
+            metricRepository,
+            metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -128,7 +135,8 @@ public class MetricService {
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     GenericModelCallable<Boolean, MetricDTO, Metric> callable =
-        context.getBean(GenericModelCallable.class, "existsById", id, metricRepository, metricMapper);
+        context.getBean(
+            GenericModelCallable.class, "existsById", id, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

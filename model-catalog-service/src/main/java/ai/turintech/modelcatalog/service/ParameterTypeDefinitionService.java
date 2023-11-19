@@ -46,10 +46,11 @@ public class ParameterTypeDefinitionService {
   public Mono<ParameterTypeDefinitionDTO> save(
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug("Request to save ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    GenericModelCallable<ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    GenericModelCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "create",
                 parameterTypeDefinitionDTO,
                 parameterTypeDefinitionRepository,
@@ -67,10 +68,11 @@ public class ParameterTypeDefinitionService {
   public Mono<ParameterTypeDefinitionDTO> update(
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug("Request to update ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    GenericModelCallable<ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    GenericModelCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "update",
                 parameterTypeDefinitionDTO,
                 parameterTypeDefinitionRepository,
@@ -89,10 +91,11 @@ public class ParameterTypeDefinitionService {
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug(
         "Request to partially update ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    GenericModelCallable<ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    GenericModelCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "partialUpdate",
                 parameterTypeDefinitionDTO.getId(),
                 parameterTypeDefinitionDTO,
@@ -113,7 +116,7 @@ public class ParameterTypeDefinitionService {
             List<ParameterTypeDefinitionDTO>, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "findAll",
                 parameterTypeDefinitionRepository,
                 parameterTypeDefinitionMapper);
@@ -211,10 +214,11 @@ public class ParameterTypeDefinitionService {
   @Transactional(readOnly = true)
   public Mono<ParameterTypeDefinitionDTO> findOne(UUID id) {
     log.debug("Request to get ParameterTypeDefinition : {}", id);
-    GenericModelCallable<ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    GenericModelCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "findById",
                 id,
                 parameterTypeDefinitionRepository,
@@ -232,7 +236,7 @@ public class ParameterTypeDefinitionService {
     log.debug("Request to delete ParameterTypeDefinition : {}", id);
     GenericModelCallable<Void, ParameterTypeDefinitionDTO, ParameterTypeDefinition> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "delete",
             id,
             parameterTypeDefinitionRepository,
@@ -245,7 +249,7 @@ public class ParameterTypeDefinitionService {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     GenericModelCallable<Boolean, ParameterTypeDefinitionDTO, ParameterTypeDefinition> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "existsById",
             id,
             parameterTypeDefinitionRepository,

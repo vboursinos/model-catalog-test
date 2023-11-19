@@ -44,7 +44,7 @@ public class IntegerParameterService {
     log.debug("Request to save IntegerParameter : {}", integerParameterDTO);
     GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "create",
             integerParameterDTO,
             integerParameterRepository,
@@ -63,7 +63,7 @@ public class IntegerParameterService {
     log.debug("Request to update IntegerParameter : {}", integerParameterDTO);
     GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "update",
             integerParameterDTO,
             integerParameterRepository,
@@ -82,7 +82,7 @@ public class IntegerParameterService {
     log.debug("Request to partially update IntegerParameter : {}", integerParameterDTO);
     GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "partialUpdate",
             integerParameterDTO.getParameterTypeDefinitionId(),
             integerParameterDTO,
@@ -99,9 +99,13 @@ public class IntegerParameterService {
   @Transactional(readOnly = true)
   public Mono<List<IntegerParameterDTO>> findAll() {
     log.debug("Request to get all IntegerParameters");
-    GenericModelCallable<List<IntegerParameterDTO>, IntegerParameterDTO, IntegerParameter> callable =
-        context.getBean(
-                GenericModelCallable.class, "findAll", integerParameterRepository, integerParameterMapper);
+    GenericModelCallable<List<IntegerParameterDTO>, IntegerParameterDTO, IntegerParameter>
+        callable =
+            context.getBean(
+                GenericModelCallable.class,
+                "findAll",
+                integerParameterRepository,
+                integerParameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -112,8 +116,7 @@ public class IntegerParameterService {
     return Flux.defer(
             () ->
                 Flux.fromStream(
-                    integerParameterRepository.findAll().stream()
-                        .map(integerParameterMapper::to)))
+                    integerParameterRepository.findAll().stream().map(integerParameterMapper::to)))
         .subscribeOn(Schedulers.boundedElastic());
   }
 
@@ -128,7 +131,7 @@ public class IntegerParameterService {
     log.debug("Request to get IntegerParameter : {}", id);
     GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "findById",
             id,
             integerParameterRepository,
@@ -146,7 +149,7 @@ public class IntegerParameterService {
     log.debug("Request to delete IntegerParameter : {}", id);
     GenericModelCallable<Void, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "delete",
             id,
             integerParameterRepository,
@@ -159,7 +162,7 @@ public class IntegerParameterService {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     GenericModelCallable<Boolean, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "existsById",
             id,
             integerParameterRepository,

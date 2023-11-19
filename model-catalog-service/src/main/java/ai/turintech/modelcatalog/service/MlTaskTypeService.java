@@ -43,7 +43,11 @@ public class MlTaskTypeService {
     log.debug("Request to save MlTaskType : {}", mlTaskTypeDTO);
     GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
-                GenericModelCallable.class, "create", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
+            GenericModelCallable.class,
+            "create",
+            mlTaskTypeDTO,
+            mlTaskTypeRepository,
+            mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -58,7 +62,11 @@ public class MlTaskTypeService {
     log.debug("Request to update MlTaskType : {}", mlTaskTypeDTO);
     GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
-                GenericModelCallable.class, "update", mlTaskTypeDTO, mlTaskTypeRepository, mlTaskTypeMapper);
+            GenericModelCallable.class,
+            "update",
+            mlTaskTypeDTO,
+            mlTaskTypeRepository,
+            mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -73,7 +81,7 @@ public class MlTaskTypeService {
     log.debug("Request to partially update MlTaskType : {}", mlTaskTypeDTO);
     GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "partialUpdate",
             mlTaskTypeDTO.getId(),
             mlTaskTypeDTO,
@@ -91,7 +99,8 @@ public class MlTaskTypeService {
   public Mono<List<MlTaskTypeDTO>> findAll() {
     log.debug("Request to get all MlTaskTypes");
     GenericModelCallable<List<MlTaskTypeDTO>, MlTaskTypeDTO, MlTaskType> callable =
-        context.getBean(GenericModelCallable.class, "findAll", mlTaskTypeRepository, mlTaskTypeMapper);
+        context.getBean(
+            GenericModelCallable.class, "findAll", mlTaskTypeRepository, mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -101,8 +110,7 @@ public class MlTaskTypeService {
 
     return Flux.defer(
             () ->
-                Flux.fromStream(
-                    mlTaskTypeRepository.findAll().stream().map(mlTaskTypeMapper::to)))
+                Flux.fromStream(mlTaskTypeRepository.findAll().stream().map(mlTaskTypeMapper::to)))
         .subscribeOn(Schedulers.boundedElastic());
   }
   /**
@@ -116,7 +124,7 @@ public class MlTaskTypeService {
     log.debug("Request to get MlTaskType : {}", id);
     GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
-                GenericModelCallable.class, "findById", id, mlTaskTypeRepository, mlTaskTypeMapper);
+            GenericModelCallable.class, "findById", id, mlTaskTypeRepository, mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -130,7 +138,7 @@ public class MlTaskTypeService {
     log.debug("Request to delete MlTaskType : {}", id);
     GenericModelCallable<Void, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
-                GenericModelCallable.class, "create", id, mlTaskTypeRepository, mlTaskTypeMapper);
+            GenericModelCallable.class, "create", id, mlTaskTypeRepository, mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -139,7 +147,7 @@ public class MlTaskTypeService {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     GenericModelCallable<Boolean, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
-                GenericModelCallable.class, "existsById", id, mlTaskTypeRepository, mlTaskTypeMapper);
+            GenericModelCallable.class, "existsById", id, mlTaskTypeRepository, mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

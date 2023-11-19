@@ -44,6 +44,8 @@
         <hibernate-core.version>6.3.1.Final</hibernate-core.version>
         <com.vladmihalcea.hybernate-types-60.version>2.21.1</com.vladmihalcea.hybernate-types-60.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
+
         <!-- Components -->
         <jpa-search.version>01.00.00-a0-SNAPSHOT</jpa-search.version>
         <common-data.version>01.00.00-a0-SNAPSHOT</common-data.version>
@@ -225,6 +227,31 @@
             </snapshots>
         </repository>
     </repositories>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.coveo</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>${fmt-maven-plugin.version}</version>
+                <configuration>
+                    <sourceDirectory>src/main/java</sourceDirectory>
+                    <testSourceDirectory>src/test/java</testSourceDirectory>
+                    <verbose>false</verbose>
+                    <filesNamePattern>.*\.java</filesNamePattern>
+                    <skip>false</skip>
+                    <skipSortingImports>false</skipSortingImports>
+                    <style>google</style>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
     <modules>
         <!-- Interfaces for all relevant layers -->
         <module>model-catalog-api</module>

@@ -43,7 +43,7 @@ public class FloatParameterService {
     log.debug("Request to save FloatParameter : {}", floatParameterDTO);
     GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "create",
             floatParameterDTO,
             floatParameterRepository,
@@ -62,7 +62,7 @@ public class FloatParameterService {
     log.debug("Request to update FloatParameter : {}", floatParameterDTO);
     GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "update",
             floatParameterDTO,
             floatParameterRepository,
@@ -81,7 +81,7 @@ public class FloatParameterService {
     log.debug("Request to partially update FloatParameter : {}", floatParameterDTO);
     GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "partialUpdate",
             floatParameterDTO.getParameterTypeDefinitionId(),
             floatParameterDTO,
@@ -100,7 +100,7 @@ public class FloatParameterService {
     log.debug("Request to get all FloatParameters");
     GenericModelCallable<List<FloatParameterDTO>, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-                GenericModelCallable.class, "findAAll", floatParameterRepository, floatParameterMapper);
+            GenericModelCallable.class, "findAAll", floatParameterRepository, floatParameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -123,7 +123,11 @@ public class FloatParameterService {
     log.debug("Request to get FloatParameter : {}", id);
     GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-                GenericModelCallable.class, "findById", id, floatParameterRepository, floatParameterMapper);
+            GenericModelCallable.class,
+            "findById",
+            id,
+            floatParameterRepository,
+            floatParameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -137,7 +141,11 @@ public class FloatParameterService {
     log.debug("Request to delete FloatParameter : {}", id);
     GenericModelCallable<Void, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-                GenericModelCallable.class, "delete", id, floatParameterRepository, floatParameterMapper);
+            GenericModelCallable.class,
+            "delete",
+            id,
+            floatParameterRepository,
+            floatParameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -146,7 +154,7 @@ public class FloatParameterService {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     GenericModelCallable<Boolean, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "existsById",
             id,
             floatParameterRepository,

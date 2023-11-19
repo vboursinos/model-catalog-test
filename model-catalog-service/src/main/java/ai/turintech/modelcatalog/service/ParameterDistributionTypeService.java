@@ -44,10 +44,10 @@ public class ParameterDistributionTypeService {
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug("Request to save ParameterDistributionType : {}", parameterDistributionTypeDTO);
     GenericModelCallable<
-                ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
+            ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "create",
                 parameterDistributionTypeDTO,
                 parameterDistributionTypeRepository,
@@ -69,7 +69,7 @@ public class ParameterDistributionTypeService {
             ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "update",
                 parameterDistributionTypeDTO,
                 parameterDistributionTypeRepository,
@@ -92,7 +92,7 @@ public class ParameterDistributionTypeService {
             ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "partialUpdate",
                 parameterDistributionTypeDTO.getId(),
                 parameterDistributionTypeDTO,
@@ -115,7 +115,7 @@ public class ParameterDistributionTypeService {
             ParameterDistributionType>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "findAll",
                 parameterDistributionTypeRepository,
                 parameterDistributionTypeMapper);
@@ -147,7 +147,7 @@ public class ParameterDistributionTypeService {
             ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
-                    GenericModelCallable.class,
+                GenericModelCallable.class,
                 "findById",
                 id,
                 parameterDistributionTypeRepository,
@@ -165,7 +165,7 @@ public class ParameterDistributionTypeService {
     log.debug("Request to delete ParameterDistributionType : {}", id);
     GenericModelCallable<Void, ParameterDistributionTypeDTO, ParameterDistributionType> callable =
         context.getBean(
-                GenericModelCallable.class,
+            GenericModelCallable.class,
             "delete",
             id,
             parameterDistributionTypeRepository,
@@ -176,13 +176,14 @@ public class ParameterDistributionTypeService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, ParameterDistributionTypeDTO, ParameterDistributionType> callable =
-        context.getBean(
+    GenericModelCallable<Boolean, ParameterDistributionTypeDTO, ParameterDistributionType>
+        callable =
+            context.getBean(
                 GenericModelCallable.class,
-            "existsById",
-            id,
-            parameterDistributionTypeRepository,
-            parameterDistributionTypeMapper);
+                "existsById",
+                id,
+                parameterDistributionTypeRepository,
+                parameterDistributionTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

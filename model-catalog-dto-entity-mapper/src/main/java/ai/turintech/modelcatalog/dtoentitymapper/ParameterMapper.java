@@ -1,9 +1,7 @@
 package ai.turintech.modelcatalog.dtoentitymapper;
 
 import ai.turintech.components.mapper.api.MapperInterface;
-import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
-import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.entity.Parameter;
 import org.mapstruct.*;
 
