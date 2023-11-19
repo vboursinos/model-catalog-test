@@ -94,6 +94,7 @@ public class ParameterDistributionTypeService {
             context.getBean(
                     GenericModelCallable.class,
                 "partialUpdate",
+                parameterDistributionTypeDTO.getId(),
                 parameterDistributionTypeDTO,
                 parameterDistributionTypeRepository,
                 parameterDistributionTypeMapper);

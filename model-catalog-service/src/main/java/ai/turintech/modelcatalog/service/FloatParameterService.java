@@ -83,6 +83,7 @@ public class FloatParameterService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            floatParameterDTO.getParameterTypeDefinitionId(),
             floatParameterDTO,
             floatParameterRepository,
             floatParameterMapper);

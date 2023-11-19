@@ -80,6 +80,7 @@ public class FloatParameterRangeService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            floatParameterRangeDTO.getId(),
             floatParameterRangeDTO,
             floatParameterRangeRepository,
             floatParameterRangeMapper);

@@ -82,6 +82,7 @@ public class BooleanParameterService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            booleanParameterDTO.getParameterTypeDefinitionId(),
             booleanParameterDTO,
             booleanParameterRepository,
             booleanParameterMapper);

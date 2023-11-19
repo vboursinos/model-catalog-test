@@ -75,6 +75,7 @@ public class MlTaskTypeService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            mlTaskTypeDTO.getId(),
             mlTaskTypeDTO,
             mlTaskTypeRepository,
             mlTaskTypeMapper);

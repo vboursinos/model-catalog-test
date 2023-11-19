@@ -83,6 +83,7 @@ public class ModelFamilyTypeService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            modelFamilyTypeDTO.getId(),
             modelFamilyTypeDTO,
             modelFamilyTypeRepository,
             modelFamilyTypeMapper);

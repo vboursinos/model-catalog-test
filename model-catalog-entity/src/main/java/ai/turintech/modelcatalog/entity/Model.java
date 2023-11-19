@@ -4,9 +4,8 @@ import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -56,7 +55,7 @@ public class Model implements Serializable {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "model")
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-  private Set<Parameter> parameters = new HashSet<>();
+  private List<Parameter> parameters = new ArrayList<>();
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -200,11 +199,11 @@ public class Model implements Serializable {
     this.decisionTree = decisionTree;
   }
 
-  public Set<Parameter> getParameters() {
+  public List<Parameter> getParameters() {
     return this.parameters;
   }
 
-  public void setParameters(Set<Parameter> parameters) {
+  public void setParameters(List<Parameter> parameters) {
     if (this.parameters != null) {
       this.parameters.forEach(i -> i.setModel(null));
     }
@@ -214,7 +213,7 @@ public class Model implements Serializable {
     this.parameters = parameters;
   }
 
-  public Model parameters(Set<Parameter> parameters) {
+  public Model parameters(List<Parameter> parameters) {
     this.setParameters(parameters);
     return this;
   }

@@ -71,7 +71,7 @@ public class MetricService {
     log.debug("Request to partially update Metric : {}", metricDTO);
     GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
         context.getBean(
-                GenericModelCallable.class, "partialUpdate", metricDTO, metricRepository, metricMapper);
+                GenericModelCallable.class, "partialUpdate", metricDTO.getId(), metricDTO, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 

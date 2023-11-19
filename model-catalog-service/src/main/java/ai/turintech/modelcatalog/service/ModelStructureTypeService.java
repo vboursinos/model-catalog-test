@@ -82,6 +82,7 @@ public class ModelStructureTypeService {
         context.getBean(
                 GenericModelCallable.class,
             "partialUpdate",
+            modelStructureTypeDTO.getId(),
             modelStructureTypeDTO,
             modelStructureTypeRepository,
             modelStructureTypeMapper);
