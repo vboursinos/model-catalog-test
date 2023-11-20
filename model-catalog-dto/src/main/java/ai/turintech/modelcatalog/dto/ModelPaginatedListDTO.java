@@ -1,30 +1,23 @@
 package ai.turintech.modelcatalog.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModelPaginatedListDTO {
-  @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<ModelDTO> docs = new ArrayList<>();
 
-  @JsonInclude(JsonInclude.Include.NON_DEFAULT)
   private long totalDocs;
 
-  @JsonInclude(JsonInclude.Include.NON_DEFAULT)
   private int limit;
 
-  @JsonInclude(JsonInclude.Include.NON_DEFAULT)
   private int totalPages;
 
   private int page;
 
   private int pagingCounter;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Boolean hasPrevPage;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Boolean hasNextPage;
 
   private Integer prevPage;
