@@ -16,19 +16,19 @@
     <property name="uuidType" value="uuid" dbms="postgresql"/>
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
-    <include file="config/liquibase/changelog/setup.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/search_config_create.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_distribution.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_ensemble_family.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_group_type.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_metrics.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_ml_task.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_model_structure_type.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_model_type.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_parameter_type.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_models_classification.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_models_forecasting.sql" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/insert_models_regression.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/1-DDL-create_initial_set_of_tables.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2-DDL-search_config_create.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/3-DML-insert_distribution.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/4-DML-insert_ensemble_family.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/5-DML-insert_group_type.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/6-DML-insert_metrics.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/7-DML-insert_ml_task.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/8-DML-insert_model_structure_type.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/9-DML-insert_model_type.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/10-DML-insert_parameter_type.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/11-DML-insert_models_classification.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/12-DML-insert_models_forecasting.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/13-DML-insert_models_regression.sql" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
 
 </databaseChangeLog>
