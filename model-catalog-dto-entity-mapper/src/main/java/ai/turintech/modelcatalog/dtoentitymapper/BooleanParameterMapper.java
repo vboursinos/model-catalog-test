@@ -9,8 +9,4 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface BooleanParameterMapper
     extends MapperInterface<BooleanParameterDTO, BooleanParameter> {
-
-  @Named("partialUpdate")
-  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  void partialUpdate(@MappingTarget BooleanParameter entity, BooleanParameterDTO dto);
 }
