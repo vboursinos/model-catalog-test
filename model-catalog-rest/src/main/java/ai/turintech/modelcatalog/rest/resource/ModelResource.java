@@ -4,9 +4,7 @@ import ai.turintech.components.jpa.search.controller.AbstractPageableRestControl
 import ai.turintech.components.jpa.search.data.to.PageTO;
 import ai.turintech.components.jpa.search.data.to.PageableQueryRequestTO;
 import ai.turintech.components.jpa.search.exception.PageableRequestException;
-import ai.turintech.modelcatalog.dto.FilterDTO;
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.SearchDTO;
 import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.facade.ModelFacade;
@@ -23,12 +21,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
@@ -39,16 +33,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
@@ -220,19 +205,8 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
   public Mono<ResponseEntity<ModelPaginatedListTO>> getAllModels(
       @ParameterObject Pageable pageable,
       ServerHttpRequest request,
-      @RequestParam(required = false, defaultValue = "false") boolean eagerload,
-      FilterDTO filterDTO,
-      @RequestParam(value = "search", required = false) String search) {
+      @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
     log.debug("REST request to get a page of Models");
-    List<SearchDTO> searchParams = new ArrayList<SearchDTO>();
-    if (search != null) {
-      Pattern pattern = Pattern.compile("(\\w+)(:)([^,]+),?");
-      Matcher matcher = pattern.matcher(search);
-
-      while (matcher.find()) {
-        searchParams.add(new SearchDTO(matcher.group(1), matcher.group(2), matcher.group(3)));
-      }
-    }
 
     return modelFacade
         .findAll(pageable)
