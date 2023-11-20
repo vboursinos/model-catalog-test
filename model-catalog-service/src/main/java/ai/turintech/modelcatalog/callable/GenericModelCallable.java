@@ -2,7 +2,6 @@ package ai.turintech.modelcatalog.callable;
 
 import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.exceptions.FindOneException;
-import ai.turintech.modelcatalog.utils.NullAwareBeanUtils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -101,13 +100,12 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
         .findById(id)
         .map(
             existingEntity -> {
-              NullAwareBeanUtils.copyNonNullProperties(existingEntity, dto);
+              mapper.partialUpdate(existingEntity, dto);
               return existingEntity;
             })
         .map(repository::save)
         .map(mapper::to)
         .orElseThrow(() -> new FindOneException(name + " with ID " + id + " not found."));
-    //    return null;
   }
 
   public void delete() {

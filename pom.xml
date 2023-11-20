@@ -43,7 +43,6 @@
         <hibernate-envers.version>6.3.1.Final</hibernate-envers.version>
         <hibernate-core.version>6.3.1.Final</hibernate-core.version>
         <com.vladmihalcea.hybernate-types-60.version>2.21.1</com.vladmihalcea.hybernate-types-60.version>
-        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
 
         <!-- Components -->
@@ -137,11 +136,6 @@
                 <artifactId>springdoc-openapi-common</artifactId>
                 <version>${springdoc-openapi-common.version}</version>
             </dependency>
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>${commons-beanutils.version}</version>
-			</dependency>
 
             <!-- Internal project dependency management -->
             <!-- Internal project modules -->
