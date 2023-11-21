@@ -139,6 +139,16 @@
 
             <!-- Internal project dependency management -->
             <!-- Internal project modules -->
+	<dependency>
+                <groupId>ai.turintech.model-catalog</groupId>
+                <artifactId>model-catalog-api</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            	<dependency>
+                <groupId>ai.turintech.model-catalog</groupId>
+                <artifactId>model-catalog-rest</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>ai.turintech.model-catalog</groupId>
                 <artifactId>model-catalog-service</artifactId>
@@ -172,6 +182,11 @@
             <dependency>
                 <groupId>ai.turintech.model-catalog</groupId>
                 <artifactId>model-catalog-facade</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+	<dependency>
+                <groupId>ai.turintech.model-catalog</groupId>
+                <artifactId>model-catalog-repository</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -267,6 +282,8 @@
         <module>model-catalog-entity</module>
         <!-- Repository layer -->
         <module>model-catalog-repository</module>
+        <!-- Utility module for jacoco coverate report aggregation -->
+        <module>jacoco-coverage-aggregate-report</module>
     </modules>
 
 </project>
