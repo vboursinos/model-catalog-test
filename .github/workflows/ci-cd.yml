@@ -1,0 +1,183 @@
+# CI/CD
+# ---------------------------------------------
+# This Github action is responsible for the CI/CD processes of this repository.
+# 1. It undertakes to build and deploy the latest state of the "develop"
+# branch to the development server.
+# 2. It is responsible to keep synced the production environment with
+# the latest release (AKA git tag).
+#
+# When: On every push at develop branch, OR on every pushed git tag
+# External Dependencies: turintech/turintech-actions
+# Concurrency: Ensures that only a single job or workflow using the same concurrency
+# group will run at a time. A concurrency group can be any string or expression
+
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - develop
+    paths-ignore:
+      - "**.md"
+      - "**.yml"
+      - "CODEOWNERS"
+
+concurrency:
+  group: ${{ github.ref_type }}
+  cancel-in-progress: true
+
+env:
+  REPOSITORY_NAME: ${{ github.repository }}
+  TAG_NAME: ${{ github.ref_name }}
+
+jobs:
+
+  code-quality:
+    name: Code quality
+    uses: ./.github/workflows/code-quality.yml
+    secrets: inherit
+
+  sonarqube-code-analysis:
+    name: Sonarqube analysis
+    needs: [code-quality]
+    runs-on: beast
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout remote composite actions
+        uses: ./.github/workflows/composite-actions
+        with:
+          ACTION_APP_ID: ${{ secrets.ACTION_APP_ID }}
+          ACTION_APP_KEY: ${{ secrets.ACTION_APP_KEY }}
+          
+      - name: Download the coverage file as an artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: tests-coverage
+          path: jacoco
+      
+      - name: Extract repository name after last slash
+        run: |
+          repository=${{ github.repository }}
+          echo EXTRACT_REPOSITORY_NAME=${repository##*/} >> $GITHUB_ENV
+        shell: bash
+
+      - name: Create docs coverage directory if not exists in the project file structure
+        run: mkdir -p docs/coverage
+        shell: bash
+
+      - name: Sanitize TAG_NAME
+        run: echo "TAG_NAME_SANITIZED=`echo ${{ github.ref_name }} | sed -r 's/[/]+/./g'`" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Create sonar project file
+        shell: bash
+        run: |
+          echo "sonar.sources=src/main/java" >> sonar-project.properties
+          echo "sonar.projectKey=${{ env.EXTRACT_REPOSITORY_NAME }}:${{ env.TAG_NAME_SANITIZED }}" >> sonar-project.properties
+          echo "sonar.projectName=${{ env.EXTRACT_REPOSITORY_NAME }}:${{ env.TAG_NAME_SANITIZED }}" >> sonar-project.properties
+          echo "sonar.sourceEncoding=UTF-8" >> sonar-project.properties
+          
+      - name: Coverage properties
+        # if: ${{ inputs.COVERAGE == 'true' }}
+        shell: bash
+        run: |
+          echo "sonar.coverage.jacoco.xmlReportPaths=jacoco/jacoco.xml" >> sonar-project.properties
+          echo "sonar.dynamicAnalysis=reuseReports" >> sonar-project.properties
+          echo "sonar.core.codeCoveragePlugin=cobertura" >> sonar-project.properties
+          echo "sonar.java.binaries=target/classes" >> sonar-project.properties
+          
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-${{ hashFiles('**/pom.xml') }}
+          
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu'
+          
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.9.5
+            
+      - uses: s4u/maven-settings-action@v2.8.0
+        with:
+          servers: |
+            [{
+                "id": "dataspartan-turintech-maven-releases",
+                "username": "${{ secrets.CD_USER }}",
+                "password": "${{ secrets.CD_PASSWORD }}"
+             },
+             {
+                "id": "dataspartan-turintech-maven-snapshots",
+                "username": "${{ secrets.CD_USER }}",
+                "password": "${{ secrets.CD_PASSWORD }}"
+             }
+            ]
+          
+      - name: Build without tests
+        if: always()
+        run: mvn package -DskipTests
+        
+      - name: SonarQube Scan
+        if: always()
+        uses: ./.github/actions/code-analysis/sonarqube
+        with:
+          host: ${{ secrets.SONARQUBE_HOST }}
+          login: ${{ secrets.SONARQUBE_TOKEN }}
+          projectKey: ${{ env.EXTRACT_REPOSITORY_NAME }}:${{ env.TAG_NAME_SANITIZED }}
+          projectName: ${{ env.EXTRACT_REPOSITORY_NAME }}:${{ env.TAG_NAME_SANITIZED }}
+
+  ci:
+    needs: [code-quality]
+    name: Continuous Integration
+    runs-on: ci-build
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout remote composite actions
+        uses: ./.github/workflows/composite-actions
+        with:
+          ACTION_APP_ID: ${{ secrets.ACTION_APP_ID }}
+          ACTION_APP_KEY: ${{ secrets.ACTION_APP_KEY }}
+
+      - name: Build and push
+        uses: ./.github/actions/continuous-integration/generic
+        with:
+          REPOSITORY_NAME: "hulk" # The image name that is different from repository name
+          REGISTRY: ${{ secrets.PRIVATE_REGISTRY_URL }}
+          REGISTRY_USERNAME: ${{ secrets.PRIVATE_REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.PRIVATE_REGISTRY_PASSWORD }}
+          DOCKERFILE: ./docker/Dockerfile
+          BUILD_ARGS: |
+            COMMIT_HASH=${{ github.sha }}
+            VERSION_TAG=develop
+
+  cd:
+    name: Continuous Deployment
+    needs: [ci]
+    runs-on: beast
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout remote composite actions
+        uses: ./.github/workflows/composite-actions
+        with:
+          ACTION_APP_ID: ${{ secrets.ACTION_APP_ID }}
+          ACTION_APP_KEY: ${{ secrets.ACTION_APP_KEY }}
+
+      # When the trigger was on "develop" branch, deliver it at dev server.
+      # We don't need vpn connection because we ssh with a beast machine
+      - name: Deploy to development environment
+        uses: ./.github/actions/continuous-deployment/ssh
+        with:
+          SSH_HOST: ${{ secrets.VPN_DEV_MACHINE_IP }}
+          SSH_USERNAME: ${{ secrets.CD_USER }}
+          SSH_PASSWORD: ${{ secrets.CD_PASSWORD }}
+          SSH_SCRIPT: "${{ vars.MODEL_CATALOG_CD_CMD }}"
