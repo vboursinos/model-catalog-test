@@ -37,7 +37,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
-/** REST controller for managing {@link Model}. */
+/**
+ * REST controller for managing {@link Model}. it extends AbstractPageableRestController to offer
+ * generich search capabilities.
+ */
 @RestController
 @RequestMapping("/api")
 public class ModelResource extends AbstractPageableRestController<ModelTO, ModelDTO, ModelFacade> {
