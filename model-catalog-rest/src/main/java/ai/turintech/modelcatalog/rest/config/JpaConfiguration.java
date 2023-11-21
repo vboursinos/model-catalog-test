@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.rest.config;
 
-import ai.turintech.components.jpa.search.data.entity.IgvSearchEntityPackage;
+import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
 import jakarta.persistence.EntityManagerFactory;
 import javax.naming.NamingException;
@@ -50,7 +50,7 @@ public class JpaConfiguration {
     em.setDataSource(dataSource());
     em.setPackagesToScan(
         ModelCatalogEntityPackage.class.getPackage().getName(),
-        IgvSearchEntityPackage.class.getPackage().getName());
+        JpaSearchEntityPackage.class.getPackage().getName());
     em.setJpaVendorAdapter(vendorAdapter(Boolean.valueOf(true), postgresDialect));
     return em;
   }

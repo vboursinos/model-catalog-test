@@ -1,8 +1,8 @@
 package ai.turintech.modelcatalog.rest.config;
 
 import ai.turintech.components.jpa.search.JpaSearchPackage;
-import ai.turintech.components.jpa.search.data.entity.IgvSearchEntityPackage;
-import ai.turintech.components.jpa.search.repository.IgvSearchRepositoryPackage;
+import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
+import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
 import ai.turintech.components.mapper.EnableIgvMap;
 import ai.turintech.modelcatalog.callable.ModelCatalogCallablePackage;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelCatalogDtoEntityMapperPackage;
@@ -31,7 +31,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
       JpaSearchPackage.class
     })
 @EnableJpaRepositories(
-    basePackageClasses = {IgvSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})
-@EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, IgvSearchEntityPackage.class})
+    basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})
+@EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 @EnableIgvMap
 public class PackageScanningConfig {}
