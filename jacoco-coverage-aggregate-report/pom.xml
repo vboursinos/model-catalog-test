@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>jacoco-coverage-aggregate-report</artifactId>
+	<version>01.00.00-a0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>jacoco-coverage-aggregate-report ${project.version}</name>
+	<description>Aggregate coverage report for all components of the repo.</description>
+
+	<parent>
+		<groupId>ai.turintech.model-catalog</groupId>
+		<artifactId>model-catalog-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	    <relativePath>../pom.xml</relativePath>
+	</parent>
+
+
+	<dependencies>
+		<!-- Layer dependencies -->
+			<!-- Layers API -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-api</artifactId>
+		</dependency>		
+			<!-- TO -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-to</artifactId>
+		</dependency>
+			<!-- Rest -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-rest</artifactId>
+		</dependency>
+			<!-- DTO -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-dto</artifactId>
+		</dependency>
+			<!-- TO<->DTO mappers -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-to-dto-mapper</artifactId>
+		</dependency>
+			<!-- Facade -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-facade</artifactId>
+		</dependency>
+		<!-- Service -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-service</artifactId>
+		</dependency>
+			<!-- Entity -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-entity</artifactId>
+		</dependency>
+			<!-- DTO<->Entity mappers -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-dto-entity-mapper</artifactId>
+		</dependency>
+			<!-- Repository -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-repository</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
