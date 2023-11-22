@@ -91,3 +91,16 @@ mvn test
 ```
 This will run all the tests in the application and provide a summarized report.
 
+## Formatting ##
+
+This application is configured to use the Google Java Style Guide for formatting.
+
+* Run formatting using the following command:
+  ```
+  mvn com.coveo:fmt-maven-plugin:format
+  ```
+
+* To check if the code is formatted correctly, run the following command:
+  ```
+  mvn com.coveo:fmt-maven-plugin:check
+  ```
