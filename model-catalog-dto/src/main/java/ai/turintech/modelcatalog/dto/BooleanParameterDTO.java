@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-/** A DTO for the BooleanParameter entity. */
+/** A DTO for the BooleanParameter entity */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class BooleanParameterDTO implements Serializable {
 
