@@ -70,24 +70,7 @@ jobs:
       - name: Sanitize TAG_NAME
         run: echo "TAG_NAME_SANITIZED=`echo ${{ github.ref_name }} | sed -r 's/[/]+/./g'`" >> $GITHUB_ENV
         shell: bash
-
-      - name: Create sonar project file
-        shell: bash
-        run: |
-          echo "sonar.sources=src/main/java" >> sonar-project.properties
-          echo "sonar.projectKey=${{ env.EXTRACT_REPOSITORY_NAME }}:${{ env.TAG_NAME_SANITIZED }}" >> sonar-project.properties
-          echo "sonar.projectName=${{ env.EXTRACT_REPOSITORY_NAME }}:${{ env.TAG_NAME_SANITIZED }}" >> sonar-project.properties
-          echo "sonar.sourceEncoding=UTF-8" >> sonar-project.properties
-          
-      - name: Coverage properties
-        # if: ${{ inputs.COVERAGE == 'true' }}
-        shell: bash
-        run: |
-          echo "sonar.coverage.jacoco.xmlReportPaths=jacoco/jacoco.xml" >> sonar-project.properties
-          echo "sonar.dynamicAnalysis=reuseReports" >> sonar-project.properties
-          echo "sonar.core.codeCoveragePlugin=cobertura" >> sonar-project.properties
-          echo "sonar.java.binaries=target/classes" >> sonar-project.properties
-          
+        
       - uses: actions/cache@v2
         with:
           path: ~/.m2/repository
@@ -149,7 +132,7 @@ jobs:
       - name: Build and push
         uses: ./.github/actions/continuous-integration/generic
         with:
-          REPOSITORY_NAME: "hulk" # The image name that is different from repository name
+          REPOSITORY_NAME: "model-catalog" # The image name that is different from repository name
           REGISTRY: ${{ secrets.PRIVATE_REGISTRY_URL }}
           REGISTRY_USERNAME: ${{ secrets.PRIVATE_REGISTRY_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.PRIVATE_REGISTRY_PASSWORD }}

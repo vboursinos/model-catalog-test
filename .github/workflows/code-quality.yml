@@ -108,5 +108,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: tests-coverage
-          path: jacoco/jacoco.xml
+          path: ./jacoco-coverage-aggregate-report/target/site/jacoco-aggregate/jacoco.xml
 
