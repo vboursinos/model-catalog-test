@@ -25,7 +25,7 @@ as the persistence logic model (entity) and the data transfer model (DTO) can ev
 4. model-catalog-entity
 
    The model-catalog-entity layer represents the 'Entity' in our application. An entity is a business object that holds data. 
-It is equivalent to a table in the database. All persistence logic and datatabase interactions are managed in this layer.
+It is equivalent to a table in the database. All persistence logic and database interactions are managed in this layer.
 
 5. model-catalog-facade
 
