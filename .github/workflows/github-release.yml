@@ -40,7 +40,7 @@ jobs:
           REPOSITORY_NAME: ${{ env.REPOSITORY_NAME }}
           GITHUB_TOKEN: ${{ steps.github_app.outputs.GITHUB_APP_TOKEN }}
           BRANCH: ${{ env.TAG_NAME }}
-          MONOREPO_UPDATE_SWITCH: true # switch to create/update submodule on the staging monorepo
+          MONOREPO_UPDATE_SWITCH: false # switch to create/update submodule on the staging monorepo
           REPOSITORY_DISPATCH: true # switch to enable/disable the build of staging image
 
       - name: Creating a new GitHub release

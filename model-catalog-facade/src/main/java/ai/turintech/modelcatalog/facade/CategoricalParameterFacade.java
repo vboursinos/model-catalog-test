@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Service Implementation for managing {@link CategoricalParameter}. */
+/** Service Implementation for managing {@link CategoricalParameter} */
 @Service
 @Transactional
 public class CategoricalParameterFacade {
