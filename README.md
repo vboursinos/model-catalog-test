@@ -15,7 +15,7 @@ responsibilities. It's highly beneficial for increasing modularity, which leads 
 2. model-catalog-dto
 
    DTO stands for Data Transfer Object. The model-catalog-dto layer includes classes that carry data between 
-processes in order to reduce the number of method calls. These DTOs are used to aggregate values.
+different layers inside the application. These DTOs are used to aggregate values.
 
 3. model-catalog-dto-entity-mapper
 
