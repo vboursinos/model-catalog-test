@@ -1,9 +1,67 @@
 # model-catalog
 EvoML model catalog microservice.
 
+## Overview ##
 This repository contains the source code for a Java multi-module Spring Boot Web-flux JPA Application. 
 The application uses Java as the primary language, Spring Boot for creating robust and scalable 
 services, JPA for database interaction and Mono/flux to support reactiveness.
+
+In this repository, we employ a custom layered architecture to organize and structure our software system. 
+This design choice helps to manage the complexity of our code and allows components to be segregated based on 
+responsibilities. It's highly beneficial for increasing modularity, which leads to simpler maintenance and scalability.
+
+1. model-catalog-api
+  
+2. model-catalog-dto
+
+   DTO stands for Data Transfer Object. The model-catalog-dto layer includes classes that carry data between 
+processes in order to reduce the number of method calls. These DTOs are used to aggregate values.
+
+3. model-catalog-dto-entity-mapper
+
+   This layer is in charge of mapping DTO objects to Entity objects and vice versa. It helps to separate concerns, 
+as the persistence logic model (entity) and the data transfer model (DTO) can evolve independently.
+
+4. model-catalog-entity
+
+   The model-catalog-entity layer represents the 'Entity' in our application. An entity is a business object that holds data. 
+It is equivalent to a table in the database. All persistence logic and datatabase interactions are managed in this layer.
+
+5. model-catalog-facade
+
+   The model-catalog-facade layer is used to streamline and consolidate complex operations, providing a simplified 
+interface to clients. It wraps interactions with other layers, and orchestrates calls to multiple services to 
+perform a single operation.
+
+6. model-catalog-repository
+
+   The model-catalog-repository layer is responsible for handling all database operations. It provides methods to 
+query, create, update and delete entities. These repositories act as a bridge between the model-catalog-entity 
+and model-catalog-service layers.
+
+7. model-catalog-rest
+
+   This is the outermost layer that interacts with the clients. The model-catalog-rest layer offers endpoints for 
+external applications or services. It processes the incoming HTTP requests and corresponding responses which 
+include converting the received data from TO to DTO objects and the reverse operation once the response is prepared.
+
+8. model-catalog-service
+
+   The model-catalog-service layer is tasked with handling business logic. It communicates with the
+model-catalog-repository layer to persist or retrieve data. It also uses callables to execute tasks in parallel when it 
+communicates with model-catalog-repository.
+
+9. model-catalog-to
+
+   TO stands for Transfer Object. This layer is very similar to the DTO layer, with the difference being that TOs are 
+typically used for sending data across different services, outside the application.
+
+10. model-catalog-to-dto-mapper
+
+    This layer, much like the model-catalog-dto-entity-mapper, is responsible for converting TO to DTO, and vice versa. 
+These mappers ensure a clean separation of concerns and promote code reusability.
+
+
 
 ## Prerequisites ##
 * Java 17
@@ -66,7 +124,7 @@ docker-compose down
 ```
 
 ## Profiles/Configuration ##
-The application supports different profiles for local and remote environments. To switch between them, adjust the spring.profiles.active setting in model-catalog-rest src/main/resources/application.properties.
+The application supports different profiles for dev and prod environments. To switch between them, adjust the spring.profiles.active setting in model-catalog-rest src/main/resources/application.properties.
 
 ## SQL Migration ##
 SQL schema migration is performed using Liquibase. The changesets are located in model-catalog-entity src/main/resources/config.liquibase/changelog. There are 13 changesets in total, 2 DDLs and 11 DMLs, and they are run in the order they are listed in db.changelog-master.xml.
