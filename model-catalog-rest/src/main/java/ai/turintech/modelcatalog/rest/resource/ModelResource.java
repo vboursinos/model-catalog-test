@@ -1,7 +1,7 @@
 package ai.turintech.modelcatalog.rest.resource;
 
 import ai.turintech.components.jpa.search.controller.AbstractPageableRestController;
-import ai.turintech.components.jpa.search.data.to.PageTO;
+import ai.turintech.components.jpa.search.data.to.PageLimitedTO;
 import ai.turintech.components.jpa.search.data.to.PageableQueryRequestTO;
 import ai.turintech.components.jpa.search.exception.PageableRequestException;
 import ai.turintech.modelcatalog.dto.ModelDTO;
@@ -51,7 +51,7 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
 
   private final Logger log = LoggerFactory.getLogger(ModelResource.class);
 
-  private static final String ENTITY_NAME = "modelCatalogModel";
+  private static final String ENTITY_NAME = "Model";
 
   @Value("${spring.application.name}")
   private String applicationName;
@@ -233,7 +233,7 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
    */
   @Override
   @GetMapping(value = "/models/search", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<PageTO<ModelTO>> findPagedByQuery(PageableQueryRequestTO filter)
+  public ResponseEntity<PageLimitedTO<ModelTO>> findPagedByQuery(PageableQueryRequestTO filter)
       throws PageableRequestException {
     return super.findPagedByQuery(filter);
   }
