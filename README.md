@@ -11,7 +11,11 @@ This design choice helps to manage the complexity of our code and allows compone
 responsibilities. It's highly beneficial for increasing modularity, which leads to simpler maintenance and scalability.
 
 1. model-catalog-api
-  
+
+   The model-catalog-api module is meant to host the interfaces of layers, each service interface, each facade interface,
+and so on. We perform bean injection based on interfaces of beans instead of referencing corresponding implementations 
+directly.
+
 2. model-catalog-dto
 
    DTO stands for Data Transfer Object. The model-catalog-dto layer includes classes that carry data between 
@@ -98,7 +102,7 @@ To build a Docker image for this application, follow the steps below:
 * Make sure Docker is installed and running (docker --version to check your version).
   * Run the following command at the root of the repository.
     ```
-    docker build -t data-catalog ./docker
+    docker build -t data-catalog -f docker/Dockerfile .
     ```
 
 ## Running Docker Container ##
@@ -162,3 +166,20 @@ This application is configured to use the Google Java Style Guide for formatting
   ```
   mvn com.coveo:fmt-maven-plugin:check
   ```
+
+## Jacoco Coverage Module ##
+
+* This application also includes an aggregated Jacoco coverage module, which is designed specifically for aggregating 
+single-module coverage reports into one single report for Sonarqube.
+
+* The report is generated during the "package" phase of the build lifecycle and is 
+located at /jacoco-coverage-aggregate-report/target/site/jacoco-aggregate/jacoco.xml.
+
+* This allows for a unified overview to quickly assess the state of code coverage across multiple modules of the project, 
+in a format that is easy to integrate into Sonarqube.
+
+## Adding Additional Modules ##
+
+If you add any additional modules to the project, please make sure to include them in the POM configuration of the 
+Jacoco module. This will ensure they are included in the coverage report. This is crucial to maintain an accurate and 
+comprehensive understanding of the overall code coverage of the project.
