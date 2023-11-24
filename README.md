@@ -83,12 +83,17 @@ These mappers ensure a clean separation of concerns and promote code reusability
 * The build artifacts will be stored in the target/ directory.
 
 ## How to Run Locally ##
-* Ensure you have a Postgres running locally.
+* Ensure you have a Postgres running locally. You can use the following command to start a Postgres instance using Docker Compose.
+  ```
+  docker-compose up -d postgres
+  ```
 * Adjust the application configuration in model-catalog-rest module src/main/resources/application.properties to point to your local postgres instance.
 * Run the application using the command from model-catalog-rest module root directory.
   ```
   java -jar target/model-catalog-rest.jar
   ```
+* The application, with current configuration, will be running on port 8081.
+* The application can be run from your IDE as well. Just run the main method in ModelCatalogRestApplication class in model-catalog-rest module.
 
 ## Infrastructure Dependencies ##
 This application depends on:
@@ -126,6 +131,12 @@ docker-compose up
 ```
 docker-compose down
 ```
+
+## Swagger ##
+* Swagger is a tool that helps us document our RESTful APIs. It provides a UI that allows us to interact with our APIs.
+* When the application is running, as described in the previous section (local run, docker run or from IDE), you can 
+access the Swagger UI.
+* Local Swagger UI is available at http://localhost:8081/swagger-ui/index.html
 
 ## Profiles/Configuration ##
 The application supports different profiles for dev and prod environments. To switch between them, adjust the spring.profiles.active setting in model-catalog-rest src/main/resources/application.properties.
