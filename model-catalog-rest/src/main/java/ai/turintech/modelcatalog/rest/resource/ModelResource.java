@@ -1,7 +1,7 @@
 package ai.turintech.modelcatalog.rest.resource;
 
 import ai.turintech.components.jpa.search.controller.AbstractPageableRestController;
-import ai.turintech.components.jpa.search.data.to.PageLimitedTO;
+import ai.turintech.components.jpa.search.data.to.PageTO;
 import ai.turintech.components.jpa.search.data.to.PageableQueryRequestTO;
 import ai.turintech.components.jpa.search.exception.PageableRequestException;
 import ai.turintech.modelcatalog.dto.ModelDTO;
@@ -201,7 +201,7 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
    */
   @Override
   @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<PageLimitedTO<ModelTO>> findPagedByQuery(PageableQueryRequestTO filter)
+  public ResponseEntity<PageTO<ModelTO>> findPagedByQuery(PageableQueryRequestTO filter)
       throws PageableRequestException {
     log.debug(String.format("REST request to get a page of Models with filter %s", filter));
     if (filter.getOrderBy() == null) {
