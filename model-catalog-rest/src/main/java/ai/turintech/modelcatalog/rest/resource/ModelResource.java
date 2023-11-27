@@ -13,7 +13,6 @@ import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.service.ModelService;
 import ai.turintech.modelcatalog.service.PaginationConverter;
-import ai.turintech.modelcatalog.to.ModelPaginatedListTO;
 import ai.turintech.modelcatalog.to.ModelTO;
 import ai.turintech.modelcatalog.todtomapper.ModelMapper;
 import ai.turintech.modelcatalog.todtomapper.ModelPaginatedListMapper;
@@ -25,14 +24,11 @@ import java.util.Objects;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
@@ -51,7 +47,7 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
 
   private final Logger log = LoggerFactory.getLogger(ModelResource.class);
 
-  private static final String ENTITY_NAME = "modelCatalogModel";
+  private static final String ENTITY_NAME = "Model";
 
   @Value("${spring.application.name}")
   private String applicationName;
@@ -197,34 +193,6 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
   }
 
   /**
-   * {@code GET /models} : get all the models.
-   *
-   * @param pageable the pagination information.
-   * @param eagerload flag to eager load entities from relationships (This is applicable for
-   *     many-to-many).
-   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of models in body.
-   */
-  @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<ResponseEntity<ModelPaginatedListTO>> getAllModels(
-      @ParameterObject Pageable pageable,
-      ServerHttpRequest request,
-      @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-    log.debug("REST request to get a page of Models");
-
-    return modelFacade
-        .findAll(pageable)
-        .map(modelPaginatedListMapper::toTo)
-        .map(modelPaginatedListTO -> ResponseEntity.ok().body(modelPaginatedListTO))
-        .defaultIfEmpty(ResponseEntity.notFound().build())
-        .onErrorResume(
-            Exception.class,
-            ex -> {
-              log.error("Error while fetching models: " + ex.getMessage(), ex);
-              return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-            });
-  }
-
-  /**
    * Custom search endpoint for models.
    *
    * @param filter the pageable query request.
@@ -232,9 +200,13 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
    * @throws PageableRequestException if there is an issue with the pageable request.
    */
   @Override
-  @GetMapping(value = "/models/search", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/models", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<PageTO<ModelTO>> findPagedByQuery(PageableQueryRequestTO filter)
       throws PageableRequestException {
+    log.debug(String.format("REST request to get a page of Models with filter %s", filter));
+    if (filter.getOrderBy() == null) {
+      filter.setOrderBy("name");
+    }
     return super.findPagedByQuery(filter);
   }
 
