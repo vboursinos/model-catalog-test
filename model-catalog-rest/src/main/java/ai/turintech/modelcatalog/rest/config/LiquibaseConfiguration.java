@@ -2,20 +2,19 @@ package ai.turintech.modelcatalog.rest.config;
 
 import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 import ai.turintech.modelcatalog.rest.support.database.liquibase.AsyncSpringLiquibase;
-import java.util.Optional;
-import java.util.concurrent.Executor;
-import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
-import org.springframework.boot.autoconfigure.r2dbc.R2dbcProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+
+import javax.sql.DataSource;
+import java.util.concurrent.Executor;
 
 @Configuration
 public class LiquibaseConfiguration {
@@ -31,10 +30,9 @@ public class LiquibaseConfiguration {
   @Bean
   public SpringLiquibase liquibase(
       @Qualifier("taskExecutor") Executor executor,
-      LiquibaseProperties liquibaseProperties,
-      R2dbcProperties dataSourceProperties) {
+      LiquibaseProperties liquibaseProperties) {
     SpringLiquibase liquibase = new AsyncSpringLiquibase(executor, env);
-    liquibase.setDataSource(createLiquibaseDataSource(liquibaseProperties, dataSourceProperties));
+    liquibase.setDataSource(createLiquibaseDataSource(liquibaseProperties));
     liquibase.setChangeLog("classpath:config/liquibase/master.xml");
     liquibase.setContexts(liquibaseProperties.getContexts());
     liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
@@ -57,18 +55,11 @@ public class LiquibaseConfiguration {
   }
 
   private static DataSource createLiquibaseDataSource(
-      LiquibaseProperties liquibaseProperties, R2dbcProperties dataSourceProperties) {
-    String user =
-        Optional.ofNullable(liquibaseProperties.getUser())
-            .orElse(dataSourceProperties.getUsername());
-    String password =
-        Optional.ofNullable(liquibaseProperties.getPassword())
-            .orElse(dataSourceProperties.getPassword());
-
+      LiquibaseProperties liquibaseProperties) {
     return DataSourceBuilder.create()
         .url(liquibaseProperties.getUrl())
-        .username(user)
-        .password(password)
+        .username(liquibaseProperties.getUser())
+        .password(liquibaseProperties.getPassword())
         .build();
   }
 }
