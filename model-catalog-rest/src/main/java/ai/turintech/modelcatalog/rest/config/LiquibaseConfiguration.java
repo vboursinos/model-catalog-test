@@ -2,6 +2,8 @@ package ai.turintech.modelcatalog.rest.config;
 
 import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 import ai.turintech.modelcatalog.rest.support.database.liquibase.AsyncSpringLiquibase;
+import java.util.concurrent.Executor;
+import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
-
-import javax.sql.DataSource;
-import java.util.concurrent.Executor;
 
 @Configuration
 public class LiquibaseConfiguration {
@@ -29,8 +28,7 @@ public class LiquibaseConfiguration {
 
   @Bean
   public SpringLiquibase liquibase(
-      @Qualifier("taskExecutor") Executor executor,
-      LiquibaseProperties liquibaseProperties) {
+      @Qualifier("taskExecutor") Executor executor, LiquibaseProperties liquibaseProperties) {
     SpringLiquibase liquibase = new AsyncSpringLiquibase(executor, env);
     liquibase.setDataSource(createLiquibaseDataSource(liquibaseProperties));
     liquibase.setChangeLog("classpath:config/liquibase/master.xml");
@@ -54,8 +52,7 @@ public class LiquibaseConfiguration {
     return liquibase;
   }
 
-  private static DataSource createLiquibaseDataSource(
-      LiquibaseProperties liquibaseProperties) {
+  private static DataSource createLiquibaseDataSource(LiquibaseProperties liquibaseProperties) {
     return DataSourceBuilder.create()
         .url(liquibaseProperties.getUrl())
         .username(liquibaseProperties.getUser())
