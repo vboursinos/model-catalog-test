@@ -154,6 +154,26 @@ SQL schema migration is performed using Liquibase. The changesets are located in
 * All the configuration properties regarding liquibase is in application.properties in model-catalog-rest module, starting with spring.liquibase
 * This application is configured to automatically run Liquibase on startup, so there is no need to manually execute the above command during regular usage.
 
+#### Handling New Additions to master.xml ####
+
+Our strategy for handling new additions to Liquibase's master.xml involves using contexts for version control. 
+A context is like a label or tag assigned to changesets that require specific conditions to run. By leveraging contexts, we can control which migrations are run in different environments or application versions.
+
+* The first thing to do is provide context in your application properties file by adding the version you want to handle:
+    ```
+    spring.liquibase.contexts=version_x  
+    ```
+    Here, version_x corresponds to the version of your application for which you are writing your migrations.
+
+* Next, you need to add the same context to your changeset in master.xml:
+    ```
+    <include file="db/changelog/db.changelog-version_x.xml" context="version_x"/>
+    ```
+    Here, version_x corresponds to the version of your application for which you are writing your migrations.
+
+Concurrency control can be quite tricky when dealing with multiple development teams adding changes simultaneously to the master.xml file. To handle this, each developer should create their 
+own Liquibase file and specify their changes there. These individual files should be linked in the master.xml file, which continues to be the pivot for managing all changes.
+
 ## Testing ##
 
 This application is configured to use JUnit for unit tests.
