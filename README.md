@@ -214,3 +214,47 @@ in a format that is easy to integrate into Sonarqube.
 If you add any additional modules to the project, please make sure to include them in the POM configuration of the 
 Jacoco module. This will ensure they are included in the coverage report. This is crucial to maintain an accurate and 
 comprehensive understanding of the overall code coverage of the project.
+
+## Sonarqube ##
+
+url: https://sonarqube.evoml.ai/
+
+* Sonarqube is a tool that helps us analyze our code for bugs, vulnerabilities, code smells, and test coverage.
+
+* Badges is a feature of Sonarqube that helps us quickly identify the quality of our code. Badges are displayed on the :
+
+Project information tab of Sonarqube -> Get project badges
+
+Below are the major badges of the Issues tab you will frequently interact with:
+
+1. Bug
+   This badge indicates a bug that might prevent your program from operating correctly. Bugged code is code behaving erroneously, and many times the result are system crashes, violations of the system’s data integrity, and usage of null values.
+
+2. Vulnerability
+   The vulnerability badge represents a point in your code where an attacker could exploit and hence disturb your system's setup or data. It doesn't always mean your system is compromised, but it does open up a possibility for exploits if not addressed.
+
+3. Code Smell
+   This badge signifies those parts of the code that may be legal but are sketchy and represent poor programming practices. It implies a deeper issue, generally about maintainability, which could become a bottleneck while expanding the concerned application in the future.
+
+4. Coverage
+   The coverage badge shows the percentage of code which is covered by the suite of automated tests. High code coverage means a large part of your code gets tested automatically, reducing the chances of issues slipping through to production.
+
+5. Duplication
+   The duplication badge indicates the percentage of duplicated lines of code. Duplicate code tends to make the system difficult to maintain because indirect dependencies often arise between the duplicates. If one segment changes, there's a risk the other segments won't be updated.
+
+6. Quality Gate Status:
+   This badge displays the overall status of the quality gate set for your project. The quality gate contains a set of conditions using measurements such as code coverage, technical debt ratio, etc., and indicates whether your project is fit for production ("Passed") or not ("Failed").
+
+7. Technical Debt
+   This badge shows the estimated time (in days) required to fix all the issues in your project. It is calculated based on the number of issues, their severity, and the effort required to fix them.
+
+8. Lines of Code
+   This badge shows the total number of lines of code in your project. It is calculated by adding the number of lines of code in each file.
+
+9. Maintainability, Reliability, and Security Rating:
+   These badges show ratings (from A - highest quality to E - lowest quality) for maintainability, reliability, and security aspects of your code respectively.
+
+#### "Embed" section ####
+
+The section under the metrics tab that you can copy is known as the "Embed" section. It provides the URLs of individual metrics badges that you can embed in other web pages, documents, or e-mails to visually represent the current state of your project.
+
