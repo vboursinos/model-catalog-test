@@ -67,6 +67,8 @@ public class SecurityConfiguration {
                     .permitAll()
                     .pathMatchers("/management/prometheus")
                     .permitAll()
+                    .pathMatchers("/actuator/**")
+                    .permitAll()
                     .pathMatchers("/management/**")
                     .permitAll())
         .httpBasic(basic -> basic.disable());

@@ -6,14 +6,20 @@ services:
       context: ./
       dockerfile: docker/Dockerfile
     depends_on:
-      - postgres
-      - zipkin
+      postgres:
+        condition: service_healthy
     container_name: model-catalog
     restart: always
     ports:
       - ${MODEL_CATALOG_PORT}:${MODEL_CATALOG_PORT}
     networks:
       - model-catalog-network
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "wget --spider http://localhost:8081/actuator/health/db || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   postgres:
     image: 'postgres:latest'
     container_name: model-catalog-postgres
@@ -22,18 +28,16 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_USER=${POSTGRES_USER}
       - PGDATA:/data/postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: always
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - postgres:/data/postgres
-    networks:
-      - model-catalog-network
-  zipkin:
-    image: 'openzipkin/zipkin:latest'
-    container_name: model-catalog-zipkin
-    ports:
-      - '9411'
     networks:
       - model-catalog-network
 
