@@ -15,8 +15,8 @@ services:
     networks:
       - model-catalog-network
     healthcheck:
-      test: curl --fail http://localhost:8081/actuator/health/db || exit 1
 #      test: [ "CMD", "bash", "-c", "./application/liquibase-check.sh" ]
+      test: [ "CMD", "bash", "-c", "curl --fail http://localhost:8081/actuator/health/db || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
