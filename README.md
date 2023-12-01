@@ -1,5 +1,19 @@
 # model-catalog
 EvoML model catalog microservice.
+[![Quality Gate Status](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=alert_status&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Bugs](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=bugs&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Code Smells](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=code_smells&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Coverage](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=coverage&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Duplicated Lines (%)](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=duplicated_lines_density&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Lines of Code](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=ncloc&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Maintainability Rating](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=sqale_rating&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Reliability Rating](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=reliability_rating&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Security Hotspots](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=security_hotspots&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Security Rating](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=security_rating&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Technical Debt](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=sqale_index&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+[![Vulnerabilities](https://sonarqube.evoml.ai/api/project_badges/measure?project=model-catalog%3Adevelop&metric=vulnerabilities&token=sqb_ad85b5b2df4032c2104388f57e8fe9c21de3118e)](https://sonarqube.evoml.ai/dashboard?id=model-catalog%3Adevelop)
+
+
 
 ## Overview ##
 This repository contains the source code for a Java multi-module Spring Boot Web-flux JPA Application. 
