@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.ModelStructureTypeService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,15 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ModelStructureType}. */
 @Service
 @Transactional
-public class ModelStructureTypeFacade {
+public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
 
-  private final Logger log = LoggerFactory.getLogger(ModelStructureTypeFacade.class);
+  private final Logger log = LoggerFactory.getLogger(ModelStructureTypeFacadeImpl.class);
 
-  private final ModelStructureTypeService modelStructureTypeService;
-
-  public ModelStructureTypeFacade(ModelStructureTypeService modelStructureTypeService) {
-    this.modelStructureTypeService = modelStructureTypeService;
-  }
+  @Autowired
+  private ModelStructureTypeService modelStructureTypeService;
 
   /**
    * Save a modelStructureType.

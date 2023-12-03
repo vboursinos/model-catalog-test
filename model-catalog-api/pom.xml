@@ -17,7 +17,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>ai.turintech.model-catalog</groupId>
+            <artifactId>model-catalog-dto</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-service</artifactId>
+		</dependency>
+    </dependencies>
 	<build>
 		<plugins>
 			<plugin>

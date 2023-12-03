@@ -10,6 +10,7 @@ import ai.turintech.modelcatalog.service.ModelService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +19,13 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link Model}. */
 @Service
 @Transactional
-public class ModelFacade extends AbstractSearchFacade<ModelDTO, ModelService>
-    implements SearchFacade<ModelDTO> {
+public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelService>
+    implements SearchFacade<ModelDTO>, ModelFacade {
 
-  private final Logger log = LoggerFactory.getLogger(ModelFacade.class);
+  private final Logger log = LoggerFactory.getLogger(ModelFacadeImpl.class);
 
-  private final ModelService modelService;
-
-  public ModelFacade(ModelService modelService) {
-    this.modelService = modelService;
-  }
+  @Autowired
+  private ModelService modelService;
 
   /**
    * Save a model.

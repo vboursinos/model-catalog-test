@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.ModelEnsembleTypeService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,15 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ModelEnsembleType}. */
 @Service
 @Transactional
-public class ModelEnsembleTypeFacade {
+public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
 
-  private final Logger log = LoggerFactory.getLogger(ModelEnsembleTypeFacade.class);
+  private final Logger log = LoggerFactory.getLogger(ModelEnsembleTypeFacadeImpl.class);
 
-  private final ModelEnsembleTypeService modelEnsembleTypeService;
-
-  public ModelEnsembleTypeFacade(ModelEnsembleTypeService modelEnsembleTypeService) {
-    this.modelEnsembleTypeService = modelEnsembleTypeService;
-  }
+  @Autowired
+  private ModelEnsembleTypeService modelEnsembleTypeService;
 
   /**
    * Save a modelEnsembleType.

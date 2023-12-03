@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.MetricService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,15 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link Metric}. */
 @Service
 @Transactional
-public class MetricFacade {
+public class MetricFacadeImpl implements MetricFacade {
 
-  private final Logger log = LoggerFactory.getLogger(MetricFacade.class);
+  private final Logger log = LoggerFactory.getLogger(MetricFacadeImpl.class);
 
-  private final MetricService metricService;
-
-  public MetricFacade(MetricService metricService) {
-    this.metricService = metricService;
-  }
+  @Autowired
+  private MetricService metricService;
 
   /**
    * Save a metric.
