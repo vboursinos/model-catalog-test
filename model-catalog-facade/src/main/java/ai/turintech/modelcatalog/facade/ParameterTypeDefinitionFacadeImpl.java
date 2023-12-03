@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.ParameterTypeDefinitionService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,16 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ParameterTypeDefinition}. */
 @Service
 @Transactional
-public class ParameterTypeDefinitionFacade {
+public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitionFacade {
 
-  private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionFacade.class);
+  private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionFacadeImpl.class);
 
-  private final ParameterTypeDefinitionService parameterTypeDefinitionService;
-
-  public ParameterTypeDefinitionFacade(
-      ParameterTypeDefinitionService parameterTypeDefinitionService) {
-    this.parameterTypeDefinitionService = parameterTypeDefinitionService;
-  }
+  @Autowired
+  private ParameterTypeDefinitionService parameterTypeDefinitionService;
 
   /**
    * Save a parameterTypeDefinition.

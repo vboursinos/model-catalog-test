@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.ParameterDistributionTypeService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,16 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ParameterDistributionType}. */
 @Service
 @Transactional
-public class ParameterDistributionTypeFacade {
+public class ParameterDistributionTypeFacadeImpl implements ParameterDistributionTypeFacade {
 
-  private final Logger log = LoggerFactory.getLogger(ParameterDistributionTypeFacade.class);
+  private final Logger log = LoggerFactory.getLogger(ParameterDistributionTypeFacadeImpl.class);
 
-  private final ParameterDistributionTypeService parameterDistributionTypeService;
-
-  public ParameterDistributionTypeFacade(
-      ParameterDistributionTypeService parameterDistributionTypeService) {
-    this.parameterDistributionTypeService = parameterDistributionTypeService;
-  }
+  @Autowired
+  private ParameterDistributionTypeService parameterDistributionTypeService;
 
   /**
    * Save a parameterDistributionType.

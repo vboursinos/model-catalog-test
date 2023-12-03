@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.MlTaskTypeService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,15 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link MlTaskType}. */
 @Service
 @Transactional
-public class MlTaskTypeFacade {
+public class MlTaskTypeFacadeImpl implements MlTaskTypeFacade {
 
-  private final Logger log = LoggerFactory.getLogger(MlTaskTypeFacade.class);
+  private final Logger log = LoggerFactory.getLogger(MlTaskTypeFacadeImpl.class);
 
-  private final MlTaskTypeService modelTaskTypeService;
-
-  public MlTaskTypeFacade(MlTaskTypeService modelTaskTypeService) {
-    this.modelTaskTypeService = modelTaskTypeService;
-  }
+  @Autowired
+  private MlTaskTypeService modelTaskTypeService;
 
   /**
    * Save a mlTaskType.

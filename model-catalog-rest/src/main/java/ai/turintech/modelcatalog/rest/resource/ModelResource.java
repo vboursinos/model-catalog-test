@@ -8,6 +8,7 @@ import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.facade.ModelFacade;
+import ai.turintech.modelcatalog.facade.ModelFacadeImpl;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
@@ -39,7 +40,8 @@ import reactor.core.publisher.Mono;
  */
 @RestController
 @RequestMapping("/api")
-public class ModelResource extends AbstractPageableRestController<ModelTO, ModelDTO, ModelFacade> {
+public class ModelResource
+    extends AbstractPageableRestController<ModelTO, ModelDTO, ModelFacadeImpl> {
 
   public ModelResource() {
     super(ModelTO.class);
