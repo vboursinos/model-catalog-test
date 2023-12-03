@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.IntegerParameterService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,15 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link IntegerParameter}. */
 @Service
 @Transactional
-public class IntegerParameterFacade {
+public class IntegerParameterFacadeImpl implements IntegerParameterFacade {
 
-  private final Logger log = LoggerFactory.getLogger(IntegerParameterFacade.class);
+  private final Logger log = LoggerFactory.getLogger(IntegerParameterFacadeImpl.class);
 
-  private final IntegerParameterService integerParameterService;
-
-  public IntegerParameterFacade(IntegerParameterService integerParameterService) {
-    this.integerParameterService = integerParameterService;
-  }
+  @Autowired
+  private IntegerParameterService integerParameterService;
 
   /**
    * Save a integerParameter.
