@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.FloatParameterService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,15 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link FloatParameter}. */
 @Service
 @Transactional
-public class FloatParameterFacade {
+public class FloatParameterFacadeImpl implements FloatParameterFacade {
 
-  private final Logger log = LoggerFactory.getLogger(FloatParameterFacade.class);
+  private final Logger log = LoggerFactory.getLogger(FloatParameterFacadeImpl.class);
 
-  private final FloatParameterService floatParameterService;
-
-  public FloatParameterFacade(FloatParameterService floatParameterService) {
-    this.floatParameterService = floatParameterService;
-  }
+  @Autowired
+  private FloatParameterService floatParameterService;
 
   /**
    * Save a floatParameter.

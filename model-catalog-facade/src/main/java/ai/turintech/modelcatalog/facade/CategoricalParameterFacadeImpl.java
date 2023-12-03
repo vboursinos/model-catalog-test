@@ -6,6 +6,7 @@ import ai.turintech.modelcatalog.service.CategoricalParameterService;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,15 +15,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link CategoricalParameter} */
 @Service
 @Transactional
-public class CategoricalParameterFacade {
+public class CategoricalParameterFacadeImpl implements CategoricalParameterFacade {
 
-  private final Logger log = LoggerFactory.getLogger(CategoricalParameterFacade.class);
+  private final Logger log = LoggerFactory.getLogger(CategoricalParameterFacadeImpl.class);
 
-  private final CategoricalParameterService categoricalParameterService;
-
-  public CategoricalParameterFacade(CategoricalParameterService categoricalParameterService) {
-    this.categoricalParameterService = categoricalParameterService;
-  }
+  @Autowired
+  private CategoricalParameterService categoricalParameterService;
 
   /**
    * Save a categoricalParameter.
