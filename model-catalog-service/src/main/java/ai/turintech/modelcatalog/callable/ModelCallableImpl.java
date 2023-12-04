@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Component
 @Scope("prototype")
-public class ModelCallableImpl<T> implements Callable<T>, ModelCallable<T> {
+public class ModelCallableImpl<T> implements ModelCallable<T> {
   private String name;
   private ModelDTO modelDTO;
 

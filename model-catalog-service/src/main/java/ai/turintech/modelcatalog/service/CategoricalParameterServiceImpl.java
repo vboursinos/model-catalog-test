@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.CategoricalParameterMapper;
@@ -41,7 +42,7 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<CategoricalParameterDTO> save(CategoricalParameterDTO categoricalParameterDTO) {
     log.debug("Request to save CategoricalParameter : {}", categoricalParameterDTO);
-    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -61,7 +62,7 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<CategoricalParameterDTO> update(CategoricalParameterDTO categoricalParameterDTO) {
     log.debug("Request to update CategoricalParameter : {}", categoricalParameterDTO);
-    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -82,7 +83,7 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   public Mono<CategoricalParameterDTO> partialUpdate(
       CategoricalParameterDTO categoricalParameterDTO) {
     log.debug("Request to partially update CategoricalParameter : {}", categoricalParameterDTO);
-    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -102,7 +103,7 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional(readOnly = true)
   public Mono<List<CategoricalParameterDTO>> findAll() {
     log.debug("Request to get all CategoricalParameters");
-    GenericModelCallableImpl<
+    GenericModelCallable<
             List<CategoricalParameterDTO>, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
@@ -133,7 +134,7 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional(readOnly = true)
   public Mono<CategoricalParameterDTO> findOne(UUID id) {
     log.debug("Request to get CategoricalParameter : {}", id);
-    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -152,7 +153,7 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete CategoricalParameter : {}", id);
-    GenericModelCallableImpl<Void, CategoricalParameterDTO, CategoricalParameter> callable =
+    GenericModelCallable<Void, CategoricalParameterDTO, CategoricalParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "delete",
@@ -165,7 +166,7 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, CategoricalParameterDTO, CategoricalParameter> callable =
+    GenericModelCallable<Boolean, CategoricalParameterDTO, CategoricalParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",

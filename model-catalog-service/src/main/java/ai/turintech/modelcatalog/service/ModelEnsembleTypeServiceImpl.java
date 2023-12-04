@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelEnsembleTypeMapper;
@@ -42,7 +43,7 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> save(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to save ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericModelCallableImpl<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -62,7 +63,7 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> update(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to update ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericModelCallableImpl<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -82,7 +83,7 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> partialUpdate(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to partially update ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericModelCallableImpl<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -102,7 +103,7 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional(readOnly = true)
   public Mono<List<ModelEnsembleTypeDTO>> findAll() {
     log.debug("Request to get all ModelEnsembleTypes");
-    GenericModelCallableImpl<List<ModelEnsembleTypeDTO>, ModelEnsembleTypeDTO, ModelEnsembleType>
+    GenericModelCallable<List<ModelEnsembleTypeDTO>, ModelEnsembleTypeDTO, ModelEnsembleType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -132,7 +133,7 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional(readOnly = true)
   public Mono<ModelEnsembleTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelEnsembleType : {}", id);
-    GenericModelCallableImpl<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -151,7 +152,7 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelEnsembleType : {}", id);
-    GenericModelCallableImpl<Void, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<Void, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "delete",
@@ -164,7 +165,7 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+    GenericModelCallable<Boolean, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",

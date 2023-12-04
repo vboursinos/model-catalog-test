@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.BooleanParameterMapper;
@@ -40,7 +41,7 @@ public class BooleanParameterServiceImpl implements BooleanParameterService {
   @Transactional
   public Mono<BooleanParameterDTO> save(BooleanParameterDTO booleanParameterDTO) {
     log.debug("Request to save BooleanParameter : {}", booleanParameterDTO);
-    GenericModelCallableImpl<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
+    GenericModelCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "create",
@@ -59,7 +60,7 @@ public class BooleanParameterServiceImpl implements BooleanParameterService {
   @Transactional
   public Mono<BooleanParameterDTO> update(BooleanParameterDTO booleanParameterDTO) {
     log.debug("Request to update BooleanParameter : {}", booleanParameterDTO);
-    GenericModelCallableImpl<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
+    GenericModelCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "update",
@@ -78,7 +79,7 @@ public class BooleanParameterServiceImpl implements BooleanParameterService {
   @Transactional
   public Mono<BooleanParameterDTO> partialUpdate(BooleanParameterDTO booleanParameterDTO) {
     log.debug("Request to partially update BooleanParameter : {}", booleanParameterDTO);
-    GenericModelCallableImpl<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
+    GenericModelCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "partialUpdate",
@@ -97,7 +98,7 @@ public class BooleanParameterServiceImpl implements BooleanParameterService {
   @Transactional(readOnly = true)
   public Mono<List<BooleanParameterDTO>> findAll() {
     log.debug("Request to get all BooleanParameters");
-    GenericModelCallableImpl<List<BooleanParameterDTO>, BooleanParameterDTO, BooleanParameter>
+    GenericModelCallable<List<BooleanParameterDTO>, BooleanParameterDTO, BooleanParameter>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -127,7 +128,7 @@ public class BooleanParameterServiceImpl implements BooleanParameterService {
   @Transactional(readOnly = true)
   public Mono<BooleanParameterDTO> findOne(UUID id) {
     log.debug("Request to get BooleanParameter : {}", id);
-    GenericModelCallableImpl<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
+    GenericModelCallable<BooleanParameterDTO, BooleanParameterDTO, BooleanParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "findById",
@@ -145,7 +146,7 @@ public class BooleanParameterServiceImpl implements BooleanParameterService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete BooleanParameter : {}", id);
-    GenericModelCallableImpl<Void, BooleanParameterDTO, BooleanParameter> callable =
+    GenericModelCallable<Void, BooleanParameterDTO, BooleanParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "delete",
@@ -158,7 +159,7 @@ public class BooleanParameterServiceImpl implements BooleanParameterService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, BooleanParameterDTO, BooleanParameter> callable =
+    GenericModelCallable<Boolean, BooleanParameterDTO, BooleanParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",

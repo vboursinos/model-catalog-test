@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.FloatParameterRangeMapper;
@@ -38,7 +39,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional
   public Mono<FloatParameterRangeDTO> save(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to save FloatParameterRange : {}", floatParameterRangeDTO);
-    GenericModelCallableImpl<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -58,7 +59,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional
   public Mono<FloatParameterRangeDTO> update(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to update FloatParameterRange : {}", floatParameterRangeDTO);
-    GenericModelCallableImpl<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -78,7 +79,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional
   public Mono<FloatParameterRangeDTO> partialUpdate(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to partially update FloatParameterRange : {}", floatParameterRangeDTO);
-    GenericModelCallableImpl<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -98,7 +99,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional(readOnly = true)
   public Mono<List<FloatParameterRangeDTO>> findAll() {
     log.debug("Request to get all FloatParameterRanges");
-    GenericModelCallableImpl<
+    GenericModelCallable<
             List<FloatParameterRangeDTO>, FloatParameterRangeDTO, FloatParameterRange>
         callable =
             context.getBean(
@@ -129,7 +130,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional(readOnly = true)
   public Mono<FloatParameterRangeDTO> findOne(UUID id) {
     log.debug("Request to get FloatParameterRange : {}", id);
-    GenericModelCallableImpl<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
+    GenericModelCallable<FloatParameterRangeDTO, FloatParameterRangeDTO, FloatParameterRange>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -148,7 +149,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete FloatParameterRange : {}", id);
-    GenericModelCallableImpl<Void, FloatParameterRangeDTO, FloatParameterRange> callable =
+    GenericModelCallable<Void, FloatParameterRangeDTO, FloatParameterRange> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "delete",
@@ -161,7 +162,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, FloatParameterRangeDTO, FloatParameterRange> callable =
+    GenericModelCallable<Boolean, FloatParameterRangeDTO, FloatParameterRange> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",
