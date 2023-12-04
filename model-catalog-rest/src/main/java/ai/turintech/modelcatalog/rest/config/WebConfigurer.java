@@ -14,10 +14,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.data.web.ReactivePageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.ReactiveSortHandlerMethodArgumentResolver;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.server.WebExceptionHandler;
@@ -55,6 +57,38 @@ public class WebConfigurer implements WebFluxConfigurer {
     }
     return source;
   }
+  
+  /**
+   * Cors configuration.
+   */
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+      // @formatter:off
+      registry
+      .addMapping("/**")
+          .allowedOrigins("*")
+          .maxAge(3600)
+          .allowedHeaders( "X-HTTP-Method-Override", "Cache-Control", "Content-Type",
+              "Content-Length", "Content-Disposition", "Location", "Transfer-Encoding", "Upload-Offset", "Upload-Metadata",
+              "Upload-Checksum", "Upload-Length", "Upload-Expires", "Upload-Defer-Length", "Upload-Concat", "Tus-Version",
+              "Tus-Resumable", "Tus-Extension", "Tus-Max-Size", "Tus-Checksum-Algorithm", "X-Forwarded-For", "Location" )
+          .exposedHeaders("X-HTTP-Method-Override", "Cache-Control", "Content-Type",
+              "Content-Length", "Content-Disposition", "Location", "Transfer-Encoding", "Upload-Offset", "Upload-Metadata",
+              "Upload-Checksum", "Upload-Length", "Upload-Expires", "Upload-Defer-Length", "Upload-Concat", "Tus-Version",
+              "Tus-Resumable", "Tus-Extension", "Tus-Max-Size", "Tus-Checksum-Algorithm", "X-Forwarded-For", "Location")
+          .allowedMethods(
+                  HttpMethod.GET.name(),
+                  HttpMethod.POST.name(),
+                  HttpMethod.PUT.name(),
+                  HttpMethod.PATCH.name(),
+                  HttpMethod.DELETE.name(),
+                  HttpMethod.TRACE.name(),
+                  HttpMethod.OPTIONS.name(),
+                  HttpMethod.HEAD.name());
+
+      // @formatter:on
+  }
+
 
   // TODO: remove when this is supported in spring-boot
   @Bean
