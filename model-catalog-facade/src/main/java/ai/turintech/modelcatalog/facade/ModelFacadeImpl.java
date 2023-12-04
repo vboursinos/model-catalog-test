@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.facade;
 import ai.turintech.components.jpa.search.facade.AbstractSearchFacade;
 import ai.turintech.components.jpa.search.facade.SearchFacade;
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.service.ModelService;
 import ai.turintech.modelcatalog.service.ModelServiceImpl;
@@ -11,7 +10,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
@@ -58,18 +56,6 @@ public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelService
     log.debug("Request to partially update Model : {}", modelDTO);
 
     return modelService.partialUpdate(modelDTO);
-  }
-
-  /**
-   * Get all the models.
-   *
-   * @param pageable the pagination information.
-   * @return the list of entities.
-   */
-  @Transactional(readOnly = true)
-  public Mono<ModelPaginatedListDTO> findAll(Pageable pageable) {
-    log.debug("Request to get all Models");
-    return modelService.findAll(pageable);
   }
 
   /**

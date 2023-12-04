@@ -48,7 +48,7 @@ public class ParameterTypeDefinitionServiceImpl implements ParameterTypeDefiniti
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug("Request to save ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
     GenericModelCallable<
-                ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -248,14 +248,13 @@ public class ParameterTypeDefinitionServiceImpl implements ParameterTypeDefiniti
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "existsById",
-                id,
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
+    GenericModelCallable<Boolean, ParameterTypeDefinitionDTO, ParameterTypeDefinition> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "existsById",
+            id,
+            parameterTypeDefinitionRepository,
+            parameterTypeDefinitionMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

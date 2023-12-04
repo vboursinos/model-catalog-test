@@ -1,7 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,14 +31,6 @@ public interface ModelService {
    * @return the persisted entity.
    */
   public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO);
-
-  /**
-   * Get all the models.
-   *
-   * @param pageable the pagination information.
-   * @return the list of entities.
-   */
-  public Mono<ModelPaginatedListDTO> findAll(Pageable pageable);
 
   /**
    * Get all the models with eager load of many-to-many relationships.

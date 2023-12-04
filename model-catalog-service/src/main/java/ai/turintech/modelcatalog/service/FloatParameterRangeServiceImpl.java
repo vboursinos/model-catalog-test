@@ -99,8 +99,7 @@ public class FloatParameterRangeServiceImpl implements FloatParameterRangeServic
   @Transactional(readOnly = true)
   public Mono<List<FloatParameterRangeDTO>> findAll() {
     log.debug("Request to get all FloatParameterRanges");
-    GenericModelCallable<
-            List<FloatParameterRangeDTO>, FloatParameterRangeDTO, FloatParameterRange>
+    GenericModelCallable<List<FloatParameterRangeDTO>, FloatParameterRangeDTO, FloatParameterRange>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,

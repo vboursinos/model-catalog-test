@@ -4,16 +4,13 @@ import ai.turintech.components.jpa.search.service.AbstractSearchService;
 import ai.turintech.components.jpa.search.service.SearchService;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
-import ai.turintech.modelcatalog.callable.ModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
 import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.entity.ModelLimited;
 import ai.turintech.modelcatalog.repository.ModelRepository;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,20 +85,6 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
             modelDTO,
             modelRepository,
             modelMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
-  }
-
-  /**
-   * Get all the models.
-   *
-   * @param pageable the pagination information.
-   * @return the list of entities.
-   */
-  @Transactional(readOnly = true)
-  public Mono<ModelPaginatedListDTO> findAll(Pageable pageable) {
-    log.debug("Request to get all Models");
-    Callable<ModelPaginatedListDTO> callable =
-        context.getBean(ModelCallableImpl.class, "findAll", pageable);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 

@@ -1,9 +1,7 @@
 package ai.turintech.modelcatalog.facade;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import java.util.UUID;
-import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Mono;
 
 public interface ModelFacade {
@@ -31,14 +29,6 @@ public interface ModelFacade {
    * @return the persisted entity.
    */
   public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO);
-
-  /**
-   * Get all the models.
-   *
-   * @param pageable the pagination information.
-   * @return the list of entities.
-   */
-  public Mono<ModelPaginatedListDTO> findAll(Pageable pageable);
 
   /**
    * Get one model by id.
