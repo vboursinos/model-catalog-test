@@ -24,9 +24,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ParameterTypeDefinition}. */
 @Service
 @Transactional
-public class ParameterTypeDefinitionService {
+public class ParameterTypeDefinitionServiceImpl implements ParameterTypeDefinitionService {
 
-  private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionService.class);
+  private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionServiceImpl.class);
 
   @Autowired private ApplicationContext context;
 

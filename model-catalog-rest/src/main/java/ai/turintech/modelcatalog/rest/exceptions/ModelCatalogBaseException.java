@@ -1,4 +1,4 @@
-package ai.turintech.modelcatalog.exceptions;
+package ai.turintech.modelcatalog.rest.exceptions;
 
 /**
  * Exception in order to represent a problem in the Model Catalog. This exception is the base

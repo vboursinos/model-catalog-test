@@ -19,8 +19,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelEnsembleTypeFacadeImpl.class);
 
-  @Autowired
-  private ModelEnsembleTypeService modelEnsembleTypeService;
+  @Autowired private ModelEnsembleTypeService modelEnsembleTypeService;
 
   /**
    * Save a modelEnsembleType.

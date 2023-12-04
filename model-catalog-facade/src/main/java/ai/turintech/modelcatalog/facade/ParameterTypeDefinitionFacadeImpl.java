@@ -19,8 +19,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
 
   private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionFacadeImpl.class);
 
-  @Autowired
-  private ParameterTypeDefinitionService parameterTypeDefinitionService;
+  @Autowired private ParameterTypeDefinitionService parameterTypeDefinitionService;
 
   /**
    * Save a parameterTypeDefinition.

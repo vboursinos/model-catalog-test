@@ -19,8 +19,7 @@ public class IntegerParameterFacadeImpl implements IntegerParameterFacade {
 
   private final Logger log = LoggerFactory.getLogger(IntegerParameterFacadeImpl.class);
 
-  @Autowired
-  private IntegerParameterService integerParameterService;
+  @Autowired private IntegerParameterService integerParameterService;
 
   /**
    * Save a integerParameter.

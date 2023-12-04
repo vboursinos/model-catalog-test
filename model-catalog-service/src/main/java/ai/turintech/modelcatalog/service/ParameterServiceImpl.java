@@ -22,9 +22,9 @@ import reactor.core.scheduler.Scheduler;
 /** Service Implementation for managing {@link Parameter}. */
 @Service
 @Transactional
-public class ParameterService {
+public class ParameterServiceImpl implements ParameterService {
 
-  private final Logger log = LoggerFactory.getLogger(ParameterService.class);
+  private final Logger log = LoggerFactory.getLogger(ParameterServiceImpl.class);
 
   @Autowired private ApplicationContext context;
   @Autowired private Scheduler jdbcScheduler;

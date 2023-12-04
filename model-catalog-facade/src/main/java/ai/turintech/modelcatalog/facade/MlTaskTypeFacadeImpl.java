@@ -19,8 +19,7 @@ public class MlTaskTypeFacadeImpl implements MlTaskTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(MlTaskTypeFacadeImpl.class);
 
-  @Autowired
-  private MlTaskTypeService modelTaskTypeService;
+  @Autowired private MlTaskTypeService modelTaskTypeService;
 
   /**
    * Save a mlTaskType.

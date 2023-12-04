@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link IntegerParameterValue}. */
 @Service
 @Transactional
-public class IntegerParameterValueService {
+public class IntegerParameterValueServiceImpl implements IntegerParameterValueService {
 
-  private final Logger log = LoggerFactory.getLogger(IntegerParameterValueService.class);
+  private final Logger log = LoggerFactory.getLogger(IntegerParameterValueServiceImpl.class);
 
   @Autowired private ApplicationContext context;
 

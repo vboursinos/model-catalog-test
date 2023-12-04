@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ModelGroupType}. */
 @Service
 @Transactional
-public class ModelGroupTypeService {
+public class ModelGroupTypeServiceImpl implements ModelGroupTypeService {
 
-  private final Logger log = LoggerFactory.getLogger(ModelGroupTypeService.class);
+  private final Logger log = LoggerFactory.getLogger(ModelGroupTypeServiceImpl.class);
 
   @Autowired private ApplicationContext context;
 

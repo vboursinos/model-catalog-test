@@ -19,8 +19,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelTypeFacadeImpl.class);
 
-  @Autowired
-  private ModelTypeService modelTypeService;
+  @Autowired private ModelTypeService modelTypeService;
 
   /**
    * Save a modelType.

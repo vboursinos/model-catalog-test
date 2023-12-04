@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link MlTaskType}. */
 @Service
 @Transactional
-public class MlTaskTypeService {
+public class MlTaskTypeServiceImpl implements MlTaskTypeService {
 
-  private final Logger log = LoggerFactory.getLogger(MlTaskTypeService.class);
+  private final Logger log = LoggerFactory.getLogger(MlTaskTypeServiceImpl.class);
 
   @Autowired private ApplicationContext context;
 

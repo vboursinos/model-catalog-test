@@ -19,8 +19,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
 
   private final Logger log = LoggerFactory.getLogger(ParameterDistributionTypeFacadeImpl.class);
 
-  @Autowired
-  private ParameterDistributionTypeService parameterDistributionTypeService;
+  @Autowired private ParameterDistributionTypeService parameterDistributionTypeService;
 
   /**
    * Save a parameterDistributionType.

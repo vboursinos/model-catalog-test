@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ModelType}. */
 @Service
 @Transactional
-public class ModelTypeService {
+public class ModelTypeServiceImpl implements ModelTypeService {
 
-  private final Logger log = LoggerFactory.getLogger(ModelTypeService.class);
+  private final Logger log = LoggerFactory.getLogger(ModelTypeServiceImpl.class);
   @Autowired private ApplicationContext context;
 
   @Autowired private Scheduler jdbcScheduler;
