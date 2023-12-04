@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class GenericModelCallableImpl<T, DTO, ENTITY>
-    implements Callable<T>, GenericModelCallable<T, DTO, ENTITY> {
+    implements GenericModelCallable<T, DTO, ENTITY> {
   private String name;
   private UUID id;
   private DTO dto;

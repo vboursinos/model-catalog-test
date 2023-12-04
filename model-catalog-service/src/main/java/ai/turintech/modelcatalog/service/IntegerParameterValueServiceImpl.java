@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.IntegerParameterValueMapper;
@@ -40,8 +41,8 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional
   public Mono<IntegerParameterValueDTO> save(IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to save IntegerParameterValue : {}", integerParameterValueDTO);
-    GenericModelCallableImpl<
-            IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
+    GenericModelCallable<
+                IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -61,7 +62,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional
   public Mono<IntegerParameterValueDTO> update(IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to update IntegerParameterValue : {}", integerParameterValueDTO);
-    GenericModelCallableImpl<
+    GenericModelCallable<
             IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
@@ -83,7 +84,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   public Mono<IntegerParameterValueDTO> partialUpdate(
       IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to partially update IntegerParameterValue : {}", integerParameterValueDTO);
-    GenericModelCallableImpl<
+    GenericModelCallable<
             IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
@@ -104,7 +105,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional(readOnly = true)
   public Mono<List<IntegerParameterValueDTO>> findAll() {
     log.debug("Request to get all IntegerParameterValues");
-    GenericModelCallableImpl<
+    GenericModelCallable<
             List<IntegerParameterValueDTO>, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
@@ -136,7 +137,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional(readOnly = true)
   public Mono<IntegerParameterValueDTO> findOne(UUID id) {
     log.debug("Request to get IntegerParameterValue : {}", id);
-    GenericModelCallableImpl<
+    GenericModelCallable<
             IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
@@ -156,7 +157,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete IntegerParameterValue : {}", id);
-    GenericModelCallableImpl<Void, IntegerParameterValueDTO, IntegerParameterValue> callable =
+    GenericModelCallable<Void, IntegerParameterValueDTO, IntegerParameterValue> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "delete",
@@ -169,7 +170,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, IntegerParameterValueDTO, IntegerParameterValue> callable =
+    GenericModelCallable<Boolean, IntegerParameterValueDTO, IntegerParameterValue> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",

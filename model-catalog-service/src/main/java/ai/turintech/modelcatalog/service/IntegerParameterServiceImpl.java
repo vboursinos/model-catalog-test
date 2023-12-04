@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.IntegerParameterMapper;
@@ -42,7 +43,7 @@ public class IntegerParameterServiceImpl implements IntegerParameterService {
   @Transactional
   public Mono<IntegerParameterDTO> save(IntegerParameterDTO integerParameterDTO) {
     log.debug("Request to save IntegerParameter : {}", integerParameterDTO);
-    GenericModelCallableImpl<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
+    GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "create",
@@ -61,7 +62,7 @@ public class IntegerParameterServiceImpl implements IntegerParameterService {
   @Transactional
   public Mono<IntegerParameterDTO> update(IntegerParameterDTO integerParameterDTO) {
     log.debug("Request to update IntegerParameter : {}", integerParameterDTO);
-    GenericModelCallableImpl<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
+    GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "update",
@@ -80,7 +81,7 @@ public class IntegerParameterServiceImpl implements IntegerParameterService {
   @Transactional
   public Mono<IntegerParameterDTO> partialUpdate(IntegerParameterDTO integerParameterDTO) {
     log.debug("Request to partially update IntegerParameter : {}", integerParameterDTO);
-    GenericModelCallableImpl<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
+    GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "partialUpdate",
@@ -99,7 +100,7 @@ public class IntegerParameterServiceImpl implements IntegerParameterService {
   @Transactional(readOnly = true)
   public Mono<List<IntegerParameterDTO>> findAll() {
     log.debug("Request to get all IntegerParameters");
-    GenericModelCallableImpl<List<IntegerParameterDTO>, IntegerParameterDTO, IntegerParameter>
+    GenericModelCallable<List<IntegerParameterDTO>, IntegerParameterDTO, IntegerParameter>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -129,7 +130,7 @@ public class IntegerParameterServiceImpl implements IntegerParameterService {
   @Transactional(readOnly = true)
   public Mono<IntegerParameterDTO> findOne(UUID id) {
     log.debug("Request to get IntegerParameter : {}", id);
-    GenericModelCallableImpl<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
+    GenericModelCallable<IntegerParameterDTO, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "findById",
@@ -147,7 +148,7 @@ public class IntegerParameterServiceImpl implements IntegerParameterService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete IntegerParameter : {}", id);
-    GenericModelCallableImpl<Void, IntegerParameterDTO, IntegerParameter> callable =
+    GenericModelCallable<Void, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "delete",
@@ -160,7 +161,7 @@ public class IntegerParameterServiceImpl implements IntegerParameterService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, IntegerParameterDTO, IntegerParameter> callable =
+    GenericModelCallable<Boolean, IntegerParameterDTO, IntegerParameter> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",

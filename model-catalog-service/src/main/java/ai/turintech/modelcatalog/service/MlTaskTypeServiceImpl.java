@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.MlTaskTypeMapper;
@@ -41,7 +42,7 @@ public class MlTaskTypeServiceImpl implements MlTaskTypeService {
   @Transactional
   public Mono<MlTaskTypeDTO> save(MlTaskTypeDTO mlTaskTypeDTO) {
     log.debug("Request to save MlTaskType : {}", mlTaskTypeDTO);
-    GenericModelCallableImpl<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
+    GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "create",
@@ -60,7 +61,7 @@ public class MlTaskTypeServiceImpl implements MlTaskTypeService {
   @Transactional
   public Mono<MlTaskTypeDTO> update(MlTaskTypeDTO mlTaskTypeDTO) {
     log.debug("Request to update MlTaskType : {}", mlTaskTypeDTO);
-    GenericModelCallableImpl<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
+    GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "update",
@@ -79,7 +80,7 @@ public class MlTaskTypeServiceImpl implements MlTaskTypeService {
   @Transactional
   public Mono<MlTaskTypeDTO> partialUpdate(MlTaskTypeDTO mlTaskTypeDTO) {
     log.debug("Request to partially update MlTaskType : {}", mlTaskTypeDTO);
-    GenericModelCallableImpl<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
+    GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "partialUpdate",
@@ -98,7 +99,7 @@ public class MlTaskTypeServiceImpl implements MlTaskTypeService {
   @Transactional(readOnly = true)
   public Mono<List<MlTaskTypeDTO>> findAll() {
     log.debug("Request to get all MlTaskTypes");
-    GenericModelCallableImpl<List<MlTaskTypeDTO>, MlTaskTypeDTO, MlTaskType> callable =
+    GenericModelCallable<List<MlTaskTypeDTO>, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
             GenericModelCallableImpl.class, "findAll", mlTaskTypeRepository, mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
@@ -122,7 +123,7 @@ public class MlTaskTypeServiceImpl implements MlTaskTypeService {
   @Transactional(readOnly = true)
   public Mono<MlTaskTypeDTO> findOne(UUID id) {
     log.debug("Request to get MlTaskType : {}", id);
-    GenericModelCallableImpl<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
+    GenericModelCallable<MlTaskTypeDTO, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
             GenericModelCallableImpl.class, "findById", id, mlTaskTypeRepository, mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
@@ -136,7 +137,7 @@ public class MlTaskTypeServiceImpl implements MlTaskTypeService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete MlTaskType : {}", id);
-    GenericModelCallableImpl<Void, MlTaskTypeDTO, MlTaskType> callable =
+    GenericModelCallable<Void, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
             GenericModelCallableImpl.class, "create", id, mlTaskTypeRepository, mlTaskTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
@@ -145,7 +146,7 @@ public class MlTaskTypeServiceImpl implements MlTaskTypeService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, MlTaskTypeDTO, MlTaskType> callable =
+    GenericModelCallable<Boolean, MlTaskTypeDTO, MlTaskType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",

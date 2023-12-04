@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ModelStructureTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelStructureTypeMapper;
@@ -40,7 +41,7 @@ public class ModelStructureTypeServiceImpl implements ModelStructureTypeService 
   @Transactional
   public Mono<ModelStructureTypeDTO> save(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to save ModelStructureType : {}", modelStructureTypeDTO);
-    GenericModelCallableImpl<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -60,7 +61,7 @@ public class ModelStructureTypeServiceImpl implements ModelStructureTypeService 
   @Transactional
   public Mono<ModelStructureTypeDTO> update(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to update ModelStructureType : {}", modelStructureTypeDTO);
-    GenericModelCallableImpl<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -80,7 +81,7 @@ public class ModelStructureTypeServiceImpl implements ModelStructureTypeService 
   @Transactional
   public Mono<ModelStructureTypeDTO> partialUpdate(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to partially update ModelStructureType : {}", modelStructureTypeDTO);
-    GenericModelCallableImpl<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -100,7 +101,7 @@ public class ModelStructureTypeServiceImpl implements ModelStructureTypeService 
   @Transactional(readOnly = true)
   public Mono<List<ModelStructureTypeDTO>> findAll() {
     log.debug("Request to get all ModelStructureTypes");
-    GenericModelCallableImpl<List<ModelStructureTypeDTO>, ModelStructureTypeDTO, ModelStructureType>
+    GenericModelCallable<List<ModelStructureTypeDTO>, ModelStructureTypeDTO, ModelStructureType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -130,7 +131,7 @@ public class ModelStructureTypeServiceImpl implements ModelStructureTypeService 
   @Transactional(readOnly = true)
   public Mono<ModelStructureTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelStructureType : {}", id);
-    GenericModelCallableImpl<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
+    GenericModelCallable<ModelStructureTypeDTO, ModelStructureTypeDTO, ModelStructureType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -149,7 +150,7 @@ public class ModelStructureTypeServiceImpl implements ModelStructureTypeService 
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelStructureType : {}", id);
-    GenericModelCallableImpl<Void, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<Void, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "delete",
@@ -162,7 +163,7 @@ public class ModelStructureTypeServiceImpl implements ModelStructureTypeService 
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallableImpl<Boolean, ModelStructureTypeDTO, ModelStructureType> callable =
+    GenericModelCallable<Boolean, ModelStructureTypeDTO, ModelStructureType> callable =
         context.getBean(
             GenericModelCallableImpl.class,
             "existsById",

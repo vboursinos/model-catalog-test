@@ -1,8 +1,9 @@
 package ai.turintech.modelcatalog.callable;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public interface GenericModelCallable<T, DTO, ENTITY> {
+public interface GenericModelCallable<T, DTO, ENTITY> extends Callable<T> {
   public List<DTO> findAll();
 
   public DTO findById() throws Exception;
