@@ -11,8 +11,6 @@ import ai.turintech.modelcatalog.facade.ModelFacadeImpl;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
-import ai.turintech.modelcatalog.service.ModelServiceImpl;
-import ai.turintech.modelcatalog.service.PaginationConverter;
 import ai.turintech.modelcatalog.to.ModelTO;
 import ai.turintech.modelcatalog.todtomapper.ModelMapper;
 import ai.turintech.modelcatalog.todtomapper.ModelPaginatedListMapper;
@@ -53,8 +51,6 @@ public class ModelResource
   @Value("${spring.application.name}")
   private String applicationName;
 
-  @Autowired private PaginationConverter paginationConverter;
-  @Autowired private ModelServiceImpl modelService;
   @Autowired private ModelFacade modelFacade;
   @Autowired private ModelMapper modelMapper;
   @Autowired private ModelPaginatedListMapper modelPaginatedListMapper;
@@ -76,7 +72,7 @@ public class ModelResource
           "A new model cannot already have an ID", ENTITY_NAME, "idexists");
     }
     // modelTO.setId(UUID.randomUUID());
-    return modelService
+    return modelFacade
         .save(modelMapper.to(modelTO))
         .map(modelMapper::from)
         .map(

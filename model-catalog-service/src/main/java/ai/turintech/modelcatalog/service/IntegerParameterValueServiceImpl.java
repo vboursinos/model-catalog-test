@@ -41,8 +41,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional
   public Mono<IntegerParameterValueDTO> save(IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to save IntegerParameterValue : {}", integerParameterValueDTO);
-    GenericModelCallable<
-                IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
+    GenericModelCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -62,8 +61,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional
   public Mono<IntegerParameterValueDTO> update(IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to update IntegerParameterValue : {}", integerParameterValueDTO);
-    GenericModelCallable<
-            IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
+    GenericModelCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -84,8 +82,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   public Mono<IntegerParameterValueDTO> partialUpdate(
       IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to partially update IntegerParameterValue : {}", integerParameterValueDTO);
-    GenericModelCallable<
-            IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
+    GenericModelCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -137,8 +134,7 @@ public class IntegerParameterValueServiceImpl implements IntegerParameterValueSe
   @Transactional(readOnly = true)
   public Mono<IntegerParameterValueDTO> findOne(UUID id) {
     log.debug("Request to get IntegerParameterValue : {}", id);
-    GenericModelCallable<
-            IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
+    GenericModelCallable<IntegerParameterValueDTO, IntegerParameterValueDTO, IntegerParameterValue>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,

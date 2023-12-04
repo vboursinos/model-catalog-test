@@ -41,7 +41,7 @@ public class CategoricalParameterValueServiceImpl implements CategoricalParamete
       CategoricalParameterValueDTO categoricalParameterValueDTO) {
     log.debug("Request to save CategoricalParameterValue : {}", categoricalParameterValueDTO);
     GenericModelCallable<
-                CategoricalParameterValueDTO, CategoricalParameterValueDTO, CategoricalParameterValue>
+            CategoricalParameterValueDTO, CategoricalParameterValueDTO, CategoricalParameterValue>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -160,14 +160,13 @@ public class CategoricalParameterValueServiceImpl implements CategoricalParamete
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete CategoricalParameterValue : {}", id);
-    GenericModelCallable<Void, CategoricalParameterValueDTO, CategoricalParameterValue>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "delete",
-                id,
-                categoricalParameterValueRepository,
-                categoricalParameterValueMapper);
+    GenericModelCallable<Void, CategoricalParameterValueDTO, CategoricalParameterValue> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "delete",
+            id,
+            categoricalParameterValueRepository,
+            categoricalParameterValueMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 

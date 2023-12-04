@@ -99,13 +99,12 @@ public class ModelFamilyTypeServiceImpl implements ModelFamilyTypeService {
   @Transactional(readOnly = true)
   public Mono<List<ModelFamilyTypeDTO>> findAll() {
     log.debug("Request to get all ModelFamilyTypes");
-    GenericModelCallable<List<ModelFamilyTypeDTO>, ModelFamilyTypeDTO, ModelFamilyType>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "findAll",
-                modelFamilyTypeRepository,
-                modelFamilyTypeMapper);
+    GenericModelCallable<List<ModelFamilyTypeDTO>, ModelFamilyTypeDTO, ModelFamilyType> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "findAll",
+            modelFamilyTypeRepository,
+            modelFamilyTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 

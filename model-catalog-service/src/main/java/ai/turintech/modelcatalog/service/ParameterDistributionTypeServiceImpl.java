@@ -45,7 +45,7 @@ public class ParameterDistributionTypeServiceImpl implements ParameterDistributi
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug("Request to save ParameterDistributionType : {}", parameterDistributionTypeDTO);
     GenericModelCallable<
-                ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
+            ParameterDistributionTypeDTO, ParameterDistributionTypeDTO, ParameterDistributionType>
         callable =
             context.getBean(
                 GenericModelCallableImpl.class,
@@ -164,14 +164,13 @@ public class ParameterDistributionTypeServiceImpl implements ParameterDistributi
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ParameterDistributionType : {}", id);
-    GenericModelCallable<Void, ParameterDistributionTypeDTO, ParameterDistributionType>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "delete",
-                id,
-                parameterDistributionTypeRepository,
-                parameterDistributionTypeMapper);
+    GenericModelCallable<Void, ParameterDistributionTypeDTO, ParameterDistributionType> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "delete",
+            id,
+            parameterDistributionTypeRepository,
+            parameterDistributionTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 

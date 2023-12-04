@@ -43,14 +43,13 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> save(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to save ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "create",
-                modelEnsembleTypeDTO,
-                modelEnsembleTypeRepository,
-                modelEnsembleTypeMapper);
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "create",
+            modelEnsembleTypeDTO,
+            modelEnsembleTypeRepository,
+            modelEnsembleTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -63,14 +62,13 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> update(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to update ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "update",
-                modelEnsembleTypeDTO,
-                modelEnsembleTypeRepository,
-                modelEnsembleTypeMapper);
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "update",
+            modelEnsembleTypeDTO,
+            modelEnsembleTypeRepository,
+            modelEnsembleTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -83,15 +81,14 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional
   public Mono<ModelEnsembleTypeDTO> partialUpdate(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to partially update ModelEnsembleType : {}", modelEnsembleTypeDTO);
-    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "partialUpdate",
-                modelEnsembleTypeDTO.getId(),
-                modelEnsembleTypeDTO,
-                modelEnsembleTypeRepository,
-                modelEnsembleTypeMapper);
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "partialUpdate",
+            modelEnsembleTypeDTO.getId(),
+            modelEnsembleTypeDTO,
+            modelEnsembleTypeRepository,
+            modelEnsembleTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -133,14 +130,13 @@ public class ModelEnsembleTypeServiceImpl implements ModelEnsembleTypeService {
   @Transactional(readOnly = true)
   public Mono<ModelEnsembleTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelEnsembleType : {}", id);
-    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType>
-        callable =
-            context.getBean(
-                GenericModelCallableImpl.class,
-                "findById",
-                id,
-                modelEnsembleTypeRepository,
-                modelEnsembleTypeMapper);
+    GenericModelCallable<ModelEnsembleTypeDTO, ModelEnsembleTypeDTO, ModelEnsembleType> callable =
+        context.getBean(
+            GenericModelCallableImpl.class,
+            "findById",
+            id,
+            modelEnsembleTypeRepository,
+            modelEnsembleTypeMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
