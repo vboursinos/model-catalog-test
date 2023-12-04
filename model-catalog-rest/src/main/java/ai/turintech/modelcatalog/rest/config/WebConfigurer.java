@@ -5,6 +5,9 @@ import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 import ai.turintech.modelcatalog.rest.support.database.h2.H2ConfigurationHelper;
 import ai.turintech.modelcatalog.rest.support.errors.ReactiveWebExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.time.Duration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -47,14 +50,68 @@ public class WebConfigurer implements WebFluxConfigurer {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     // TODO- Apply or provide this configuration using application properties file
     CorsConfiguration config = new CorsConfiguration();
-    if (!CollectionUtils.isEmpty(config.getAllowedOrigins())
-        || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
+    config.addAllowedHeader("X-HTTP-Method-Override");
+    config.addAllowedHeader("Cache-Control");
+    config.addAllowedHeader("Content-Type");
+    config.addAllowedHeader("Content-Length");
+    config.addAllowedHeader("Content-Disposition");
+    config.addAllowedHeader("Location");
+    config.addAllowedHeader("Transfer-Encoding");
+    config.addAllowedHeader("Upload-Offset");
+    config.addAllowedHeader("Upload-Metadata");
+    config.addAllowedHeader("Upload-Checksum");
+    config.addAllowedHeader("Upload-Length");
+    config.addAllowedHeader("Upload-Expires");
+    config.addAllowedHeader("Upload-Defer-Length");
+    config.addAllowedHeader("Upload-Concat");
+    config.addAllowedHeader("Tus-Version");
+    config.addAllowedHeader("Tus-Resumable");
+    config.addAllowedHeader("Tus-Extension");
+    config.addAllowedHeader("Tus-Max-Size");
+    config.addAllowedHeader("Tus-Checksum-Algorithm");
+    config.addAllowedHeader("X-Forwarded-For");
+    config.addAllowedHeader("Location");
+    config.setMaxAge(Duration.ofSeconds(3600L));
+    config.addAllowedOrigin("*");
+    config.addExposedHeader("X-HTTP-Method-Override");
+    config.addExposedHeader("Cache-Control");
+    config.addExposedHeader("Content-Type");
+    config.addExposedHeader("Content-Length");
+    config.addExposedHeader("Content-Disposition");
+    config.addExposedHeader("Location");
+    config.addExposedHeader("Transfer-Encoding");
+    config.addExposedHeader("Upload-Offset");
+    config.addExposedHeader("Upload-Metadata");
+    config.addExposedHeader("Upload-Checksum");
+    config.addExposedHeader("Upload-Length");
+    config.addExposedHeader("Upload-Expires");
+    config.addExposedHeader("Upload-Defer-Length");
+    config.addExposedHeader("Upload-Concat");
+    config.addExposedHeader("Tus-Version");
+    config.addExposedHeader("Tus-Resumable");
+    config.addExposedHeader("Tus-Extension");
+    config.addExposedHeader("Tus-Max-Size");
+    config.addExposedHeader("Tus-Checksum-Algorithm");
+    config.addExposedHeader("X-Forwarded-For");
+    config.addExposedHeader("Location");
+    config.addAllowedMethod(HttpMethod.GET);
+    config.addAllowedMethod(HttpMethod.POST.name());
+    config.addAllowedMethod(HttpMethod.PUT.name());
+    config.addAllowedMethod(HttpMethod.PATCH.name());
+    config.addAllowedMethod(HttpMethod.DELETE.name());
+    config.addAllowedMethod(HttpMethod.TRACE.name());
+    config.addAllowedMethod(HttpMethod.OPTIONS.name());
+    config.addAllowedMethod(HttpMethod.HEAD.name());
+    //if (!CollectionUtils.isEmpty(config.getAllowedOrigins())
+    //    || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
       log.debug("Registering CORS filter");
       source.registerCorsConfiguration("/api/**", config);
       source.registerCorsConfiguration("/management/**", config);
       source.registerCorsConfiguration("/v3/api-docs", config);
       source.registerCorsConfiguration("/swagger-ui/**", config);
-    }
+      source.registerCorsConfiguration("*", config);
+    //}
+    //source.registerCorsConfiguration("*", config);
     return source;
   }
   
