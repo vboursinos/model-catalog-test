@@ -15,21 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Component
 @Scope("prototype")
-public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
+public class GenericModelCallableImpl<T, DTO, ENTITY>
+    implements Callable<T>, GenericModelCallable<T, DTO, ENTITY> {
   private String name;
   private UUID id;
   private DTO dto;
   private JpaRepository<ENTITY, UUID> repository;
   private MapperInterface<DTO, ENTITY> mapper;
 
-  public GenericModelCallable(
+  public GenericModelCallableImpl(
       String name, JpaRepository<ENTITY, UUID> repository, MapperInterface<DTO, ENTITY> mapper) {
     this.name = name;
     this.repository = repository;
     this.mapper = mapper;
   }
 
-  public GenericModelCallable(
+  public GenericModelCallableImpl(
       String name,
       UUID id,
       JpaRepository<ENTITY, UUID> repository,
@@ -40,7 +41,7 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
     this.mapper = mapper;
   }
 
-  public GenericModelCallable(
+  public GenericModelCallableImpl(
       String name,
       DTO dto,
       JpaRepository<ENTITY, UUID> repository,
@@ -51,7 +52,7 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
     this.mapper = mapper;
   }
 
-  public GenericModelCallable(
+  public GenericModelCallableImpl(
       String name,
       UUID id,
       DTO dto,
@@ -64,7 +65,7 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
     this.mapper = mapper;
   }
 
-  private List<DTO> findAll() {
+  public List<DTO> findAll() {
     return repository.findAll().stream()
         .map(mapper::to)
         .collect(Collectors.toCollection(LinkedList::new));

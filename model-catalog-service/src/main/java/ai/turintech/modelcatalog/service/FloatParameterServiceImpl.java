@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.GenericModelCallable;
+import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.FloatParameterMapper;
 import ai.turintech.modelcatalog.entity.FloatParameter;
@@ -41,9 +41,9 @@ public class FloatParameterServiceImpl implements FloatParameterService {
   @Transactional
   public Mono<FloatParameterDTO> save(FloatParameterDTO floatParameterDTO) {
     log.debug("Request to save FloatParameter : {}", floatParameterDTO);
-    GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
+    GenericModelCallableImpl<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "create",
             floatParameterDTO,
             floatParameterRepository,
@@ -60,9 +60,9 @@ public class FloatParameterServiceImpl implements FloatParameterService {
   @Transactional
   public Mono<FloatParameterDTO> update(FloatParameterDTO floatParameterDTO) {
     log.debug("Request to update FloatParameter : {}", floatParameterDTO);
-    GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
+    GenericModelCallableImpl<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "update",
             floatParameterDTO,
             floatParameterRepository,
@@ -79,9 +79,9 @@ public class FloatParameterServiceImpl implements FloatParameterService {
   @Transactional
   public Mono<FloatParameterDTO> partialUpdate(FloatParameterDTO floatParameterDTO) {
     log.debug("Request to partially update FloatParameter : {}", floatParameterDTO);
-    GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
+    GenericModelCallableImpl<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "partialUpdate",
             floatParameterDTO.getParameterTypeDefinitionId(),
             floatParameterDTO,
@@ -98,9 +98,12 @@ public class FloatParameterServiceImpl implements FloatParameterService {
   @Transactional(readOnly = true)
   public Mono<List<FloatParameterDTO>> findAll() {
     log.debug("Request to get all FloatParameters");
-    GenericModelCallable<List<FloatParameterDTO>, FloatParameterDTO, FloatParameter> callable =
+    GenericModelCallableImpl<List<FloatParameterDTO>, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-            GenericModelCallable.class, "findAAll", floatParameterRepository, floatParameterMapper);
+            GenericModelCallableImpl.class,
+            "findAAll",
+            floatParameterRepository,
+            floatParameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -121,9 +124,9 @@ public class FloatParameterServiceImpl implements FloatParameterService {
   @Transactional(readOnly = true)
   public Mono<FloatParameterDTO> findOne(UUID id) {
     log.debug("Request to get FloatParameter : {}", id);
-    GenericModelCallable<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
+    GenericModelCallableImpl<FloatParameterDTO, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "findById",
             id,
             floatParameterRepository,
@@ -139,9 +142,9 @@ public class FloatParameterServiceImpl implements FloatParameterService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete FloatParameter : {}", id);
-    GenericModelCallable<Void, FloatParameterDTO, FloatParameter> callable =
+    GenericModelCallableImpl<Void, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "delete",
             id,
             floatParameterRepository,
@@ -152,9 +155,9 @@ public class FloatParameterServiceImpl implements FloatParameterService {
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, FloatParameterDTO, FloatParameter> callable =
+    GenericModelCallableImpl<Boolean, FloatParameterDTO, FloatParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "existsById",
             id,
             floatParameterRepository,

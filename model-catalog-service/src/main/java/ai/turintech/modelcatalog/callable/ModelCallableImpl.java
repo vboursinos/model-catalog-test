@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Component
 @Scope("prototype")
-public class ModelCallable<T> implements Callable<T> {
+public class ModelCallableImpl<T> implements Callable<T>, ModelCallable<T> {
   private String name;
   private ModelDTO modelDTO;
 
   private Pageable pageable;
 
-  public ModelCallable(String name, Pageable pageable) {
+  public ModelCallableImpl(String name, Pageable pageable) {
     this.name = name;
     this.pageable = pageable;
   }
