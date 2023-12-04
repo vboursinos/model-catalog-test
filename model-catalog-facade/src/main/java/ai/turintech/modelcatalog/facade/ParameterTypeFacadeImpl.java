@@ -19,8 +19,7 @@ public class ParameterTypeFacadeImpl implements ParameterTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ParameterTypeFacadeImpl.class);
 
-  @Autowired
-  private ParameterTypeService parameterTypeService;
+  @Autowired private ParameterTypeService parameterTypeService;
 
   /**
    * Save a parameterType.

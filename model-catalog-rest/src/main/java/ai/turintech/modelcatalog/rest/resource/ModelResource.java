@@ -6,13 +6,12 @@ import ai.turintech.components.jpa.search.data.to.PageableQueryRequestTO;
 import ai.turintech.components.jpa.search.exception.PageableRequestException;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.entity.Model;
-import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.facade.ModelFacade;
 import ai.turintech.modelcatalog.facade.ModelFacadeImpl;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
-import ai.turintech.modelcatalog.service.ModelService;
+import ai.turintech.modelcatalog.service.ModelServiceImpl;
 import ai.turintech.modelcatalog.service.PaginationConverter;
 import ai.turintech.modelcatalog.to.ModelTO;
 import ai.turintech.modelcatalog.todtomapper.ModelMapper;
@@ -55,7 +54,7 @@ public class ModelResource
   private String applicationName;
 
   @Autowired private PaginationConverter paginationConverter;
-  @Autowired private ModelService modelService;
+  @Autowired private ModelServiceImpl modelService;
   @Autowired private ModelFacade modelFacade;
   @Autowired private ModelMapper modelMapper;
   @Autowired private ModelPaginatedListMapper modelPaginatedListMapper;
@@ -220,7 +219,7 @@ public class ModelResource
    *     with status {@code 404 (Not Found)}.
    */
   @GetMapping("/models/{id}")
-  public Mono<ResponseEntity<ModelTO>> getModel(@PathVariable UUID id) throws FindOneException {
+  public Mono<ResponseEntity<ModelTO>> getModel(@PathVariable UUID id) throws Exception {
     log.debug("REST request to get Model : {}", id);
     Mono<ModelTO> modelTO = modelFacade.findOne(id).map(modelMapper::to);
     return ResponseUtil.wrapOrNotFound(modelTO);

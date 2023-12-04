@@ -1,7 +1,6 @@
 package ai.turintech.modelcatalog.callable;
 
 import ai.turintech.components.mapper.api.MapperInterface;
-import ai.turintech.modelcatalog.exceptions.FindOneException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -71,10 +70,10 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
         .collect(Collectors.toCollection(LinkedList::new));
   }
 
-  public DTO findById() throws FindOneException {
+  public DTO findById() throws Exception {
     Optional<ENTITY> entity = repository.findById(id);
     if (!entity.isPresent()) {
-      throw new FindOneException(name + " with ID " + id + " not found.");
+      throw new Exception(name + " with ID " + id + " not found.");
     }
     return mapper.to(entity.get());
   }
@@ -95,7 +94,7 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
     return mapper.to(entity);
   }
 
-  public DTO partialUpdate() throws FindOneException {
+  public DTO partialUpdate() throws Exception {
     return repository
         .findById(id)
         .map(
@@ -105,7 +104,7 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
             })
         .map(repository::save)
         .map(mapper::to)
-        .orElseThrow(() -> new FindOneException(name + " with ID " + id + " not found."));
+        .orElseThrow(() -> new Exception(name + " with ID " + id + " not found."));
   }
 
   public void delete() {
@@ -113,7 +112,7 @@ public class GenericModelCallable<T, DTO, ENTITY> implements Callable<T> {
   }
 
   @Override
-  public T call() throws FindOneException {
+  public T call() throws Exception {
     switch (name.toLowerCase()) {
       case "create":
         return (T) create();

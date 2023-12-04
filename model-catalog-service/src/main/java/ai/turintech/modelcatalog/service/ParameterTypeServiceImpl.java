@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ParameterType}. */
 @Service
 @Transactional
-public class ParameterTypeService {
+public class ParameterTypeServiceImpl implements ParameterTypeService {
 
-  private final Logger log = LoggerFactory.getLogger(ParameterTypeService.class);
+  private final Logger log = LoggerFactory.getLogger(ParameterTypeServiceImpl.class);
 
   @Autowired private ApplicationContext context;
 

@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link CategoricalParameter}. */
 @Service
 @Transactional
-public class CategoricalParameterService {
+public class CategoricalParameterServiceImpl implements CategoricalParameterService {
 
-  private final Logger log = LoggerFactory.getLogger(CategoricalParameterService.class);
+  private final Logger log = LoggerFactory.getLogger(CategoricalParameterServiceImpl.class);
 
   @Autowired private ApplicationContext context;
 

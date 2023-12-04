@@ -5,8 +5,8 @@ import ai.turintech.components.jpa.search.facade.SearchFacade;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.entity.Model;
-import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.service.ModelService;
+import ai.turintech.modelcatalog.service.ModelServiceImpl;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +19,12 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link Model}. */
 @Service
 @Transactional
-public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelService>
+public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelServiceImpl>
     implements SearchFacade<ModelDTO>, ModelFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelFacadeImpl.class);
 
-  @Autowired
-  private ModelService modelService;
+  @Autowired private ModelService modelService;
 
   /**
    * Save a model.
@@ -80,7 +79,7 @@ public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelService
    * @return the entity.
    */
   @Transactional(readOnly = true)
-  public Mono<ModelDTO> findOne(UUID id) throws FindOneException {
+  public Mono<ModelDTO> findOne(UUID id) throws Exception {
     log.debug("Request to get Model : {}", id);
     return modelService.findOne(id);
   }

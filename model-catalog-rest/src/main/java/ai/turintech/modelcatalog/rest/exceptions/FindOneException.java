@@ -1,4 +1,4 @@
-package ai.turintech.modelcatalog.exceptions;
+package ai.turintech.modelcatalog.rest.exceptions;
 
 /**
  * Exception in order to represent a problem in db when we populate the tables of the db.

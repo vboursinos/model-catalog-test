@@ -60,6 +60,10 @@
             <groupId>ai.turintech.model-catalog</groupId>
             <artifactId>model-catalog-dto-entity-mapper</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ai.turintech.model-catalog</groupId>
+            <artifactId>model-catalog-api</artifactId>
+        </dependency>
 
         <!-- Components -->
         <dependency>

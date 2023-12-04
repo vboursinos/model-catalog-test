@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link BooleanParameter}. */
 @Service
 @Transactional
-public class BooleanParameterService {
+public class BooleanParameterServiceImpl implements BooleanParameterService {
 
-  private final Logger log = LoggerFactory.getLogger(BooleanParameterService.class);
+  private final Logger log = LoggerFactory.getLogger(BooleanParameterServiceImpl.class);
 
   @Autowired private ApplicationContext context;
   @Autowired private Scheduler jdbcScheduler;

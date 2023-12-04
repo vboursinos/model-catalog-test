@@ -19,8 +19,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
 
   private final Logger log = LoggerFactory.getLogger(CategoricalParameterValueFacadeImpl.class);
 
-  @Autowired
-  private CategoricalParameterValueService categoricalParameterValueService;
+  @Autowired private CategoricalParameterValueService categoricalParameterValueService;
 
   /**
    * Save a categoricalParameterValue.

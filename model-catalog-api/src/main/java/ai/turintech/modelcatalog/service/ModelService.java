@@ -1,12 +1,13 @@
-package ai.turintech.modelcatalog.facade;
+package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Mono;
 
-public interface ModelFacade {
+public interface ModelService {
 
   /**
    * Save a model.
@@ -41,6 +42,13 @@ public interface ModelFacade {
   public Mono<ModelPaginatedListDTO> findAll(Pageable pageable);
 
   /**
+   * Get all the models with eager load of many-to-many relationships.
+   *
+   * @return the list of entities.
+   */
+  public Page<ModelDTO> findAllWithEagerRelationships(Pageable pageable);
+
+  /**
    * Get one model by id.
    *
    * @param id the id of the entity.
@@ -52,15 +60,8 @@ public interface ModelFacade {
    * Delete the model by id.
    *
    * @param id the id of the entity.
-   * @return a Mono to signal the deletion
    */
   public Mono<Void> delete(UUID id);
 
-  /**
-   * Returns whether or not a Model exists with provided id.
-   *
-   * @param id
-   * @return a Mono to signal the existence of the Model
-   */
   public Mono<Boolean> existsById(UUID id);
 }

@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link FloatParameter}. */
 @Service
 @Transactional
-public class FloatParameterService {
+public class FloatParameterServiceImpl implements FloatParameterService {
 
-  private final Logger log = LoggerFactory.getLogger(FloatParameterService.class);
+  private final Logger log = LoggerFactory.getLogger(FloatParameterServiceImpl.class);
 
   @Autowired private ApplicationContext context;
   @Autowired private Scheduler jdbcScheduler;

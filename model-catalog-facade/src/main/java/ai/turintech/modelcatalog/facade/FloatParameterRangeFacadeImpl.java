@@ -19,8 +19,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
 
   private final Logger log = LoggerFactory.getLogger(FloatParameterRangeFacadeImpl.class);
 
-  @Autowired
-  private FloatParameterRangeService floatParameterRangeService;
+  @Autowired private FloatParameterRangeService floatParameterRangeService;
 
   /**
    * Save a floatParameterRange.

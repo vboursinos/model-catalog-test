@@ -9,7 +9,6 @@ import ai.turintech.modelcatalog.dto.ModelPaginatedListDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
 import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.entity.ModelLimited;
-import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.repository.ModelRepository;
 import java.util.List;
 import java.util.UUID;
@@ -28,16 +27,16 @@ import reactor.core.scheduler.Scheduler;
 /** Service Implementation for managing {@link Model}. */
 @Service
 @Transactional
-public class ModelService extends AbstractSearchService<ModelLimited, ModelDTO>
-    implements SearchService<ModelDTO> {
-  private Logger log = LoggerFactory.getLogger(ModelService.class);
+public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelDTO>
+    implements SearchService<ModelDTO>, ModelService {
+  private Logger log = LoggerFactory.getLogger(ModelServiceImpl.class);
 
   @Autowired private ApplicationContext context;
   @Autowired private Scheduler jdbcScheduler;
   @Autowired private ModelRepository modelRepository;
   @Autowired private ModelMapper modelMapper;
 
-  public ModelService() {
+  public ModelServiceImpl() {
     super(ModelLimited.class, ModelDTO.class);
   }
 
@@ -122,7 +121,7 @@ public class ModelService extends AbstractSearchService<ModelLimited, ModelDTO>
    * @return the entity.
    */
   @Transactional(readOnly = true)
-  public Mono<ModelDTO> findOne(UUID id) throws FindOneException {
+  public Mono<ModelDTO> findOne(UUID id) throws Exception {
     log.debug("Request to get Model : {}", id);
     GenericModelCallable<ModelDTO, ModelDTO, Model> callable =
         context.getBean(GenericModelCallable.class, "findById", id, modelRepository, modelMapper);

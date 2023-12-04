@@ -19,8 +19,7 @@ public class MetricFacadeImpl implements MetricFacade {
 
   private final Logger log = LoggerFactory.getLogger(MetricFacadeImpl.class);
 
-  @Autowired
-  private MetricService metricService;
+  @Autowired private MetricService metricService;
 
   /**
    * Save a metric.

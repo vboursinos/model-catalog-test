@@ -5,7 +5,7 @@ import ai.turintech.modelcatalog.facade.ParameterFacade;
 import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
-import ai.turintech.modelcatalog.service.ParameterService;
+import ai.turintech.modelcatalog.service.ParameterServiceImpl;
 import ai.turintech.modelcatalog.to.ParameterTO;
 import ai.turintech.modelcatalog.todtomapper.ParameterMapper;
 import jakarta.validation.Valid;
@@ -41,7 +41,7 @@ public class ParameterResource {
   @Value("${spring.application.name}")
   private String applicationName;
 
-  @Autowired private ParameterService parameterService;
+  @Autowired private ParameterServiceImpl parameterService;
 
   @Autowired private ParameterFacade parameterFacade;
 

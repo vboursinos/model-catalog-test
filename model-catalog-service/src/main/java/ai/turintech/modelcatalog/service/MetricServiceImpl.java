@@ -21,9 +21,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link Metric}. */
 @Service
 @Transactional
-public class MetricService {
+public class MetricServiceImpl implements MetricService {
 
-  private final Logger log = LoggerFactory.getLogger(MetricService.class);
+  private final Logger log = LoggerFactory.getLogger(MetricServiceImpl.class);
 
   @Autowired private ApplicationContext context;
 

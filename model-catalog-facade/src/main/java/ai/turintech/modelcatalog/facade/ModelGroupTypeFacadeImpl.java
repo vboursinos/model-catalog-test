@@ -19,8 +19,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelGroupTypeFacadeImpl.class);
 
-  @Autowired
-  private ModelGroupTypeService modelGroupTypeService;
+  @Autowired private ModelGroupTypeService modelGroupTypeService;
 
   /**
    * Save a modelGroupType.

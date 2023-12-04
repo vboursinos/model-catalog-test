@@ -19,8 +19,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
 
   private final Logger log = LoggerFactory.getLogger(BooleanParameterFacadeImpl.class);
 
-  @Autowired
-  private BooleanParameterService booleanParameterService;
+  @Autowired private BooleanParameterService booleanParameterService;
 
   /**
    * Save a booleanParameter.
