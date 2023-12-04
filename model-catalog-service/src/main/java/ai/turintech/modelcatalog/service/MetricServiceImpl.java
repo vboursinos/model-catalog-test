@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.GenericModelCallable;
+import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.MetricDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.MetricMapper;
 import ai.turintech.modelcatalog.entity.Metric;
@@ -41,9 +41,9 @@ public class MetricServiceImpl implements MetricService {
   @Transactional
   public Mono<MetricDTO> save(MetricDTO metricDTO) {
     log.debug("Request to save Metric : {}", metricDTO);
-    GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
+    GenericModelCallableImpl<MetricDTO, MetricDTO, Metric> callable =
         context.getBean(
-            GenericModelCallable.class, "create", metricDTO, metricRepository, metricMapper);
+            GenericModelCallableImpl.class, "create", metricDTO, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -56,9 +56,9 @@ public class MetricServiceImpl implements MetricService {
   @Transactional
   public Mono<MetricDTO> update(MetricDTO metricDTO) {
     log.debug("Request to update Metric : {}", metricDTO);
-    GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
+    GenericModelCallableImpl<MetricDTO, MetricDTO, Metric> callable =
         context.getBean(
-            GenericModelCallable.class, "update", metricDTO, metricRepository, metricMapper);
+            GenericModelCallableImpl.class, "update", metricDTO, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -71,9 +71,9 @@ public class MetricServiceImpl implements MetricService {
   @Transactional
   public Mono<MetricDTO> partialUpdate(MetricDTO metricDTO) {
     log.debug("Request to partially update Metric : {}", metricDTO);
-    GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
+    GenericModelCallableImpl<MetricDTO, MetricDTO, Metric> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "partialUpdate",
             metricDTO.getId(),
             metricDTO,
@@ -90,8 +90,8 @@ public class MetricServiceImpl implements MetricService {
   @Transactional(readOnly = true)
   public Mono<List<MetricDTO>> findAll() {
     log.debug("Request to get all Metrics");
-    GenericModelCallable<List<MetricDTO>, MetricDTO, Metric> callable =
-        context.getBean(GenericModelCallable.class, "findAll", metricRepository, metricMapper);
+    GenericModelCallableImpl<List<MetricDTO>, MetricDTO, Metric> callable =
+        context.getBean(GenericModelCallableImpl.class, "findAll", metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -113,8 +113,9 @@ public class MetricServiceImpl implements MetricService {
   @Transactional(readOnly = true)
   public Mono<MetricDTO> findOne(UUID id) {
     log.debug("Request to get Metric : {}", id);
-    GenericModelCallable<MetricDTO, MetricDTO, Metric> callable =
-        context.getBean(GenericModelCallable.class, "findById", id, metricRepository, metricMapper);
+    GenericModelCallableImpl<MetricDTO, MetricDTO, Metric> callable =
+        context.getBean(
+            GenericModelCallableImpl.class, "findById", id, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -126,17 +127,18 @@ public class MetricServiceImpl implements MetricService {
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete Metric : {}", id);
-    GenericModelCallable<Void, MetricDTO, Metric> callable =
-        context.getBean(GenericModelCallable.class, "delete", id, metricRepository, metricMapper);
+    GenericModelCallableImpl<Void, MetricDTO, Metric> callable =
+        context.getBean(
+            GenericModelCallableImpl.class, "delete", id, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, MetricDTO, Metric> callable =
+    GenericModelCallableImpl<Boolean, MetricDTO, Metric> callable =
         context.getBean(
-            GenericModelCallable.class, "existsById", id, metricRepository, metricMapper);
+            GenericModelCallableImpl.class, "existsById", id, metricRepository, metricMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

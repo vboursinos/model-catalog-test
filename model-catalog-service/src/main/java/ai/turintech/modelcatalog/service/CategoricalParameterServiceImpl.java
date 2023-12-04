@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.callable.GenericModelCallable;
+import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.CategoricalParameterMapper;
 import ai.turintech.modelcatalog.entity.CategoricalParameter;
@@ -41,10 +41,10 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<CategoricalParameterDTO> save(CategoricalParameterDTO categoricalParameterDTO) {
     log.debug("Request to save CategoricalParameter : {}", categoricalParameterDTO);
-    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
-                GenericModelCallable.class,
+                GenericModelCallableImpl.class,
                 "create",
                 categoricalParameterDTO,
                 categoricalParameterRepository,
@@ -61,10 +61,10 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<CategoricalParameterDTO> update(CategoricalParameterDTO categoricalParameterDTO) {
     log.debug("Request to update CategoricalParameter : {}", categoricalParameterDTO);
-    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
-                GenericModelCallable.class,
+                GenericModelCallableImpl.class,
                 "update",
                 categoricalParameterDTO,
                 categoricalParameterRepository,
@@ -82,10 +82,10 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   public Mono<CategoricalParameterDTO> partialUpdate(
       CategoricalParameterDTO categoricalParameterDTO) {
     log.debug("Request to partially update CategoricalParameter : {}", categoricalParameterDTO);
-    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
-                GenericModelCallable.class,
+                GenericModelCallableImpl.class,
                 "partialUpdate",
                 categoricalParameterDTO.getParameterTypeDefinitionId(),
                 categoricalParameterDTO,
@@ -102,11 +102,11 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional(readOnly = true)
   public Mono<List<CategoricalParameterDTO>> findAll() {
     log.debug("Request to get all CategoricalParameters");
-    GenericModelCallable<
+    GenericModelCallableImpl<
             List<CategoricalParameterDTO>, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
-                GenericModelCallable.class,
+                GenericModelCallableImpl.class,
                 "findAll",
                 categoricalParameterRepository,
                 categoricalParameterMapper);
@@ -133,10 +133,10 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional(readOnly = true)
   public Mono<CategoricalParameterDTO> findOne(UUID id) {
     log.debug("Request to get CategoricalParameter : {}", id);
-    GenericModelCallable<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
+    GenericModelCallableImpl<CategoricalParameterDTO, CategoricalParameterDTO, CategoricalParameter>
         callable =
             context.getBean(
-                GenericModelCallable.class,
+                GenericModelCallableImpl.class,
                 "findById",
                 id,
                 categoricalParameterRepository,
@@ -152,9 +152,9 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete CategoricalParameter : {}", id);
-    GenericModelCallable<Void, CategoricalParameterDTO, CategoricalParameter> callable =
+    GenericModelCallableImpl<Void, CategoricalParameterDTO, CategoricalParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "delete",
             id,
             categoricalParameterRepository,
@@ -165,9 +165,9 @@ public class CategoricalParameterServiceImpl implements CategoricalParameterServ
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, CategoricalParameterDTO, CategoricalParameter> callable =
+    GenericModelCallableImpl<Boolean, CategoricalParameterDTO, CategoricalParameter> callable =
         context.getBean(
-            GenericModelCallable.class,
+            GenericModelCallableImpl.class,
             "existsById",
             id,
             categoricalParameterRepository,
