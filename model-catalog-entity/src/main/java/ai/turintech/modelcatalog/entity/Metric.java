@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
+import ai.turintech.components.data.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "metric")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Metric implements Serializable {
+public class Metric extends AbstractEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
