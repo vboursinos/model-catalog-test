@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
@@ -25,7 +26,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ParameterTypeDefinition}. */
 @Service
 @Transactional
-public class ParameterTypeDefinitionServiceImpl implements ParameterTypeDefinitionService {
+public class ParameterTypeDefinitionServiceImpl extends ReactiveAbstractCrudServiceImpl<ParameterTypeDefinitionDTO,ParameterTypeDefinition,UUID> implements ParameterTypeDefinitionService {
 
   private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionServiceImpl.class);
 

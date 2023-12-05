@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
@@ -22,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ModelGroupType}. */
 @Service
 @Transactional
-public class ModelGroupTypeServiceImpl implements ModelGroupTypeService {
+public class ModelGroupTypeServiceImpl extends ReactiveAbstractCrudServiceImpl<ModelGroupTypeDTO,ModelGroupType,UUID> implements ModelGroupTypeService {
 
   private final Logger log = LoggerFactory.getLogger(ModelGroupTypeServiceImpl.class);
 

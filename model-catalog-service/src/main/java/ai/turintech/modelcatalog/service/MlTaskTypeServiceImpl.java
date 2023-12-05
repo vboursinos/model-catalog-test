@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
@@ -22,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link MlTaskType}. */
 @Service
 @Transactional
-public class MlTaskTypeServiceImpl implements MlTaskTypeService {
+public class MlTaskTypeServiceImpl extends ReactiveAbstractCrudServiceImpl<MlTaskTypeDTO,MlTaskType,UUID> implements MlTaskTypeService {
 
   private final Logger log = LoggerFactory.getLogger(MlTaskTypeServiceImpl.class);
 

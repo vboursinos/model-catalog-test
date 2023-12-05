@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
@@ -22,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link IntegerParameter}. */
 @Service
 @Transactional
-public class IntegerParameterServiceImpl implements IntegerParameterService {
+public class IntegerParameterServiceImpl extends ReactiveAbstractCrudServiceImpl<IntegerParameterDTO,IntegerParameter,UUID> implements IntegerParameterService {
 
   private final Logger log = LoggerFactory.getLogger(IntegerParameterServiceImpl.class);
 

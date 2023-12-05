@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
@@ -22,7 +24,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link BooleanParameter}. */
 @Service
 @Transactional
-public class BooleanParameterServiceImpl implements BooleanParameterService {
+public class BooleanParameterServiceImpl extends ReactiveAbstractCrudServiceImpl<BooleanParameterDTO,BooleanParameter,UUID> implements BooleanParameterService {
 
   private final Logger log = LoggerFactory.getLogger(BooleanParameterServiceImpl.class);
 

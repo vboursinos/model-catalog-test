@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.MetricDTO;
@@ -22,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link Metric}. */
 @Service
 @Transactional
-public class MetricServiceImpl implements MetricService {
+public class MetricServiceImpl extends ReactiveAbstractCrudServiceImpl<MetricDTO,Metric,UUID> implements MetricService {
 
   private final Logger log = LoggerFactory.getLogger(MetricServiceImpl.class);
 

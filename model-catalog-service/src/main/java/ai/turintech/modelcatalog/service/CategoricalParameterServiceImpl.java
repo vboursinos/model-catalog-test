@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
@@ -22,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link CategoricalParameter}. */
 @Service
 @Transactional
-public class CategoricalParameterServiceImpl implements CategoricalParameterService {
+public class CategoricalParameterServiceImpl extends ReactiveAbstractCrudServiceImpl<CategoricalParameterDTO,CategoricalParameter,UUID> implements CategoricalParameterService {
 
   private final Logger log = LoggerFactory.getLogger(CategoricalParameterServiceImpl.class);
 

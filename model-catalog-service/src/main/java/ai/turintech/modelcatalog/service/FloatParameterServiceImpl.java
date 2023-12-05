@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
@@ -22,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link FloatParameter}. */
 @Service
 @Transactional
-public class FloatParameterServiceImpl implements FloatParameterService {
+public class FloatParameterServiceImpl extends ReactiveAbstractCrudServiceImpl<FloatParameterDTO,FloatParameter,UUID> implements FloatParameterService {
 
   private final Logger log = LoggerFactory.getLogger(FloatParameterServiceImpl.class);
 
