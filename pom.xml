@@ -217,6 +217,11 @@
 				<artifactId>architecture-api</artifactId>
 				<version>${architecture.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>architecture-facade</artifactId>
+				<version>${architecture.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

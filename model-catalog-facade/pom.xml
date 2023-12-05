@@ -48,6 +48,12 @@
 			<groupId>ai.turintech.model-catalog</groupId>
 			<artifactId>model-catalog-api</artifactId>
 		</dependency>
+
+		<!-- java components dependencies -->
+		<dependency>
+			<groupId>ai.turintech.components</groupId>
+			<artifactId>architecture-facade</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
