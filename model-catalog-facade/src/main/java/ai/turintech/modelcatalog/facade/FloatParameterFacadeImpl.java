@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
 import ai.turintech.modelcatalog.entity.FloatParameter;
 import ai.turintech.modelcatalog.service.FloatParameterService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link FloatParameter}. */
 @Service
 @Transactional
-public class FloatParameterFacadeImpl implements FloatParameterFacade {
+public class FloatParameterFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<FloatParameterDTO, FloatParameter, UUID>
+    implements FloatParameterFacade {
 
   private final Logger log = LoggerFactory.getLogger(FloatParameterFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class FloatParameterFacadeImpl implements FloatParameterFacade {
    * @param floatParameterDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<FloatParameterDTO> save(FloatParameterDTO floatParameterDTO) {
     log.debug("Request to save FloatParameter : {}", floatParameterDTO);
     return floatParameterService.save(floatParameterDTO);
@@ -38,6 +42,7 @@ public class FloatParameterFacadeImpl implements FloatParameterFacade {
    * @param floatParameterDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<FloatParameterDTO> update(FloatParameterDTO floatParameterDTO) {
     log.debug("Request to update FloatParameter : {}", floatParameterDTO);
     return floatParameterService.save(floatParameterDTO);
@@ -49,6 +54,7 @@ public class FloatParameterFacadeImpl implements FloatParameterFacade {
    * @param floatParameterDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<FloatParameterDTO> partialUpdate(FloatParameterDTO floatParameterDTO) {
     log.debug("Request to partially update FloatParameter : {}", floatParameterDTO);
 
@@ -60,6 +66,7 @@ public class FloatParameterFacadeImpl implements FloatParameterFacade {
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<FloatParameterDTO> findAll() {
     log.debug("Request to get all FloatParameters");
@@ -72,6 +79,7 @@ public class FloatParameterFacadeImpl implements FloatParameterFacade {
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<FloatParameterDTO> findOne(UUID id) {
     log.debug("Request to get FloatParameter : {}", id);
@@ -84,6 +92,7 @@ public class FloatParameterFacadeImpl implements FloatParameterFacade {
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete FloatParameter : {}", id);
     return floatParameterService.delete(id);
@@ -95,6 +104,7 @@ public class FloatParameterFacadeImpl implements FloatParameterFacade {
    * @param id
    * @return a Mono to signal the existence of the FloatParameter
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete FloatParameter : {}", id);
     return this.floatParameterService.existsById(id);

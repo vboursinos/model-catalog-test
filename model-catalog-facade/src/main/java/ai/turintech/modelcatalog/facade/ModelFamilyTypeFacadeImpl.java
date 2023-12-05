@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelFamilyType;
 import ai.turintech.modelcatalog.service.ModelFamilyTypeService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ModelFamilyType}. */
 @Service
 @Transactional
-public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
+public class ModelFamilyTypeFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<ModelFamilyTypeDTO, ModelFamilyType, UUID>
+    implements ModelFamilyTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelFamilyTypeFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
    * @param modelFamilyTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelFamilyTypeDTO> save(ModelFamilyTypeDTO modelFamilyTypeDTO) {
     log.debug("Request to save ModelFamilyType : {}", modelFamilyTypeDTO);
     return modelFamilyTypeService.save(modelFamilyTypeDTO);
@@ -38,6 +42,7 @@ public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
    * @param modelFamilyTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelFamilyTypeDTO> update(ModelFamilyTypeDTO modelFamilyTypeDTO) {
     log.debug("Request to update ModelFamilyType : {}", modelFamilyTypeDTO);
     return modelFamilyTypeService.update(modelFamilyTypeDTO);
@@ -49,6 +54,7 @@ public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
    * @param modelFamilyTypeDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelFamilyTypeDTO> partialUpdate(ModelFamilyTypeDTO modelFamilyTypeDTO) {
     log.debug("Request to partially update ModelFamilyType : {}", modelFamilyTypeDTO);
     return modelFamilyTypeService.partialUpdate(modelFamilyTypeDTO);
@@ -59,6 +65,7 @@ public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<ModelFamilyTypeDTO> findAll() {
     log.debug("Request to get all ModelFamilyTypes");
@@ -71,6 +78,7 @@ public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<ModelFamilyTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelFamilyType : {}", id);
@@ -83,6 +91,7 @@ public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelFamilyType : {}", id);
     return modelFamilyTypeService.delete(id);
@@ -94,6 +103,7 @@ public class ModelFamilyTypeFacadeImpl implements ModelFamilyTypeFacade {
    * @param id
    * @return a Mono to signal the existence of the ModelFamilyType
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete ModelFamilyType : {}", id);
     return this.modelFamilyTypeService.existsById(id);

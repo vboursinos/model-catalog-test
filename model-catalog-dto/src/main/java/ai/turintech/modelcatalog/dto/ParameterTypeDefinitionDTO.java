@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.dto;
 import ai.turintech.components.data.common.dto.AbstractDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 

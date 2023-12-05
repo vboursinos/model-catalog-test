@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ModelStructureTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelStructureType;
 import ai.turintech.modelcatalog.service.ModelStructureTypeService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ModelStructureType}. */
 @Service
 @Transactional
-public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
+public class ModelStructureTypeFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<ModelStructureTypeDTO, ModelStructureType, UUID>
+    implements ModelStructureTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelStructureTypeFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
    * @param modelStructureTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelStructureTypeDTO> save(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to save ModelStructureType : {}", modelStructureTypeDTO);
     return modelStructureTypeService.save(modelStructureTypeDTO);
@@ -38,6 +42,7 @@ public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
    * @param modelStructureTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelStructureTypeDTO> update(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to update ModelStructureType : {}", modelStructureTypeDTO);
     return modelStructureTypeService.update(modelStructureTypeDTO);
@@ -49,6 +54,7 @@ public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
    * @param modelStructureTypeDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelStructureTypeDTO> partialUpdate(ModelStructureTypeDTO modelStructureTypeDTO) {
     log.debug("Request to partially update ModelStructureType : {}", modelStructureTypeDTO);
 
@@ -60,6 +66,7 @@ public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<ModelStructureTypeDTO> findAll() {
     log.debug("Request to get all ModelStructureTypes");
@@ -72,6 +79,7 @@ public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<ModelStructureTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelStructureType : {}", id);
@@ -84,6 +92,7 @@ public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelStructureType : {}", id);
     return modelStructureTypeService.delete(id);
@@ -95,6 +104,7 @@ public class ModelStructureTypeFacadeImpl implements ModelStructureTypeFacade {
    * @param id
    * @return a Mono to signal the existence of the ModelStructureType
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete ModelGroupType : {}", id);
     return this.modelStructureTypeService.existsById(id);

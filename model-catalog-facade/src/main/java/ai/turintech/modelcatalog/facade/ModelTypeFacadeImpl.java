@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelType;
 import ai.turintech.modelcatalog.service.ModelTypeService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ModelType}. */
 @Service
 @Transactional
-public class ModelTypeFacadeImpl implements ModelTypeFacade {
+public class ModelTypeFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<ModelTypeDTO, ModelType, UUID>
+    implements ModelTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelTypeFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
    * @param modelTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelTypeDTO> save(ModelTypeDTO modelTypeDTO) {
     log.debug("Request to save ModelType : {}", modelTypeDTO);
     return modelTypeService.save(modelTypeDTO);
@@ -38,6 +42,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
    * @param modelTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelTypeDTO> update(ModelTypeDTO modelTypeDTO) {
     log.debug("Request to update ModelType : {}", modelTypeDTO);
     return modelTypeService.update(modelTypeDTO);
@@ -49,6 +54,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
    * @param modelTypeDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelTypeDTO> partialUpdate(ModelTypeDTO modelTypeDTO) {
     log.debug("Request to partially update ModelType : {}", modelTypeDTO);
 
@@ -60,6 +66,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<ModelTypeDTO> findAll() {
     log.debug("Request to get all ModelTypes");
@@ -72,6 +79,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<ModelTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelType : {}", id);
@@ -84,6 +92,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelType : {}", id);
     return modelTypeService.delete(id);
@@ -95,6 +104,7 @@ public class ModelTypeFacadeImpl implements ModelTypeFacade {
    * @param id
    * @return a Mono to signal the existence of the ModelType
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete ModelGroupType : {}", id);
     return this.modelTypeService.existsById(id);

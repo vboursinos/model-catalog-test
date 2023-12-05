@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import ai.turintech.modelcatalog.service.FloatParameterRangeService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link FloatParameterRange} */
 @Service
 @Transactional
-public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade {
+public class FloatParameterRangeFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<FloatParameterRangeDTO, FloatParameterRange, UUID>
+    implements FloatParameterRangeFacade {
 
   private final Logger log = LoggerFactory.getLogger(FloatParameterRangeFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
    * @param floatParameterRangeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<FloatParameterRangeDTO> save(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to save FloatParameterRange : {}", floatParameterRangeDTO);
     return floatParameterRangeService.save(floatParameterRangeDTO);
@@ -38,6 +42,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
    * @param floatParameterRangeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<FloatParameterRangeDTO> update(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to update FloatParameterRange : {}", floatParameterRangeDTO);
     return floatParameterRangeService.save(floatParameterRangeDTO);
@@ -49,6 +54,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
    * @param floatParameterRangeDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<FloatParameterRangeDTO> partialUpdate(FloatParameterRangeDTO floatParameterRangeDTO) {
     log.debug("Request to partially update FloatParameterRange : {}", floatParameterRangeDTO);
 
@@ -60,6 +66,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<FloatParameterRangeDTO> findAll() {
     log.debug("Request to get all FloatParameterRanges");
@@ -72,6 +79,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<FloatParameterRangeDTO> findOne(UUID id) {
     log.debug("Request to get FloatParameterRange : {}", id);
@@ -84,6 +92,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete FloatParameterRange : {}", id);
     return floatParameterRangeService.delete(id);
@@ -95,6 +104,7 @@ public class FloatParameterRangeFacadeImpl implements FloatParameterRangeFacade 
    * @param id
    * @return a Mono to signal the existence of the FloatParameterRange
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete FloatParameterRange : {}", id);
     return this.floatParameterRangeService.existsById(id);

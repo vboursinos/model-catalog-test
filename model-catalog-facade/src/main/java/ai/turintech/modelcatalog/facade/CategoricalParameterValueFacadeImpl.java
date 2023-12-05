@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.entity.CategoricalParameterValue;
 import ai.turintech.modelcatalog.service.CategoricalParameterValueService;
@@ -15,7 +16,10 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link CategoricalParameterValue}. */
 @Service
 @Transactional
-public class CategoricalParameterValueFacadeImpl implements CategoricalParameterValueFacade {
+public class CategoricalParameterValueFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<
+        CategoricalParameterValueDTO, CategoricalParameterValue, UUID>
+    implements CategoricalParameterValueFacade {
 
   private final Logger log = LoggerFactory.getLogger(CategoricalParameterValueFacadeImpl.class);
 
@@ -27,6 +31,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
    * @param categoricalParameterValueDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<CategoricalParameterValueDTO> save(
       CategoricalParameterValueDTO categoricalParameterValueDTO) {
     log.debug("Request to save CategoricalParameterValue : {}", categoricalParameterValueDTO);
@@ -39,6 +44,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
    * @param categoricalParameterValueDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<CategoricalParameterValueDTO> update(
       CategoricalParameterValueDTO categoricalParameterValueDTO) {
     log.debug("Request to update CategoricalParameterValue : {}", categoricalParameterValueDTO);
@@ -51,6 +57,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
    * @param categoricalParameterValueDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<CategoricalParameterValueDTO> partialUpdate(
       CategoricalParameterValueDTO categoricalParameterValueDTO) {
     log.debug(
@@ -64,6 +71,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<CategoricalParameterValueDTO> findAll() {
     log.debug("Request to get all CategoricalParameterValues");
@@ -76,6 +84,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<CategoricalParameterValueDTO> findOne(UUID id) {
     log.debug("Request to get CategoricalParameterValue : {}", id);
@@ -88,6 +97,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete CategoricalParameterValue : {}", id);
     return categoricalParameterValueService.delete(id);
@@ -99,6 +109,7 @@ public class CategoricalParameterValueFacadeImpl implements CategoricalParameter
    * @param id
    * @return a Mono to signal the existence of the categoricalParameterValue
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete CategoricalParameterValue : {}", id);
     return this.categoricalParameterValueService.existsById(id);

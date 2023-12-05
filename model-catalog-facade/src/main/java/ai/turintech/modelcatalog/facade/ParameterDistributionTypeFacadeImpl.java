@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import ai.turintech.modelcatalog.service.ParameterDistributionTypeService;
@@ -15,7 +16,10 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ParameterDistributionType}. */
 @Service
 @Transactional
-public class ParameterDistributionTypeFacadeImpl implements ParameterDistributionTypeFacade {
+public class ParameterDistributionTypeFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<
+        ParameterDistributionTypeDTO, ParameterDistributionType, UUID>
+    implements ParameterDistributionTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ParameterDistributionTypeFacadeImpl.class);
 
@@ -27,6 +31,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
    * @param parameterDistributionTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ParameterDistributionTypeDTO> save(
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug("Request to save ParameterDistributionType : {}", parameterDistributionTypeDTO);
@@ -39,6 +44,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
    * @param parameterDistributionTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ParameterDistributionTypeDTO> update(
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug("Request to update ParameterDistributionType : {}", parameterDistributionTypeDTO);
@@ -51,6 +57,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
    * @param parameterDistributionTypeDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ParameterDistributionTypeDTO> partialUpdate(
       ParameterDistributionTypeDTO parameterDistributionTypeDTO) {
     log.debug(
@@ -64,6 +71,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<ParameterDistributionTypeDTO> findAll() {
     log.debug("Request to get all ParameterDistributionTypes");
@@ -76,6 +84,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<ParameterDistributionTypeDTO> findOne(UUID id) {
     log.debug("Request to get ParameterDistributionType : {}", id);
@@ -88,6 +97,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ParameterDistributionType : {}", id);
     return parameterDistributionTypeService.delete(id);
@@ -99,6 +109,7 @@ public class ParameterDistributionTypeFacadeImpl implements ParameterDistributio
    * @param id
    * @return a Mono to signal the existence of the ParameterDistributionType
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete ModelGroupType : {}", id);
     return this.parameterDistributionTypeService.existsById(id);

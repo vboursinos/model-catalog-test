@@ -1,8 +1,6 @@
 package ai.turintech.modelcatalog.dto;
 
 import ai.turintech.components.data.common.dto.AbstractDTO;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

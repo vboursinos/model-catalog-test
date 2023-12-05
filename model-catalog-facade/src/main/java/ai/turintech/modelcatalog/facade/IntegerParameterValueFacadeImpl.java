@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.IntegerParameterValue;
 import ai.turintech.modelcatalog.service.IntegerParameterValueService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link IntegerParameterValue}. */
 @Service
 @Transactional
-public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFacade {
+public class IntegerParameterValueFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<IntegerParameterValueDTO, IntegerParameterValue, UUID>
+    implements IntegerParameterValueFacade {
 
   private final Logger log = LoggerFactory.getLogger(IntegerParameterValueFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFac
    * @param integerParameterValueDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<IntegerParameterValueDTO> save(IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to save IntegerParameterValue : {}", integerParameterValueDTO);
     return integerParameterValueService.save(integerParameterValueDTO);
@@ -38,6 +42,7 @@ public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFac
    * @param integerParameterValueDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<IntegerParameterValueDTO> update(IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to update IntegerParameterValue : {}", integerParameterValueDTO);
     return integerParameterValueService.update(integerParameterValueDTO);
@@ -49,6 +54,7 @@ public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFac
    * @param integerParameterValueDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<IntegerParameterValueDTO> partialUpdate(
       IntegerParameterValueDTO integerParameterValueDTO) {
     log.debug("Request to partially update IntegerParameterValue : {}", integerParameterValueDTO);
@@ -61,6 +67,7 @@ public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFac
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<IntegerParameterValueDTO> findAll() {
     log.debug("Request to get all IntegerParameterValues");
@@ -73,6 +80,7 @@ public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFac
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<IntegerParameterValueDTO> findOne(UUID id) {
     log.debug("Request to get IntegerParameterValue : {}", id);
@@ -85,6 +93,7 @@ public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFac
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete IntegerParameterValue : {}", id);
     return integerParameterValueService.delete(id);
@@ -96,6 +105,7 @@ public class IntegerParameterValueFacadeImpl implements IntegerParameterValueFac
    * @param id
    * @return a Mono to signal the existence of the IntegerParameterValue
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete IntegerParameterValue : {}", id);
     return this.integerParameterValueService.existsById(id);

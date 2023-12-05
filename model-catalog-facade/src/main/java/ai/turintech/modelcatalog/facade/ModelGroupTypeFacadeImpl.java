@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelGroupType;
 import ai.turintech.modelcatalog.service.ModelGroupTypeService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ModelGroupType}. */
 @Service
 @Transactional
-public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
+public class ModelGroupTypeFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<ModelGroupTypeDTO, ModelGroupType, UUID>
+    implements ModelGroupTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelGroupTypeFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
    * @param modelGroupTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelGroupTypeDTO> save(ModelGroupTypeDTO modelGroupTypeDTO) {
     log.debug("Request to save ModelGroupType : {}", modelGroupTypeDTO);
     return modelGroupTypeService.save(modelGroupTypeDTO);
@@ -38,6 +42,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
    * @param modelGroupTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelGroupTypeDTO> update(ModelGroupTypeDTO modelGroupTypeDTO) {
     log.debug("Request to update ModelGroupType : {}", modelGroupTypeDTO);
     return modelGroupTypeService.update(modelGroupTypeDTO);
@@ -49,6 +54,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
    * @param modelGroupTypeDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelGroupTypeDTO> partialUpdate(ModelGroupTypeDTO modelGroupTypeDTO) {
     log.debug("Request to partially update ModelGroupType : {}", modelGroupTypeDTO);
 
@@ -60,6 +66,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<ModelGroupTypeDTO> findAll() {
     log.debug("Request to get all ModelGroupTypes");
@@ -72,6 +79,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<ModelGroupTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelGroupType : {}", id);
@@ -84,6 +92,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelGroupType : {}", id);
     return modelGroupTypeService.delete(id);
@@ -95,6 +104,7 @@ public class ModelGroupTypeFacadeImpl implements ModelGroupTypeFacade {
    * @param id
    * @return a Mono to signal the existence of the ModelGroupType
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete ModelGroupType : {}", id);
     return this.modelGroupTypeService.existsById(id);

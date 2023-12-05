@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import ai.turintech.modelcatalog.service.ParameterTypeDefinitionService;
@@ -15,7 +16,10 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ParameterTypeDefinition}. */
 @Service
 @Transactional
-public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitionFacade {
+public class ParameterTypeDefinitionFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<
+        ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
+    implements ParameterTypeDefinitionFacade {
 
   private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionFacadeImpl.class);
 
@@ -27,6 +31,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
    * @param parameterTypeDefinitionDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ParameterTypeDefinitionDTO> save(
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug("Request to save ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
@@ -39,6 +44,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
    * @param parameterTypeDefinitionDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ParameterTypeDefinitionDTO> update(
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug("Request to update ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
@@ -51,6 +57,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
    * @param parameterTypeDefinitionDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ParameterTypeDefinitionDTO> partialUpdate(
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug(
@@ -64,6 +71,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<ParameterTypeDefinitionDTO> findAll() {
     log.debug("Request to get all ParameterTypeDefinitions");
@@ -76,6 +84,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<ParameterTypeDefinitionDTO> findOne(UUID id) {
     log.debug("Request to get ParameterTypeDefinition : {}", id);
@@ -88,6 +97,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ParameterTypeDefinition : {}", id);
     return parameterTypeDefinitionService.delete(id);
@@ -99,6 +109,7 @@ public class ParameterTypeDefinitionFacadeImpl implements ParameterTypeDefinitio
    * @param id
    * @return a Mono to signal the existence of the ParameterTypeDefinition
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete ParameterTypeDefinition : {}", id);
     return this.parameterTypeDefinitionService.existsById(id);

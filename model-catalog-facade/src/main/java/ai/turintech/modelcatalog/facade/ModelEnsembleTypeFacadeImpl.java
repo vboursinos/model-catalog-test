@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelEnsembleType;
 import ai.turintech.modelcatalog.service.ModelEnsembleTypeService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link ModelEnsembleType}. */
 @Service
 @Transactional
-public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
+public class ModelEnsembleTypeFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<ModelEnsembleTypeDTO, ModelEnsembleType, UUID>
+    implements ModelEnsembleTypeFacade {
 
   private final Logger log = LoggerFactory.getLogger(ModelEnsembleTypeFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
    * @param modelEnsembleTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelEnsembleTypeDTO> save(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to save ModelEnsembleType : {}", modelEnsembleTypeDTO);
     return modelEnsembleTypeService.save(modelEnsembleTypeDTO);
@@ -38,6 +42,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
    * @param modelEnsembleTypeDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelEnsembleTypeDTO> update(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to update ModelEnsembleType : {}", modelEnsembleTypeDTO);
     return modelEnsembleTypeService.update(modelEnsembleTypeDTO);
@@ -49,6 +54,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
    * @param modelEnsembleTypeDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<ModelEnsembleTypeDTO> partialUpdate(ModelEnsembleTypeDTO modelEnsembleTypeDTO) {
     log.debug("Request to partially update ModelEnsembleType : {}", modelEnsembleTypeDTO);
     return modelEnsembleTypeService.partialUpdate(modelEnsembleTypeDTO);
@@ -59,6 +65,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<ModelEnsembleTypeDTO> findAll() {
     log.debug("Request to get all ModelEnsembleTypes");
@@ -71,6 +78,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<ModelEnsembleTypeDTO> findOne(UUID id) {
     log.debug("Request to get ModelEnsembleType : {}", id);
@@ -83,6 +91,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ModelEnsembleType : {}", id);
     return modelEnsembleTypeService.delete(id);
@@ -94,6 +103,7 @@ public class ModelEnsembleTypeFacadeImpl implements ModelEnsembleTypeFacade {
    * @param id
    * @return a Mono to signal the existence of the ModelEnsembleType
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete Metric : {}", id);
     return this.modelEnsembleTypeService.existsById(id);

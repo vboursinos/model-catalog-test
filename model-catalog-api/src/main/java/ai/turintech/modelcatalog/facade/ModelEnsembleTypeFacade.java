@@ -6,7 +6,8 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ModelEnsembleTypeFacade extends ReactiveAbstractCrudFacade<ModelEnsembleTypeDTO, UUID> {
+public interface ModelEnsembleTypeFacade
+    extends ReactiveAbstractCrudFacade<ModelEnsembleTypeDTO, UUID> {
 
   /**
    * Save a modelEnsembleType.

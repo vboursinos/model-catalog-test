@@ -2,7 +2,6 @@ package ai.turintech.modelcatalog.dto;
 
 import ai.turintech.components.data.common.dto.AbstractDTO;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.UUID;
 
 /** A DTO for the IntegerParameterValue entity. */

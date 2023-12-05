@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
 import ai.turintech.modelcatalog.service.BooleanParameterService;
@@ -15,7 +16,9 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link BooleanParameter}. */
 @Service
 @Transactional
-public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
+public class BooleanParameterFacadeImpl
+    extends ReactiveAbstractCrudFacadeImpl<BooleanParameterDTO, BooleanParameter, UUID>
+    implements BooleanParameterFacade {
 
   private final Logger log = LoggerFactory.getLogger(BooleanParameterFacadeImpl.class);
 
@@ -27,6 +30,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
    * @param booleanParameterDTO the entity to save.
    * @return the persisted entity.
    */
+  @Override
   public Mono<BooleanParameterDTO> save(BooleanParameterDTO booleanParameterDTO) {
     log.debug("Request to save BooleanParameter : {}", booleanParameterDTO);
     return booleanParameterService.save(booleanParameterDTO);
@@ -38,6 +42,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
    * @param booleanParameterDTO the entity to save.
    * @return the persisted entity.
    */
+  @Autowired
   public Mono<BooleanParameterDTO> update(BooleanParameterDTO booleanParameterDTO) {
     log.debug("Request to update BooleanParameter : {}", booleanParameterDTO);
     return booleanParameterService.save(booleanParameterDTO);
@@ -49,6 +54,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
    * @param booleanParameterDTO the entity to update partially.
    * @return the persisted entity.
    */
+  @Override
   public Mono<BooleanParameterDTO> partialUpdate(BooleanParameterDTO booleanParameterDTO) {
     log.debug("Request to partially update BooleanParameter : {}", booleanParameterDTO);
     return booleanParameterService.partialUpdate(booleanParameterDTO);
@@ -59,6 +65,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
    *
    * @return the list of entities.
    */
+  @Override
   @Transactional(readOnly = true)
   public Flux<BooleanParameterDTO> findAll() {
     log.debug("Request to get all BooleanParameters");
@@ -71,6 +78,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
    * @param id the id of the entity.
    * @return the entity.
    */
+  @Override
   @Transactional(readOnly = true)
   public Mono<BooleanParameterDTO> findOne(UUID id) {
     log.debug("Request to get BooleanParameter : {}", id);
@@ -83,6 +91,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete BooleanParameter : {}", id);
     return booleanParameterService.delete(id);
@@ -94,6 +103,7 @@ public class BooleanParameterFacadeImpl implements BooleanParameterFacade {
    * @param id
    * @return a Mono to signal the existence of the BooleanParameter
    */
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete BooleanParameter : {}", id);
     return this.booleanParameterService.existsById(id);
