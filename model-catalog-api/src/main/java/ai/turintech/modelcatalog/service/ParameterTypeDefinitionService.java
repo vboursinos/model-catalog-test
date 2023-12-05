@@ -1,13 +1,16 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ParameterTypeDefinitionService {
+public interface ParameterTypeDefinitionService
+    extends ReactiveAbstractCrudService<ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID> {
 
   /**
    * Save a parameterTypeDefinition.

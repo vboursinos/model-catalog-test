@@ -1,12 +1,15 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
+import ai.turintech.modelcatalog.entity.FloatParameter;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface FloatParameterService {
+public interface FloatParameterService
+    extends ReactiveAbstractCrudService<FloatParameterDTO, FloatParameter, UUID> {
   /**
    * Save a floatParameter.
    *

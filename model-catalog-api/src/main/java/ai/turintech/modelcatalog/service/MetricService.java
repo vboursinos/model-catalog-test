@@ -1,12 +1,14 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.MetricDTO;
+import ai.turintech.modelcatalog.entity.Metric;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface MetricService {
+public interface MetricService extends ReactiveAbstractCrudService<MetricDTO, Metric, UUID> {
 
   /**
    * Save a metric.

@@ -1,12 +1,15 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
+import ai.turintech.modelcatalog.entity.MlTaskType;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface MlTaskTypeService {
+public interface MlTaskTypeService
+    extends ReactiveAbstractCrudService<MlTaskTypeDTO, MlTaskType, UUID> {
 
   /**
    * Save a mlTaskType.

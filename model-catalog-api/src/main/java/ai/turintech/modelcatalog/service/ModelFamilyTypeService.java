@@ -1,12 +1,15 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
+import ai.turintech.modelcatalog.entity.ModelFamilyType;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ModelFamilyTypeService {
+public interface ModelFamilyTypeService
+    extends ReactiveAbstractCrudService<ModelFamilyTypeDTO, ModelFamilyType, UUID> {
   /**
    * Save a modelFamilyType.
    *

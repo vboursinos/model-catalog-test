@@ -1,12 +1,16 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
+import ai.turintech.modelcatalog.entity.CategoricalParameterValue;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface CategoricalParameterValueService {
+public interface CategoricalParameterValueService
+    extends ReactiveAbstractCrudService<
+        CategoricalParameterValueDTO, CategoricalParameterValue, UUID> {
 
   /**
    * Save a categoricalParameterValue.

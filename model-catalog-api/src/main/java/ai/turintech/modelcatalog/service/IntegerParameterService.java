@@ -1,12 +1,15 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
+import ai.turintech.modelcatalog.entity.IntegerParameter;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface IntegerParameterService {
+public interface IntegerParameterService
+    extends ReactiveAbstractCrudService<IntegerParameterDTO, IntegerParameter, UUID> {
 
   /**
    * Save a integerParameter.
