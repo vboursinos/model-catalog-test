@@ -36,6 +36,11 @@
 			<artifactId>jakarta.persistence-api</artifactId>
 		</dependency>
 
+		<!-- java components dependencies -->
+		<dependency>
+			<groupId>ai.turintech.components</groupId>
+			<artifactId>common-data</artifactId>
+		</dependency>
 
 		<!-- Test dependencies -->
 		<dependency>
@@ -43,7 +48,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 
 	<build>
