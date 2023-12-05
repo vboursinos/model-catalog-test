@@ -29,7 +29,7 @@ public class MetricFacadeImpl extends ReactiveAbstractCrudFacadeImpl<MetricDTO, 
    * @param metricDTO the entity to save.
    * @return the persisted entity.
    */
-  @Autowired
+  @Override
   public Mono<MetricDTO> save(MetricDTO metricDTO) {
     log.debug("Request to save Metric : {}", metricDTO);
     return metricService.save(metricDTO);
@@ -41,7 +41,7 @@ public class MetricFacadeImpl extends ReactiveAbstractCrudFacadeImpl<MetricDTO, 
    * @param metricDTO the entity to save.
    * @return the persisted entity.
    */
-  @Autowired
+  @Override
   public Mono<MetricDTO> update(MetricDTO metricDTO) {
     log.debug("Request to update Metric : {}", metricDTO);
     return metricService.save(metricDTO);
@@ -53,7 +53,7 @@ public class MetricFacadeImpl extends ReactiveAbstractCrudFacadeImpl<MetricDTO, 
    * @param metricDTO the entity to update partially.
    * @return the persisted entity.
    */
-  @Autowired
+  @Override
   public Mono<MetricDTO> partialUpdate(MetricDTO metricDTO) {
     log.debug("Request to partially update Metric : {}", metricDTO);
 
@@ -65,7 +65,7 @@ public class MetricFacadeImpl extends ReactiveAbstractCrudFacadeImpl<MetricDTO, 
    *
    * @return the list of entities.
    */
-  @Autowired
+  @Override
   @Transactional(readOnly = true)
   public Flux<MetricDTO> findAll() {
     log.debug("Request to get all Metrics");
@@ -78,7 +78,7 @@ public class MetricFacadeImpl extends ReactiveAbstractCrudFacadeImpl<MetricDTO, 
    * @param id the id of the entity.
    * @return the entity.
    */
-  @Autowired
+  @Override
   @Transactional(readOnly = true)
   public Mono<MetricDTO> findOne(UUID id) {
     log.debug("Request to get Metric : {}", id);
@@ -91,7 +91,7 @@ public class MetricFacadeImpl extends ReactiveAbstractCrudFacadeImpl<MetricDTO, 
    * @param id the id of the entity.
    * @return a Mono to signal the deletion
    */
-  @Autowired
+  @Override
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete Metric : {}", id);
     return metricService.delete(id);
@@ -103,7 +103,7 @@ public class MetricFacadeImpl extends ReactiveAbstractCrudFacadeImpl<MetricDTO, 
    * @param id
    * @return a Mono to signal the existence of the Metric
    */
-  @Autowired
+  @Override
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to delete Metric : {}", id);
     return this.metricService.existsById(id);

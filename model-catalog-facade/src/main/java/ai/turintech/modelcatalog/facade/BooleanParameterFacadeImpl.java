@@ -42,7 +42,7 @@ public class BooleanParameterFacadeImpl
    * @param booleanParameterDTO the entity to save.
    * @return the persisted entity.
    */
-  @Autowired
+  @Override
   public Mono<BooleanParameterDTO> update(BooleanParameterDTO booleanParameterDTO) {
     log.debug("Request to update BooleanParameter : {}", booleanParameterDTO);
     return booleanParameterService.save(booleanParameterDTO);
