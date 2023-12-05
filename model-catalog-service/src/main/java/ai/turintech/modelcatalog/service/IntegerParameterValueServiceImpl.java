@@ -23,7 +23,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link IntegerParameterValue}. */
 @Service
 @Transactional
-public class IntegerParameterValueServiceImpl extends ReactiveAbstractCrudServiceImpl<IntegerParameterValueDTO,IntegerParameterValue,UUID> implements IntegerParameterValueService {
+public class IntegerParameterValueServiceImpl
+    extends ReactiveAbstractCrudServiceImpl<IntegerParameterValueDTO, IntegerParameterValue, UUID>
+    implements IntegerParameterValueService {
 
   private final Logger log = LoggerFactory.getLogger(IntegerParameterValueServiceImpl.class);
 

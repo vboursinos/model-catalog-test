@@ -23,7 +23,8 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link Metric}. */
 @Service
 @Transactional
-public class MetricServiceImpl extends ReactiveAbstractCrudServiceImpl<MetricDTO,Metric,UUID> implements MetricService {
+public class MetricServiceImpl extends ReactiveAbstractCrudServiceImpl<MetricDTO, Metric, UUID>
+    implements MetricService {
 
   private final Logger log = LoggerFactory.getLogger(MetricServiceImpl.class);
 

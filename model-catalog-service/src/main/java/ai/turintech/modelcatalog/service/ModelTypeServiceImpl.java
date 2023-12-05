@@ -23,7 +23,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ModelType}. */
 @Service
 @Transactional
-public class ModelTypeServiceImpl extends ReactiveAbstractCrudServiceImpl<ModelTypeDTO,ModelType,UUID> implements ModelTypeService {
+public class ModelTypeServiceImpl
+    extends ReactiveAbstractCrudServiceImpl<ModelTypeDTO, ModelType, UUID>
+    implements ModelTypeService {
 
   private final Logger log = LoggerFactory.getLogger(ModelTypeServiceImpl.class);
   @Autowired private ApplicationContext context;

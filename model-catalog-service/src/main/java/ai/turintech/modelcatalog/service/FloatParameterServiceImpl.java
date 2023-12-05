@@ -23,7 +23,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link FloatParameter}. */
 @Service
 @Transactional
-public class FloatParameterServiceImpl extends ReactiveAbstractCrudServiceImpl<FloatParameterDTO,FloatParameter,UUID> implements FloatParameterService {
+public class FloatParameterServiceImpl
+    extends ReactiveAbstractCrudServiceImpl<FloatParameterDTO, FloatParameter, UUID>
+    implements FloatParameterService {
 
   private final Logger log = LoggerFactory.getLogger(FloatParameterServiceImpl.class);
 

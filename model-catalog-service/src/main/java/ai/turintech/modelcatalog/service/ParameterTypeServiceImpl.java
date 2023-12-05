@@ -23,7 +23,9 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link ParameterType}. */
 @Service
 @Transactional
-public class ParameterTypeServiceImpl extends ReactiveAbstractCrudServiceImpl<ParameterTypeDTO,ParameterType,UUID> implements ParameterTypeService {
+public class ParameterTypeServiceImpl
+    extends ReactiveAbstractCrudServiceImpl<ParameterTypeDTO, ParameterType, UUID>
+    implements ParameterTypeService {
 
   private final Logger log = LoggerFactory.getLogger(ParameterTypeServiceImpl.class);
 

@@ -23,7 +23,10 @@ import reactor.core.scheduler.Schedulers;
 /** Service Implementation for managing {@link CategoricalParameterValue}. */
 @Service
 @Transactional
-public class CategoricalParameterValueServiceImpl extends ReactiveAbstractCrudServiceImpl<CategoricalParameterValueDTO,CategoricalParameterValue,UUID> implements CategoricalParameterValueService {
+public class CategoricalParameterValueServiceImpl
+    extends ReactiveAbstractCrudServiceImpl<
+        CategoricalParameterValueDTO, CategoricalParameterValue, UUID>
+    implements CategoricalParameterValueService {
 
   private final Logger log = LoggerFactory.getLogger(CategoricalParameterValueServiceImpl.class);
   @Autowired private ApplicationContext context;

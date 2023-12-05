@@ -2,10 +2,9 @@ package ai.turintech.modelcatalog.service;
 
 import ai.turintech.components.architecture.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
+import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import java.util.List;
 import java.util.UUID;
-
-import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
