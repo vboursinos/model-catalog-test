@@ -7,7 +7,7 @@ import java.util.*;
 
 /** A DTO for the Model entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelDTO extends AbstractDTO implements Serializable {
+public class ModelDTO extends AbstractDTO {
 
   private UUID id;
 

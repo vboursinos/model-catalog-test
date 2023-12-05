@@ -1,12 +1,14 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractDTO;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for the Metric entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class MetricDTO implements Serializable {
+public class MetricDTO extends AbstractDTO {
 
   private UUID id;
 

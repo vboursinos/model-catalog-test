@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractDTO;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -7,7 +8,7 @@ import java.util.UUID;
 
 /** A DTO for the ParameterType entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterTypeDTO implements Serializable {
+public class ParameterTypeDTO extends AbstractDTO {
 
   private UUID id;
 

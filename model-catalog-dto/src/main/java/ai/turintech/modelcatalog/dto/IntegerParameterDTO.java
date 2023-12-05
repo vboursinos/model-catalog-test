@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.UUID;
 
 /** A DTO for the IntegerParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterDTO implements Serializable {
+public class IntegerParameterDTO extends AbstractDTO {
 
   private UUID parameterTypeDefinitionId;
 
