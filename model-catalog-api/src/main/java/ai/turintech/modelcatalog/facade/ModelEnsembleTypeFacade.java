@@ -1,11 +1,12 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudFacade;
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ModelEnsembleTypeFacade {
+public interface ModelEnsembleTypeFacade extends ReactiveAbstractCrudFacade<ModelEnsembleTypeDTO, UUID> {
 
   /**
    * Save a modelEnsembleType.

@@ -1,12 +1,13 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudFacade;
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ModelTypeFacade {
+public interface ModelTypeFacade extends ReactiveAbstractCrudFacade<ModelTypeDTO, UUID> {
 
   /**
    * Save a modelType.

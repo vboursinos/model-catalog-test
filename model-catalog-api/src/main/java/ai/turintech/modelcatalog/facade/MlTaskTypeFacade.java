@@ -1,11 +1,12 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudFacade;
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface MlTaskTypeFacade {
+public interface MlTaskTypeFacade extends ReactiveAbstractCrudFacade<MlTaskTypeDTO, UUID> {
 
   /**
    * Save a mlTaskType.

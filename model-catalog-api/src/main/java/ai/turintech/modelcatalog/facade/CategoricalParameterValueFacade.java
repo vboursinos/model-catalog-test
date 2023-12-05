@@ -1,11 +1,12 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudFacade;
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface CategoricalParameterValueFacade {
+public interface CategoricalParameterValueFacade extends ReactiveAbstractCrudFacade<CategoricalParameterValueDTO, UUID> {
   /**
    * Save a categoricalParameterValue.
    *

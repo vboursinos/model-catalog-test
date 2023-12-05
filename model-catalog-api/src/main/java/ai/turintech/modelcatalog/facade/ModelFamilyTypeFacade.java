@@ -1,11 +1,12 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudFacade;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ModelFamilyTypeFacade {
+public interface ModelFamilyTypeFacade extends ReactiveAbstractCrudFacade<ModelFamilyTypeDTO, UUID> {
 
   /**
    * Save a modelFamilyType.

@@ -1,11 +1,12 @@
 package ai.turintech.modelcatalog.facade;
 
+import ai.turintech.components.architecture.ReactiveAbstractCrudFacade;
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface IntegerParameterFacade {
+public interface IntegerParameterFacade extends ReactiveAbstractCrudFacade<IntegerParameterDTO, UUID> {
   /**
    * Save a integerParameter.
    *
