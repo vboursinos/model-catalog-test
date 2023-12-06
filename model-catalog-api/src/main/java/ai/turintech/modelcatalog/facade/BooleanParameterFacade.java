@@ -6,8 +6,7 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface BooleanParameterFacade
-    extends ReactiveAbstractCrudFacade<BooleanParameterDTO, UUID> {
+public interface BooleanParameterFacade extends ReactiveAbstractCrudFacade<BooleanParameterDTO> {
 
   /**
    * Save a booleanParameter.

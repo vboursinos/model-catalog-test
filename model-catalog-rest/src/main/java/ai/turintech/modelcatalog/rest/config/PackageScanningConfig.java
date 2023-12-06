@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.rest.config;
 
+import ai.turintech.components.architecture.ArchitectureServicePackage;
 import ai.turintech.components.jpa.search.JpaSearchPackage;
 import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
 import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
@@ -28,7 +29,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
       ModelCatalogRepositoryPackage.class,
       ModelCatalogEntityPackage.class,
       ModelCatalogCallablePackage.class,
-      JpaSearchPackage.class
+      JpaSearchPackage.class,
+      ArchitectureServicePackage.class
     })
 @EnableJpaRepositories(
     basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})

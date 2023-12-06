@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ParameterTypeDefinitionService
-    extends ReactiveAbstractCrudService<ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID> {
+    extends ReactiveAbstractCrudService<ParameterTypeDefinitionDTO, ParameterTypeDefinition> {
 
   /**
    * Save a parameterTypeDefinition.

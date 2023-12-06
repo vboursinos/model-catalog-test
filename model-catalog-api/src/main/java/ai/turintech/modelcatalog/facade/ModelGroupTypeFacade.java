@@ -6,7 +6,7 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ModelGroupTypeFacade extends ReactiveAbstractCrudFacade<ModelGroupTypeDTO, UUID> {
+public interface ModelGroupTypeFacade extends ReactiveAbstractCrudFacade<ModelGroupTypeDTO> {
 
   /**
    * Save a modelGroupType.

@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface FloatParameterRangeFacade
-    extends ReactiveAbstractCrudFacade<FloatParameterRangeDTO, UUID> {
+    extends ReactiveAbstractCrudFacade<FloatParameterRangeDTO> {
 
   /**
    * Save a floatParameterRange.

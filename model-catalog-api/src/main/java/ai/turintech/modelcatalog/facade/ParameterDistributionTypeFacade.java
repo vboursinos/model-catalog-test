@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ParameterDistributionTypeFacade
-    extends ReactiveAbstractCrudFacade<ParameterDistributionTypeDTO, UUID> {
+    extends ReactiveAbstractCrudFacade<ParameterDistributionTypeDTO> {
 
   /**
    * Save a parameterDistributionType.

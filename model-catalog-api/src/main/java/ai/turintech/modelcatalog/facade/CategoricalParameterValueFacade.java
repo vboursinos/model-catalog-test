@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface CategoricalParameterValueFacade
-    extends ReactiveAbstractCrudFacade<CategoricalParameterValueDTO, UUID> {
+    extends ReactiveAbstractCrudFacade<CategoricalParameterValueDTO> {
   /**
    * Save a categoricalParameterValue.
    *

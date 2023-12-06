@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface FloatParameterService
-    extends ReactiveAbstractCrudService<FloatParameterDTO, FloatParameter, UUID> {
+    extends ReactiveAbstractCrudService<FloatParameterDTO, FloatParameter> {
   /**
    * Save a floatParameter.
    *

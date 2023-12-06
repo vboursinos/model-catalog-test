@@ -8,7 +8,7 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface MetricService extends ReactiveAbstractCrudService<MetricDTO, Metric, UUID> {
+public interface MetricService extends ReactiveAbstractCrudService<MetricDTO, Metric> {
 
   /**
    * Save a metric.

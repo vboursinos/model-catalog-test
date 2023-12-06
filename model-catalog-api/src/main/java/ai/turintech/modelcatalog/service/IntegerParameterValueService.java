@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface IntegerParameterValueService
-    extends ReactiveAbstractCrudService<IntegerParameterValueDTO, IntegerParameterValue, UUID> {
+    extends ReactiveAbstractCrudService<IntegerParameterValueDTO, IntegerParameterValue> {
   /**
    * Save a integerParameterValue.
    *

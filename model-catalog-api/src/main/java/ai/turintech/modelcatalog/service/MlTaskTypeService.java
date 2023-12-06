@@ -8,8 +8,7 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface MlTaskTypeService
-    extends ReactiveAbstractCrudService<MlTaskTypeDTO, MlTaskType, UUID> {
+public interface MlTaskTypeService extends ReactiveAbstractCrudService<MlTaskTypeDTO, MlTaskType> {
 
   /**
    * Save a mlTaskType.

@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ModelFamilyTypeService
-    extends ReactiveAbstractCrudService<ModelFamilyTypeDTO, ModelFamilyType, UUID> {
+    extends ReactiveAbstractCrudService<ModelFamilyTypeDTO, ModelFamilyType> {
   /**
    * Save a modelFamilyType.
    *
