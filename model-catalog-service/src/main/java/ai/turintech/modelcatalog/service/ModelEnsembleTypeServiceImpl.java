@@ -6,9 +6,11 @@ import ai.turintech.modelcatalog.entity.ModelEnsembleType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 /** Service Implementation for managing {@link ModelEnsembleType}. */
 @Service
 @Transactional
 public class ModelEnsembleTypeServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<ModelEnsembleTypeDTO, ModelEnsembleType>
+    extends ReactiveAbstractCrudServiceImpl<ModelEnsembleTypeDTO, ModelEnsembleType, UUID>
     implements ModelEnsembleTypeService {}

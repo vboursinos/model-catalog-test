@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface BooleanParameterService
-    extends ReactiveAbstractCrudService<BooleanParameterDTO, BooleanParameter> {
+    extends ReactiveAbstractCrudService<BooleanParameterDTO, BooleanParameter, UUID> {
   /**
    * Save a booleanParameter.
    *

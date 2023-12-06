@@ -6,7 +6,7 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface MetricFacade extends ReactiveAbstractCrudFacade<MetricDTO> {
+public interface MetricFacade extends ReactiveAbstractCrudFacade<MetricDTO,UUID> {
   /**
    * Save a metric.
    *

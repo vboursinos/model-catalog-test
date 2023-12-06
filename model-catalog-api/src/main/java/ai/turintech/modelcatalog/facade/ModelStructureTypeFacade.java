@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ModelStructureTypeFacade
-    extends ReactiveAbstractCrudFacade<ModelStructureTypeDTO> {
+    extends ReactiveAbstractCrudFacade<ModelStructureTypeDTO,UUID> {
 
   /**
    * Save a modelStructureType.

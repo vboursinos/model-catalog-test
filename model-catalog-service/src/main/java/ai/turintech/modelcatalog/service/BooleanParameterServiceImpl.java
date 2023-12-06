@@ -6,9 +6,11 @@ import ai.turintech.modelcatalog.entity.BooleanParameter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 /** Service Implementation for managing {@link BooleanParameter}. */
 @Service
 @Transactional
 public class BooleanParameterServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<BooleanParameterDTO, BooleanParameter>
+    extends ReactiveAbstractCrudServiceImpl<BooleanParameterDTO, BooleanParameter, UUID>
     implements BooleanParameterService {}

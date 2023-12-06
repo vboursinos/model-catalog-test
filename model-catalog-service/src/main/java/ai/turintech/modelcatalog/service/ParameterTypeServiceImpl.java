@@ -6,9 +6,11 @@ import ai.turintech.modelcatalog.entity.ParameterType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 /** Service Implementation for managing {@link ParameterType}. */
 @Service
 @Transactional
 public class ParameterTypeServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<ParameterTypeDTO, ParameterType>
+    extends ReactiveAbstractCrudServiceImpl<ParameterTypeDTO, ParameterType, UUID>
     implements ParameterTypeService {}

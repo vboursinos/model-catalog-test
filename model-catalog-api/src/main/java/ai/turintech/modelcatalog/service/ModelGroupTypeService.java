@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ModelGroupTypeService
-    extends ReactiveAbstractCrudService<ModelGroupTypeDTO, ModelGroupType> {
+    extends ReactiveAbstractCrudService<ModelGroupTypeDTO, ModelGroupType, UUID> {
   /**
    * Save a modelGroupType.
    *

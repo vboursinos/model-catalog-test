@@ -6,9 +6,11 @@ import ai.turintech.modelcatalog.entity.IntegerParameterValue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 /** Service Implementation for managing {@link IntegerParameterValue}. */
 @Service
 @Transactional
 public class IntegerParameterValueServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<IntegerParameterValueDTO, IntegerParameterValue>
+    extends ReactiveAbstractCrudServiceImpl<IntegerParameterValueDTO, IntegerParameterValue, UUID>
     implements IntegerParameterValueService {}

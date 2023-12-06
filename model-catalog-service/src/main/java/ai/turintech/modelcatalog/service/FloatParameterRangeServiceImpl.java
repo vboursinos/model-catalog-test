@@ -6,9 +6,11 @@ import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 /** Service Implementation for managing {@link FloatParameterRange}. */
 @Service
 @Transactional
 public class FloatParameterRangeServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<FloatParameterRangeDTO, FloatParameterRange>
+    extends ReactiveAbstractCrudServiceImpl<FloatParameterRangeDTO, FloatParameterRange, UUID>
     implements FloatParameterRangeService {}

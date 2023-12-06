@@ -6,9 +6,11 @@ import ai.turintech.modelcatalog.entity.MlTaskType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 /** Service Implementation for managing {@link MlTaskType}. */
 @Service
 @Transactional
 public class MlTaskTypeServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<MlTaskTypeDTO, MlTaskType>
+    extends ReactiveAbstractCrudServiceImpl<MlTaskTypeDTO, MlTaskType, UUID>
     implements MlTaskTypeService {}
