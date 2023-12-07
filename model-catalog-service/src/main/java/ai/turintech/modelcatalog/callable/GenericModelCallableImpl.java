@@ -2,136 +2,13 @@ package ai.turintech.modelcatalog.callable;
 
 import ai.turintech.components.data.common.dto.AbstractDTO;
 import ai.turintech.components.data.common.entity.AbstractEntity;
-import ai.turintech.components.mapper.api.MapperInterface;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Component
 @Scope("prototype")
-public class GenericModelCallableImpl<T, DTO extends AbstractDTO, ENTITY extends AbstractEntity>
-    implements GenericModelCallable<T, DTO, ENTITY> {
-  private String name;
-  private UUID id;
-  private DTO dto;
-  private JpaRepository<ENTITY, UUID> repository;
-  private MapperInterface<DTO, ENTITY> mapper;
-
-  public GenericModelCallableImpl(
-      String name, JpaRepository<ENTITY, UUID> repository, MapperInterface<DTO, ENTITY> mapper) {
-    this.name = name;
-    this.repository = repository;
-    this.mapper = mapper;
-  }
-
-  public GenericModelCallableImpl(
-      String name,
-      UUID id,
-      JpaRepository<ENTITY, UUID> repository,
-      MapperInterface<DTO, ENTITY> mapper) {
-    this.name = name;
-    this.id = id;
-    this.repository = repository;
-    this.mapper = mapper;
-  }
-
-  public GenericModelCallableImpl(
-      String name,
-      DTO dto,
-      JpaRepository<ENTITY, UUID> repository,
-      MapperInterface<DTO, ENTITY> mapper) {
-    this.name = name;
-    this.dto = dto;
-    this.repository = repository;
-    this.mapper = mapper;
-  }
-
-  public GenericModelCallableImpl(
-      String name,
-      UUID id,
-      DTO dto,
-      JpaRepository<ENTITY, UUID> repository,
-      MapperInterface<DTO, ENTITY> mapper) {
-    this.name = name;
-    this.id = id;
-    this.dto = dto;
-    this.repository = repository;
-    this.mapper = mapper;
-  }
-
-  public List<DTO> findAll() {
-    return repository.findAll().stream()
-        .map(mapper::to)
-        .collect(Collectors.toCollection(LinkedList::new));
-  }
-
-  public DTO findById() throws Exception {
-    Optional<ENTITY> entity = repository.findById(id);
-    if (!entity.isPresent()) {
-      throw new Exception(name + " with ID " + id + " not found.");
-    }
-    return mapper.to(entity.get());
-  }
-
-  public Boolean existsById() {
-    return repository.existsById(id);
-  }
-
-  public DTO create() {
-    ENTITY entity = mapper.from(dto);
-    entity = repository.save(entity);
-    return mapper.to(entity);
-  }
-
-  public DTO update() {
-    ENTITY entity = mapper.from(dto);
-    entity = repository.save(entity);
-    return mapper.to(entity);
-  }
-
-  public DTO partialUpdate() throws Exception {
-    return repository
-        .findById(id)
-        .map(
-            existingEntity -> {
-              mapper.partialUpdate(existingEntity, dto);
-              return existingEntity;
-            })
-        .map(repository::save)
-        .map(mapper::to)
-        .orElseThrow(() -> new Exception(name + " with ID " + id + " not found."));
-  }
-
-  public void delete() {
-    repository.deleteById(id);
-  }
-
-  @Override
-  public T call() throws Exception {
-    switch (name.toLowerCase()) {
-      case "create":
-        return (T) create();
-      case "findall":
-        return (T) findAll();
-      case "findbyid":
-        return (T) findById();
-      case "update":
-        return (T) update();
-      case "partialupdate":
-        return (T) partialUpdate();
-      case "existsbyid":
-        return (T) existsById();
-      case "delete":
-        delete();
-        break;
-    }
-    return null;
-  }
-}
+public abstract class GenericModelCallableImpl<
+        T, DTO extends AbstractDTO, ENTITY extends AbstractEntity>
+    implements GenericModelCallable<T, DTO, ENTITY> {}
