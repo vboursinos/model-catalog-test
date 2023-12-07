@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
+import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import java.util.UUID;

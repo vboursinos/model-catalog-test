@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.ReactiveAbstractCrudService;
+import ai.turintech.components.architecture.reactive.ReactiveAbstractCrudService;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelGroupType;
 import java.util.List;

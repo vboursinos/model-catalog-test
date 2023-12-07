@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
-import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
+import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
 import java.util.UUID;

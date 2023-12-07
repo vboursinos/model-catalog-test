@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.service.impl.ReactiveAbstractCrudServiceImpl;
+import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
 import java.util.UUID;

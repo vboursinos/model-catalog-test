@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
-import ai.turintech.components.architecture.facade.impl.ReactiveAbstractCrudFacadeImpl;
+import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.IntegerParameterValue;
 import java.util.UUID;
