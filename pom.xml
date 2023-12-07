@@ -49,7 +49,7 @@
 		<jpa-search.version>01.00.00-a0-SNAPSHOT</jpa-search.version>
 		<common-data.version>01.00.01-a0-SNAPSHOT</common-data.version>
 		<mapper.version>01.00.00-a0-SNAPSHOT</mapper.version>
-		<architecture.version>01.00.01-a0-SNAPSHOT</architecture.version>
+		<architecture.version>01.00.01-a1-SNAPSHOT</architecture.version>
 
 
 		<!-- Additional props copied from jhipster pom.xml -->
