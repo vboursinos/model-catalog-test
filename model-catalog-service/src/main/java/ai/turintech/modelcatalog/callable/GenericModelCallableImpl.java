@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.callable;
 
+import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.entity.AbstractEntity;
 import ai.turintech.components.mapper.api.MapperInterface;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Component
 @Scope("prototype")
-public class GenericModelCallableImpl<T, DTO, ENTITY>
+public class GenericModelCallableImpl<T, DTO extends AbstractDTO, ENTITY extends AbstractEntity>
     implements GenericModelCallable<T, DTO, ENTITY> {
   private String name;
   private UUID id;
