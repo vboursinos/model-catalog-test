@@ -4,11 +4,11 @@ import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstrac
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelEnsembleType;
 import java.util.UUID;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Service Implementation for managing {@link ModelEnsembleType}. */
-@Service
+@Component
 @Transactional
 public class ModelEnsembleTypeFacadeImpl
     extends ReactiveAbstractCrudFacadeImpl<ModelEnsembleTypeDTO, ModelEnsembleType, UUID>

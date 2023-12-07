@@ -4,11 +4,11 @@ import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstrac
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import java.util.UUID;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Service Implementation for managing {@link ParameterDistributionType}. */
-@Service
+@Component
 @Transactional
 public class ParameterDistributionTypeFacadeImpl
     extends ReactiveAbstractCrudFacadeImpl<

@@ -4,11 +4,11 @@ import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstrac
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.IntegerParameterValue;
 import java.util.UUID;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Service Implementation for managing {@link IntegerParameterValue}. */
-@Service
+@Component
 @Transactional
 public class IntegerParameterValueFacadeImpl
     extends ReactiveAbstractCrudFacadeImpl<IntegerParameterValueDTO, IntegerParameterValue, UUID>
