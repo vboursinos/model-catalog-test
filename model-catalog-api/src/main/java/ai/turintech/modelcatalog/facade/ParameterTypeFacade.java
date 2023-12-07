@@ -6,7 +6,7 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ParameterTypeFacade extends ReactiveAbstractCrudFacade<ParameterTypeDTO,UUID> {
+public interface ParameterTypeFacade extends ReactiveAbstractCrudFacade<ParameterTypeDTO, UUID> {
 
   /**
    * Save a parameterType.

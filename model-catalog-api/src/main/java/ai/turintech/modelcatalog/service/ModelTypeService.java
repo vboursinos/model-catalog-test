@@ -8,7 +8,8 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ModelTypeService extends ReactiveAbstractCrudService<ModelTypeDTO, ModelType, UUID> {
+public interface ModelTypeService
+    extends ReactiveAbstractCrudService<ModelTypeDTO, ModelType, UUID> {
   /**
    * Save a modelType.
    *

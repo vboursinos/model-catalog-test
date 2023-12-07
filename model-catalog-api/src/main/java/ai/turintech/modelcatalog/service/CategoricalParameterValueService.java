@@ -9,7 +9,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface CategoricalParameterValueService
-    extends ReactiveAbstractCrudService<CategoricalParameterValueDTO, CategoricalParameterValue, UUID> {
+    extends ReactiveAbstractCrudService<
+        CategoricalParameterValueDTO, CategoricalParameterValue, UUID> {
 
   /**
    * Save a categoricalParameterValue.

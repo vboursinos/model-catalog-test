@@ -9,7 +9,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ParameterDistributionTypeService
-    extends ReactiveAbstractCrudService<ParameterDistributionTypeDTO, ParameterDistributionType, UUID> {
+    extends ReactiveAbstractCrudService<
+        ParameterDistributionTypeDTO, ParameterDistributionType, UUID> {
 
   /**
    * Save a parameterDistributionType.
