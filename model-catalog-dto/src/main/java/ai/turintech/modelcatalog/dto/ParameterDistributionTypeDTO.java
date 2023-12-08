@@ -1,13 +1,13 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import jakarta.validation.constraints.*;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for the ParameterDistributionType entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterDistributionTypeDTO extends AbstractDTO {
+public class ParameterDistributionTypeDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   private UUID id;
 

@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
@@ -9,7 +9,7 @@ import java.util.UUID;
 /** A DTO for the ParameterTypeDefinition entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ParameterTypeDefinitionDTO extends AbstractDTO {
+public class ParameterTypeDefinitionDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   private UUID id;
 

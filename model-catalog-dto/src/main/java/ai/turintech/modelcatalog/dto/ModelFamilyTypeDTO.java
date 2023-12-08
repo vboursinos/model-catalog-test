@@ -1,13 +1,13 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import jakarta.validation.constraints.*;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for the ModelFamilyType entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelFamilyTypeDTO extends AbstractDTO {
+public class ModelFamilyTypeDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   private UUID id;
 
