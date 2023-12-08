@@ -121,6 +121,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- java components -->
+		<dependency>
+			<groupId>ai.turintech.components</groupId>
+			<artifactId>architecture-rest</artifactId>
+		</dependency>
+
 		<!-- Project's module dependencies -->
 		<dependency>
 			<groupId>ai.turintech.model-catalog</groupId>

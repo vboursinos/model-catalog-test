@@ -47,9 +47,9 @@
 
 		<!-- Components -->
 		<jpa-search.version>01.00.00-a0-SNAPSHOT</jpa-search.version>
-		<common-data.version>01.00.01-a0-SNAPSHOT</common-data.version>
+		<common-data.version>01.00.02-a0-SNAPSHOT</common-data.version>
 		<mapper.version>01.00.00-a0-SNAPSHOT</mapper.version>
-		<architecture.version>01.00.01-a1-SNAPSHOT</architecture.version>
+		<architecture.version>01.00.02-a0-SNAPSHOT</architecture.version>
 
 
 		<!-- Additional props copied from jhipster pom.xml -->
@@ -225,6 +225,11 @@
 			<dependency>
 				<groupId>ai.turintech.components</groupId>
 				<artifactId>architecture-service</artifactId>
+				<version>${architecture.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>architecture-rest</artifactId>
 				<version>${architecture.version}</version>
 			</dependency>
 		</dependencies>
