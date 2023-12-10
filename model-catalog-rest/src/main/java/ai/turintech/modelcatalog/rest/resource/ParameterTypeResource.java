@@ -3,9 +3,7 @@ package ai.turintech.modelcatalog.rest.resource;
 import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
 import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterType;
-import ai.turintech.modelcatalog.facade.ParameterTypeFacade;
 import ai.turintech.modelcatalog.to.ParameterTypeTO;
-import ai.turintech.modelcatalog.todtomapper.ParameterTypeMapper;
 import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +16,7 @@ public class ParameterTypeResource
 
   private static String APPLICATION_NAME = "model-catalog";
 
-  private final ParameterTypeFacade parameterTypeFacade;
-
-  private final ParameterTypeMapper parameterTypeMapper;
-
-  public ParameterTypeResource(
-      ParameterTypeFacade parameterTypeFacade, ParameterTypeMapper parameterTypeMapper) {
+  public ParameterTypeResource() {
     super(ENTITY_NAME, APPLICATION_NAME);
-    this.parameterTypeFacade = parameterTypeFacade;
-    this.parameterTypeMapper = parameterTypeMapper;
   }
 }

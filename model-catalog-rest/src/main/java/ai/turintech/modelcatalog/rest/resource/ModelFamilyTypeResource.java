@@ -3,9 +3,7 @@ package ai.turintech.modelcatalog.rest.resource;
 import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelFamilyType;
-import ai.turintech.modelcatalog.facade.ModelFamilyTypeFacade;
 import ai.turintech.modelcatalog.to.ModelFamilyTypeTO;
-import ai.turintech.modelcatalog.todtomapper.ModelFamilyTypeMapper;
 import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +16,7 @@ public class ModelFamilyTypeResource
 
   private static String APPLICATION_NAME = "model-catalog";
 
-  private final ModelFamilyTypeFacade modelFamilyTypeFacade;
-
-  private final ModelFamilyTypeMapper modelFamilyTypeMapper;
-
-  public ModelFamilyTypeResource(
-      ModelFamilyTypeFacade modelFamilyTypeFacade, ModelFamilyTypeMapper modelFamilyTypeMapper) {
+  public ModelFamilyTypeResource() {
     super(ENTITY_NAME, APPLICATION_NAME);
-    this.modelFamilyTypeFacade = modelFamilyTypeFacade;
-    this.modelFamilyTypeMapper = modelFamilyTypeMapper;
   }
 }

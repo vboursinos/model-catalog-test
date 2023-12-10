@@ -3,9 +3,7 @@ package ai.turintech.modelcatalog.rest.resource;
 import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.FloatParameterRange;
-import ai.turintech.modelcatalog.facade.FloatParameterRangeFacade;
 import ai.turintech.modelcatalog.to.FloatParameterRangeTO;
-import ai.turintech.modelcatalog.todtomapper.FloatParameterRangeMapper;
 import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +16,7 @@ public class FloatParameterRangeResource
 
   private static String APPLICATION_NAME = "model-catalog";
 
-  private final FloatParameterRangeFacade floatParameterRangeFacade;
-  private final FloatParameterRangeMapper floatParameterRangeMapper;
-
-  public FloatParameterRangeResource(
-      FloatParameterRangeFacade floatParameterRangeFacade,
-      FloatParameterRangeMapper floatParameterRangeMapper) {
+  public FloatParameterRangeResource() {
     super(ENTITY_NAME, APPLICATION_NAME);
-    this.floatParameterRangeFacade = floatParameterRangeFacade;
-    this.floatParameterRangeMapper = floatParameterRangeMapper;
   }
 }
