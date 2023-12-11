@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.utils.rest.BadRequestAlertException;
 import ai.turintech.modelcatalog.entity.FloatParameter;
 import ai.turintech.modelcatalog.facade.FloatParameterFacade;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
@@ -50,11 +49,11 @@ public class FloatParameterResource {
    */
   @PostMapping("/float-parameters")
   public Mono<ResponseEntity<FloatParameterTO>> createFloatParameter(
-      @RequestBody FloatParameterTO floatParameterTO) throws URISyntaxException {
+      @RequestBody FloatParameterTO floatParameterTO) {
     log.debug("REST request to save FloatParameter : {}", floatParameterTO);
     if (floatParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new BadRequestAlertException(
-          "A new floatParameter cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "A new floatParameter cannot already have an ID");
     }
     return floatParameterFacade
         .save(floatParameterMapper.from(floatParameterTO))
@@ -91,14 +90,13 @@ public class FloatParameterResource {
   @PutMapping("/float-parameters/{id}")
   public Mono<ResponseEntity<FloatParameterTO>> updateFloatParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody FloatParameterTO floatParameterTO)
-      throws URISyntaxException {
+      @RequestBody FloatParameterTO floatParameterTO) {
     log.debug("REST request to update FloatParameter : {}, {}", id, floatParameterTO);
     if (floatParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     if (!Objects.equals(id, floatParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return floatParameterFacade
@@ -106,8 +104,7 @@ public class FloatParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               return floatParameterFacade
@@ -145,15 +142,14 @@ public class FloatParameterResource {
       consumes = {"application/json", "application/merge-patch+json"})
   public Mono<ResponseEntity<FloatParameterTO>> partialUpdateFloatParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody FloatParameterTO floatParameterTO)
-      throws URISyntaxException {
+      @RequestBody FloatParameterTO floatParameterTO) {
     log.debug(
         "REST request to partial update FloatParameter partially : {}, {}", id, floatParameterTO);
     if (floatParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     if (!Objects.equals(id, floatParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return floatParameterFacade
@@ -161,8 +157,7 @@ public class FloatParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               Mono<FloatParameterTO> result =

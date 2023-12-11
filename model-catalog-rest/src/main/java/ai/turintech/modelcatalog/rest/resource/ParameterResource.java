@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.utils.rest.BadRequestAlertException;
 import ai.turintech.modelcatalog.entity.Parameter;
 import ai.turintech.modelcatalog.facade.ParameterFacade;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
@@ -57,11 +56,11 @@ public class ParameterResource {
    */
   @PostMapping("/parameters")
   public Mono<ResponseEntity<ParameterTO>> createParameter(
-      @Valid @RequestBody ParameterTO parameterTO) throws URISyntaxException {
+      @Valid @RequestBody ParameterTO parameterTO) {
     log.debug("REST request to save Parameter : {}", parameterTO);
     if (parameterTO.getId() != null) {
-      throw new BadRequestAlertException(
-          "A new parameter cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "A new parameter cannot already have an ID");
     }
     parameterTO.setId(UUID.randomUUID());
     return parameterFacade
@@ -94,14 +93,13 @@ public class ParameterResource {
   @PutMapping("/parameters/{id}")
   public Mono<ResponseEntity<ParameterTO>> updateParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @Valid @RequestBody ParameterTO parameterTO)
-      throws URISyntaxException {
+      @Valid @RequestBody ParameterTO parameterTO) {
     log.debug("REST request to update Parameter : {}, {}", id, parameterTO);
     if (parameterTO.getId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id cannot be null");
     }
     if (!Objects.equals(id, parameterTO.getId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return parameterFacade
@@ -109,8 +107,7 @@ public class ParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               return parameterFacade
@@ -147,14 +144,13 @@ public class ParameterResource {
       consumes = {"application/json", "application/merge-patch+json"})
   public Mono<ResponseEntity<ParameterTO>> partialUpdateParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @NotNull @RequestBody ParameterTO parameterTO)
-      throws URISyntaxException {
+      @NotNull @RequestBody ParameterTO parameterTO) {
     log.debug("REST request to partial update Parameter partially : {}, {}", id, parameterTO);
     if (parameterTO.getId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID cannot be null");
     }
     if (!Objects.equals(id, parameterTO.getId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return parameterFacade
@@ -162,8 +158,7 @@ public class ParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               Mono<ParameterTO> result =
