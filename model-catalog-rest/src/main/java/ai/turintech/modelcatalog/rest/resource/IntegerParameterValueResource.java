@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
+import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractUUIDIdentityCrudRestImpl;
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.IntegerParameterValue;
 import ai.turintech.modelcatalog.to.IntegerParameterValueTO;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/integer-parameter-values")
 public class IntegerParameterValueResource
-    extends ReactiveAbstractCrudRestImpl<IntegerParameterValueTO, IntegerParameterValueDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<
+        IntegerParameterValueTO, IntegerParameterValueDTO, UUID> {
   private static final String ENTITY_NAME = "modelCatalogIntegerParameterValue";
 
   private static String APPLICATION_NAME = "model-catalog";

@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractCrudServiceImpl;
+import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
 import java.util.UUID;
@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class BooleanParameterServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<BooleanParameterDTO, BooleanParameter, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<BooleanParameterDTO, BooleanParameter, UUID>
     implements BooleanParameterService {}

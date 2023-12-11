@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
+import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractUUIDIdentityCrudRestImpl;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelFamilyType;
 import ai.turintech.modelcatalog.to.ModelFamilyTypeTO;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/model-family-types")
 public class ModelFamilyTypeResource
-    extends ReactiveAbstractCrudRestImpl<ModelFamilyTypeTO, ModelFamilyTypeDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<ModelFamilyTypeTO, ModelFamilyTypeDTO, UUID> {
   private static final String ENTITY_NAME = "modelCatalogModelFamilyType";
 
   private static String APPLICATION_NAME = "model-catalog";

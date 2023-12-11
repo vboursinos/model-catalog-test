@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractCrudServiceImpl;
+import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import java.util.UUID;
@@ -11,5 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class FloatParameterRangeServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<FloatParameterRangeDTO, FloatParameterRange, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
+        FloatParameterRangeDTO, FloatParameterRange, UUID>
     implements FloatParameterRangeService {}

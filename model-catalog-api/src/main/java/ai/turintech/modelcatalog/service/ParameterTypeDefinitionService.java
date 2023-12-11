@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.reactive.ReactiveAbstractCrudService;
+import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudService;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import java.util.List;
@@ -10,7 +10,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ParameterTypeDefinitionService
-    extends ReactiveAbstractCrudService<ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudService<
+        ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID> {
 
   /**
    * Save a parameterTypeDefinition.

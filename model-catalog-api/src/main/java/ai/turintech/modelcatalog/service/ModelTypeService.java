@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.reactive.ReactiveAbstractCrudService;
+import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudService;
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelType;
 import java.util.List;
@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ModelTypeService
-    extends ReactiveAbstractCrudService<ModelTypeDTO, ModelType, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudService<ModelTypeDTO, ModelType, UUID> {
   /**
    * Save a modelType.
    *

@@ -46,10 +46,10 @@
 		<fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
 
 		<!-- Components -->
-		<jpa-search.version>01.00.00-a0-SNAPSHOT</jpa-search.version>
-		<common-data.version>01.00.02-a0-SNAPSHOT</common-data.version>
-		<mapper.version>01.00.00-a0-SNAPSHOT</mapper.version>
-		<architecture.version>01.00.02-a0-SNAPSHOT</architecture.version>
+		<jpa-search.version>01.00.00-a2-SNAPSHOT</jpa-search.version>
+		<common-data.version>01.00.00-a2-SNAPSHOT</common-data.version>
+		<mapper.version>01.00.00-a2-SNAPSHOT</mapper.version>
+		<architecture.version>01.00.00-a2-SNAPSHOT</architecture.version>
 
 
 		<!-- Additional props copied from jhipster pom.xml -->

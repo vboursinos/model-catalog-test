@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
+import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractUUIDIdentityCrudRestImpl;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelGroupType;
 import ai.turintech.modelcatalog.to.ModelGroupTypeTO;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/model-group-types")
 public class ModelGroupTypeResource
-    extends ReactiveAbstractCrudRestImpl<ModelGroupTypeTO, ModelGroupTypeDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<ModelGroupTypeTO, ModelGroupTypeDTO, UUID> {
   private static final String ENTITY_NAME = "modelCatalogModelGroupType";
   private static String APPLICATION_NAME = "model-catalog";
 

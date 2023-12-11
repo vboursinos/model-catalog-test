@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
+import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractUUIDIdentityCrudRestImpl;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import ai.turintech.modelcatalog.to.ParameterDistributionTypeTO;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/parameter-distribution-types")
 public class ParameterDistributionTypeResource
-    extends ReactiveAbstractCrudRestImpl<
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<
         ParameterDistributionTypeTO, ParameterDistributionTypeDTO, UUID> {
   private static final String ENTITY_NAME = "modelCatalogParameterDistributionType";
 

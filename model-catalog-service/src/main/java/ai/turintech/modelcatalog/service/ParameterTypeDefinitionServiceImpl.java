@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractCrudServiceImpl;
+import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.callable.GenericModelCallable;
 import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
@@ -27,7 +27,7 @@ import reactor.core.scheduler.Schedulers;
 @Service
 @Transactional
 public class ParameterTypeDefinitionServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<
+    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
         ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
     implements ParameterTypeDefinitionService {
 

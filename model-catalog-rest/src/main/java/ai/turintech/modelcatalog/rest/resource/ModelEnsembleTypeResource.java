@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
+import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractUUIDIdentityCrudRestImpl;
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelEnsembleType;
 import ai.turintech.modelcatalog.to.ModelEnsembleTypeTO;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/model-ensemble-types")
 public class ModelEnsembleTypeResource
-    extends ReactiveAbstractCrudRestImpl<ModelEnsembleTypeTO, ModelEnsembleTypeDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<
+        ModelEnsembleTypeTO, ModelEnsembleTypeDTO, UUID> {
   private static final String ENTITY_NAME = "modelCatalogModelEnsembleType";
 
   private static String APPLICATION_NAME = "model-catalog";

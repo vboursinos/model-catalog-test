@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
-import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractCrudFacadeImpl;
+import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractUUIDIdentityCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelEnsembleType;
 import java.util.UUID;
@@ -11,5 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class ModelEnsembleTypeFacadeImpl
-    extends ReactiveAbstractCrudFacadeImpl<ModelEnsembleTypeDTO, ModelEnsembleType, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<
+        ModelEnsembleTypeDTO, ModelEnsembleType, UUID>
     implements ModelEnsembleTypeFacade {}

@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.reactive.ReactiveAbstractCrudService;
+import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudService;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
 import java.util.List;
@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface BooleanParameterService
-    extends ReactiveAbstractCrudService<BooleanParameterDTO, BooleanParameter, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudService<BooleanParameterDTO, BooleanParameter, UUID> {
   /**
    * Save a booleanParameter.
    *

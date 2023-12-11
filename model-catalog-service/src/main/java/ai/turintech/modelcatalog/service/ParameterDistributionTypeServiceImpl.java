@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractCrudServiceImpl;
+import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import java.util.UUID;
@@ -11,6 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ParameterDistributionTypeServiceImpl
-    extends ReactiveAbstractCrudServiceImpl<
+    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
         ParameterDistributionTypeDTO, ParameterDistributionType, UUID>
     implements ParameterDistributionTypeService {}

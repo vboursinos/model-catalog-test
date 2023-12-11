@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.rest.resource;
 
-import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractCrudRestImpl;
+import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractUUIDIdentityCrudRestImpl;
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.entity.CategoricalParameterValue;
 import ai.turintech.modelcatalog.to.CategoricalParameterValueTO;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/categorical-parameter-values")
 public class CategoricalParameterValueResource
-    extends ReactiveAbstractCrudRestImpl<
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<
         CategoricalParameterValueTO, CategoricalParameterValueDTO, UUID> {
 
   private static final String ENTITY_NAME = "modelCatalogCategoricalParameterValue";

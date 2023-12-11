@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
-import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractCrudFacadeImpl;
+import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractUUIDIdentityCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
 import ai.turintech.modelcatalog.entity.FloatParameter;
 import java.util.UUID;
@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class FloatParameterFacadeImpl
-    extends ReactiveAbstractCrudFacadeImpl<FloatParameterDTO, FloatParameter, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<FloatParameterDTO, FloatParameter, UUID>
     implements FloatParameterFacade {}

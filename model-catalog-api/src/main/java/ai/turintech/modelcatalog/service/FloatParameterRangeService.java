@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.reactive.ReactiveAbstractCrudService;
+import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudService;
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.FloatParameterRange;
 import java.util.List;
@@ -9,7 +9,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface FloatParameterRangeService
-    extends ReactiveAbstractCrudService<FloatParameterRangeDTO, FloatParameterRange, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudService<
+        FloatParameterRangeDTO, FloatParameterRange, UUID> {
 
   /**
    * Save a floatParameterRange.

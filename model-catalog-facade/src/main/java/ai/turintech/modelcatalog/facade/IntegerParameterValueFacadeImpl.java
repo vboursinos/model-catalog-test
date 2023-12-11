@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.facade;
 
-import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractCrudFacadeImpl;
+import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractUUIDIdentityCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.IntegerParameterValue;
 import java.util.UUID;
@@ -11,5 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class IntegerParameterValueFacadeImpl
-    extends ReactiveAbstractCrudFacadeImpl<IntegerParameterValueDTO, IntegerParameterValue, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<
+        IntegerParameterValueDTO, IntegerParameterValue, UUID>
     implements IntegerParameterValueFacade {}

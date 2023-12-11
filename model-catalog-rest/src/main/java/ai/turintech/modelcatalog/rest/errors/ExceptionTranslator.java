@@ -118,9 +118,6 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler
       ProblemDetailWithCause problem, Throwable err, ServerWebExchange request) {
     if (problem.getStatus() <= 0) problem.setStatus(toStatus(err));
 
-    if (problem.getType() == null || problem.getType().equals(URI.create("about:blank")))
-      problem.setType(getMappedType(err));
-
     // higher precedence to Custom/ResponseStatus types
     String title = extractTitle(err, problem.getStatus());
     String problemTitle = problem.getTitle();
@@ -203,11 +200,11 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler
         : candidate;
   }
 
-  private URI getMappedType(Throwable err) {
-    if (err instanceof MethodArgumentNotValidException)
-      return ErrorConstants.CONSTRAINT_VIOLATION_TYPE;
-    return ErrorConstants.DEFAULT_TYPE;
-  }
+  //  private URI getMappedType(Throwable err) {
+  //    if (err instanceof MethodArgumentNotValidException)
+  //      return ErrorConstants.CONSTRAINT_VIOLATION_TYPE;
+  //    return ErrorConstants.DEFAULT_TYPE;
+  //  }
 
   private String getMappedMessageKey(Throwable err) {
     if (err instanceof MethodArgumentNotValidException) {
