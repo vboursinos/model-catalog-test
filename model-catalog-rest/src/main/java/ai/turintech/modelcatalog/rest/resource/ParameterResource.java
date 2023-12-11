@@ -1,8 +1,8 @@
 package ai.turintech.modelcatalog.rest.resource;
 
+import ai.turintech.components.utils.rest.BadRequestAlertException;
 import ai.turintech.modelcatalog.entity.Parameter;
 import ai.turintech.modelcatalog.facade.ParameterFacade;
-import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.service.ParameterServiceImpl;

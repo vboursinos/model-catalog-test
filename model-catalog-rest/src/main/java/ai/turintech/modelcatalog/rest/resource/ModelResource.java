@@ -4,11 +4,11 @@ import ai.turintech.components.jpa.search.controller.AbstractPageableRestControl
 import ai.turintech.components.jpa.search.data.to.PageTO;
 import ai.turintech.components.jpa.search.data.to.PageableQueryRequestTO;
 import ai.turintech.components.jpa.search.exception.PageableRequestException;
+import ai.turintech.components.utils.rest.BadRequestAlertException;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.facade.ModelFacade;
 import ai.turintech.modelcatalog.facade.ModelFacadeImpl;
-import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.to.ModelTO;

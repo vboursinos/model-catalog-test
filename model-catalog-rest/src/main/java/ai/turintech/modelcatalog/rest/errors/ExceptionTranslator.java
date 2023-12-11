@@ -2,6 +2,8 @@ package ai.turintech.modelcatalog.rest.errors;
 
 import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedAnnotation;
 
+import ai.turintech.components.utils.rest.BadRequestAlertException;
+import ai.turintech.components.utils.rest.ErrorConstants;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 import ai.turintech.modelcatalog.rest.support.errors.ExceptionTranslation;
