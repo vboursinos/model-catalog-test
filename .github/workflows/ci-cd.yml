@@ -160,7 +160,7 @@ jobs:
       - name: Deploy to development environment
         uses: ./.github/actions/continuous-deployment/ssh
         with:
-          SSH_HOST: ${{ secrets.VPN_DEV_MACHINE_IP }}
+          SSH_HOST: ${{ secrets.VPN_BEAST2_IP }}
           SSH_USERNAME: ${{ secrets.CD_USER }}
           SSH_PASSWORD: ${{ secrets.CD_PASSWORD }}
           SSH_SCRIPT: "${{ vars.MODEL_CATALOG_CD_CMD }}"
