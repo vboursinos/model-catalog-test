@@ -12,7 +12,6 @@ import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.to.ModelTO;
 import ai.turintech.modelcatalog.todtomapper.ModelMapper;
-import ai.turintech.modelcatalog.todtomapper.ModelPaginatedListMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -52,7 +51,6 @@ public class ModelResource
 
   @Autowired private ModelFacade modelFacade;
   @Autowired private ModelMapper modelMapper;
-  @Autowired private ModelPaginatedListMapper modelPaginatedListMapper;
 
   /**
    * {@code POST /models} : Create a new model.
