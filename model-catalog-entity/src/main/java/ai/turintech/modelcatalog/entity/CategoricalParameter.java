@@ -40,6 +40,14 @@ public class CategoricalParameter extends AbstractEntity implements Serializable
     this.parameterTypeDefinition = parameterTypeDefinition;
   }
 
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+  }
+
   public String getDefaultValue() {
     return this.defaultValue;
   }

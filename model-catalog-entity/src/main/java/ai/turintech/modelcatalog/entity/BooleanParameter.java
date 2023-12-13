@@ -60,6 +60,14 @@ public class BooleanParameter extends AbstractEntity implements Serializable {
     return this;
   }
 
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+  }
+
   // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
   @Override

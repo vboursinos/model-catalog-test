@@ -42,6 +42,14 @@ public class IntegerParameter extends AbstractEntity implements Serializable {
     this.parameterTypeDefinition = parameterTypeDefinition;
   }
 
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+  }
+
   public Integer getDefaultValue() {
     return this.defaultValue;
   }

@@ -42,6 +42,14 @@ public class FloatParameter extends AbstractEntity implements Serializable {
 
   // jhipster-needle-entity-add-field - JHipster will add fields here
 
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+  }
+
   public Double getDefaultValue() {
     return this.defaultValue;
   }
