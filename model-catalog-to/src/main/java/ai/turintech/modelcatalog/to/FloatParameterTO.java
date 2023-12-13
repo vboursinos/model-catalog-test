@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
+import ai.turintech.components.data.common.to.AbstractTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
+public class FloatParameterTO extends AbstractTO implements Serializable {
 
   private static final long serialVersionUID = -6709359691936403897L;
 

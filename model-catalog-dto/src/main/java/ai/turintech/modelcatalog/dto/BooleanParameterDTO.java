@@ -1,12 +1,12 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
+import ai.turintech.components.data.common.dto.AbstractDTO;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for the BooleanParameter entity */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameterDTO extends AbstractUUIDIdentityDTO<UUID> {
+public class BooleanParameterDTO extends AbstractDTO {
 
   private UUID parameterTypeDefinitionId;
 

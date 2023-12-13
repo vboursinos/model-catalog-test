@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
-import ai.turintech.components.data.common.entity.AbstractEntity;
+import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -13,14 +13,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "integer_parameter_value")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterValue extends AbstractEntity implements Serializable {
+public class IntegerParameterValue extends AbstractUUIDIdentityEntity<UUID>
+    implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GeneratedValue
-  @Column(name = "id")
-  private UUID id;
 
   @NotNull
   @Column(name = "lower", nullable = false)
@@ -37,19 +33,6 @@ public class IntegerParameterValue extends AbstractEntity implements Serializabl
   private IntegerParameter integerParameter;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public IntegerParameterValue id(UUID id) {
-    this.setId(id);
-    return this;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Integer getLower() {
     return this.lower;

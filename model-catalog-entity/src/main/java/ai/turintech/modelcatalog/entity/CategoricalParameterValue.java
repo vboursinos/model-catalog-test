@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
-import ai.turintech.components.data.common.entity.AbstractEntity;
+import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -13,14 +13,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "categorical_parameter_value")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameterValue extends AbstractEntity implements Serializable {
+public class CategoricalParameterValue extends AbstractUUIDIdentityEntity<UUID>
+    implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GeneratedValue
-  @Column(name = "id")
-  private UUID id;
 
   @NotNull
   @Column(name = "value", nullable = false)
@@ -33,19 +29,6 @@ public class CategoricalParameterValue extends AbstractEntity implements Seriali
   private CategoricalParameter categoricalParameter;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public CategoricalParameterValue id(UUID id) {
-    this.setId(id);
-    return this;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getValue() {
     return this.value;
