@@ -5,7 +5,6 @@ import ai.turintech.components.jpa.search.JpaSearchPackage;
 import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
 import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
 import ai.turintech.components.mapper.EnableIgvMap;
-import ai.turintech.modelcatalog.callable.ModelCatalogCallablePackage;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelCatalogDtoEntityMapperPackage;
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
 import ai.turintech.modelcatalog.facade.ModelPackageFacadePackage;
@@ -28,7 +27,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
       ModelCatalogDtoEntityMapperPackage.class,
       ModelCatalogRepositoryPackage.class,
       ModelCatalogEntityPackage.class,
-      ModelCatalogCallablePackage.class,
       JpaSearchPackage.class,
       ArchitectureServicePackage.class
     })
