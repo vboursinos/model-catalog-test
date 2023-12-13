@@ -45,7 +45,7 @@ public interface ModelService {
    * @param id the id of the entity.
    * @return the entity.
    */
-  public Mono<ModelDTO> findOne(UUID id) throws Exception;
+  public Mono<ModelDTO> findOne(UUID id);
 
   /**
    * Delete the model by id.

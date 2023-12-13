@@ -65,7 +65,7 @@ public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelService
    * @return the entity.
    */
   @Transactional(readOnly = true)
-  public Mono<ModelDTO> findOne(UUID id) throws Exception {
+  public Mono<ModelDTO> findOne(UUID id) {
     log.debug("Request to get Model : {}", id);
     return modelService.findOne(id);
   }

@@ -113,7 +113,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
    * @return the entity.
    */
   @Transactional(readOnly = true)
-  public Mono<ModelDTO> findOne(UUID id) throws Exception {
+  public Mono<ModelDTO> findOne(UUID id) {
     log.debug("Request to get Model : {}", id);
     ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
