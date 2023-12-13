@@ -1,9 +1,9 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
+import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudCallable;
 import ai.turintech.components.jpa.search.service.AbstractSearchService;
 import ai.turintech.components.jpa.search.service.SearchService;
-import ai.turintech.modelcatalog.callable.GenericModelCallable;
-import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
 import ai.turintech.modelcatalog.entity.Model;
@@ -47,9 +47,13 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<ModelDTO> save(ModelDTO modelDTO) {
     log.debug("Request to save Model : {}", modelDTO);
-    GenericModelCallable<ModelDTO, ModelDTO, Model> callable =
+    ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            GenericModelCallableImpl.class, "create", modelDTO, modelRepository, modelMapper);
+            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            "create",
+            modelDTO,
+            modelRepository,
+            modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -62,9 +66,13 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<ModelDTO> update(ModelDTO modelDTO) {
     log.debug("Request to update Model : {}", modelDTO);
-    GenericModelCallable<ModelDTO, ModelDTO, Model> callable =
+    ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            GenericModelCallableImpl.class, "update", modelDTO, modelRepository, modelMapper);
+            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            "update",
+            modelDTO,
+            modelRepository,
+            modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -77,9 +85,9 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO) {
     log.debug("Request to partially update Model : {}", modelDTO);
-    GenericModelCallable<ModelDTO, ModelDTO, Model> callable =
+    ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            GenericModelCallableImpl.class,
+            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
             "partialUpdate",
             modelDTO.getId(),
             modelDTO,
@@ -107,9 +115,13 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional(readOnly = true)
   public Mono<ModelDTO> findOne(UUID id) throws Exception {
     log.debug("Request to get Model : {}", id);
-    GenericModelCallable<ModelDTO, ModelDTO, Model> callable =
+    ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            GenericModelCallableImpl.class, "findById", id, modelRepository, modelMapper);
+            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            "findById",
+            id,
+            modelRepository,
+            modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
@@ -121,17 +133,26 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete Model : {}", id);
-    GenericModelCallable<Void, ModelDTO, Model> callable =
-        context.getBean(GenericModelCallableImpl.class, "delete", id, modelRepository, modelMapper);
+    ReactiveAbstractUUIDIdentityCrudCallable<Void, ModelDTO, Model, UUID> callable =
+        context.getBean(
+            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            "delete",
+            id,
+            modelRepository,
+            modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, ModelDTO, Model> callable =
+    ReactiveAbstractUUIDIdentityCrudCallable<Boolean, ModelDTO, Model, UUID> callable =
         context.getBean(
-            GenericModelCallableImpl.class, "existsById", id, modelRepository, modelMapper);
+            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            "existsById",
+            id,
+            modelRepository,
+            modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }

@@ -1,8 +1,8 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
+import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudCallable;
 import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
-import ai.turintech.modelcatalog.callable.GenericModelCallable;
-import ai.turintech.modelcatalog.callable.GenericModelCallableImpl;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterTypeDefinitionMapper;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
@@ -51,11 +51,11 @@ public class ParameterTypeDefinitionServiceImpl
   public Mono<ParameterTypeDefinitionDTO> save(
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug("Request to save ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    GenericModelCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    ReactiveAbstractUUIDIdentityCrudCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
         callable =
             context.getBean(
-                GenericModelCallableImpl.class,
+                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
                 "create",
                 parameterTypeDefinitionDTO,
                 parameterTypeDefinitionRepository,
@@ -73,11 +73,11 @@ public class ParameterTypeDefinitionServiceImpl
   public Mono<ParameterTypeDefinitionDTO> update(
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug("Request to update ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    GenericModelCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    ReactiveAbstractUUIDIdentityCrudCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
         callable =
             context.getBean(
-                GenericModelCallableImpl.class,
+                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
                 "update",
                 parameterTypeDefinitionDTO,
                 parameterTypeDefinitionRepository,
@@ -96,11 +96,11 @@ public class ParameterTypeDefinitionServiceImpl
       ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
     log.debug(
         "Request to partially update ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    GenericModelCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    ReactiveAbstractUUIDIdentityCrudCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
         callable =
             context.getBean(
-                GenericModelCallableImpl.class,
+                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
                 "partialUpdate",
                 parameterTypeDefinitionDTO.getId(),
                 parameterTypeDefinitionDTO,
@@ -117,11 +117,14 @@ public class ParameterTypeDefinitionServiceImpl
   @Transactional(readOnly = true)
   public Mono<List<ParameterTypeDefinitionDTO>> findAll() {
     log.debug("Request to get all ParameterTypeDefinitions");
-    GenericModelCallable<
-            List<ParameterTypeDefinitionDTO>, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    ReactiveAbstractUUIDIdentityCrudCallable<
+            List<ParameterTypeDefinitionDTO>,
+            ParameterTypeDefinitionDTO,
+            ParameterTypeDefinition,
+            UUID>
         callable =
             context.getBean(
-                GenericModelCallableImpl.class,
+                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
                 "findAll",
                 parameterTypeDefinitionRepository,
                 parameterTypeDefinitionMapper);
@@ -219,11 +222,11 @@ public class ParameterTypeDefinitionServiceImpl
   @Transactional(readOnly = true)
   public Mono<ParameterTypeDefinitionDTO> findOne(UUID id) {
     log.debug("Request to get ParameterTypeDefinition : {}", id);
-    GenericModelCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition>
+    ReactiveAbstractUUIDIdentityCrudCallable<
+            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
         callable =
             context.getBean(
-                GenericModelCallableImpl.class,
+                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
                 "findById",
                 id,
                 parameterTypeDefinitionRepository,
@@ -239,26 +242,30 @@ public class ParameterTypeDefinitionServiceImpl
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete ParameterTypeDefinition : {}", id);
-    GenericModelCallable<Void, ParameterTypeDefinitionDTO, ParameterTypeDefinition> callable =
-        context.getBean(
-            GenericModelCallableImpl.class,
-            "delete",
-            id,
-            parameterTypeDefinitionRepository,
-            parameterTypeDefinitionMapper);
+    ReactiveAbstractUUIDIdentityCrudCallable<
+            Void, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
+        callable =
+            context.getBean(
+                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+                "delete",
+                id,
+                parameterTypeDefinitionRepository,
+                parameterTypeDefinitionMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    GenericModelCallable<Boolean, ParameterTypeDefinitionDTO, ParameterTypeDefinition> callable =
-        context.getBean(
-            GenericModelCallableImpl.class,
-            "existsById",
-            id,
-            parameterTypeDefinitionRepository,
-            parameterTypeDefinitionMapper);
+    ReactiveAbstractUUIDIdentityCrudCallable<
+            Boolean, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
+        callable =
+            context.getBean(
+                ReactiveAbstractUUIDIdentityCrudCallable.class,
+                "existsById",
+                id,
+                parameterTypeDefinitionRepository,
+                parameterTypeDefinitionMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }
