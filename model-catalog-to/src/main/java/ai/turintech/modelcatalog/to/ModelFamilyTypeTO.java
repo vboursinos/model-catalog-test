@@ -11,18 +11,8 @@ public class ModelFamilyTypeTO extends AbstractUUIDIdentityTO<UUID> implements S
 
   private static final long serialVersionUID = 6931442161725908205L;
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private String name;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -42,15 +32,15 @@ public class ModelFamilyTypeTO extends AbstractUUIDIdentityTO<UUID> implements S
     }
 
     ModelFamilyTypeTO modelFamilyTypeDTO = (ModelFamilyTypeTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, modelFamilyTypeDTO.id);
+    return Objects.equals(this.getId(), modelFamilyTypeDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

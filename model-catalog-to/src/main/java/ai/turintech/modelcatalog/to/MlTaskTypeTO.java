@@ -11,18 +11,8 @@ public class MlTaskTypeTO extends AbstractUUIDIdentityTO<UUID> implements Serial
 
   private static final long serialVersionUID = -536759035872405018L;
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private String name;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -42,15 +32,15 @@ public class MlTaskTypeTO extends AbstractUUIDIdentityTO<UUID> implements Serial
     }
 
     MlTaskTypeTO mlTaskTypeDTO = (MlTaskTypeTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, mlTaskTypeDTO.id);
+    return Objects.equals(this.getId(), mlTaskTypeDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

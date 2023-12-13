@@ -13,8 +13,6 @@ public class ParameterTO extends AbstractUUIDIdentityTO<UUID> implements Seriali
 
   private static final long serialVersionUID = -3037790423144785590L;
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private String name;
 
@@ -35,14 +33,6 @@ public class ParameterTO extends AbstractUUIDIdentityTO<UUID> implements Seriali
   @NotNull private UUID modelId;
 
   @NotNull private List<ParameterTypeDefinitionTO> definitions = new ArrayList<>();
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -118,15 +108,15 @@ public class ParameterTO extends AbstractUUIDIdentityTO<UUID> implements Seriali
     }
 
     ParameterTO parameterDTO = (ParameterTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, parameterDTO.id);
+    return Objects.equals(this.getId(), parameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -134,7 +124,7 @@ public class ParameterTO extends AbstractUUIDIdentityTO<UUID> implements Seriali
   public String toString() {
     return "ParameterDTO{"
         + "id="
-        + id
+        + getId()
         + ", name='"
         + name
         + '\''

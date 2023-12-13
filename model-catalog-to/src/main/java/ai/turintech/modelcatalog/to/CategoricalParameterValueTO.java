@@ -11,18 +11,9 @@ public class CategoricalParameterValueTO extends AbstractUUIDIdentityTO<UUID>
     implements Serializable {
 
   private static final long serialVersionUID = -3254308693794742605L;
-  private UUID id;
 
   @NotNull(message = "must not be null")
   private String value;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getValue() {
     return value;
@@ -42,15 +33,15 @@ public class CategoricalParameterValueTO extends AbstractUUIDIdentityTO<UUID>
     }
 
     CategoricalParameterValueTO categoricalParameterValueDTO = (CategoricalParameterValueTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, categoricalParameterValueDTO.id);
+    return Objects.equals(this.getId(), categoricalParameterValueDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

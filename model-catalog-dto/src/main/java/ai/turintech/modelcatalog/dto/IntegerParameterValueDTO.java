@@ -8,21 +8,11 @@ import java.util.UUID;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class IntegerParameterValueDTO extends AbstractUUIDIdentityDTO<UUID> {
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private Integer lower;
 
   @NotNull(message = "must not be null")
   private Integer upper;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Integer getLower() {
     return lower;

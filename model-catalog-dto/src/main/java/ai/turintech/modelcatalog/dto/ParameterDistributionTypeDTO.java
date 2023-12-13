@@ -9,18 +9,8 @@ import java.util.UUID;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ParameterDistributionTypeDTO extends AbstractUUIDIdentityDTO<UUID> {
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private String name;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -40,15 +30,15 @@ public class ParameterDistributionTypeDTO extends AbstractUUIDIdentityDTO<UUID> 
     }
 
     ParameterDistributionTypeDTO parameterDistributionTypeDTO = (ParameterDistributionTypeDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, parameterDistributionTypeDTO.id);
+    return Objects.equals(this.getId(), parameterDistributionTypeDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

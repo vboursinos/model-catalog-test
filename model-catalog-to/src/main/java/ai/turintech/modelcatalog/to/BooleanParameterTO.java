@@ -1,12 +1,12 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameterTO extends AbstractTO implements Serializable {
+public class BooleanParameterTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
 
   private static final long serialVersionUID = 1087247945141281117L;
 

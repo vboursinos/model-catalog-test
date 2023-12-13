@@ -9,18 +9,8 @@ import java.util.UUID;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class CategoricalParameterValueDTO extends AbstractUUIDIdentityDTO<UUID> {
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private String value;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getValue() {
     return value;
@@ -40,15 +30,15 @@ public class CategoricalParameterValueDTO extends AbstractUUIDIdentityDTO<UUID> 
     }
 
     CategoricalParameterValueDTO categoricalParameterValueDTO = (CategoricalParameterValueDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, categoricalParameterValueDTO.id);
+    return Objects.equals(this.getId(), categoricalParameterValueDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

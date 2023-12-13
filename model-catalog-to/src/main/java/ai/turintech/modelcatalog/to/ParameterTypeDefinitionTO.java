@@ -14,8 +14,6 @@ public class ParameterTypeDefinitionTO extends AbstractUUIDIdentityTO<UUID>
 
   private static final long serialVersionUID = 5585810515555669383L;
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private Integer ordering;
 
@@ -38,14 +36,6 @@ public class ParameterTypeDefinitionTO extends AbstractUUIDIdentityTO<UUID>
   //    private ParameterDTO parameter;
   //
   private ParameterTypeTO type;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Integer getOrdering() {
     return ordering;
@@ -137,15 +127,15 @@ public class ParameterTypeDefinitionTO extends AbstractUUIDIdentityTO<UUID>
     }
 
     ParameterTypeDefinitionTO parameterTypeDefinitionDTO = (ParameterTypeDefinitionTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, parameterTypeDefinitionDTO.id);
+    return Objects.equals(this.getId(), parameterTypeDefinitionDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -154,7 +144,7 @@ public class ParameterTypeDefinitionTO extends AbstractUUIDIdentityTO<UUID>
   public String toString() {
     return "ParameterTypeDefinitionDTO{"
         + "id="
-        + id
+        + getId()
         + ", ordering="
         + ordering
         + ", distributionId="

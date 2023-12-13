@@ -1,11 +1,11 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.*;
 
 /** A DTO for the CategoricalParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameterDTO extends AbstractDTO {
+public class CategoricalParameterDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   private UUID parameterTypeDefinitionId;
 

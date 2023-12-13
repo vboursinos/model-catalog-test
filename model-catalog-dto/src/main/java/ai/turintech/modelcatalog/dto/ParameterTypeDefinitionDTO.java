@@ -11,8 +11,6 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ParameterTypeDefinitionDTO extends AbstractUUIDIdentityDTO<UUID> {
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private Integer ordering;
 
@@ -35,14 +33,6 @@ public class ParameterTypeDefinitionDTO extends AbstractUUIDIdentityDTO<UUID> {
   //    private ParameterDTO parameter;
   //
   private ParameterTypeDTO type;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Integer getOrdering() {
     return ordering;
@@ -134,15 +124,15 @@ public class ParameterTypeDefinitionDTO extends AbstractUUIDIdentityDTO<UUID> {
     }
 
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = (ParameterTypeDefinitionDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, parameterTypeDefinitionDTO.id);
+    return Objects.equals(this.getId(), parameterTypeDefinitionDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -151,7 +141,7 @@ public class ParameterTypeDefinitionDTO extends AbstractUUIDIdentityDTO<UUID> {
   public String toString() {
     return "ParameterTypeDefinitionDTO{"
         + "id="
-        + id
+        + getId()
         + ", ordering="
         + ordering
         + ", distributionId="

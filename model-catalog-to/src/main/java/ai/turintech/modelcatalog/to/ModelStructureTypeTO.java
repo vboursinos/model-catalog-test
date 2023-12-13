@@ -11,18 +11,8 @@ public class ModelStructureTypeTO extends AbstractUUIDIdentityTO<UUID> implement
 
   private static final long serialVersionUID = -1404025172100088206L;
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private String name;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -42,15 +32,15 @@ public class ModelStructureTypeTO extends AbstractUUIDIdentityTO<UUID> implement
     }
 
     ModelStructureTypeTO modelStructureTypeDTO = (ModelStructureTypeTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, modelStructureTypeDTO.id);
+    return Objects.equals(this.getId(), modelStructureTypeDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

@@ -8,17 +8,7 @@ import java.util.UUID;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class MetricDTO extends AbstractUUIDIdentityDTO<UUID> {
 
-  private UUID id;
-
   private String metric;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getMetric() {
     return metric;
@@ -38,15 +28,15 @@ public class MetricDTO extends AbstractUUIDIdentityDTO<UUID> {
     }
 
     MetricDTO metricDTO = (MetricDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, metricDTO.id);
+    return Objects.equals(this.getId(), metricDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

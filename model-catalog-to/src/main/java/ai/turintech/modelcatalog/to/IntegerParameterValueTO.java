@@ -10,21 +10,11 @@ public class IntegerParameterValueTO extends AbstractUUIDIdentityTO<UUID> implem
 
   private static final long serialVersionUID = 4737079565447734718L;
 
-  private UUID id;
-
   @NotNull(message = "must not be null")
   private Integer lower;
 
   @NotNull(message = "must not be null")
   private Integer upper;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Integer getLower() {
     return lower;
