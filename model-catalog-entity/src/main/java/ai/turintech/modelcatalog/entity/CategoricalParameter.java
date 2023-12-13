@@ -29,7 +29,7 @@ public class CategoricalParameter extends AbstractEntity implements Serializable
   @JoinColumn(name = "parameter_type_definition_id", unique = true)
   private ParameterTypeDefinition parameterTypeDefinition;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoricalParameter")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoricalParameter")
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   private Set<CategoricalParameterValue> categoricalParameterValues = new HashSet<>();
 
