@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>ai.turintech.model-catalog</groupId>
 		<artifactId>model-catalog-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-a0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>model-catalog-rest</artifactId>
