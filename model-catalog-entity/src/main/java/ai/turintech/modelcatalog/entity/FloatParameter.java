@@ -29,7 +29,7 @@ public class FloatParameter extends AbstractEntity implements Serializable {
   @JoinColumn(name = "parameter_type_definition_id", unique = true)
   private ParameterTypeDefinition parameterTypeDefinition;
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "floatParameter")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "floatParameter")
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   private Set<FloatParameterRange> floatParameterRanges = new HashSet<>();
 
