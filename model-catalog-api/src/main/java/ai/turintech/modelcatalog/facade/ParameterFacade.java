@@ -26,5 +26,4 @@ public interface ParameterFacade
    * @return the list of entities.
    */
   public Mono<List<ParameterDTO>> findAllPageable(Pageable pageable);
-
 }
