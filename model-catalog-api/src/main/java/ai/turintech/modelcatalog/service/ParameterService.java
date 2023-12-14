@@ -1,63 +1,30 @@
 package ai.turintech.modelcatalog.service;
 
+import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudService;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
+import ai.turintech.modelcatalog.entity.Parameter;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ParameterService {
+public interface ParameterService
+    extends ReactiveAbstractUUIDIdentityCrudService<ParameterDTO, Parameter, UUID> {
 
   /**
-   * Save a parameter.
-   *
-   * @param parameterDTO the entity to save.
-   * @return the persisted entity.
-   */
-  public Mono<ParameterDTO> save(ParameterDTO parameterDTO);
-
-  /**
-   * Update a parameter.
-   *
-   * @param parameterDTO the entity to save.
-   * @return the persisted entity.
-   */
-  public Mono<ParameterDTO> update(ParameterDTO parameterDTO);
-
-  /**
-   * Partially update a parameter.
-   *
-   * @param parameterDTO the entity to update partially.
-   * @return the persisted entity.
-   */
-  public Mono<Optional<ParameterDTO>> partialUpdate(ParameterDTO parameterDTO);
-
-  /**
-   * Get all the parameters.
+   * Get all the parameters in Mono.
    *
    * @param pageable the pagination information.
    * @return the list of entities.
    */
-  public Mono<List<ParameterDTO>> findAll(Pageable pageable);
+  public Mono<List<ParameterDTO>> findAllPageable(Pageable pageable);
 
+  /**
+   * Get all the parameters in pages as a steam.
+   *
+   * @param pageable the pagination information.
+   * @return the list of entities.
+   */
   public Flux<ParameterDTO> findAllStream(Pageable pageable);
-
-  /**
-   * Get one parameter by id.
-   *
-   * @param id the id of the entity.
-   * @return the entity.
-   */
-  public Mono<ParameterDTO> findOne(UUID id);
-
-  /**
-   * Delete the parameter by id.
-   *
-   * @param id the id of the entity.
-   */
-  public Mono<Void> delete(UUID id);
-
-  public Mono<Boolean> existsById(UUID id);
 }

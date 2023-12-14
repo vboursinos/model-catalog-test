@@ -164,7 +164,7 @@ public class ParameterResource {
               Mono<ParameterTO> result =
                   parameterFacade
                       .partialUpdate(parameterMapper.from(parameterTO))
-                      .map(parameterMapper::toTo);
+                      .map(parameterMapper::to);
 
               return result
                   .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -186,13 +186,13 @@ public class ParameterResource {
    * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of parameters in
    *     body.
    */
-  @GetMapping(value = "/parameters", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/parameters/non-stream", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<ResponseEntity<List<ParameterTO>>> getAllParameters(
       @org.springdoc.core.annotations.ParameterObject Pageable pageable,
       ServerHttpRequest request) {
     log.debug("REST request to get a page of Parameters");
     return parameterFacade
-        .findAll(pageable)
+        .findAllPageable(pageable)
         .map(parameterMapper::toTO)
         .map(updatedListParameter -> ResponseEntity.ok().body(updatedListParameter))
         .defaultIfEmpty(ResponseEntity.notFound().build())
@@ -204,12 +204,20 @@ public class ParameterResource {
             });
   }
 
-  @GetMapping(value = "/parameters/stream", produces = MediaType.APPLICATION_JSON_VALUE)
+  /**
+   * {@code GET /parameters/pageable-stream} : get all the parameters.
+   *
+   * @param pageable the pagination information.
+   * @param request a {@link ServerHttpRequest} request.
+   * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of parameters in
+   *     body.
+   */
+  @GetMapping(value = "/parameters", produces = MediaType.APPLICATION_JSON_VALUE)
   public Flux<ParameterTO> getAllParametersAsStream(
       @org.springdoc.core.annotations.ParameterObject Pageable pageable,
       ServerHttpRequest request) {
     log.debug("REST request to get a page of Parameters");
-    return parameterFacade.findAllStream(pageable).map(parameterMapper::to);
+    return parameterFacade.findPageableStream(pageable).map(parameterMapper::to);
   }
 
   /**
@@ -241,7 +249,7 @@ public class ParameterResource {
             Mono.just(
                 ResponseEntity.noContent()
                     .headers(
-                        HeaderUtil.createEntityDeletionAlert(
+                        ai.turintech.modelcatalog.rest.support.HeaderUtil.createEntityDeletionAlert(
                             applicationName, true, ENTITY_NAME, id.toString()))
                     .build()));
   }
