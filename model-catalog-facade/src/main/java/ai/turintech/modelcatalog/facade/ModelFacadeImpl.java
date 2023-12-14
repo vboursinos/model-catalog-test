@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Service Implementation for managing {@link Model}. */
@@ -56,6 +57,12 @@ public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelService
     log.debug("Request to partially update Model : {}", modelDTO);
 
     return modelService.partialUpdate(modelDTO);
+  }
+
+  @Override
+  public Flux<ModelDTO> findAll() {
+    log.debug("Request to get all Entities");
+    return modelService.findAll();
   }
 
   /**

@@ -2,8 +2,7 @@ package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import java.util.UUID;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ModelService {
@@ -33,11 +32,11 @@ public interface ModelService {
   public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO);
 
   /**
-   * Get all the models with eager load of many-to-many relationships.
+   * Get all the models.
    *
    * @return the list of entities.
    */
-  public Page<ModelDTO> findAllWithEagerRelationships(Pageable pageable);
+  public Flux<ModelDTO> findAll();
 
   /**
    * Get one model by id.

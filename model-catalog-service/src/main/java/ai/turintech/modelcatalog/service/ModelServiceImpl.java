@@ -9,18 +9,17 @@ import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
 import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.entity.ModelLimited;
 import ai.turintech.modelcatalog.repository.ModelRepository;
-import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /** Service Implementation for managing {@link Model}. */
 @Service
@@ -97,13 +96,15 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   }
 
   /**
-   * Get all the models with eager load of many-to-many relationships.
+   * Get all the models.
    *
    * @return the list of entities.
    */
-  public Page<ModelDTO> findAllWithEagerRelationships(Pageable pageable) {
-    List<Model> models = modelRepository.findAllWithEagerRelationships();
-    return modelRepository.findAllWithEagerRelationships(pageable).map(modelMapper::toDto);
+  public Flux<ModelDTO> findAll() {
+    log.debug("Request to get all Models");
+    return Flux.defer(
+            () -> Flux.fromStream(modelRepository.findAll().stream().map(modelMapper::to)))
+        .subscribeOn(Schedulers.boundedElastic());
   }
 
   /**
