@@ -2,16 +2,17 @@ package ai.turintech.modelcatalog.rest.config;
 
 import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
 
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
-import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter.Mode;
 import org.springframework.security.web.server.savedrequest.NoOpServerRequestCache;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableReactiveMethodSecurity
@@ -19,6 +20,13 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
+    corsConfiguration.setAllowedHeaders(List.of("*"));
+    corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+    corsConfiguration.setAllowedMethods(List.of("*"));
+    corsConfiguration.setAllowCredentials(true);
+    corsConfiguration.setExposedHeaders(List.of("*"));
+
     http.securityMatcher(
             new NegatedServerWebExchangeMatcher(
                 new OrServerWebExchangeMatcher(
@@ -27,20 +35,17 @@ public class SecurityConfiguration {
         .headers(
             headers ->
                 headers
-                    .contentSecurityPolicy(
-                        csp ->
-                            csp.policyDirectives(
-                                "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:"))
-                    .frameOptions(frameOptions -> frameOptions.mode(Mode.DENY))
+                    .contentSecurityPolicy(csp -> csp.reportOnly(true))
                     .referrerPolicy(
                         referrer ->
                             referrer.policy(
-                                ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy
-                                    .STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                                ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.UNSAFE_URL))
                     .permissionsPolicy(
                         permissions ->
                             permissions.policy(
                                 "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()")))
+        .requestCache(cache -> cache.requestCache(NoOpServerRequestCache.getInstance()))
+        .cors(cors -> cors.configurationSource(request -> corsConfiguration))
         .requestCache(cache -> cache.requestCache(NoOpServerRequestCache.getInstance()))
         .authorizeExchange(
             authz ->
@@ -58,6 +63,11 @@ public class SecurityConfiguration {
                     .pathMatchers("/webjars/swagger-ui/**")
                     .permitAll()
                     .pathMatchers("/v3/api-docs/**")
+                    .permitAll()
+                    // Graphql gui
+                    .pathMatchers("/**")
+                    .permitAll()
+                    .pathMatchers("/graphiql/**", "/vendor/**")
                     .permitAll()
                     .pathMatchers("/management/health")
                     .permitAll()

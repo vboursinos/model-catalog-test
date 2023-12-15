@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.rest.config;
 
 import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
+import com.introproventures.graphql.jpa.query.autoconfigure.EnableGraphQLJpaQuerySchema;
 import jakarta.persistence.EntityManagerFactory;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -17,6 +18,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
+@EnableGraphQLJpaQuerySchema(basePackageClasses = ModelCatalogEntityPackage.class)
 public class JpaConfiguration {
 
   @Value("${spring.datasource.url}")
