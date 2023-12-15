@@ -1,14 +1,11 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
-import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudCallable;
 import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterTypeDefinitionMapper;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import ai.turintech.modelcatalog.repository.ParameterTypeDefinitionRepository;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,7 +16,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -40,96 +36,6 @@ public class ParameterTypeDefinitionServiceImpl
   @Autowired private ParameterTypeDefinitionRepository parameterTypeDefinitionRepository;
 
   @Autowired private ParameterTypeDefinitionMapper parameterTypeDefinitionMapper;
-
-  /**
-   * Save a parameterTypeDefinition.
-   *
-   * @param parameterTypeDefinitionDTO the entity to save.
-   * @return the persisted entity.
-   */
-  @Transactional
-  public Mono<ParameterTypeDefinitionDTO> save(
-      ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
-    log.debug("Request to save ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    ReactiveAbstractUUIDIdentityCrudCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
-                "create",
-                parameterTypeDefinitionDTO,
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
-  }
-
-  /**
-   * Update a parameterTypeDefinition.
-   *
-   * @param parameterTypeDefinitionDTO the entity to save.
-   * @return the persisted entity.
-   */
-  @Transactional
-  public Mono<ParameterTypeDefinitionDTO> update(
-      ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
-    log.debug("Request to update ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    ReactiveAbstractUUIDIdentityCrudCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
-                "update",
-                parameterTypeDefinitionDTO,
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
-  }
-
-  /**
-   * Partially update a parameterTypeDefinition.
-   *
-   * @param parameterTypeDefinitionDTO the entity to update partially.
-   * @return the persisted entity.
-   */
-  @Transactional
-  public Mono<ParameterTypeDefinitionDTO> partialUpdate(
-      ParameterTypeDefinitionDTO parameterTypeDefinitionDTO) {
-    log.debug(
-        "Request to partially update ParameterTypeDefinition : {}", parameterTypeDefinitionDTO);
-    ReactiveAbstractUUIDIdentityCrudCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
-                "partialUpdate",
-                parameterTypeDefinitionDTO.getId(),
-                parameterTypeDefinitionDTO,
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
-  }
-
-  /**
-   * Get all the parameterTypeDefinitions.
-   *
-   * @return the list of entities.
-   */
-  @Transactional(readOnly = true)
-  public Mono<List<ParameterTypeDefinitionDTO>> findAll() {
-    log.debug("Request to get all ParameterTypeDefinitions");
-    ReactiveAbstractUUIDIdentityCrudCallable<
-            List<ParameterTypeDefinitionDTO>,
-            ParameterTypeDefinitionDTO,
-            ParameterTypeDefinition,
-            UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
-                "findAll",
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
-  }
 
   @Transactional(readOnly = true)
   public Flux<ParameterTypeDefinitionDTO> findAllStream() {
@@ -212,60 +118,5 @@ public class ParameterTypeDefinitionServiceImpl
                                 parameterTypeDefinition.getBooleanParameter() == null)
                         .map(parameterTypeDefinitionMapper::to)))
         .subscribeOn(Schedulers.boundedElastic());
-  }
-  /**
-   * Get one parameterTypeDefinition by id.
-   *
-   * @param id the id of the entity.
-   * @return the entity.
-   */
-  @Transactional(readOnly = true)
-  public Mono<ParameterTypeDefinitionDTO> findOne(UUID id) {
-    log.debug("Request to get ParameterTypeDefinition : {}", id);
-    ReactiveAbstractUUIDIdentityCrudCallable<
-            ParameterTypeDefinitionDTO, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
-                "findById",
-                id,
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
-  }
-
-  /**
-   * Delete the parameterTypeDefinition by id.
-   *
-   * @param id the id of the entity.
-   */
-  @Transactional
-  public Mono<Void> delete(UUID id) {
-    log.debug("Request to delete ParameterTypeDefinition : {}", id);
-    ReactiveAbstractUUIDIdentityCrudCallable<
-            Void, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
-                "delete",
-                id,
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
-  }
-
-  @Transactional
-  public Mono<Boolean> existsById(UUID id) {
-    log.debug("Request to check if ModelGroupType exists : {}", id);
-    ReactiveAbstractUUIDIdentityCrudCallable<
-            Boolean, ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallable.class,
-                "existsById",
-                id,
-                parameterTypeDefinitionRepository,
-                parameterTypeDefinitionMapper);
-    return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 }
