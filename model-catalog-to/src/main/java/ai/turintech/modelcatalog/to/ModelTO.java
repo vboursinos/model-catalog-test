@@ -1,16 +1,14 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelTO extends AbstractTO implements Serializable {
+public class ModelTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
 
   private static final long serialVersionUID = 1294639702776637323L;
-
-  private UUID id;
 
   @NotNull(message = "must not be null")
   private String name;
@@ -45,14 +43,6 @@ public class ModelTO extends AbstractTO implements Serializable {
   private ModelFamilyTypeTO familyType;
 
   private ModelEnsembleTypeTO ensembleType;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -184,15 +174,15 @@ public class ModelTO extends AbstractTO implements Serializable {
     }
 
     ModelTO modelDTO = (ModelTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, modelDTO.id);
+    return Objects.equals(this.getId(), modelDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -201,7 +191,7 @@ public class ModelTO extends AbstractTO implements Serializable {
   public String toString() {
     return "ModelDTO{"
         + "id="
-        + id
+        + getId()
         + ", name='"
         + name
         + '\''

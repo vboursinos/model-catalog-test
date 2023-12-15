@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
+import ai.turintech.components.data.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "integer_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameter implements Serializable {
+public class IntegerParameter extends AbstractEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -39,6 +40,14 @@ public class IntegerParameter implements Serializable {
   public IntegerParameter(ParameterTypeDefinition parameterTypeDefinition) {
     this.parameterTypeDefinitionId = parameterTypeDefinition.getId();
     this.parameterTypeDefinition = parameterTypeDefinition;
+  }
+
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
   }
 
   public Integer getDefaultValue() {

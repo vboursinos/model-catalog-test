@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>ai.turintech.model-catalog</groupId>
 		<artifactId>model-catalog-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	        <relativePath>../pom.xml</relativePath>
+		<version>1.0.0-a0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>model-catalog-facade</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-a0-SNAPSHOT</version>
 	<name>model-catalog-facade</name>
 	<description>Business facade for the model-catalog microservice</description>
 	<properties>
@@ -43,6 +43,16 @@
 		<dependency>
 			<groupId>ai.turintech.model-catalog</groupId>
 			<artifactId>model-catalog-dto</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-api</artifactId>
+		</dependency>
+
+		<!-- java components dependencies -->
+		<dependency>
+			<groupId>ai.turintech.components</groupId>
+			<artifactId>architecture-facade</artifactId>
 		</dependency>
 	</dependencies>
 

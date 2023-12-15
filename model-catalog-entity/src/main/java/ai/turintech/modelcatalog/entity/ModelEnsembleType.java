@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
+import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -14,14 +15,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "model_ensemble_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelEnsembleType implements Serializable {
+public class ModelEnsembleType extends AbstractUUIDIdentityEntity<UUID> implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GeneratedValue
-  @Column(name = "id")
-  private UUID id;
 
   @NotNull
   @Column(name = "name", nullable = false)
@@ -32,19 +28,6 @@ public class ModelEnsembleType implements Serializable {
   private Set<Model> models = new HashSet<>();
 
   // jhipster-needle-entity-add-field - JHipster will add fields here
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public ModelEnsembleType id(UUID id) {
-    this.setId(id);
-    return this;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return this.name;

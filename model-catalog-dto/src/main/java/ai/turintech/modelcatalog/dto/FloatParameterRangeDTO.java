@@ -1,15 +1,13 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import jakarta.validation.constraints.*;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for thFloatParameterRange} entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterRangeDTO implements Serializable {
-
-  private UUID id;
+public class FloatParameterRangeDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   @NotNull(message = "must not be null")
   private Boolean isLeftOpen;
@@ -22,14 +20,6 @@ public class FloatParameterRangeDTO implements Serializable {
 
   @NotNull(message = "must not be null")
   private Double upper;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Boolean getIsLeftOpen() {
     return isLeftOpen;
@@ -73,15 +63,15 @@ public class FloatParameterRangeDTO implements Serializable {
     }
 
     FloatParameterRangeDTO floatParameterRangeDTO = (FloatParameterRangeDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, floatParameterRangeDTO.id);
+    return Objects.equals(this.getId(), floatParameterRangeDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

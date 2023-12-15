@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.dto;
 
-import java.io.Serializable;
+import ai.turintech.components.data.common.dto.AbstractDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /** A DTO for the FloatParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterDTO implements Serializable {
+public class FloatParameterDTO extends AbstractDTO {
 
   private UUID parameterTypeDefinitionId;
 

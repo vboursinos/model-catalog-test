@@ -5,9 +5,7 @@ import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 import ai.turintech.modelcatalog.rest.support.database.h2.H2ConfigurationHelper;
 import ai.turintech.modelcatalog.rest.support.errors.ReactiveWebExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.time.Duration;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +16,6 @@ import org.springframework.core.env.Profiles;
 import org.springframework.data.web.ReactivePageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.ReactiveSortHandlerMethodArgumentResolver;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
@@ -102,50 +99,83 @@ public class WebConfigurer implements WebFluxConfigurer {
     config.addAllowedMethod(HttpMethod.TRACE.name());
     config.addAllowedMethod(HttpMethod.OPTIONS.name());
     config.addAllowedMethod(HttpMethod.HEAD.name());
-    //if (!CollectionUtils.isEmpty(config.getAllowedOrigins())
+    // if (!CollectionUtils.isEmpty(config.getAllowedOrigins())
     //    || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
-      log.debug("Registering CORS filter");
-      source.registerCorsConfiguration("/api/**", config);
-      source.registerCorsConfiguration("/management/**", config);
-      source.registerCorsConfiguration("/v3/api-docs", config);
-      source.registerCorsConfiguration("/swagger-ui/**", config);
-      source.registerCorsConfiguration("*", config);
-    //}
-    //source.registerCorsConfiguration("*", config);
+    log.debug("Registering CORS filter");
+    source.registerCorsConfiguration("/api/**", config);
+    source.registerCorsConfiguration("/management/**", config);
+    source.registerCorsConfiguration("/v3/api-docs", config);
+    source.registerCorsConfiguration("/swagger-ui/**", config);
+    source.registerCorsConfiguration("*", config);
+    // }
+    // source.registerCorsConfiguration("*", config);
     return source;
   }
-  
-  /**
-   * Cors configuration.
-   */
+
+  /** Cors configuration. */
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-      // @formatter:off
-      registry
-      .addMapping("/**")
-          .allowedOrigins("*")
-          .maxAge(3600)
-          .allowedHeaders( "X-HTTP-Method-Override", "Cache-Control", "Content-Type",
-              "Content-Length", "Content-Disposition", "Location", "Transfer-Encoding", "Upload-Offset", "Upload-Metadata",
-              "Upload-Checksum", "Upload-Length", "Upload-Expires", "Upload-Defer-Length", "Upload-Concat", "Tus-Version",
-              "Tus-Resumable", "Tus-Extension", "Tus-Max-Size", "Tus-Checksum-Algorithm", "X-Forwarded-For", "Location" )
-          .exposedHeaders("X-HTTP-Method-Override", "Cache-Control", "Content-Type",
-              "Content-Length", "Content-Disposition", "Location", "Transfer-Encoding", "Upload-Offset", "Upload-Metadata",
-              "Upload-Checksum", "Upload-Length", "Upload-Expires", "Upload-Defer-Length", "Upload-Concat", "Tus-Version",
-              "Tus-Resumable", "Tus-Extension", "Tus-Max-Size", "Tus-Checksum-Algorithm", "X-Forwarded-For", "Location")
-          .allowedMethods(
-                  HttpMethod.GET.name(),
-                  HttpMethod.POST.name(),
-                  HttpMethod.PUT.name(),
-                  HttpMethod.PATCH.name(),
-                  HttpMethod.DELETE.name(),
-                  HttpMethod.TRACE.name(),
-                  HttpMethod.OPTIONS.name(),
-                  HttpMethod.HEAD.name());
+    // @formatter:off
+    registry
+        .addMapping("/**")
+        .allowedOrigins("*")
+        .maxAge(3600)
+        .allowedHeaders(
+            "X-HTTP-Method-Override",
+            "Cache-Control",
+            "Content-Type",
+            "Content-Length",
+            "Content-Disposition",
+            "Location",
+            "Transfer-Encoding",
+            "Upload-Offset",
+            "Upload-Metadata",
+            "Upload-Checksum",
+            "Upload-Length",
+            "Upload-Expires",
+            "Upload-Defer-Length",
+            "Upload-Concat",
+            "Tus-Version",
+            "Tus-Resumable",
+            "Tus-Extension",
+            "Tus-Max-Size",
+            "Tus-Checksum-Algorithm",
+            "X-Forwarded-For",
+            "Location")
+        .exposedHeaders(
+            "X-HTTP-Method-Override",
+            "Cache-Control",
+            "Content-Type",
+            "Content-Length",
+            "Content-Disposition",
+            "Location",
+            "Transfer-Encoding",
+            "Upload-Offset",
+            "Upload-Metadata",
+            "Upload-Checksum",
+            "Upload-Length",
+            "Upload-Expires",
+            "Upload-Defer-Length",
+            "Upload-Concat",
+            "Tus-Version",
+            "Tus-Resumable",
+            "Tus-Extension",
+            "Tus-Max-Size",
+            "Tus-Checksum-Algorithm",
+            "X-Forwarded-For",
+            "Location")
+        .allowedMethods(
+            HttpMethod.GET.name(),
+            HttpMethod.POST.name(),
+            HttpMethod.PUT.name(),
+            HttpMethod.PATCH.name(),
+            HttpMethod.DELETE.name(),
+            HttpMethod.TRACE.name(),
+            HttpMethod.OPTIONS.name(),
+            HttpMethod.HEAD.name());
 
-      // @formatter:on
+    // @formatter:on
   }
-
 
   // TODO: remove when this is supported in spring-boot
   @Bean

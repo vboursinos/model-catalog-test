@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,11 +9,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterTO extends AbstractTO implements Serializable {
+public class ParameterTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
 
   private static final long serialVersionUID = -3037790423144785590L;
-
-  private UUID id;
 
   @NotNull(message = "must not be null")
   private String name;
@@ -35,14 +33,6 @@ public class ParameterTO extends AbstractTO implements Serializable {
   @NotNull private UUID modelId;
 
   @NotNull private List<ParameterTypeDefinitionTO> definitions = new ArrayList<>();
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -118,15 +108,15 @@ public class ParameterTO extends AbstractTO implements Serializable {
     }
 
     ParameterTO parameterDTO = (ParameterTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, parameterDTO.id);
+    return Objects.equals(this.getId(), parameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -134,7 +124,7 @@ public class ParameterTO extends AbstractTO implements Serializable {
   public String toString() {
     return "ParameterDTO{"
         + "id="
-        + id
+        + getId()
         + ", name='"
         + name
         + '\''

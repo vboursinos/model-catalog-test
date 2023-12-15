@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
+import ai.turintech.components.data.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
@@ -11,7 +12,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "boolean_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameter implements Serializable {
+public class BooleanParameter extends AbstractEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -57,6 +58,14 @@ public class BooleanParameter implements Serializable {
   public BooleanParameter parameterTypeDefinition(ParameterTypeDefinition parameterTypeDefinition) {
     this.setParameterTypeDefinition(parameterTypeDefinition);
     return this;
+  }
+
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
   }
 
   // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

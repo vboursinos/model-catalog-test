@@ -1,24 +1,14 @@
 package ai.turintech.modelcatalog.dto;
 
-import java.io.Serializable;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for the Metric entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class MetricDTO implements Serializable {
-
-  private UUID id;
+public class MetricDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   private String metric;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getMetric() {
     return metric;
@@ -38,15 +28,15 @@ public class MetricDTO implements Serializable {
     }
 
     MetricDTO metricDTO = (MetricDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, metricDTO.id);
+    return Objects.equals(this.getId(), metricDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

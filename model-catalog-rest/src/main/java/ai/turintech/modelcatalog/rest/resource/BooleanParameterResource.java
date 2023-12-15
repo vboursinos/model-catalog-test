@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.rest.resource;
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.entity.BooleanParameter;
 import ai.turintech.modelcatalog.facade.BooleanParameterFacade;
-import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.to.BooleanParameterTO;
@@ -52,11 +51,10 @@ public class BooleanParameterResource {
    */
   @PostMapping("/boolean-parameters")
   public Mono<ResponseEntity<BooleanParameterTO>> createBooleanParameter(
-      @RequestBody BooleanParameterTO booleanParameterTO) throws URISyntaxException {
+      @RequestBody BooleanParameterTO booleanParameterTO) {
     log.debug("REST request to save BooleanParameter : {}", booleanParameterTO);
     if (booleanParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new BadRequestAlertException(
-          "A new booleanParameter cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     return booleanParameterFacade
         .save(this.booleanParameterMapper.from(booleanParameterTO))
@@ -93,14 +91,13 @@ public class BooleanParameterResource {
   @PutMapping("/boolean-parameters/{id}")
   public Mono<ResponseEntity<BooleanParameterTO>> updateBooleanParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody BooleanParameterTO booleanParameterTO)
-      throws URISyntaxException {
+      @RequestBody BooleanParameterTO booleanParameterTO) {
     log.debug("REST request to update BooleanParameter : {}, {}", id, booleanParameterTO);
     if (booleanParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     if (!Objects.equals(id, booleanParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return booleanParameterFacade
@@ -108,8 +105,7 @@ public class BooleanParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               return booleanParameterFacade
@@ -147,17 +143,16 @@ public class BooleanParameterResource {
       consumes = {"application/json", "application/merge-patch+json"})
   public Mono<ResponseEntity<BooleanParameterTO>> partialUpdateBooleanParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody BooleanParameterTO booleanParameterTO)
-      throws URISyntaxException {
+      @RequestBody BooleanParameterTO booleanParameterTO) {
     log.debug(
         "REST request to partial update BooleanParameter partially : {}, {}",
         id,
         booleanParameterTO);
     if (booleanParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     if (!Objects.equals(id, booleanParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return booleanParameterFacade
@@ -165,8 +160,7 @@ public class BooleanParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               Mono<BooleanParameterTO> result =

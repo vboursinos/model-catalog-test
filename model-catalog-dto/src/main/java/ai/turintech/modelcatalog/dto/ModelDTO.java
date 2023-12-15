@@ -1,16 +1,12 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.*;
 
 /** A DTO for the Model entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelDTO extends AbstractDTO implements Serializable {
-
-  private UUID id;
-
+public class ModelDTO extends AbstractUUIDIdentityDTO<UUID> {
   @NotNull(message = "must not be null")
   private String name;
 
@@ -46,7 +42,6 @@ public class ModelDTO extends AbstractDTO implements Serializable {
   private ModelEnsembleTypeDTO ensembleType;
 
   public ModelDTO(
-      UUID id,
       String name,
       String displayName,
       String description,
@@ -54,7 +49,6 @@ public class ModelDTO extends AbstractDTO implements Serializable {
       String[] disadvantages,
       Boolean enabled,
       Boolean decisionTree) {
-    this.id = id;
     this.name = name;
     this.displayName = displayName;
     this.description = description;
@@ -62,14 +56,6 @@ public class ModelDTO extends AbstractDTO implements Serializable {
     this.disadvantages = disadvantages;
     this.enabled = enabled;
     this.decisionTree = decisionTree;
-  }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
   }
 
   public String getName() {
@@ -202,15 +188,15 @@ public class ModelDTO extends AbstractDTO implements Serializable {
     }
 
     ModelDTO modelDTO = (ModelDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, modelDTO.id);
+    return Objects.equals(this.getId(), modelDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -219,7 +205,7 @@ public class ModelDTO extends AbstractDTO implements Serializable {
   public String toString() {
     return "ModelDTO{"
         + "id="
-        + id
+        + getId()
         + ", name='"
         + name
         + '\''

@@ -12,7 +12,7 @@
 
 	<groupId>ai.turintech.model-catalog</groupId>
 	<artifactId>model-catalog-parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-a0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>model-catalog-parent</name>
 	<description>Parent module for the model-catalog microservice</description>
@@ -46,9 +46,10 @@
 		<fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
 
 		<!-- Components -->
-		<jpa-search.version>01.00.00-a0-SNAPSHOT</jpa-search.version>
-		<common-data.version>01.00.00-a0-SNAPSHOT</common-data.version>
-		<mapper.version>01.00.00-a0-SNAPSHOT</mapper.version>
+		<jpa-search.version>01.00.00-a2-SNAPSHOT</jpa-search.version>
+		<common-data.version>01.00.00-a2-SNAPSHOT</common-data.version>
+		<mapper.version>01.00.00-a2-SNAPSHOT</mapper.version>
+		<architecture.version>01.00.00-a2-SNAPSHOT</architecture.version>
 
 
 		<!-- Additional props copied from jhipster pom.xml -->
@@ -142,52 +143,52 @@
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-api</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-rest</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-service</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-dto</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-repository</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-dto-entity-mapper</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-entity</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-to</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-facade</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ai.turintech.model-catalog</groupId>
 				<artifactId>model-catalog-to-dto-mapper</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-a0-SNAPSHOT</version>
 			</dependency>
 
 			<!-- Turintech components -->
@@ -205,6 +206,31 @@
 				<groupId>ai.turintech.components</groupId>
 				<artifactId>mapper</artifactId>
 				<version>${mapper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>architecture-parent</artifactId>
+				<version>${architecture.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>architecture-api</artifactId>
+				<version>${architecture.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>architecture-facade</artifactId>
+				<version>${architecture.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>architecture-service</artifactId>
+				<version>${architecture.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ai.turintech.components</groupId>
+				<artifactId>architecture-rest</artifactId>
+				<version>${architecture.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

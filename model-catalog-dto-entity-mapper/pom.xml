@@ -6,11 +6,11 @@
 	<parent>
 		<groupId>ai.turintech.model-catalog</groupId>
 		<artifactId>model-catalog-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-a0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>model-catalog-dto-entity-mapper</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-a0-SNAPSHOT</version>
 	<name>model-catalog-dto-entity-mapper</name>
 	<description>Mappers module between Data Transfer Objects and Entities for the model-catalog microservice</description>
 	<properties>

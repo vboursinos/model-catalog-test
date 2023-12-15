@@ -1,17 +1,15 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterRangeTO extends AbstractTO implements Serializable {
+public class FloatParameterRangeTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
 
   private static final long serialVersionUID = -806224531073871956L;
-
-  private UUID id;
 
   @NotNull(message = "must not be null")
   private Boolean isLeftOpen;
@@ -24,14 +22,6 @@ public class FloatParameterRangeTO extends AbstractTO implements Serializable {
 
   @NotNull(message = "must not be null")
   private Double upper;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Boolean getIsLeftOpen() {
     return isLeftOpen;
@@ -75,15 +65,15 @@ public class FloatParameterRangeTO extends AbstractTO implements Serializable {
     }
 
     FloatParameterRangeTO floatParameterRangeDTO = (FloatParameterRangeTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, floatParameterRangeDTO.id);
+    return Objects.equals(this.getId(), floatParameterRangeDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

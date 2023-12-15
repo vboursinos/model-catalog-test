@@ -1,26 +1,16 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import jakarta.validation.constraints.*;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for the CategoricalParameterValue entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameterValueDTO implements Serializable {
-
-  private UUID id;
+public class CategoricalParameterValueDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   @NotNull(message = "must not be null")
   private String value;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getValue() {
     return value;
@@ -40,15 +30,15 @@ public class CategoricalParameterValueDTO implements Serializable {
     }
 
     CategoricalParameterValueDTO categoricalParameterValueDTO = (CategoricalParameterValueDTO) o;
-    if (this.id == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(this.id, categoricalParameterValueDTO.id);
+    return Objects.equals(this.getId(), categoricalParameterValueDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

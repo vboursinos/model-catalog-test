@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
+import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,14 +14,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "metric")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Metric implements Serializable {
+public class Metric extends AbstractUUIDIdentityEntity<UUID> implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GeneratedValue
-  @Column(name = "id")
-  private UUID id;
 
   @Column(name = "name")
   private String metric;
@@ -30,19 +26,6 @@ public class Metric implements Serializable {
   private Set<Model> models = new HashSet<>();
 
   // jhipster-needle-entity-add-field - JHipster will add fields here
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public Metric id(UUID id) {
-    this.setId(id);
-    return this;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public String getMetric() {
     return this.metric;

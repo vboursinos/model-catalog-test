@@ -6,16 +6,12 @@ import ai.turintech.components.jpa.search.data.to.PageableQueryRequestTO;
 import ai.turintech.components.jpa.search.exception.PageableRequestException;
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.entity.Model;
-import ai.turintech.modelcatalog.exceptions.FindOneException;
 import ai.turintech.modelcatalog.facade.ModelFacade;
-import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
+import ai.turintech.modelcatalog.facade.ModelFacadeImpl;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
-import ai.turintech.modelcatalog.service.ModelService;
-import ai.turintech.modelcatalog.service.PaginationConverter;
 import ai.turintech.modelcatalog.to.ModelTO;
 import ai.turintech.modelcatalog.todtomapper.ModelMapper;
-import ai.turintech.modelcatalog.todtomapper.ModelPaginatedListMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -39,7 +35,8 @@ import reactor.core.publisher.Mono;
  */
 @RestController
 @RequestMapping("/api")
-public class ModelResource extends AbstractPageableRestController<ModelTO, ModelDTO, ModelFacade> {
+public class ModelResource
+    extends AbstractPageableRestController<ModelTO, ModelDTO, ModelFacadeImpl> {
 
   public ModelResource() {
     super(ModelTO.class);
@@ -52,11 +49,8 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
   @Value("${spring.application.name}")
   private String applicationName;
 
-  @Autowired private PaginationConverter paginationConverter;
-  @Autowired private ModelService modelService;
   @Autowired private ModelFacade modelFacade;
   @Autowired private ModelMapper modelMapper;
-  @Autowired private ModelPaginatedListMapper modelPaginatedListMapper;
 
   /**
    * {@code POST /models} : Create a new model.
@@ -67,15 +61,14 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
    * @throws URISyntaxException if the Location URI syntax is incorrect.
    */
   @PostMapping("/models")
-  public Mono<ResponseEntity<ModelTO>> createModel(@Valid @RequestBody ModelTO modelTO)
-      throws URISyntaxException {
+  public Mono<ResponseEntity<ModelTO>> createModel(@Valid @RequestBody ModelTO modelTO) {
     log.debug("REST request to save Model : {}", modelTO);
     if (modelTO.getId() != null) {
-      throw new BadRequestAlertException(
-          "A new model cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "A new model cannot already have an ID");
     }
     // modelTO.setId(UUID.randomUUID());
-    return modelService
+    return modelFacade
         .save(modelMapper.to(modelTO))
         .map(modelMapper::from)
         .map(
@@ -105,14 +98,13 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
   @PutMapping("/models/{id}")
   public Mono<ResponseEntity<ModelTO>> updateModel(
       @PathVariable(value = "id", required = false) final UUID id,
-      @Valid @RequestBody ModelTO modelTO)
-      throws URISyntaxException {
+      @Valid @RequestBody ModelTO modelTO) {
     log.debug("REST request to update Model : {}, {}", id, modelTO);
     if (modelTO.getId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID cannot be null");
     }
     if (!Objects.equals(id, modelTO.getId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return modelFacade
@@ -120,8 +112,7 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               return modelFacade
@@ -158,14 +149,13 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
       consumes = {"application/json", "application/merge-patch+json"})
   public Mono<ResponseEntity<ModelTO>> partialUpdateModel(
       @PathVariable(value = "id", required = false) final UUID id,
-      @NotNull @RequestBody ModelTO modelTO)
-      throws URISyntaxException {
+      @NotNull @RequestBody ModelTO modelTO) {
     log.debug("REST request to partial update Model partially : {}, {}", id, modelTO);
     if (modelTO.getId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID cannot be null");
     }
     if (!Objects.equals(id, modelTO.getId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return modelFacade
@@ -173,8 +163,7 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               Mono<ModelTO> result =
@@ -218,7 +207,7 @@ public class ModelResource extends AbstractPageableRestController<ModelTO, Model
    *     with status {@code 404 (Not Found)}.
    */
   @GetMapping("/models/{id}")
-  public Mono<ResponseEntity<ModelTO>> getModel(@PathVariable UUID id) throws FindOneException {
+  public Mono<ResponseEntity<ModelTO>> getModel(@PathVariable UUID id) throws Exception {
     log.debug("REST request to get Model : {}", id);
     Mono<ModelTO> modelTO = modelFacade.findOne(id).map(modelMapper::to);
     return ResponseUtil.wrapOrNotFound(modelTO);

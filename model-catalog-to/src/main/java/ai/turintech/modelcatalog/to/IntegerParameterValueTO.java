@@ -1,30 +1,20 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterValueTO extends AbstractTO implements Serializable {
+public class IntegerParameterValueTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
 
   private static final long serialVersionUID = 4737079565447734718L;
-
-  private UUID id;
 
   @NotNull(message = "must not be null")
   private Integer lower;
 
   @NotNull(message = "must not be null")
   private Integer upper;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Integer getLower() {
     return lower;

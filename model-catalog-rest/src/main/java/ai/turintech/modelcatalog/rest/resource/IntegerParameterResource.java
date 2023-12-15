@@ -2,7 +2,6 @@ package ai.turintech.modelcatalog.rest.resource;
 
 import ai.turintech.modelcatalog.entity.IntegerParameter;
 import ai.turintech.modelcatalog.facade.IntegerParameterFacade;
-import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.to.IntegerParameterTO;
@@ -50,11 +49,10 @@ public class IntegerParameterResource {
    */
   @PostMapping("/integer-parameters")
   public Mono<ResponseEntity<IntegerParameterTO>> createIntegerParameter(
-      @RequestBody IntegerParameterTO integerParameterTO) throws URISyntaxException {
+      @RequestBody IntegerParameterTO integerParameterTO) {
     log.debug("REST request to save IntegerParameter : {}", integerParameterTO);
     if (integerParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new BadRequestAlertException(
-          "A new integerParameter cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     return integerParameterFacade
         .save(integerParameterMapper.from(integerParameterTO))
@@ -91,14 +89,13 @@ public class IntegerParameterResource {
   @PutMapping("/integer-parameters/{id}")
   public Mono<ResponseEntity<IntegerParameterTO>> updateIntegerParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody IntegerParameterTO integerParameterTO)
-      throws URISyntaxException {
+      @RequestBody IntegerParameterTO integerParameterTO) {
     log.debug("REST request to update IntegerParameter : {}, {}", id, integerParameterTO);
     if (integerParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     if (!Objects.equals(id, integerParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return integerParameterFacade
@@ -106,8 +103,7 @@ public class IntegerParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               return integerParameterFacade
@@ -145,17 +141,16 @@ public class IntegerParameterResource {
       consumes = {"application/json", "application/merge-patch+json"})
   public Mono<ResponseEntity<IntegerParameterTO>> partialUpdateIntegerParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody IntegerParameterTO integerParameterTO)
-      throws URISyntaxException {
+      @RequestBody IntegerParameterTO integerParameterTO) {
     log.debug(
         "REST request to partial update IntegerParameter partially : {}, {}",
         id,
         integerParameterTO);
     if (integerParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID can not be empty");
     }
     if (!Objects.equals(id, integerParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return integerParameterFacade
@@ -163,8 +158,7 @@ public class IntegerParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               Mono<IntegerParameterTO> result =

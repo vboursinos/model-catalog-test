@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.rest.resource;
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
 import ai.turintech.modelcatalog.entity.CategoricalParameter;
 import ai.turintech.modelcatalog.facade.CategoricalParameterFacade;
-import ai.turintech.modelcatalog.rest.errors.BadRequestAlertException;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.reactive.ResponseUtil;
 import ai.turintech.modelcatalog.to.CategoricalParameterTO;
@@ -52,11 +51,10 @@ public class CategoricalParameterResource {
    */
   @PostMapping("/categorical-parameters")
   public Mono<ResponseEntity<CategoricalParameterTO>> createCategoricalParameter(
-      @RequestBody CategoricalParameterTO categoricalParameterTO) throws URISyntaxException {
+      @RequestBody CategoricalParameterTO categoricalParameterTO) {
     log.debug("REST request to save CategoricalParameter : {}", categoricalParameterTO);
     if (categoricalParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new BadRequestAlertException(
-          "A new categoricalParameter cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     return categoricalParameterFacade
         .save(categoricalParameterMapper.from(categoricalParameterTO))
@@ -94,14 +92,13 @@ public class CategoricalParameterResource {
   @PutMapping("/categorical-parameters/{id}")
   public Mono<ResponseEntity<CategoricalParameterTO>> updateCategoricalParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody CategoricalParameterTO categoricalParameterTO)
-      throws URISyntaxException {
+      @RequestBody CategoricalParameterTO categoricalParameterTO) {
     log.debug("REST request to update CategoricalParameter : {}, {}", id, categoricalParameterTO);
     if (categoricalParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     if (!Objects.equals(id, categoricalParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return categoricalParameterFacade
@@ -109,8 +106,7 @@ public class CategoricalParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               return categoricalParameterFacade
@@ -148,17 +144,16 @@ public class CategoricalParameterResource {
       consumes = {"application/json", "application/merge-patch+json"})
   public Mono<ResponseEntity<CategoricalParameterTO>> partialUpdateCategoricalParameter(
       @PathVariable(value = "id", required = false) final UUID id,
-      @RequestBody CategoricalParameterTO categoricalParameterTO)
-      throws URISyntaxException {
+      @RequestBody CategoricalParameterTO categoricalParameterTO) {
     log.debug(
         "REST request to partial update CategoricalParameter partially : {}, {}",
         id,
         categoricalParameterTO);
     if (categoricalParameterTO.getParameterTypeDefinitionId() == null) {
-      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
     if (!Objects.equals(id, categoricalParameterTO.getParameterTypeDefinitionId())) {
-      throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
     }
 
     return categoricalParameterFacade
@@ -166,8 +161,7 @@ public class CategoricalParameterResource {
         .flatMap(
             exists -> {
               if (!exists) {
-                return Mono.error(
-                    new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Entity not found");
               }
 
               Mono<CategoricalParameterTO> result =

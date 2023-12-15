@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
+import ai.turintech.components.data.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "categorical_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameter implements Serializable {
+public class CategoricalParameter extends AbstractEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -37,6 +38,14 @@ public class CategoricalParameter implements Serializable {
   public CategoricalParameter(ParameterTypeDefinition parameterTypeDefinition) {
     this.parameterTypeDefinitionId = parameterTypeDefinition.getId();
     this.parameterTypeDefinition = parameterTypeDefinition;
+  }
+
+  public UUID getParameterTypeDefinitionId() {
+    return parameterTypeDefinitionId;
+  }
+
+  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
+    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
   }
 
   public String getDefaultValue() {

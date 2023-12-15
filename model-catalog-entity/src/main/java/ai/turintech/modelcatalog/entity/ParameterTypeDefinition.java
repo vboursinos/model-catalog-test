@@ -1,5 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
+import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -12,14 +13,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "parameter_type_definition")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterTypeDefinition implements Serializable {
+public class ParameterTypeDefinition extends AbstractUUIDIdentityEntity<UUID>
+    implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GeneratedValue
-  @Column(name = "id")
-  private UUID id;
 
   @NotNull
   @Column(name = "ordering", nullable = false)
@@ -54,19 +51,6 @@ public class ParameterTypeDefinition implements Serializable {
   private ParameterType type;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public ParameterTypeDefinition id(UUID id) {
-    this.setId(id);
-    return this;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
 
   public Integer getOrdering() {
     return this.ordering;
