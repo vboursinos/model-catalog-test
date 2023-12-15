@@ -25,7 +25,6 @@ public class FloatParameterServiceImpl
   @Override
   @Transactional
   public Flux<FloatParameterDTO> findAllStream() {
-    System.out.println("CategoricalParameterServiceImpl.findAllStream");
     return Flux.fromIterable(repository.findAll().stream().map(mapperInterface::to).toList())
         .subscribeOn(Schedulers.boundedElastic());
   }

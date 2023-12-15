@@ -25,7 +25,6 @@ public class CategoricalParameterServiceImpl
   @Override
   @Transactional
   public Flux<CategoricalParameterDTO> findAllStream() {
-    System.out.println("CategoricalParameterServiceImpl.findAllStream");
     return Flux.fromIterable(repository.findAll().stream().map(mapperInterface::to).toList())
         .subscribeOn(Schedulers.boundedElastic());
   }
