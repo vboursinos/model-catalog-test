@@ -1,11 +1,9 @@
 package ai.turintech.modelcatalog.entity;
 
-import ai.turintech.components.data.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,20 +12,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "float_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameter extends AbstractEntity implements Serializable {
+public class FloatParameter extends BaseTypeParameter implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  @Id
-  @Column(name = "parameter_type_definition_id", insertable = false, updatable = false)
-  private UUID parameterTypeDefinitionId;
-
   @Column(name = "default_value")
   private Double defaultValue;
-
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parameter_type_definition_id", unique = true)
-  private ParameterTypeDefinition parameterTypeDefinition;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "floatParameter")
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -35,20 +25,7 @@ public class FloatParameter extends AbstractEntity implements Serializable {
 
   public FloatParameter() {}
 
-  public FloatParameter(ParameterTypeDefinition parameterTypeDefinition) {
-    this.parameterTypeDefinitionId = parameterTypeDefinition.getId();
-    this.parameterTypeDefinition = parameterTypeDefinition;
-  }
-
   // jhipster-needle-entity-add-field - JHipster will add fields here
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
-  }
 
   public Double getDefaultValue() {
     return this.defaultValue;
@@ -61,14 +38,6 @@ public class FloatParameter extends AbstractEntity implements Serializable {
 
   public void setDefaultValue(Double defaultValue) {
     this.defaultValue = defaultValue;
-  }
-
-  public ParameterTypeDefinition getParameterTypeDefinition() {
-    return this.parameterTypeDefinition;
-  }
-
-  public void setParameterTypeDefinition(ParameterTypeDefinition parameterTypeDefinition) {
-    this.parameterTypeDefinition = parameterTypeDefinition;
   }
 
   public Set<FloatParameterRange> getFloatParameterRanges() {
@@ -102,15 +71,13 @@ public class FloatParameter extends AbstractEntity implements Serializable {
     return this;
   }
 
-  // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
   @Override
   public String toString() {
     return "FloatParameter{"
         + "defaultValue="
         + defaultValue
         + ", parameterTypeDefinition="
-        + parameterTypeDefinition
+        + super.getParameterTypeDefinition()
         + '}';
   }
 }
