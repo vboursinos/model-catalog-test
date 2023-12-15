@@ -100,7 +100,7 @@ public class WebConfigurer implements WebFluxConfigurer {
     config.addAllowedMethod(HttpMethod.OPTIONS.name());
     config.addAllowedMethod(HttpMethod.HEAD.name());
     // if (!CollectionUtils.isEmpty(config.getAllowedOrigins())
-    //    || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
+    // || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
     log.debug("Registering CORS filter");
     source.registerCorsConfiguration("/api/**", config);
     source.registerCorsConfiguration("/management/**", config);
@@ -190,8 +190,8 @@ public class WebConfigurer implements WebFluxConfigurer {
   }
 
   @Bean
-  @Order(
-      -2) // The handler must have precedence over WebFluxResponseStatusExceptionHandler and Spring
+  @Order(-2) // The handler must have precedence over WebFluxResponseStatusExceptionHandler
+  // and Spring
   // Boot's ErrorWebExceptionHandler
   public WebExceptionHandler problemExceptionHandler(
       ObjectMapper mapper, ExceptionTranslator problemHandling) {
