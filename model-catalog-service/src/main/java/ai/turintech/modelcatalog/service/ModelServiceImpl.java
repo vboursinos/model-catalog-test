@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
 import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudCallable;
 import ai.turintech.components.jpa.search.service.AbstractSearchService;
 import ai.turintech.components.jpa.search.service.SearchService;
@@ -48,7 +47,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
     log.debug("Request to save Model : {}", modelDTO);
     ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            ReactiveAbstractUUIDIdentityCrudCallable.class,
             "create",
             modelDTO,
             modelRepository,
@@ -67,7 +66,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
     log.debug("Request to update Model : {}", modelDTO);
     ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            ReactiveAbstractUUIDIdentityCrudCallable.class,
             "update",
             modelDTO,
             modelRepository,
@@ -86,7 +85,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
     log.debug("Request to partially update Model : {}", modelDTO);
     ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            ReactiveAbstractUUIDIdentityCrudCallable.class,
             "partialUpdate",
             modelDTO.getId(),
             modelDTO,
@@ -118,7 +117,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
     log.debug("Request to get Model : {}", id);
     ReactiveAbstractUUIDIdentityCrudCallable<ModelDTO, ModelDTO, Model, UUID> callable =
         context.getBean(
-            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            ReactiveAbstractUUIDIdentityCrudCallable.class,
             "findById",
             id,
             modelRepository,
@@ -136,7 +135,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
     log.debug("Request to delete Model : {}", id);
     ReactiveAbstractUUIDIdentityCrudCallable<Void, ModelDTO, Model, UUID> callable =
         context.getBean(
-            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            ReactiveAbstractUUIDIdentityCrudCallable.class,
             "delete",
             id,
             modelRepository,
@@ -149,7 +148,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
     log.debug("Request to check if ModelGroupType exists : {}", id);
     ReactiveAbstractUUIDIdentityCrudCallable<Boolean, ModelDTO, Model, UUID> callable =
         context.getBean(
-            ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+            ReactiveAbstractUUIDIdentityCrudCallable.class,
             "existsById",
             id,
             modelRepository,

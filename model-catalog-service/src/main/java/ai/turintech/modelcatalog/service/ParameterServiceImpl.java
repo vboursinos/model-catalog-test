@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
 import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudCallable;
 import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
@@ -47,7 +46,7 @@ public class ParameterServiceImpl
     ReactiveAbstractUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO, Parameter, UUID>
         callable =
             context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallableImpl.class,
+                ReactiveAbstractUUIDIdentityCrudCallable.class,
                 "findAll",
                 parameterRepository,
                 parameterMapper);
