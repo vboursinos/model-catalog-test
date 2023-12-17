@@ -53,9 +53,6 @@ public class CategoricalParameterResource {
   public Mono<ResponseEntity<CategoricalParameterTO>> createCategoricalParameter(
       @RequestBody CategoricalParameterTO categoricalParameterTO) {
     log.debug("REST request to save CategoricalParameter : {}", categoricalParameterTO);
-    if (categoricalParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
-    }
     return categoricalParameterFacade
         .save(categoricalParameterMapper.from(categoricalParameterTO))
         .map(categoricalParameterMapper::to)
