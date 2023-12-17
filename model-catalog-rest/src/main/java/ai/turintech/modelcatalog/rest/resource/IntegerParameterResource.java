@@ -51,9 +51,6 @@ public class IntegerParameterResource {
   public Mono<ResponseEntity<IntegerParameterTO>> createIntegerParameter(
       @RequestBody IntegerParameterTO integerParameterTO) {
     log.debug("REST request to save IntegerParameter : {}", integerParameterTO);
-    if (integerParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
-    }
     return integerParameterFacade
         .save(integerParameterMapper.from(integerParameterTO))
         .map(integerParameterMapper::to)

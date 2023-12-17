@@ -51,10 +51,6 @@ public class FloatParameterResource {
   public Mono<ResponseEntity<FloatParameterTO>> createFloatParameter(
       @RequestBody FloatParameterTO floatParameterTO) {
     log.debug("REST request to save FloatParameter : {}", floatParameterTO);
-    if (floatParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "A new floatParameter cannot already have an ID");
-    }
     return floatParameterFacade
         .save(floatParameterMapper.from(floatParameterTO))
         .map(floatParameterMapper::to)

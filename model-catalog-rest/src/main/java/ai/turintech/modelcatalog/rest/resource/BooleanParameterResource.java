@@ -53,9 +53,6 @@ public class BooleanParameterResource {
   public Mono<ResponseEntity<BooleanParameterTO>> createBooleanParameter(
       @RequestBody BooleanParameterTO booleanParameterTO) {
     log.debug("REST request to save BooleanParameter : {}", booleanParameterTO);
-    if (booleanParameterTO.getParameterTypeDefinitionId() != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ID");
-    }
     return booleanParameterFacade
         .save(this.booleanParameterMapper.from(booleanParameterTO))
         .map(booleanParameterMapper::to)
