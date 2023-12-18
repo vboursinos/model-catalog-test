@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Transactional
 public class ParameterFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ParameterDTO, Parameter, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ParameterDTO, UUID>
     implements ParameterFacade {
 
   private final Logger log = LoggerFactory.getLogger(ParameterFacadeImpl.class);

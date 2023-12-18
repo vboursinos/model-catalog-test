@@ -1,24 +1,14 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.Objects;
 import java.util.UUID;
 
 /** A DTO for the BooleanParameter entity */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameterDTO extends AbstractDTO {
-
-  private UUID parameterTypeDefinitionId;
+public class BooleanParameterDTO extends AbstractUUIDIdentityDTO<UUID> {
 
   private Boolean defaultValue;
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
-  }
 
   public Boolean getDefaultValue() {
     return defaultValue;
@@ -38,16 +28,15 @@ public class BooleanParameterDTO extends AbstractDTO {
     }
 
     BooleanParameterDTO booleanParameterDTO = (BooleanParameterDTO) o;
-    if (this.getParameterTypeDefinitionId() == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, booleanParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), booleanParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -55,7 +44,7 @@ public class BooleanParameterDTO extends AbstractDTO {
   public String toString() {
     return "BooleanParameterDTO{"
         + "parameterTypeDefinitionId="
-        + parameterTypeDefinitionId
+        + getId()
         + ", defaultValue="
         + defaultValue
         + '}';

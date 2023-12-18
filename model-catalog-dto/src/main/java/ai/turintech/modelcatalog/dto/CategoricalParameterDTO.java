@@ -1,14 +1,11 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.*;
 
 /** A DTO for the CategoricalParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameterDTO extends AbstractDTO {
-
-  private UUID parameterTypeDefinitionId;
-
+public class CategoricalParameterDTO extends AbstractUUIDIdentityDTO<UUID> {
   private String defaultValue;
 
   private Set<CategoricalParameterValueDTO> categoricalParameterValues = new HashSet<>();;
@@ -19,14 +16,6 @@ public class CategoricalParameterDTO extends AbstractDTO {
 
   public void setDefaultValue(String defaultValue) {
     this.defaultValue = defaultValue;
-  }
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
   }
 
   public Set<CategoricalParameterValueDTO> getCategoricalParameterValues() {
@@ -48,23 +37,22 @@ public class CategoricalParameterDTO extends AbstractDTO {
     }
 
     CategoricalParameterDTO categoricalParameterDTO = (CategoricalParameterDTO) o;
-    if (this.parameterTypeDefinitionId == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, categoricalParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), categoricalParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   @Override
   public String toString() {
     return "CategoricalParameterDTO{"
         + "parameterTypeDefinitionId="
-        + parameterTypeDefinitionId
+        + getId()
         + ", defaultValue='"
         + defaultValue
         + '\''

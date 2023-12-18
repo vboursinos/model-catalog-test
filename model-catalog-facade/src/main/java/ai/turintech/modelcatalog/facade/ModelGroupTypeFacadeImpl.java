@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class ModelGroupTypeFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ModelGroupTypeDTO, ModelGroupType, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ModelGroupTypeDTO, UUID>
     implements ModelGroupTypeFacade {}

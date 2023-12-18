@@ -8,4 +8,17 @@ import org.mapstruct.*;
 /** Mapper for the entity {@link BooleanParameter} and its DTO {@link BooleanParameterDTO}. */
 @Mapper(componentModel = "spring")
 public interface BooleanParameterMapper
-    extends MapperInterface<BooleanParameterDTO, BooleanParameter> {}
+    extends MapperInterface<BooleanParameterDTO, BooleanParameter> {
+
+  @AfterMapping
+  default void afterMappingFrom(
+      BooleanParameter booleanParameter, @MappingTarget BooleanParameterDTO booleanParameterDTO) {
+    booleanParameterDTO.setId(booleanParameter.getParameterTypeDefinitionId());
+  }
+
+  @AfterMapping
+  default void afterMappingTo(
+      BooleanParameterDTO booleanParameterDTO, @MappingTarget BooleanParameter booleanParameter) {
+    booleanParameter.setParameterTypeDefinitionId(booleanParameterDTO.getId());
+  }
+}

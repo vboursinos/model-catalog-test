@@ -10,6 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 /** Service Implementation for managing {@link Metric}. */
 @Component
 @Transactional
-public class MetricFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<MetricDTO, Metric, UUID>
+public class MetricFacadeImpl extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<MetricDTO, UUID>
     implements MetricFacade {}

@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class MlTaskTypeFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<MlTaskTypeDTO, MlTaskType, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<MlTaskTypeDTO, UUID>
     implements MlTaskTypeFacade {}

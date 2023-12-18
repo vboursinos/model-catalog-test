@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class IntegerParameterFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<IntegerParameterDTO, IntegerParameter, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<IntegerParameterDTO, UUID>
     implements IntegerParameterFacade {}
