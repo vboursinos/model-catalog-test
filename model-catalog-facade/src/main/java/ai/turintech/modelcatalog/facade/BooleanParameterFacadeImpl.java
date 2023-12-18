@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class BooleanParameterFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<BooleanParameterDTO, BooleanParameter, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<BooleanParameterDTO, UUID>
     implements BooleanParameterFacade {}

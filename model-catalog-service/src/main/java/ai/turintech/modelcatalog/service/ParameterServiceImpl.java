@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudCallable;
+import ai.turintech.components.architecture.reactive.ReactiveUUIDIdentityCrudCallable;
 import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterMapper;
@@ -43,13 +43,12 @@ public class ParameterServiceImpl
   @Transactional(readOnly = true)
   public Mono<List<ParameterDTO>> findAllPageable(Pageable pageable) {
     log.debug("Request to get all Parameters");
-    ReactiveAbstractUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO, Parameter, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallable.class,
-                "findAll",
-                parameterRepository,
-                parameterMapper);
+    ReactiveUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO> callable =
+        context.getBean(
+            ReactiveUUIDIdentityCrudCallable.class,
+            "findAll",
+            parameterRepository,
+            parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 

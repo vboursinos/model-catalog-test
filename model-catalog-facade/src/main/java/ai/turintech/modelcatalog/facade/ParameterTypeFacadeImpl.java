@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class ParameterTypeFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ParameterTypeDTO, ParameterType, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ParameterTypeDTO, UUID>
     implements ParameterTypeFacade {}

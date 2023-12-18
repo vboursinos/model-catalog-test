@@ -11,6 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class FloatParameterRangeFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<
-        FloatParameterRangeDTO, FloatParameterRange, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<FloatParameterRangeDTO, UUID>
     implements FloatParameterRangeFacade {}

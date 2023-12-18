@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,10 +8,7 @@ import java.util.UUID;
 
 /** A DTO for the FloatParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterDTO extends AbstractDTO {
-
-  private UUID parameterTypeDefinitionId;
-
+public class FloatParameterDTO extends AbstractUUIDIdentityDTO<UUID> {
   private Double defaultValue;
 
   private List<FloatParameterRangeDTO> floatParameterRanges = new ArrayList<>();
@@ -22,14 +19,6 @@ public class FloatParameterDTO extends AbstractDTO {
 
   public void setDefaultValue(Double defaultValue) {
     this.defaultValue = defaultValue;
-  }
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
   }
 
   public List<FloatParameterRangeDTO> getFloatParameterRanges() {
@@ -50,16 +39,15 @@ public class FloatParameterDTO extends AbstractDTO {
     }
 
     FloatParameterDTO floatParameterDTO = (FloatParameterDTO) o;
-    if (this.parameterTypeDefinitionId == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, floatParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), floatParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -67,7 +55,7 @@ public class FloatParameterDTO extends AbstractDTO {
   public String toString() {
     return "FloatParameterDTO{"
         + "parameterTypeDefinitionId="
-        + getParameterTypeDefinitionId()
+        + getId()
         + ", defaultValue="
         + getDefaultValue()
         + "}";
