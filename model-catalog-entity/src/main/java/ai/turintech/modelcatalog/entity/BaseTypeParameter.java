@@ -1,11 +1,13 @@
 package ai.turintech.modelcatalog.entity;
 
-import ai.turintech.components.data.common.entity.AbstractEntity;
+import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @MappedSuperclass
-public abstract class BaseTypeParameter extends AbstractEntity {
+public abstract class BaseTypeParameter extends AbstractUUIDIdentityEntity<UUID>
+    implements Serializable {
 
   @Id
   @Column(name = "id", insertable = true, updatable = false)
