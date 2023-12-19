@@ -27,9 +27,7 @@ public class IntegerParameterValue extends AbstractUUIDIdentityEntity<UUID>
   private Integer upper;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "parameter_type_definition_id",
-      referencedColumnName = "parameter_type_definition_id")
+  @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
   private IntegerParameter integerParameter;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here

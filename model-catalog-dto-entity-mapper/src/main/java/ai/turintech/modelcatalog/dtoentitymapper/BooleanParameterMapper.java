@@ -13,12 +13,12 @@ public interface BooleanParameterMapper
   @AfterMapping
   default void afterMappingFrom(
       BooleanParameter booleanParameter, @MappingTarget BooleanParameterDTO booleanParameterDTO) {
-    booleanParameterDTO.setId(booleanParameter.getParameterTypeDefinitionId());
+    booleanParameterDTO.setId(booleanParameter.getId());
   }
 
   @AfterMapping
   default void afterMappingTo(
       BooleanParameterDTO booleanParameterDTO, @MappingTarget BooleanParameter booleanParameter) {
-    booleanParameter.setParameterTypeDefinitionId(booleanParameterDTO.getId());
+    booleanParameter.setId(booleanParameterDTO.getId());
   }
 }
