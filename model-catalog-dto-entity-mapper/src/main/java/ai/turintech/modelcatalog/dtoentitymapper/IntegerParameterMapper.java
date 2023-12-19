@@ -15,12 +15,12 @@ public interface IntegerParameterMapper
   @AfterMapping
   default void afterMappingFrom(
       IntegerParameter integerParameter, @MappingTarget IntegerParameterDTO integerParameterDTO) {
-    integerParameterDTO.setId(integerParameter.getParameterTypeDefinitionId());
+    integerParameterDTO.setId(integerParameter.getId());
   }
 
   @AfterMapping
   default void afterMappingTo(
       IntegerParameterDTO integerParameterDTO, @MappingTarget IntegerParameter integerParameter) {
-    integerParameter.setParameterTypeDefinitionId(integerParameterDTO.getId());
+    integerParameter.setId(integerParameterDTO.getId());
   }
 }

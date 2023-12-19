@@ -13,12 +13,12 @@ public interface FloatParameterMapper extends MapperInterface<FloatParameterDTO,
   @AfterMapping
   default void afterMappingFrom(
       FloatParameter floatParameter, @MappingTarget FloatParameterDTO floatParameterDTO) {
-    floatParameterDTO.setId(floatParameter.getParameterTypeDefinitionId());
+    floatParameterDTO.setId(floatParameter.getId());
   }
 
   @AfterMapping
   default void afterMappingTo(
       FloatParameterDTO floatParameterDTO, @MappingTarget FloatParameter floatParameter) {
-    floatParameter.setParameterTypeDefinitionId(floatParameterDTO.getId());
+    floatParameter.setId(floatParameterDTO.getId());
   }
 }

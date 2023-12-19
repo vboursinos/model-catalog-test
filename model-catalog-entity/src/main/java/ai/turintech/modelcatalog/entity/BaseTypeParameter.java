@@ -8,19 +8,19 @@ import java.util.UUID;
 public abstract class BaseTypeParameter extends AbstractEntity {
 
   @Id
-  @Column(name = "parameter_type_definition_id", insertable = true, updatable = false)
-  protected UUID parameterTypeDefinitionId;
+  @Column(name = "id", insertable = true, updatable = false)
+  protected UUID id;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parameter_type_definition_id", unique = true)
+  @JoinColumn(name = "id", unique = true)
   protected ParameterTypeDefinition parameterTypeDefinition;
 
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
+  public UUID getId() {
+    return id;
   }
 
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
+  public void setId(UUID id) {
+    this.id = id;
   }
 
   public ParameterTypeDefinition getParameterTypeDefinition() {

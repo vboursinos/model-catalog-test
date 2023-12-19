@@ -34,9 +34,7 @@ public class FloatParameterRange extends AbstractUUIDIdentityEntity<UUID> implem
   private Double upper;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "parameter_type_definition_id",
-      referencedColumnName = "parameter_type_definition_id")
+  @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
   private FloatParameter floatParameter;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here

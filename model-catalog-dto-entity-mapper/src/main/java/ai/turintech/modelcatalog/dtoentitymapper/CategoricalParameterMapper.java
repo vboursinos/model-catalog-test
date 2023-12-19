@@ -17,13 +17,13 @@ public interface CategoricalParameterMapper
   default void afterMappingFrom(
       CategoricalParameter categoricalParameter,
       @MappingTarget CategoricalParameterDTO categoricalParameterDTO) {
-    categoricalParameterDTO.setId(categoricalParameter.getParameterTypeDefinitionId());
+    categoricalParameterDTO.setId(categoricalParameter.getId());
   }
 
   @AfterMapping
   default void afterMappingTo(
       CategoricalParameterDTO categoricalParameterDTO,
       @MappingTarget CategoricalParameter categoricalParameter) {
-    categoricalParameter.setParameterTypeDefinitionId(categoricalParameterDTO.getId());
+    categoricalParameter.setId(categoricalParameterDTO.getId());
   }
 }

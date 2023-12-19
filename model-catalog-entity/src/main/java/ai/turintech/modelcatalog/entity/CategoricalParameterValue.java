@@ -23,9 +23,7 @@ public class CategoricalParameterValue extends AbstractUUIDIdentityEntity<UUID>
   private String value;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "parameter_type_definition_id",
-      referencedColumnName = "parameter_type_definition_id")
+  @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
   private CategoricalParameter categoricalParameter;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here
