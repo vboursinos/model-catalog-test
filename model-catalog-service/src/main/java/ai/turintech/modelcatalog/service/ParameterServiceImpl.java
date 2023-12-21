@@ -43,7 +43,7 @@ public class ParameterServiceImpl
   @Transactional(readOnly = true)
   public Mono<List<ParameterDTO>> findAllPageable(Pageable pageable) {
     log.debug("Request to get all Parameters");
-    ReactiveUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO> callable =
+    ReactiveUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO, UUID> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class,
             "findAll",
