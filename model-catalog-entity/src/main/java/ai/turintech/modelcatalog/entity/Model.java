@@ -15,7 +15,7 @@ import org.hibernate.annotations.Type;
 @Table(name = "model")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Model extends AbstractUUIDIdentityEntity<UUID> implements Serializable {
+public class Model extends AbstractUUIDIdentityEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
 

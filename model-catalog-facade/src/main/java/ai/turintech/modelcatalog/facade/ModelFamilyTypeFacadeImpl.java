@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.facade;
 import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstractUUIDIdentityCrudFacadeImpl;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelFamilyType;
-import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,5 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class ModelFamilyTypeFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ModelFamilyTypeDTO, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ModelFamilyTypeDTO>
     implements ModelFamilyTypeFacade {}

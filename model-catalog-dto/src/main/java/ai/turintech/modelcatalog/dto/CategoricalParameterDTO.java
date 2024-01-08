@@ -5,7 +5,7 @@ import java.util.*;
 
 /** A DTO for the CategoricalParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameterDTO extends AbstractUUIDIdentityDTO<UUID> {
+public class CategoricalParameterDTO extends AbstractUUIDIdentityDTO {
   private String defaultValue;
 
   private Set<CategoricalParameterValueDTO> categoricalParameterValues = new HashSet<>();;

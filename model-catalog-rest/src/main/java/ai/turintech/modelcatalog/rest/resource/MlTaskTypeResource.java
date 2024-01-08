@@ -4,7 +4,6 @@ import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractU
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
 import ai.turintech.modelcatalog.entity.MlTaskType;
 import ai.turintech.modelcatalog.to.MlTaskTypeTO;
-import java.util.UUID;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/ml-task-types")
 public class MlTaskTypeResource
-    extends ReactiveAbstractUUIDIdentityCrudRestImpl<MlTaskTypeTO, MlTaskTypeDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<MlTaskTypeTO, MlTaskTypeDTO> {
   private static final String ENTITY_NAME = "modelCatalogMlTaskType";
   private static String APPLICATION_NAME = "model-catalog";
 

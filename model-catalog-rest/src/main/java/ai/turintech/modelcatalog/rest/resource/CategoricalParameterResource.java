@@ -9,7 +9,6 @@ import ai.turintech.modelcatalog.to.CategoricalParameterTO;
 import ai.turintech.modelcatalog.todtomapper.CategoricalParameterMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/categorical-parameters")
 public class CategoricalParameterResource
     extends ReactiveAbstractUUIDIdentityCrudRestImpl<
-        CategoricalParameterTO, CategoricalParameterDTO, UUID> {
+        CategoricalParameterTO, CategoricalParameterDTO> {
 
   private final Logger log = LoggerFactory.getLogger(CategoricalParameterResource.class);
 

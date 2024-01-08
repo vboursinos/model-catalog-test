@@ -4,7 +4,6 @@ import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractU
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import ai.turintech.modelcatalog.to.ParameterTypeDefinitionTO;
-import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
 
 /** REST controller for managing {@link ParameterTypeDefinition}. */
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/parameter-type-definitions")
 public class ParameterTypeDefinitionResource
     extends ReactiveAbstractUUIDIdentityCrudRestImpl<
-        ParameterTypeDefinitionTO, ParameterTypeDefinitionDTO, UUID> {
+        ParameterTypeDefinitionTO, ParameterTypeDefinitionDTO> {
 
   private static final String ENTITY_NAME = "modelCatalogParameterTypeDefinition";
 

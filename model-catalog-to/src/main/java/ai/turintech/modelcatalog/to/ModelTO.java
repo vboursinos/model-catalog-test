@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
+public class ModelTO extends AbstractUUIDIdentityTO implements Serializable {
 
   private static final long serialVersionUID = 1294639702776637323L;
 

@@ -9,7 +9,6 @@ import ai.turintech.modelcatalog.to.BooleanParameterTO;
 import ai.turintech.modelcatalog.todtomapper.BooleanParameterMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/boolean-parameters")
 public class BooleanParameterResource
-    extends ReactiveAbstractUUIDIdentityCrudRestImpl<
-        BooleanParameterTO, BooleanParameterDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<BooleanParameterTO, BooleanParameterDTO> {
   private final Logger log = LoggerFactory.getLogger(IntegerParameterResource.class);
 
   @Autowired private BooleanParameterFacade booleanParameterFacade;

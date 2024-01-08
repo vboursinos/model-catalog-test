@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
+public class ParameterTO extends AbstractUUIDIdentityTO implements Serializable {
 
   private static final long serialVersionUID = -3037790423144785590L;
 

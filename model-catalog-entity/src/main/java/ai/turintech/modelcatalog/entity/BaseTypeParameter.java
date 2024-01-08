@@ -6,8 +6,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @MappedSuperclass
-public abstract class BaseTypeParameter extends AbstractUUIDIdentityEntity<UUID>
-    implements Serializable {
+public abstract class BaseTypeParameter extends AbstractUUIDIdentityEntity implements Serializable {
 
   @Id
   @Column(name = "id", insertable = true, updatable = false)

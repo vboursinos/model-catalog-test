@@ -9,8 +9,7 @@ import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ParameterTypeDefinitionTO extends AbstractUUIDIdentityTO<UUID>
-    implements Serializable {
+public class ParameterTypeDefinitionTO extends AbstractUUIDIdentityTO implements Serializable {
 
   private static final long serialVersionUID = 5585810515555669383L;
 
