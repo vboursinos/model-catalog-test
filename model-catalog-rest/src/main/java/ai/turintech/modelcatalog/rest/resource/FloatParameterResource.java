@@ -9,7 +9,6 @@ import ai.turintech.modelcatalog.to.FloatParameterTO;
 import ai.turintech.modelcatalog.todtomapper.FloatParameterMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/float-parameters")
 public class FloatParameterResource
-    extends ReactiveAbstractUUIDIdentityCrudRestImpl<FloatParameterTO, FloatParameterDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<FloatParameterTO, FloatParameterDTO> {
 
   private final Logger log = LoggerFactory.getLogger(FloatParameterResource.class);
   @Autowired private FloatParameterFacade floatParameterFacade;

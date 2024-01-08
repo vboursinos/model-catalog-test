@@ -7,7 +7,6 @@ import ai.turintech.modelcatalog.dtoentitymapper.ParameterMapper;
 import ai.turintech.modelcatalog.entity.Parameter;
 import ai.turintech.modelcatalog.repository.ParameterRepository;
 import java.util.List;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ import reactor.core.scheduler.Scheduler;
 @Service
 @Transactional
 public class ParameterServiceImpl
-    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<ParameterDTO, Parameter, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<ParameterDTO, Parameter>
     implements ParameterService {
 
   private final Logger log = LoggerFactory.getLogger(ParameterServiceImpl.class);
@@ -43,7 +42,7 @@ public class ParameterServiceImpl
   @Transactional(readOnly = true)
   public Mono<List<ParameterDTO>> findAllPageable(Pageable pageable) {
     log.debug("Request to get all Parameters");
-    ReactiveUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO, UUID> callable =
+    ReactiveUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class,
             "findAll",

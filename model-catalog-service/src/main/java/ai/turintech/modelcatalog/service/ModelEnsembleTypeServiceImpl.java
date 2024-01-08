@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.service;
 import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelEnsembleType;
-import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ModelEnsembleTypeServiceImpl
-    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
-        ModelEnsembleTypeDTO, ModelEnsembleType, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<ModelEnsembleTypeDTO, ModelEnsembleType>
     implements ModelEnsembleTypeService {}

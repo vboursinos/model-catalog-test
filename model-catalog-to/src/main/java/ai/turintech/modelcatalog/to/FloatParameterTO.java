@@ -5,10 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
+public class FloatParameterTO extends AbstractUUIDIdentityTO implements Serializable {
 
   private static final long serialVersionUID = -6709359691936403897L;
   private Double defaultValue;

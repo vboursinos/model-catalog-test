@@ -45,7 +45,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<ModelDTO> save(ModelDTO modelDTO) {
     log.debug("Request to save Model : {}", modelDTO);
-    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO, UUID> callable =
+    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class,
             "create",
@@ -64,7 +64,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<ModelDTO> update(ModelDTO modelDTO) {
     log.debug("Request to update Model : {}", modelDTO);
-    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO, UUID> callable =
+    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class,
             "update",
@@ -83,7 +83,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO) {
     log.debug("Request to partially update Model : {}", modelDTO);
-    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO, UUID> callable =
+    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class,
             "partialUpdate",
@@ -114,7 +114,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional(readOnly = true)
   public Mono<ModelDTO> findOne(UUID id) {
     log.debug("Request to get Model : {}", id);
-    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO, UUID> callable =
+    ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class, "findById", id, modelRepository, modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
@@ -128,7 +128,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete Model : {}", id);
-    ReactiveUUIDIdentityCrudCallable<Void, ModelDTO, UUID> callable =
+    ReactiveUUIDIdentityCrudCallable<Void, ModelDTO> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class, "delete", id, modelRepository, modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
@@ -137,7 +137,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
-    ReactiveUUIDIdentityCrudCallable<Boolean, ModelDTO, UUID> callable =
+    ReactiveUUIDIdentityCrudCallable<Boolean, ModelDTO> callable =
         context.getBean(
             ReactiveUUIDIdentityCrudCallable.class, "existsById", id, modelRepository, modelMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);

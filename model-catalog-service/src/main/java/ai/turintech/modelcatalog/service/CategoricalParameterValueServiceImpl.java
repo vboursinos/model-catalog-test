@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.service;
 import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.entity.CategoricalParameterValue;
-import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CategoricalParameterValueServiceImpl
     extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
-        CategoricalParameterValueDTO, CategoricalParameterValue, UUID>
+        CategoricalParameterValueDTO, CategoricalParameterValue>
     implements CategoricalParameterValueService {}

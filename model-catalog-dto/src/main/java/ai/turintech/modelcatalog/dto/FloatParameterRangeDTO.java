@@ -7,7 +7,7 @@ import java.util.UUID;
 
 /** A DTO for thFloatParameterRange} entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterRangeDTO extends AbstractUUIDIdentityDTO<UUID> {
+public class FloatParameterRangeDTO extends AbstractUUIDIdentityDTO {
 
   @NotNull(message = "must not be null")
   private Boolean isLeftOpen;

@@ -6,7 +6,7 @@ import java.util.*;
 
 /** A DTO for the Model entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelDTO extends AbstractUUIDIdentityDTO<UUID> {
+public class ModelDTO extends AbstractUUIDIdentityDTO {
   @NotNull(message = "must not be null")
   private String name;
 

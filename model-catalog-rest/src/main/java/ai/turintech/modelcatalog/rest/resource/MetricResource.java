@@ -4,7 +4,6 @@ import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractU
 import ai.turintech.modelcatalog.dto.MetricDTO;
 import ai.turintech.modelcatalog.entity.Metric;
 import ai.turintech.modelcatalog.to.MetricTO;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 /** REST controller for managing {@link Metric}. */
 @RestController
 @RequestMapping("/api/metrics")
-public class MetricResource
-    extends ReactiveAbstractUUIDIdentityCrudRestImpl<MetricTO, MetricDTO, UUID> {
+public class MetricResource extends ReactiveAbstractUUIDIdentityCrudRestImpl<MetricTO, MetricDTO> {
 
   private final Logger log = LoggerFactory.getLogger(MetricResource.class);
 

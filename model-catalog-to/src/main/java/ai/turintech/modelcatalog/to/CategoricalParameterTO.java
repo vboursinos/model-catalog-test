@@ -5,10 +5,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameterTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
+public class CategoricalParameterTO extends AbstractUUIDIdentityTO implements Serializable {
 
   private static final long serialVersionUID = 6418488670699594296L;
 

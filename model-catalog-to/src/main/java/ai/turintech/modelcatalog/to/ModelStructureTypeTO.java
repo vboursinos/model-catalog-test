@@ -4,10 +4,9 @@ import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelStructureTypeTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
+public class ModelStructureTypeTO extends AbstractUUIDIdentityTO implements Serializable {
 
   private static final long serialVersionUID = -1404025172100088206L;
 

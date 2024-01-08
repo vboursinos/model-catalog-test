@@ -2,11 +2,10 @@ package ai.turintech.modelcatalog.dto;
 
 import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import jakarta.validation.constraints.NotNull;
-import java.util.UUID;
 
 /** A DTO for the IntegerParameterValue entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterValueDTO extends AbstractUUIDIdentityDTO<UUID> {
+public class IntegerParameterValueDTO extends AbstractUUIDIdentityDTO {
 
   @NotNull(message = "must not be null")
   private Integer lower;
