@@ -35,6 +35,8 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
 
   private ModelStructureTypeDTO structure;
 
+  private DependencyGroupTypeDTO dependencyGroup;
+
   private ModelTypeDTO type;
 
   private ModelFamilyTypeDTO familyType;
@@ -178,6 +180,14 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
 
   public void setParameters(List<ParameterDTO> parameters) {
     this.parameters = parameters;
+  }
+
+  public DependencyGroupTypeDTO getDependencyGroup() {
+    return dependencyGroup;
+  }
+
+  public void setDependencyGroup(DependencyGroupTypeDTO dependencyGroup) {
+    this.dependencyGroup = dependencyGroup;
   }
 
   @Override
