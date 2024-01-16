@@ -1,6 +1,5 @@
 package ai.turintech.modelcatalog.repository;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ai.turintech.modelcatalog.entity.Metric;
 import java.util.List;
@@ -15,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
-public class MetricRepositoryTest extends BasicRepositoryTest{
+public class MetricRepositoryTest extends BasicRepositoryTest {
   @Autowired private MetricRepository metricRepository;
 
   private Metric getMetric() {

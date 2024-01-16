@@ -38,7 +38,9 @@ public class MlTaskTypeRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdMlTaskRepository() {
     MlTaskType mlTaskType =
-        mlTaskTypeRepository.findById(UUID.fromString("2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28")).get();
+        mlTaskTypeRepository
+            .findById(UUID.fromString("2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28"))
+            .get();
     Assertions.assertEquals("mltask2", mlTaskType.getName());
   }
 
