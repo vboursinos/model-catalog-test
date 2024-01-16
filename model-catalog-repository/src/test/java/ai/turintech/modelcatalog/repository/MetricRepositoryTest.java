@@ -1,7 +1,10 @@
-package ai.turintech.modelcatalog.rest;
+package ai.turintech.modelcatalog.repository;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import ai.turintech.modelcatalog.entity.Metric;
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,7 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 @ContextConfiguration(classes = TestConfig.class)
-public class MetricControllerTest {
+public class MetricRepositoryTest {
 
   @Container
   public static PostgreSQLContainer<?> postgreSQLContainer =
@@ -29,6 +32,8 @@ public class MetricControllerTest {
           .withInitScript("sql/schema.sql");
 
   @Autowired private JdbcTemplate jdbcTemplate;
+
+  @Autowired private MetricRepository metricRepository;
 
   @Test
   void testDatabaseConnection() {
@@ -44,5 +49,12 @@ public class MetricControllerTest {
     System.out.println("Junit 5 test container example");
   }
 
+  @Test
+  void testMetricRepository() {
+    System.out.println("MetricRepository: " + metricRepository);
+    List<Metric> metrics = metricRepository.findAll();
+    System.out.println("Metrics: " + metrics);
+    Assertions.assertEquals(4, metrics.size());
+  }
   // Your test methods go here...
 }
