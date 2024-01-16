@@ -22,7 +22,7 @@ public class DependencyGroupType extends AbstractUUIDIdentityEntity implements S
   @Column(name = "name", nullable = false)
   private String name;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "mlTask")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "dependencyGroupType")
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   private Set<Model> models = new HashSet<>();
 
