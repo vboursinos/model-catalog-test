@@ -11,29 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
-@ContextConfiguration(classes = TestConfig.class)
-public class MetricRepositoryTest {
-
-  @Container
-  public static PostgreSQLContainer<?> postgreSQLContainer =
-      new PostgreSQLContainer<>("postgres:latest")
-          .withDatabaseName("testdb")
-          .withUsername("testuser")
-          .withPassword("testpass")
-          .withInitScript("sql/schema.sql");
-
-  @Autowired private JdbcTemplate jdbcTemplate;
-
+public class MetricRepositoryTest extends BasicRepositoryTest{
   @Autowired private MetricRepository metricRepository;
 
   private Metric getMetric() {
@@ -47,14 +29,6 @@ public class MetricRepositoryTest {
     metric.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
     metric.setMetric("test_updated_metric");
     return metric;
-  }
-
-  @Test
-  void testDatabaseConnection() {
-    // Assuming there's a users table in your schema.sql
-    int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM metric", Integer.class);
-    System.out.println("Count: " + count);
-    assertNotNull(count, "Count should not be null");
   }
 
   @Test
