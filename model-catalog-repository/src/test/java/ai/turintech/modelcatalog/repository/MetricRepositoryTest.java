@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ai.turintech.modelcatalog.entity.Metric;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +36,19 @@ public class MetricRepositoryTest {
 
   @Autowired private MetricRepository metricRepository;
 
+  private Metric getMetric() {
+    Metric metric = new Metric();
+    metric.setMetric("test_metric");
+    return metric;
+  }
+
+  private Metric getUpdatedMetric() {
+    Metric metric = new Metric();
+    metric.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+    metric.setMetric("test_updated_metric");
+    return metric;
+  }
+
   @Test
   void testDatabaseConnection() {
     // Assuming there's a users table in your schema.sql
@@ -44,17 +58,36 @@ public class MetricRepositoryTest {
   }
 
   @Test
-  void saveUser_shouldPersistUserInDatabase() {
-
-    System.out.println("Junit 5 test container example");
-  }
-
-  @Test
-  void testMetricRepository() {
+  void testFindAllMetricRepository() {
     System.out.println("MetricRepository: " + metricRepository);
     List<Metric> metrics = metricRepository.findAll();
     System.out.println("Metrics: " + metrics);
     Assertions.assertEquals(4, metrics.size());
   }
-  // Your test methods go here...
+
+  @Test
+  void testFindByIdMetricRepository() {
+    System.out.println("MetricRepository: " + metricRepository);
+    Metric metric =
+        metricRepository.findById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23")).get();
+    System.out.println("Metric: " + metric);
+    Assertions.assertEquals("Metric1", metric.getMetric());
+  }
+
+  @Test
+  void testSaveMetricRepository() {
+    System.out.println("MetricRepository: " + metricRepository);
+    Metric savedMetric = metricRepository.save(getMetric());
+    System.out.println("Saved Metric: " + savedMetric);
+    Assertions.assertEquals(getMetric().getMetric(), savedMetric.getMetric());
+    metricRepository.delete(savedMetric);
+  }
+
+  @Test
+  void testUpdateMetricRepository() {
+    System.out.println("MetricRepository: " + metricRepository);
+    Metric savedMetric = metricRepository.save(getUpdatedMetric());
+    System.out.println("Saved Metric: " + savedMetric);
+    Assertions.assertEquals(getUpdatedMetric().getMetric(), savedMetric.getMetric());
+  }
 }
