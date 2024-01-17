@@ -1,8 +1,8 @@
 package ai.turintech.modelcatalog.repository;
 
+import ai.turintech.modelcatalog.entity.ModelGroupType;
 import java.util.List;
 import java.util.UUID;
-import ai.turintech.modelcatalog.entity.ModelGroupType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +53,8 @@ public class ModelGroupTypeRepositoryTest extends BasicRepositoryTest {
 
   @Test
   void testUpdateModelGroupTypeRepository() {
-    ModelGroupType updatedModelGroupType = modelGroupTypeRepository.save(getUpdatedModelGroupType());
+    ModelGroupType updatedModelGroupType =
+        modelGroupTypeRepository.save(getUpdatedModelGroupType());
     Assertions.assertEquals(getUpdatedModelGroupType().getName(), updatedModelGroupType.getName());
   }
 }

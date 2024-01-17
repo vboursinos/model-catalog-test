@@ -1,8 +1,9 @@
 package ai.turintech.modelcatalog.repository;
 
+import ai.turintech.modelcatalog.entity.ModelType;
 import java.util.List;
 import java.util.UUID;
-import ai.turintech.modelcatalog.entity.ModelType;import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -37,9 +38,7 @@ public class ModelTypeRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdModelTypeRepository() {
     ModelType modelType =
-        modelTypeRepository
-            .findById(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29"))
-            .get();
+        modelTypeRepository.findById(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29")).get();
     Assertions.assertEquals("modeltype3", modelType.getName());
   }
 
