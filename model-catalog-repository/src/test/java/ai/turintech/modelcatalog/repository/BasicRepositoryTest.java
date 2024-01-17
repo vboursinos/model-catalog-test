@@ -8,6 +8,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ContextConfiguration(classes = TestConfig.class)
 public class BasicRepositoryTest {
 
-  private static final PostgreSQLContainer<?> postgreSQLContainer = SingletonPostgresContainer.getInstance();
-
+  private static final PostgreSQLContainer<?> postgreSQLContainer =
+      SingletonPostgresContainer.getInstance();
 }

@@ -21,5 +21,5 @@ public class ConnectionTest extends BasicRepositoryTest {
     int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM metric", Integer.class);
     System.out.println("Count: " + count);
     assertNotNull(count, "Count should not be null");
-    }
+  }
 }
