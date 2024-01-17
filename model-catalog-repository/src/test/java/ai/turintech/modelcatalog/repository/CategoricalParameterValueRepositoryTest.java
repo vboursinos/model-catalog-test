@@ -48,9 +48,11 @@ public class CategoricalParameterValueRepositoryTest extends BasicRepositoryTest
     categoricalParameterValue.setValue("test_value");
     return categoricalParameterValue;
   }
+
   @Test
   void testFindAllCategoricalParameterValueRepository() {
-    List<CategoricalParameterValue> categoricalParameterValues = categoricalParameterValueRepository.findAll();
+    List<CategoricalParameterValue> categoricalParameterValues =
+        categoricalParameterValueRepository.findAll();
     Assertions.assertEquals(4, categoricalParameterValues.size());
   }
 
@@ -65,14 +67,18 @@ public class CategoricalParameterValueRepositoryTest extends BasicRepositoryTest
 
   @Test
   void testSaveCategoricalParameterValueRepository() {
-    CategoricalParameterValue savedCategoricalParameterValue = categoricalParameterValueRepository.save(getCategoricalParameterValue());
-    Assertions.assertEquals(getCategoricalParameterValue().getValue(), savedCategoricalParameterValue.getValue());
+    CategoricalParameterValue savedCategoricalParameterValue =
+        categoricalParameterValueRepository.save(getCategoricalParameterValue());
+    Assertions.assertEquals(
+        getCategoricalParameterValue().getValue(), savedCategoricalParameterValue.getValue());
     categoricalParameterValueRepository.delete(savedCategoricalParameterValue);
   }
 
   @Test
   void testUpdateCategoricalParameterValueRepository() {
-    CategoricalParameterValue updatedCategoricalParameterValue = categoricalParameterValueRepository.save(getUpdatedCategoricalParameterValue());
-    Assertions.assertEquals(getCategoricalParameterValue().getValue(), updatedCategoricalParameterValue.getValue());
+    CategoricalParameterValue updatedCategoricalParameterValue =
+        categoricalParameterValueRepository.save(getUpdatedCategoricalParameterValue());
+    Assertions.assertEquals(
+        getCategoricalParameterValue().getValue(), updatedCategoricalParameterValue.getValue());
   }
 }

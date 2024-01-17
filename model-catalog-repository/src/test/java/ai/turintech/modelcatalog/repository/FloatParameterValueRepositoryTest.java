@@ -57,8 +57,7 @@ public class FloatParameterValueRepositoryTest extends BasicRepositoryTest {
 
   @Test
   void testFindAllFloatParameterRangeRepository() {
-    List<FloatParameterRange> floatParameterRanges =
-        floatParameterRangeRepository.findAll();
+    List<FloatParameterRange> floatParameterRanges = floatParameterRangeRepository.findAll();
     Assertions.assertEquals(4, floatParameterRanges.size());
   }
 

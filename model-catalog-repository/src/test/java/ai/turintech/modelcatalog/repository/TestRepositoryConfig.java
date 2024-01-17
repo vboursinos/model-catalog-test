@@ -20,7 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @EnableJpaRepositories(basePackageClasses = {ModelCatalogRepositoryPackage.class})
 @ComponentScan(basePackageClasses = {ModelCatalogRepositoryPackage.class})
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class})
-public class TestConfig {
+public class TestRepositoryConfig {
 
   @Bean
   public DataSource dataSource() {

@@ -5,7 +5,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-@ContextConfiguration(classes = TestConfig.class)
+@ContextConfiguration(classes = TestRepositoryConfig.class)
 public class BasicRepositoryTest {
 
   private static final PostgreSQLContainer<?> postgreSQLContainer =

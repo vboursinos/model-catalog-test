@@ -53,8 +53,7 @@ public class IntegerParameterValueRepositoryTest extends BasicRepositoryTest {
 
   @Test
   void testFindAllIntegerParameterValueRepository() {
-    List<IntegerParameterValue> integerParameterValues =
-        integerParameterValueRepository.findAll();
+    List<IntegerParameterValue> integerParameterValues = integerParameterValueRepository.findAll();
     Assertions.assertEquals(4, integerParameterValues.size());
   }
 
