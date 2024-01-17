@@ -26,9 +26,9 @@ public class TestConfig {
   public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
     dataSource.setDriverClassName("org.postgresql.Driver");
-    dataSource.setUrl(MetricRepositoryTest.postgreSQLContainer.getJdbcUrl());
-    dataSource.setUsername(MetricRepositoryTest.postgreSQLContainer.getUsername());
-    dataSource.setPassword(MetricRepositoryTest.postgreSQLContainer.getPassword());
+    dataSource.setUrl(SingletonPostgresContainer.getInstance().getJdbcUrl());
+    dataSource.setUsername(SingletonPostgresContainer.getInstance().getUsername());
+    dataSource.setPassword(SingletonPostgresContainer.getInstance().getPassword());
     return dataSource;
   }
 
