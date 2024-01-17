@@ -75,7 +75,7 @@ public class ParameterTypeDefinitionRepositoryTest extends BasicRepositoryTest {
   void testFindAllParameterTypeDefinitionRepository() {
     List<ParameterTypeDefinition> parameterTypeDefinitions =
         parameterTypeDefinitionRepository.findAll();
-    Assertions.assertEquals(2, parameterTypeDefinitions.size());
+    Assertions.assertEquals(3, parameterTypeDefinitions.size());
   }
 
   @Test

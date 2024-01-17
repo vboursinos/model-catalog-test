@@ -59,17 +59,17 @@ create TABLE model (
     decision_tree boolean NOT NULL
 );
 
-CREATE TABLE rel_model__groups (
+create TABLE rel_model__groups (
     model_id uuid REFERENCES model (id),
     group_id uuid REFERENCES model_group_type (id)
 );
 
-CREATE TABLE rel_model__incompatible_metrics (
+create TABLE rel_model__incompatible_metrics (
     model_id uuid REFERENCES model (id),
     metric_id uuid REFERENCES metric (id)
 );
 
-CREATE TABLE parameter (
+create TABLE parameter (
   id uuid PRIMARY KEY,
   model_id uuid REFERENCES model (id),
   name varchar NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE parameter (
   ordering integer NOT NULL
 );
 
-CREATE TABLE parameter_type_definition (
+create TABLE parameter_type_definition (
   id uuid PRIMARY KEY,
   parameter_id uuid REFERENCES parameter (id) NOT NULL,
   parameter_type_id uuid REFERENCES parameter_type (id) NOT NULL,
@@ -88,22 +88,22 @@ CREATE TABLE parameter_type_definition (
   ordering integer NOT NULL
 );
 
-CREATE TABLE boolean_parameter (
+create TABLE boolean_parameter (
     id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
     default_value boolean
 );
 
-CREATE TABLE categorical_parameter (
+create TABLE categorical_parameter (
   id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
   default_value varchar
 );
 
-CREATE TABLE integer_parameter (
+create TABLE integer_parameter (
   id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
   default_value integer
 );
 
-CREATE TABLE float_parameter (
+create TABLE float_parameter (
   id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
   default_value double precision
 );
@@ -181,7 +181,28 @@ INSERT INTO parameter (id, model_id, name, label, description, enabled, fixed_va
 VALUES
   ('523e4567-e89b-12d3-a456-426614174001', '123e4567-e89b-12d3-a456-426614174001', 'parameter_name', 'parameter_label', 'parameter_description', true, false, 1);
 
-INSERT INTO parameter_type_definition (id, parameter_id, parameter_type_id, parameter_distribution_type_id, ordering)
-VALUES
+insert into parameter_type_definition (id, parameter_id, parameter_type_id, parameter_distribution_type_id, ordering)
+values
   ('323e4567-e89b-12d3-a456-426614174001', '523e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 1),
-  ('323e4567-e89b-12d3-a456-426614174002', '523e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 2);
+  ('323e4567-e89b-12d3-a456-426614174002', '523e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 2),
+  ('323e4567-e89b-12d3-a456-426614174003', '523e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 2);
+
+insert into boolean_parameter (id, default_value)
+values
+  ('323e4567-e89b-12d3-a456-426614174001', true),
+  ('323e4567-e89b-12d3-a456-426614174002', false);
+
+insert into categorical_parameter (id, default_value)
+values
+  ('323e4567-e89b-12d3-a456-426614174001', 'value1'),
+  ('323e4567-e89b-12d3-a456-426614174002', 'value2');
+
+insert into integer_parameter (id, default_value)
+values
+  ('323e4567-e89b-12d3-a456-426614174001', 10),
+  ('323e4567-e89b-12d3-a456-426614174002', 20);
+
+insert into float_parameter (id, default_value)
+values
+  ('323e4567-e89b-12d3-a456-426614174001', 10.1),
+  ('323e4567-e89b-12d3-a456-426614174002', 20.2);
