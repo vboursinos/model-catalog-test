@@ -69,6 +69,45 @@ CREATE TABLE rel_model__incompatible_metrics (
     metric_id uuid REFERENCES metric (id)
 );
 
+CREATE TABLE parameter (
+  id uuid PRIMARY KEY,
+  model_id uuid REFERENCES model (id),
+  name varchar NOT NULL,
+  label varchar NOT NULL,
+  description varchar,
+  enabled boolean NOT NULL,
+  fixed_value boolean NOT NULL,
+  ordering integer NOT NULL
+);
+
+CREATE TABLE parameter_type_definition (
+  id uuid PRIMARY KEY,
+  parameter_id uuid REFERENCES parameter (id) NOT NULL,
+  parameter_type_id uuid REFERENCES parameter_type (id) NOT NULL,
+  parameter_distribution_type_id uuid REFERENCES parameter_distribution_type (id) NOT NULL,
+  ordering integer NOT NULL
+);
+
+CREATE TABLE boolean_parameter (
+    id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
+    default_value boolean
+);
+
+CREATE TABLE categorical_parameter (
+  id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
+  default_value varchar
+);
+
+CREATE TABLE integer_parameter (
+  id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
+  default_value integer
+);
+
+CREATE TABLE float_parameter (
+  id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
+  default_value double precision
+);
+
 -- Inserting sample data into the "metrics" table
 insert into metric (id, name)
 values
@@ -137,3 +176,12 @@ insert into model (id, model_type_id, ml_task_id, name, display_name, structure_
 values
   ('123e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'Model1', 'Display1', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'Description1', ARRAY['Advantage1'], ARRAY['Disadvantage1'], true, '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', true),
   ('223e4567-e89b-12d3-a456-426614174002', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'Model2', 'Display2', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'Description2', ARRAY['Advantage2'], ARRAY['Disadvantage2'], true, '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', false);
+
+INSERT INTO parameter (id, model_id, name, label, description, enabled, fixed_value, ordering)
+VALUES
+  ('523e4567-e89b-12d3-a456-426614174001', '123e4567-e89b-12d3-a456-426614174001', 'parameter_name', 'parameter_label', 'parameter_description', true, false, 1);
+
+INSERT INTO parameter_type_definition (id, parameter_id, parameter_type_id, parameter_distribution_type_id, ordering)
+VALUES
+  ('323e4567-e89b-12d3-a456-426614174001', '523e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 1),
+  ('323e4567-e89b-12d3-a456-426614174002', '523e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 2);
