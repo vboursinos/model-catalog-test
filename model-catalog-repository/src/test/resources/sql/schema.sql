@@ -108,6 +108,28 @@ create TABLE float_parameter (
   default_value double precision
 );
 
+CREATE TABLE categorical_parameter_value (
+  id uuid PRIMARY KEY,
+  parameter_type_definition_id uuid REFERENCES categorical_parameter (id) NOT NULL,
+  value varchar NOT NULL
+);
+
+CREATE TABLE integer_parameter_value (
+  id uuid PRIMARY KEY,
+  parameter_type_definition_id uuid REFERENCES integer_parameter (id) NOT NULL,
+  lower integer NOT NULL,
+  upper integer NOT NULL
+);
+
+CREATE TABLE float_parameter_range (
+  id uuid PRIMARY KEY,
+  parameter_type_definition_id uuid REFERENCES float_parameter (id) NOT NULL,
+  is_left_open boolean NOT NULL,
+  is_right_open boolean NOT NULL,
+  lower double precision NOT NULL,
+  upper double precision NOT NULL
+);
+
 -- Inserting sample data into the "metrics" table
 insert into metric (id, name)
 values
@@ -206,3 +228,24 @@ insert into float_parameter (id, default_value)
 values
   ('323e4567-e89b-12d3-a456-426614174001', 10.1),
   ('323e4567-e89b-12d3-a456-426614174002', 20.2);
+
+INSERT INTO categorical_parameter_value (id, parameter_type_definition_id, value)
+VALUES
+  ('423e4567-e89b-12d3-a456-426614174001', '323e4567-e89b-12d3-a456-426614174001', 'Category1'),
+  ('423e4567-e89b-12d3-a456-426614174002', '323e4567-e89b-12d3-a456-426614174001', 'Category2'),
+  ('423e4567-e89b-12d3-a456-426614174003', '323e4567-e89b-12d3-a456-426614174002', 'Category3'),
+  ('423e4567-e89b-12d3-a456-426614174004', '323e4567-e89b-12d3-a456-426614174002', 'Category4');
+
+INSERT INTO integer_parameter_value (id, parameter_type_definition_id, lower, upper)
+VALUES
+  ('423e4567-e89b-12d3-a456-426614174001', '323e4567-e89b-12d3-a456-426614174001', 10, 20),
+  ('423e4567-e89b-12d3-a456-426614174002', '323e4567-e89b-12d3-a456-426614174001', 5, 15),
+  ('423e4567-e89b-12d3-a456-426614174003', '323e4567-e89b-12d3-a456-426614174002', 30, 40),
+  ('423e4567-e89b-12d3-a456-426614174004', '323e4567-e89b-12d3-a456-426614174002', 25, 35);
+
+INSERT INTO float_parameter_range (id, parameter_type_definition_id, is_left_open, is_right_open, lower, upper)
+VALUES
+  ('423e4567-e89b-12d3-a456-426614174001', '323e4567-e89b-12d3-a456-426614174001', true, false, 10.5, 20.5),
+  ('423e4567-e89b-12d3-a456-426614174002', '323e4567-e89b-12d3-a456-426614174001', false, true, 5.2, 15.7),
+  ('423e4567-e89b-12d3-a456-426614174003', '323e4567-e89b-12d3-a456-426614174002', false, false, 30.0, 40.0),
+  ('423e4567-e89b-12d3-a456-426614174004', '323e4567-e89b-12d3-a456-426614174002', true, true, 25.3, 35.8);
