@@ -30,16 +30,16 @@ public class ModelTypeServiceTest extends BasicServiceTest {
     return modelTypeDTO;
   }
 
-    @Test
-    void testFindAllModelTypeService() {
-        Mono<List<ModelTypeDTO>> modelTypes = modelTypeService.findAll();
+  @Test
+  void testFindAllModelTypeService() {
+    Mono<List<ModelTypeDTO>> modelTypes = modelTypeService.findAll();
 
-        List<ModelTypeDTO> modelTypeDTOS = modelTypes.block();
+    List<ModelTypeDTO> modelTypeDTOS = modelTypes.block();
 
-        Assert.assertNotNull(modelTypeDTOS);
-        Assert.assertEquals(4, modelTypeDTOS.size());
-        Assert.assertEquals("modeltype1", modelTypeDTOS.get(0).getName());
-    }
+    Assert.assertNotNull(modelTypeDTOS);
+    Assert.assertEquals(4, modelTypeDTOS.size());
+    Assert.assertEquals("modeltype1", modelTypeDTOS.get(0).getName());
+  }
 
   @Test
   void testFindByIdModelTypeService() {

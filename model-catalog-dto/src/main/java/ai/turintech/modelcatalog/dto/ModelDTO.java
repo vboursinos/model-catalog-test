@@ -58,6 +58,8 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
     this.decisionTree = decisionTree;
   }
 
+  public ModelDTO() {}
+
   public String getName() {
     return name;
   }

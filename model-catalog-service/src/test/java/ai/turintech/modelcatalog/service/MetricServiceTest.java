@@ -30,16 +30,16 @@ public class MetricServiceTest extends BasicServiceTest {
     return metricDTO;
   }
 
-    @Test
-    void testFindAllMetricService() {
-        Mono<List<MetricDTO>> metrics = metricService.findAll();
+  @Test
+  void testFindAllMetricService() {
+    Mono<List<MetricDTO>> metrics = metricService.findAll();
 
-        List<MetricDTO> metricDTOList = metrics.block();
+    List<MetricDTO> metricDTOList = metrics.block();
 
-        Assert.assertNotNull(metricDTOList);
-        Assert.assertEquals(4, metricDTOList.size());
-        Assert.assertEquals("Metric1", metricDTOList.get(0).getMetric());
-    }
+    Assert.assertNotNull(metricDTOList);
+    Assert.assertEquals(4, metricDTOList.size());
+    Assert.assertEquals("Metric1", metricDTOList.get(0).getMetric());
+  }
 
   @Test
   void testFindByIdMetricService() {
