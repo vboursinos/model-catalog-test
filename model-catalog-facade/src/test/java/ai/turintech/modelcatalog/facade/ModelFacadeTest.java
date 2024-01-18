@@ -1,7 +1,6 @@
-package ai.turintech.modelcatalog.service;
+package ai.turintech.modelcatalog.facade;
 
 import ai.turintech.modelcatalog.dto.*;
-import ai.turintech.modelcatalog.entity.*;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -14,8 +13,8 @@ import reactor.core.publisher.Mono;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
-public class ModelServiceTest extends BasicServiceTest {
-  @Autowired private ModelService modelService;
+public class ModelFacadeTest extends BasicFacadeTest {
+  @Autowired private ModelFacade modelFacade;
 
   private ModelDTO getModel() {
     MlTaskTypeDTO mlTaskType = new MlTaskTypeDTO();
@@ -76,13 +75,13 @@ public class ModelServiceTest extends BasicServiceTest {
   }
 
   @Test
-  void testSaveModelEnsembleTypeService() {
-    Mono<ModelDTO> savedModelDTO = modelService.save(getModel());
+  void testSaveModelEnsembleTypeFacade() {
+    Mono<ModelDTO> savedModelDTO = modelFacade.save(getModel());
 
     savedModelDTO.subscribe(
         modelDTO -> {
           Assert.assertEquals(getModel().getName(), modelDTO.getName());
-          modelService.delete(modelDTO.getId()).block();
+          modelFacade.delete(modelDTO.getId()).block();
         });
   }
 }

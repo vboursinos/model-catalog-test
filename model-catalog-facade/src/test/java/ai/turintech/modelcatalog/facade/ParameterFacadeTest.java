@@ -1,0 +1,95 @@
+package ai.turintech.modelcatalog.facade;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import ai.turintech.modelcatalog.dto.ParameterDTO;
+import java.util.UUID;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
+@SpringBootTest
+public class ParameterFacadeTest extends BasicFacadeTest {
+  @Autowired private ParameterFacade parameterFacade;
+
+  private ParameterDTO getParameterDTO() {
+
+    ParameterDTO parameter = new ParameterDTO();
+    parameter.setName("test_parameter");
+    parameter.setDescription("test_description");
+    parameter.setEnabled(true);
+    parameter.setFixedValue(true);
+    parameter.setLabel("test_label");
+    parameter.setOrdering(1);
+
+    return parameter;
+  }
+
+  private ParameterDTO getUpdatedParameterDTO() {
+    ParameterDTO parameterDTO = new ParameterDTO();
+    parameterDTO.setName("update_parameter");
+    parameterDTO.setDescription("test_description");
+    parameterDTO.setEnabled(true);
+    parameterDTO.setFixedValue(true);
+    parameterDTO.setLabel("test_label");
+    parameterDTO.setOrdering(1);
+
+    return parameterDTO;
+  }
+
+  @Test
+  @Transactional
+  void testFindAllParameterFacade() {
+    Flux<ParameterDTO> parametersMono = parameterFacade.findAll();
+    parametersMono
+        .collectList()
+        .blockOptional()
+        .ifPresent(
+            parameterDTOS -> {
+              assertEquals(
+                  1, parameterDTOS.size(), "Returned parameters do not match expected size");
+            });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdParameterFacade() {
+    Mono<ParameterDTO> parameterDTOMono =
+        parameterFacade.findOne(UUID.fromString("523e4567-e89b-12d3-a456-426614174001"));
+
+    parameterDTOMono.subscribe(
+        parameterDTO -> {
+          Assert.assertEquals("parameter_name", parameterDTO.getName());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testSaveParameterFacade() {
+    Mono<ParameterDTO> savedParameter = parameterFacade.save(getParameterDTO());
+    savedParameter.subscribe(
+        parameterDTO -> {
+          Assert.assertEquals(getParameterDTO().getName(), parameterDTO.getName());
+          parameterFacade.delete(parameterDTO.getId()).block();
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateParameterFacade() {
+    Mono<ParameterDTO> updateParameterDTO = parameterFacade.save(getUpdatedParameterDTO());
+    updateParameterDTO.subscribe(
+        parameterDistributionTypeDTO -> {
+          Assert.assertEquals(
+              getUpdatedParameterDTO().getName(), parameterDistributionTypeDTO.getName());
+        });
+  }
+}
