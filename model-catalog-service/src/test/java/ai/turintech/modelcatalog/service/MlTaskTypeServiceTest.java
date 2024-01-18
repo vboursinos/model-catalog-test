@@ -30,16 +30,16 @@ public class MlTaskTypeServiceTest extends BasicServiceTest {
     return mlTaskTypeDTO;
   }
 
-  @Test
-  void testFindAllMlTaskTypeService() {
-    Mono<List<MlTaskTypeDTO>> mlTaskTypes = mlTaskTypeService.findAll();
+    @Test
+    void testFindAllMlTaskTypeService() {
+        Mono<List<MlTaskTypeDTO>> mlTaskTypes = mlTaskTypeService.findAll();
 
-    mlTaskTypes.subscribe(
-        mlTaskDTOList -> {
-          Assert.assertTrue(mlTaskDTOList.size() == 4);
-          Assert.assertTrue(mlTaskDTOList.get(0).getName().equals("mltask1"));
-        });
-  }
+        List<MlTaskTypeDTO> mlTaskDTOList = mlTaskTypes.block();
+
+        Assert.assertNotNull(mlTaskDTOList);
+        Assert.assertEquals(4, mlTaskDTOList.size());
+        Assert.assertEquals("mltask1", mlTaskDTOList.get(0).getName());
+    }
 
   @Test
   void testFindByIdMlTaksService() {
@@ -58,7 +58,7 @@ public class MlTaskTypeServiceTest extends BasicServiceTest {
     savedMlTaskTypeDTO.subscribe(
         mlTaskTypeDTO -> {
           Assert.assertEquals(getMlTaskTypeDTO().getName(), mlTaskTypeDTO.getName());
-          mlTaskTypeService.delete(mlTaskTypeDTO.getId());
+          mlTaskTypeService.delete(mlTaskTypeDTO.getId()).block();
         });
   }
 

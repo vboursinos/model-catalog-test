@@ -30,16 +30,16 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
     return modelGroupTypeDTO;
   }
 
-  @Test
-  void testFindAllModelGroupTypeService() {
-    Mono<List<ModelGroupTypeDTO>> modelGroupTypes = modelGroupTypeService.findAll();
+    @Test
+    void testFindAllModelGroupTypeService() {
+        Mono<List<ModelGroupTypeDTO>> modelGroupTypes = modelGroupTypeService.findAll();
 
-    modelGroupTypes.subscribe(
-        modelGroupTypeDTOS -> {
-          Assert.assertTrue(modelGroupTypeDTOS.size() == 4);
-          Assert.assertTrue(modelGroupTypeDTOS.get(0).getName().equals("modelgroup1"));
-        });
-  }
+        List<ModelGroupTypeDTO> modelGroupTypeDTOS = modelGroupTypes.block();
+
+        Assert.assertNotNull(modelGroupTypeDTOS);
+        Assert.assertEquals(4, modelGroupTypeDTOS.size());
+        Assert.assertEquals("modelgroup1", modelGroupTypeDTOS.get(0).getName());
+    }
 
   @Test
   void testFindByIdModelGroupTypeService() {
@@ -59,7 +59,7 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
     savedModelGroupTypeDTO.subscribe(
         modelGroupTypeDTO -> {
           Assert.assertEquals(getModelGroupTypeDTO().getName(), modelGroupTypeDTO.getName());
-          modelGroupTypeService.delete(modelGroupTypeDTO.getId());
+          modelGroupTypeService.delete(modelGroupTypeDTO.getId()).block();
         });
   }
 

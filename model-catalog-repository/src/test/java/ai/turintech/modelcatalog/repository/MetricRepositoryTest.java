@@ -24,7 +24,7 @@ public class MetricRepositoryTest extends BasicRepositoryTest {
 
   private Metric getUpdatedMetric() {
     Metric metric = new Metric();
-    metric.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+    metric.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"));
     metric.setMetric("test_updated_metric");
     return metric;
   }

@@ -25,22 +25,21 @@ public class MetricServiceTest extends BasicServiceTest {
 
   private MetricDTO getUpdatedMetricDTO() {
     MetricDTO metricDTO = new MetricDTO();
-    metricDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+    metricDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"));
     metricDTO.setMetric("test_updated_metric");
     return metricDTO;
   }
 
-  @Test
-  void testFindAllMetricService() {
-    Mono<List<MetricDTO>> metrics = metricService.findAll();
+    @Test
+    void testFindAllMetricService() {
+        Mono<List<MetricDTO>> metrics = metricService.findAll();
 
-    metrics.subscribe(
-        metricDTOList -> {
-          System.out.println("Metrics values: " + metricDTOList);
-          Assert.assertTrue(metricDTOList.size() == 4);
-          Assert.assertTrue(metricDTOList.get(0).getMetric().equals("Metric1"));
-        });
-  }
+        List<MetricDTO> metricDTOList = metrics.block();
+
+        Assert.assertNotNull(metricDTOList);
+        Assert.assertEquals(4, metricDTOList.size());
+        Assert.assertEquals("Metric1", metricDTOList.get(0).getMetric());
+    }
 
   @Test
   void testFindByIdMetricService() {
@@ -61,7 +60,7 @@ public class MetricServiceTest extends BasicServiceTest {
         metricDTO -> {
           System.out.println("Saved Metric: " + metricDTO);
           Assert.assertEquals(getMetricDTO().getMetric(), metricDTO.getMetric());
-          metricService.delete(metricDTO.getId());
+          metricService.delete(metricDTO.getId()).block();
         });
   }
 

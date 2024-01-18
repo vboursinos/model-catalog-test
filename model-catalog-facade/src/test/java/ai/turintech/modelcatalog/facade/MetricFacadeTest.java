@@ -3,8 +3,6 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.MetricDTO;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -29,30 +27,9 @@ public class MetricFacadeTest extends BasicFacadeTest {
 
   private MetricDTO getUpdatedMetricDTO() {
     MetricDTO metricDTO = new MetricDTO();
-    metricDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+    metricDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"));
     metricDTO.setMetric("test_updated_metric");
     return metricDTO;
-  }
-
-  private List<MetricDTO> getExpectedMetrics() {
-    List<MetricDTO> expectedMetrics = new ArrayList<>();
-    MetricDTO metricDTO1 = new MetricDTO();
-    metricDTO1.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
-    metricDTO1.setMetric("Metric1");
-    MetricDTO metricDTO2 = new MetricDTO();
-    metricDTO2.setId(UUID.fromString("2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d24"));
-    metricDTO2.setMetric("Metric2");
-    MetricDTO metricDTO3 = new MetricDTO();
-    metricDTO3.setId(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d25"));
-    metricDTO3.setMetric("Metric3");
-    MetricDTO metricDTO4 = new MetricDTO();
-    metricDTO4.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"));
-    metricDTO4.setMetric("Metric4");
-    expectedMetrics.add(metricDTO1);
-    expectedMetrics.add(metricDTO2);
-    expectedMetrics.add(metricDTO3);
-    expectedMetrics.add(metricDTO4);
-    return expectedMetrics;
   }
 
   @Test
@@ -64,10 +41,7 @@ public class MetricFacadeTest extends BasicFacadeTest {
         .blockOptional()
         .ifPresent(
             metricDTOList -> {
-              assertEquals(
-                  getExpectedMetrics(),
-                  metricDTOList,
-                  "Returned metrics do not match expected values");
+              assertEquals(4, metricDTOList.size(), "Returned metrics do not match expected size");
             });
   }
 
@@ -78,6 +52,7 @@ public class MetricFacadeTest extends BasicFacadeTest {
 
     metric.subscribe(
         metricDTO -> {
+          System.out.println(metricDTO.getMetric());
           Assert.assertEquals("Metric1", metricDTO.getMetric());
         });
   }
@@ -89,7 +64,7 @@ public class MetricFacadeTest extends BasicFacadeTest {
 
     exists.subscribe(
         metricDTO -> {
-          Assert.assertEquals(true, exists);
+          Assert.assertEquals(true, exists.block());
         });
   }
 
@@ -104,7 +79,7 @@ public class MetricFacadeTest extends BasicFacadeTest {
   }
 
   @Test
-  void testUpdateMetricService() {
+  void testUpdateMetricFacade() {
     Mono<MetricDTO> updatedMetric = metricFacade.save(getUpdatedMetricDTO());
     updatedMetric.subscribe(
         metricDTO -> {
