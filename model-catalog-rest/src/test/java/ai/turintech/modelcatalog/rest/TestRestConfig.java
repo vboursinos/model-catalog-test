@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -25,6 +26,9 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.server.WebHandler;
+import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -98,8 +102,20 @@ public class TestRestConfig {
   //    return new NettyReactiveWebServerFactory(); // Use the appropriate server factory
   //  }
   //
-  //  @Bean
-  //  public HttpHandler httpHandler(WebHandler webHandler) {
-  //    return WebHttpHandlerBuilder.webHandler(webHandler).build();
-  //  }
+
+  @Bean
+  public WebHandler webHandler() {
+    // Implement your custom WebHandler logic here
+    return exchange -> {
+      // Handle the HTTP request and response
+      // For example, you can log some information
+      System.out.println("Custom WebHandler handling request");
+      return Mono.empty(); // Return an empty Mono to signify completion
+    };
+  }
+
+  @Bean
+  public HttpHandler httpHandler(WebHandler customWebHandler) {
+    return WebHttpHandlerBuilder.webHandler(customWebHandler).build();
+  }
 }
