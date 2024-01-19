@@ -75,6 +75,27 @@ public class ParameterFacadeTest extends BasicFacadeTest {
 
   @Test
   @Transactional
+  void testExistsByIdParameterFacade() {
+    // Assume you have a known ID for an existing parameter
+    UUID existingParameterId = UUID.fromString("523e4567-e89b-12d3-a456-426614174001");
+
+    Mono<Boolean> exists = parameterFacade.existsById(existingParameterId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdNonExistingParameterFacade() {
+    // Use a non-existing ID
+    UUID nonExistingParameterId = UUID.randomUUID();
+
+    Mono<Boolean> exists = parameterFacade.existsById(nonExistingParameterId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  @Transactional
   void testSaveParameterFacade() {
     Mono<ParameterDTO> savedParameter = parameterFacade.save(getParameterDTO());
     savedParameter.subscribe(

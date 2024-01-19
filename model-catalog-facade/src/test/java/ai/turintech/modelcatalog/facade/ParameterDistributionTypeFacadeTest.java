@@ -63,6 +63,28 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdParameterDistributionTypeFacade() {
+    // Assume you have a known ID for an existing distribution type
+    UUID existingParameterDistributionTypeId =
+        UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+
+    Mono<Boolean> exists =
+        parameterDistributionTypeFacade.existsById(existingParameterDistributionTypeId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingParameterDistributionTypeFacade() {
+    // Use a non-existing ID
+    UUID nonExistingParameterDistributionTypeId = UUID.randomUUID();
+
+    Mono<Boolean> exists =
+        parameterDistributionTypeFacade.existsById(nonExistingParameterDistributionTypeId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   void testSaveParameterDistributionTypeFacade() {
     Mono<ParameterDistributionTypeDTO> savedParameterDistributionTypeDTO =
         parameterDistributionTypeFacade.save(getParameterDistributionTypeDTO());

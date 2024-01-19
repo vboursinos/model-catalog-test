@@ -61,6 +61,26 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdModelStructureTypeFacade() {
+    // Assume you have a known ID for an existing structure type
+    UUID existingStructureTypeId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+
+    Mono<Boolean> exists = modelStructureTypeFacade.existsById(existingStructureTypeId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingModelStructureTypeFacade() {
+    // Use a non-existing ID
+    UUID nonExistingStructureTypeId = UUID.randomUUID();
+
+    Mono<Boolean> exists = modelStructureTypeFacade.existsById(nonExistingStructureTypeId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   void testSaveModelStructureTypeFacade() {
     Mono<ModelStructureTypeDTO> savedModelStructureTypeDTO =
         modelStructureTypeFacade.save(getModelStructureTypeDTO());

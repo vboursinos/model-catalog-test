@@ -1,6 +1,8 @@
 package ai.turintech.modelcatalog.facade;
 
 import ai.turintech.modelcatalog.dto.*;
+import jakarta.transaction.Transactional;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -83,5 +86,58 @@ public class ModelFacadeTest extends BasicFacadeTest {
           Assert.assertEquals(getModel().getName(), modelDTO.getName());
           modelFacade.delete(modelDTO.getId()).block();
         });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdModelFacade() {
+    // Save a model first
+    Mono<ModelDTO> savedModelDTO = modelFacade.save(getModel());
+
+    savedModelDTO.subscribe(
+        modelDTO -> {
+          Mono<ModelDTO> foundModelDTO = modelFacade.findOne(modelDTO.getId());
+          foundModelDTO.subscribe(
+              foundDTO -> {
+                Assert.assertEquals(modelDTO.getId(), foundDTO.getId());
+                Assert.assertEquals(modelDTO.getName(), foundDTO.getName());
+              });
+          // Clean up: delete the saved model
+          modelFacade.delete(modelDTO.getId()).block();
+        });
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdModelFacade() {
+    // Save a model first
+    Mono<ModelDTO> savedModelDTO = modelFacade.save(getModel());
+
+    savedModelDTO.subscribe(
+        modelDTO -> {
+          Mono<Boolean> exists = modelFacade.existsById(modelDTO.getId());
+          StepVerifier.create(exists).expectNext(true).verifyComplete();
+          // Clean up: delete the saved model
+          modelFacade.delete(modelDTO.getId()).block();
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNotExistingModelFacade() {
+    // Try to find a model by a non-existing ID
+    Mono<ModelDTO> modelMono = modelFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(modelMono).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdNotExistingModelFacade() {
+    // Use a non-existing ID
+    UUID nonExistingModelId = UUID.randomUUID();
+
+    Mono<Boolean> exists = modelFacade.existsById(nonExistingModelId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 }

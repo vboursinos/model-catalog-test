@@ -60,6 +60,27 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdMlTaksFacade() {
+    Mono<Boolean> exists =
+        mlTaskTypeFacade.existsById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+
+    exists.subscribe(
+        mlTaskType -> {
+          Assert.assertEquals(true, exists.block());
+        });
+  }
+
+  @Test
+  void testExistsByIdNonExistingMlTaskTypeFacade() {
+    // Use a non-existing ID
+    UUID nonExistingMlTaskTypeId = UUID.randomUUID();
+
+    Mono<Boolean> exists = mlTaskTypeFacade.existsById(nonExistingMlTaskTypeId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   void testSaveMlTaskTypeFacade() {
     Mono<MlTaskTypeDTO> savedMlTaskTypeDTO = mlTaskTypeFacade.save(getMlTaskTypeDTO());
     savedMlTaskTypeDTO.subscribe(

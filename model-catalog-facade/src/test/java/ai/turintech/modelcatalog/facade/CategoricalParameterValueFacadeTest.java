@@ -85,6 +85,27 @@ public class CategoricalParameterValueFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdCategoricalParameterValueFacade() {
+
+    UUID existingCategoricalParameterValueId =
+        UUID.fromString("423e4567-e89b-12d3-a456-426614174003");
+
+    Mono<Boolean> exists =
+        categoricalParameterValueFacade.existsById(existingCategoricalParameterValueId);
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingCategoricalParameterValueFacade() {
+    // Use a non-existing ID
+    UUID nonExistingCategoricalParameterValueId = UUID.randomUUID();
+
+    Mono<Boolean> exists =
+        categoricalParameterValueFacade.existsById(nonExistingCategoricalParameterValueId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   @Transactional
   void testDeleteCategoricalParameterValueFacade() {
     // Save a categorical parameter value first

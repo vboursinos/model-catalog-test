@@ -71,6 +71,16 @@ public class MetricFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdNonExistingMetricFacade() {
+    // Use a non-existing ID
+    UUID nonExistingMetricId = UUID.randomUUID();
+
+    Mono<Boolean> exists = metricFacade.existsById(nonExistingMetricId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   void testSaveMetricFacade() {
     Mono<MetricDTO> savedMetric = metricFacade.save(getMetricDTO());
     savedMetric.subscribe(

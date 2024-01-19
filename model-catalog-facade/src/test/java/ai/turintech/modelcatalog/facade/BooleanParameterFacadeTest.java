@@ -61,6 +61,25 @@ public class BooleanParameterFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdBooleanParameterFacade() {
+    // Assume you have a known ID for an existing boolean parameter
+    UUID existingBooleanParameterId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+
+    Mono<Boolean> exists = booleanParameterFacade.existsById(existingBooleanParameterId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingBooleanParameterFacade() {
+    // Use a non-existing ID
+    UUID nonExistingBooleanParameterId = UUID.randomUUID();
+
+    Mono<Boolean> exists = booleanParameterFacade.existsById(nonExistingBooleanParameterId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   @Transactional
   void testDeleteBooleanParameterFacade() {
     // Save a boolean parameter first

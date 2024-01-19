@@ -62,6 +62,24 @@ public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdModelFamilyTypeFacade() {
+    Mono<Boolean> exists =
+        modelFamilyTypeFacade.existsById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingModelFamilyTypeFacade() {
+    // Use a non-existing ID
+    UUID nonExistingModelFamilyTypeId = UUID.randomUUID();
+
+    Mono<Boolean> exists = modelFamilyTypeFacade.existsById(nonExistingModelFamilyTypeId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   void testSaveModelFamilyTypeFacade() {
     Mono<ModelFamilyTypeDTO> savedModelFamilyTypeDTO =
         modelFamilyTypeFacade.save(getModelFamilyTypeDTO());

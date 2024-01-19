@@ -87,6 +87,23 @@ public class FloatParameterValueFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdFloatParameterRangeFacade() {
+    UUID existingFloatParameterRangeId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+
+    Mono<Boolean> exists = floatParameterRangeFacade.existsById(existingFloatParameterRangeId);
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingFloatParameterRangeFacade() {
+    // Use a non-existing ID
+    UUID nonExistingFloatParameterRangeId = UUID.randomUUID();
+
+    Mono<Boolean> exists = floatParameterRangeFacade.existsById(nonExistingFloatParameterRangeId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   @Transactional
   void testDeleteFloatParameterRangeFacade() {
     // Save a float parameter range first

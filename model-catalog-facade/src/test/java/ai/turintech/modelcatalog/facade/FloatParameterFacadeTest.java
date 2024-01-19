@@ -63,6 +63,25 @@ public class FloatParameterFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdFloatParameterFacade() {
+    // Assume you have a known ID for an existing categorical parameter
+    UUID existingFloatParameterId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+
+    Mono<Boolean> exists = floatParameterFacade.existsById(existingFloatParameterId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingFloatParameterFacade() {
+    // Use a non-existing ID
+    UUID nonExistingFloatParameterId = UUID.randomUUID();
+
+    Mono<Boolean> exists = floatParameterFacade.existsById(nonExistingFloatParameterId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   @Transactional
   void testDeleteFloatParameterFacade() {
     // Save a float parameter first

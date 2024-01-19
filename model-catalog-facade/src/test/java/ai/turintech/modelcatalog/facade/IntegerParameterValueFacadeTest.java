@@ -85,6 +85,24 @@ public class IntegerParameterValueFacadeTest extends BasicFacadeTest {
   }
 
   @Test
+  void testExistsByIdIntegerParameterValueFacade() {
+    UUID existingIntegerParameterValueId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+
+    Mono<Boolean> exists = integerParameterValueFacade.existsById(existingIntegerParameterValueId);
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdNonExistingIntegerParameterValueFacade() {
+    // Use a non-existing ID
+    UUID nonExistingIntegerParameterValueId = UUID.randomUUID();
+
+    Mono<Boolean> exists =
+        integerParameterValueFacade.existsById(nonExistingIntegerParameterValueId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
   @Transactional
   void testDeleteIntegerParameterValueFacade() {
     // Save an integer parameter value first

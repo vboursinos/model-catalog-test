@@ -94,6 +94,30 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
 
   @Test
   @Transactional
+  void testExistsByIdParameterTypeDefinitionFacade() {
+    // Assume you have a known ID for an existing parameter type definition
+    UUID existingParameterTypeDefinitionId =
+        UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+
+    Mono<Boolean> exists =
+        parameterTypeDefinitionFacade.existsById(existingParameterTypeDefinitionId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdNonExistingParameterTypeDefinitionFacade() {
+    // Use a non-existing ID
+    UUID nonExistingParameterTypeDefinitionId = UUID.randomUUID();
+
+    Mono<Boolean> exists =
+        parameterTypeDefinitionFacade.existsById(nonExistingParameterTypeDefinitionId);
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  @Transactional
   void testSaveParameterTypeDefinitionFacade() {
     Mono<ParameterTypeDefinitionDTO> savedParameterTypeDefinitionDTO =
         parameterTypeDefinitionFacade.save(getParameterTypeDefinitionDTO());
