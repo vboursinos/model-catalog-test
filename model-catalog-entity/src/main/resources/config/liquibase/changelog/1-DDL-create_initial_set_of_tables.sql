@@ -53,6 +53,13 @@ CREATE TABLE model_family_type (
 );
 -- rollback DROP TABLE model_family_type;
 
+-- changeset liquibaseuser:8a
+CREATE TABLE dependency_group_type (
+  id uuid DEFAULT generate_uuid() PRIMARY KEY,
+  name varchar NOT NULL
+);
+-- rollback DROP TABLE dependency_group_type;
+
 -- changeset liquibaseuser:9
 CREATE TABLE model (
   id uuid DEFAULT generate_uuid() PRIMARY KEY,
@@ -67,7 +74,8 @@ CREATE TABLE model (
   enabled boolean NOT NULL,
   ensemble_type_id uuid REFERENCES model_ensemble_type (id),
   family_type_id uuid REFERENCES model_family_type (id),
-  decision_tree boolean NOT NULL
+  decision_tree boolean NOT NULL,
+  dependency_group_id uuid REFERENCES dependency_group_type (id)
 );
 -- rollback DROP TABLE model;
 
@@ -185,3 +193,46 @@ CREATE TABLE boolean_parameter (
 );
 -- rollback DROP TABLE boolean_parameter;
 
+-- changeset liquibaseuser:24
+CREATE TABLE constraint_edge (
+  id uuid DEFAULT generate_uuid() PRIMARY KEY,
+  source_parameter_id uuid REFERENCES parameter (id) NOT NULL,
+  target_parameter_id uuid REFERENCES parameter (id) NOT NULL
+);
+-- rollback DROP TABLE constraint_edge;
+
+-- changeset liquibaseuser:25
+CREATE TABLE mapping (
+  id uuid DEFAULT generate_uuid() PRIMARY KEY,
+  constraint_id uuid REFERENCES constraint_edge (id) NOT NULL,
+  parameter_type_definition_id uuid REFERENCES parameter_type_definition (id) NOT NULL
+);
+-- rollback DROP TABLE mapping;
+
+-- changeset liquibaseuser:26
+CREATE TABLE float_constraint_range (
+  id uuid DEFAULT generate_uuid() PRIMARY KEY,
+  mapping_id uuid REFERENCES mapping (id) NOT NULL,
+  is_left_open boolean NOT NULL,
+  is_right_open boolean NOT NULL,
+  lower double precision NOT NULL,
+  upper double precision NOT NULL
+);
+-- rollback DROP TABLE float_constraint_range;
+
+-- changeset liquibaseuser:27
+CREATE TABLE integer_constraint_range (
+  id uuid DEFAULT generate_uuid() PRIMARY KEY,
+  mapping_id uuid REFERENCES mapping (id) NOT NULL,
+  lower integer NOT NULL,
+  upper integer NOT NULL
+);
+-- rollback DROP TABLE integer_constraint_range;
+
+-- changeset liquibaseuser:28
+CREATE TABLE categorical_constraint_value (
+  id uuid DEFAULT generate_uuid() PRIMARY KEY,
+  mapping_id uuid REFERENCES mapping (id) NOT NULL,
+  value varchar NOT NULL
+);
+-- rollback DROP TABLE categorical_constraint

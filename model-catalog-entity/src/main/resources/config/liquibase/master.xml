@@ -26,9 +26,10 @@
     <include file="config/liquibase/changelog/8-DML-insert_model_structure_type.sql" relativeToChangelogFile="false" context="v0.1"/>
     <include file="config/liquibase/changelog/9-DML-insert_model_type.sql" relativeToChangelogFile="false" context="v0.1"/>
     <include file="config/liquibase/changelog/10-DML-insert_parameter_type.sql" relativeToChangelogFile="false" context="v0.1"/>
-    <include file="config/liquibase/changelog/11-DML-insert_models_classification.sql" relativeToChangelogFile="false" context="v0.1"/>
-    <include file="config/liquibase/changelog/12-DML-insert_models_forecasting.sql" relativeToChangelogFile="false" context="v0.1"/>
-    <include file="config/liquibase/changelog/13-DML-insert_models_regression.sql" relativeToChangelogFile="false" context="v0.1"/>
+    <include file="config/liquibase/changelog/11-DML-insert_dependency_group_type.sql" relativeToChangelogFile="false" context="v0.1"/>
+    <include file="config/liquibase/changelog/12-DML-insert_models_classification.sql" relativeToChangelogFile="false" context="v0.1"/>
+    <include file="config/liquibase/changelog/13-DML-insert_models_forecasting.sql" relativeToChangelogFile="false" context="v0.1"/>
+    <include file="config/liquibase/changelog/14-DML-insert_models_regression.sql" relativeToChangelogFile="false" context="v0.1"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
 
 </databaseChangeLog>
