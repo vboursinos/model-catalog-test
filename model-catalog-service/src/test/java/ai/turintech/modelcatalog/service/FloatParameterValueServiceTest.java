@@ -4,7 +4,6 @@ import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -69,11 +69,33 @@ public class FloatParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdFloatParameterRangeService() {
+    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
     Mono<FloatParameterRangeDTO> floatParameterRangeDTOMono =
-        floatParameterRangeService.findOne(UUID.fromString("423e4567-e89b-12d3-a456-426614174004"));
-    floatParameterRangeDTOMono.subscribe(
-        floatParameterRangeDTO -> {
-          Assert.assertTrue(floatParameterRangeDTO.getLower() == 25.3);
-        });
+        floatParameterRangeService.findOne(existingId);
+
+    StepVerifier.create(floatParameterRangeDTOMono)
+        .expectNextMatches(
+            floatParameterRangeDTO -> {
+              System.out.println("Found FloatParameterRange by ID: " + floatParameterRangeDTO);
+              Assertions.assertTrue(floatParameterRangeDTO.getLower() == 25.3);
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdFloatParameterRangeServiceForExistingId() {
+    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+    Mono<Boolean> exists = floatParameterRangeService.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdFloatParameterRangeServiceForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> exists = floatParameterRangeService.existsById(nonExistingId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 }

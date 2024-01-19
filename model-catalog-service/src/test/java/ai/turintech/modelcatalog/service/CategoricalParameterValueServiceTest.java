@@ -4,7 +4,6 @@ import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -64,13 +64,34 @@ public class CategoricalParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdCategoricalParameterValueRepository() {
+    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174003");
     Mono<CategoricalParameterValueDTO> categoricalParameterValueDTOMono =
-        categoricalParameterValueService.findOne(
-            UUID.fromString("423e4567-e89b-12d3-a456-426614174003"));
+        categoricalParameterValueService.findOne(existingId);
 
-    categoricalParameterValueDTOMono.subscribe(
-        categoricalParameterValueDTO -> {
-          Assert.assertTrue(categoricalParameterValueDTO.getValue().equals("Category3"));
-        });
+    StepVerifier.create(categoricalParameterValueDTOMono)
+        .expectNextMatches(
+            categoricalParameterValueDTO -> {
+              System.out.println(
+                  "Found CategoricalParameterValue by ID: " + categoricalParameterValueDTO);
+              Assertions.assertTrue(categoricalParameterValueDTO.getValue().equals("Category3"));
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdCategoricalParameterValueServiceForExistingId() {
+    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174003");
+    Mono<Boolean> exists = categoricalParameterValueService.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdCategoricalParameterValueServiceForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> exists = categoricalParameterValueService.existsById(nonExistingId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 }

@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -41,35 +43,78 @@ public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
   }
 
   @Test
-  void testFindByIdModelEnsembleTypeService() {
-    Mono<ModelEnsembleTypeDTO> modelEnsembleTypeDTOMono =
-        modelEnsembleTypeService.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+  void testFindByIdForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    Mono<ModelEnsembleTypeDTO> modelEnsembleType = modelEnsembleTypeService.findOne(existingId);
 
-    modelEnsembleTypeDTOMono.subscribe(
-        modelEnsembleTypeDTO -> {
-          Assert.assertEquals("modelensembletype1", modelEnsembleTypeDTO.getName());
-        });
+    StepVerifier.create(modelEnsembleType)
+        .expectNextMatches(
+            modelEnsembleTypeDTO -> {
+              Assert.assertEquals("modelensembletype1", modelEnsembleTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
   }
 
   @Test
-  void testSaveModelEnsembleTypeService() {
-    Mono<ModelEnsembleTypeDTO> savedModelEnsembleTypeDTO =
+  void testFindByIdForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<ModelEnsembleTypeDTO> modelEnsembleType = modelEnsembleTypeService.findOne(nonExistingId);
+
+    StepVerifier.create(modelEnsembleType).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  void testExistsByIdForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    Mono<Boolean> existsForExistingId = modelEnsembleTypeService.existsById(existingId);
+
+    StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> existsForNonExistingId = modelEnsembleTypeService.existsById(nonExistingId);
+
+    StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  void testSaveAndDeleteModelEnsembleTypeService() {
+    Mono<ModelEnsembleTypeDTO> savedModelEnsembleType =
         modelEnsembleTypeService.save(getModelEnsembleTypeDTO());
-    savedModelEnsembleTypeDTO.subscribe(
-        modelEnsembleTypeDTO -> {
-          Assert.assertEquals(getModelEnsembleTypeDTO().getName(), modelEnsembleTypeDTO.getName());
-          modelEnsembleTypeService.delete(modelEnsembleTypeDTO.getId()).block();
-        });
+
+    StepVerifier.create(savedModelEnsembleType)
+        .expectNextMatches(
+            savedModelEnsembleTypeDTO -> {
+              Assert.assertEquals(
+                  getModelEnsembleTypeDTO().getName(), savedModelEnsembleTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+
+    // Verify deletion
+    Mono<Void> deletion =
+        savedModelEnsembleType.flatMap(
+            modelEnsembleTypeDTO -> modelEnsembleTypeService.delete(modelEnsembleTypeDTO.getId()));
+
+    StepVerifier.create(deletion).verifyComplete();
   }
 
   @Test
   void testUpdateModelEnsembleTypeService() {
-    Mono<ModelEnsembleTypeDTO> updatedModelEnsembleTypeDTO =
+    Mono<ModelEnsembleTypeDTO> updatedModelEnsembleType =
         modelEnsembleTypeService.save(getUpdatedModelEnsembleTypeDTO());
-    updatedModelEnsembleTypeDTO.subscribe(
-        modelEnsembleTypeDTO -> {
-          Assert.assertEquals(
-              getUpdatedModelEnsembleTypeDTO().getName(), modelEnsembleTypeDTO.getName());
-        });
+
+    StepVerifier.create(updatedModelEnsembleType)
+        .expectNextMatches(
+            updatedModelEnsembleTypeDTO -> {
+              Assert.assertEquals(
+                  getUpdatedModelEnsembleTypeDTO().getName(),
+                  updatedModelEnsembleTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
   }
 }

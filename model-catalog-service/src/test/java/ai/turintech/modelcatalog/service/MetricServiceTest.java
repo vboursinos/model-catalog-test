@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.MetricDTO;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -42,35 +44,78 @@ public class MetricServiceTest extends BasicServiceTest {
   }
 
   @Test
-  void testFindByIdMetricService() {
-    Mono<MetricDTO> metric =
-        metricService.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+  void testFindByIdForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23");
+    Mono<MetricDTO> metric = metricService.findOne(existingId);
 
-    metric.subscribe(
-        metricDTO -> {
-          System.out.println("Metric: " + metricDTO);
-          Assert.assertEquals("Metric1", metricDTO.getMetric());
-        });
+    StepVerifier.create(metric)
+        .expectNextMatches(
+            metricDTO -> {
+              System.out.println("Found Metric by ID: " + metricDTO);
+              Assert.assertEquals(existingId, metricDTO.getId());
+              return true;
+            })
+        .verifyComplete();
   }
 
   @Test
-  void testSaveMetricService() {
+  void testFindByIdForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID(); // Assuming this ID does not exist in your data
+    Mono<MetricDTO> metric = metricService.findOne(nonExistingId);
+
+    StepVerifier.create(metric)
+        .expectError(NoSuchElementException.class) // Expect a NoSuchElementException
+        .verify();
+  }
+
+  @Test
+  void testExistsByIdForExistingId() {
+    // Test case when the ID exists
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23");
+    Mono<Boolean> existsForExistingId = metricService.existsById(existingId);
+
+    StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdForNonExistingId() {
+    // Test case when the ID does not exist
+    UUID nonExistingId = UUID.randomUUID(); // Assuming this ID does not exist in your data
+    Mono<Boolean> existsForNonExistingId = metricService.existsById(nonExistingId);
+
+    StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  void testSaveAndDeleteMetricService() {
     Mono<MetricDTO> savedMetric = metricService.save(getMetricDTO());
-    savedMetric.subscribe(
-        metricDTO -> {
-          System.out.println("Saved Metric: " + metricDTO);
-          Assert.assertEquals(getMetricDTO().getMetric(), metricDTO.getMetric());
-          metricService.delete(metricDTO.getId()).block();
-        });
+
+    StepVerifier.create(savedMetric)
+        .expectNextMatches(
+            metricDTO -> {
+              System.out.println("Saved Metric: " + metricDTO);
+              Assert.assertEquals(getMetricDTO().getMetric(), metricDTO.getMetric());
+              return true;
+            })
+        .verifyComplete();
+
+    // Verify deletion
+    Mono<Void> deletion = savedMetric.flatMap(metricDTO -> metricService.delete(metricDTO.getId()));
+
+    StepVerifier.create(deletion).verifyComplete();
   }
 
   @Test
   void testUpdateMetricService() {
     Mono<MetricDTO> updatedMetric = metricService.save(getUpdatedMetricDTO());
-    updatedMetric.subscribe(
-        metricDTO -> {
-          System.out.println("Updated Metric: " + metricDTO);
-          Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric());
-        });
+
+    StepVerifier.create(updatedMetric)
+        .expectNextMatches(
+            metricDTO -> {
+              System.out.println("Updated Metric: " + metricDTO);
+              Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric());
+              return true;
+            })
+        .verifyComplete();
   }
 }

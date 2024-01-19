@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -58,13 +59,35 @@ public class ParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testFindByIdParameterService() {
-    Mono<ParameterDTO> parameterDTOMono =
-        parameterService.findOne(UUID.fromString("523e4567-e89b-12d3-a456-426614174001"));
+    UUID existingId = UUID.fromString("523e4567-e89b-12d3-a456-426614174001");
+    Mono<ParameterDTO> parameterDTOMono = parameterService.findOne(existingId);
 
-    parameterDTOMono.subscribe(
-        parameterDTO -> {
-          Assert.assertEquals("parameter_name", parameterDTO.getName());
-        });
+    StepVerifier.create(parameterDTOMono)
+        .expectNextMatches(
+            parameterDTO -> {
+              System.out.println("Found Parameter by ID: " + parameterDTO);
+              Assert.assertEquals(existingId, parameterDTO.getId());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdParameterServiceForExistingId() {
+    UUID existingId = UUID.fromString("523e4567-e89b-12d3-a456-426614174001");
+    Mono<Boolean> exists = parameterService.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdParameterServiceForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> exists = parameterService.existsById(nonExistingId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
   @Test
@@ -80,12 +103,16 @@ public class ParameterServiceTest extends BasicServiceTest {
 
   @Test
   @Transactional
-  void testUpdateParameterServce() {
+  void testUpdateParameterService() {
     Mono<ParameterDTO> updateParameterDTO = parameterService.save(getUpdatedParameterDTO());
-    updateParameterDTO.subscribe(
-        parameterDistributionTypeDTO -> {
-          Assert.assertEquals(
-              getUpdatedParameterDTO().getName(), parameterDistributionTypeDTO.getName());
-        });
+
+    StepVerifier.create(updateParameterDTO)
+        .expectNextMatches(
+            parameterDTO -> {
+              System.out.println("Updated Parameter: " + parameterDTO);
+              Assert.assertEquals(getUpdatedParameterDTO().getName(), parameterDTO.getName());
+              return true;
+            })
+        .verifyComplete();
   }
 }

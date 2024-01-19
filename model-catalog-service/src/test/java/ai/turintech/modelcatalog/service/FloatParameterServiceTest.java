@@ -5,6 +5,7 @@ import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -43,11 +45,32 @@ public class FloatParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testFindByIdFloatParameterService() {
-    Mono<FloatParameterDTO> floatParameterDTOMono =
-        floatParameterService.findOne(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    floatParameterDTOMono.subscribe(
-        floatParameterDTO -> {
-          Assert.assertTrue(floatParameterDTO.getDefaultValue() == 10.1);
-        });
+    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    Mono<FloatParameterDTO> floatParameterDTOMono = floatParameterService.findOne(existingId);
+
+    StepVerifier.create(floatParameterDTOMono)
+        .expectNextMatches(
+            floatParameterDTO -> {
+              System.out.println("Found FloatParameter by ID: " + floatParameterDTO);
+              Assertions.assertTrue(floatParameterDTO.getDefaultValue() == 10.1);
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdFloatParameterServiceForExistingId() {
+    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    Mono<Boolean> exists = floatParameterService.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdFloatParameterServiceForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> exists = floatParameterService.existsById(nonExistingId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 }

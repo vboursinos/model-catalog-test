@@ -1,19 +1,18 @@
 package ai.turintech.modelcatalog.rest;
 
-
 import com.introproventures.graphql.jpa.query.web.GraphQLController.GraphQLQueryRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 // @GraphQlTest(MetricResource.class)
 @SpringBootTest
-//@SpringJUnitConfig(TestRestConfig.class)
+// @SpringJUnitConfig(TestRestConfig.class)
 public class MetricGraphqlTest extends BasicRestTest {
 
   //  @Autowired
   //  private WebGraphQlTester webGraphQlTester;
 
-//  @Autowired TestRestTemplate rest;
+  //  @Autowired TestRestTemplate rest;
 
   @Test
   public void testGraphql() {
@@ -28,13 +27,13 @@ public class MetricGraphqlTest extends BasicRestTest {
                 + "    }"
                 + "  }"
                 + "}");
-//
-//    ResponseEntity<Result> entity =
-//        rest.postForEntity("/graphql", new HttpEntity<>(query), Result.class);
-//    assertThat(HttpStatus.OK).isEqualTo(entity.getStatusCode());
-//
-//    Result result = entity.getBody();
-//    assertThat(result).isNotNull();
+    //
+    //    ResponseEntity<Result> entity =
+    //        rest.postForEntity("/graphql", new HttpEntity<>(query), Result.class);
+    //    assertThat(HttpStatus.OK).isEqualTo(entity.getStatusCode());
+    //
+    //    Result result = entity.getBody();
+    //    assertThat(result).isNotNull();
   }
 
   //  @Test

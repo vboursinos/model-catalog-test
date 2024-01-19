@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -41,11 +42,32 @@ public class BooleanParameterServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdBooleanParameterService() {
-    Mono<BooleanParameterDTO> booleanParameterDTOMono =
-        booleanParameterService.findOne(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    booleanParameterDTOMono.subscribe(
-        booleanParameterDTO -> {
-          Assert.assertEquals(true, booleanParameterDTO.getDefaultValue());
-        });
+    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    Mono<BooleanParameterDTO> booleanParameterDTOMono = booleanParameterService.findOne(existingId);
+
+    StepVerifier.create(booleanParameterDTOMono)
+        .expectNextMatches(
+            booleanParameterDTO -> {
+              System.out.println("Found BooleanParameter by ID: " + booleanParameterDTO);
+              Assert.assertEquals(true, booleanParameterDTO.getDefaultValue());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdBooleanParameterServiceForExistingId() {
+    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    Mono<Boolean> exists = booleanParameterService.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdBooleanParameterServiceForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> exists = booleanParameterService.existsById(nonExistingId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 }

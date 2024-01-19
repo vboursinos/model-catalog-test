@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.*;
 import ai.turintech.modelcatalog.entity.*;
+import jakarta.transaction.Transactional;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -76,6 +78,7 @@ public class ModelServiceTest extends BasicServiceTest {
   }
 
   @Test
+  @Transactional
   void testSaveModelEnsembleTypeService() {
     Mono<ModelDTO> savedModelDTO = modelService.save(getModel());
 
@@ -84,5 +87,102 @@ public class ModelServiceTest extends BasicServiceTest {
           Assert.assertEquals(getModel().getName(), modelDTO.getName());
           modelService.delete(modelDTO.getId()).block();
         });
+  }
+
+  @Test
+  @Transactional
+  void testSaveModelService() {
+    Mono<ModelDTO> savedModelDTO = modelService.save(getModel());
+
+    StepVerifier.create(savedModelDTO)
+        .expectNextMatches(
+            modelDTO -> {
+              Assert.assertEquals(getModel().getName(), modelDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+
+    Mono<Void> deletion = savedModelDTO.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
+
+    StepVerifier.create(deletion).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testUpdateModelService() {
+    Mono<ModelDTO> savedModel = modelService.save(getModel());
+
+    Mono<ModelDTO> updatedModel =
+        savedModel.flatMap(
+            initialModel -> {
+              ModelDTO updatedModelDTO = getUpdatedModel();
+              updatedModelDTO.setId(initialModel.getId());
+              return modelService.save(updatedModelDTO);
+            });
+
+    StepVerifier.create(updatedModel)
+        .expectNextMatches(
+            updatedModelDTO -> {
+              Assert.assertEquals(getUpdatedModel().getName(), updatedModelDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+
+    Mono<Void> deletion = updatedModel.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
+
+    StepVerifier.create(deletion).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdModelService() {
+    UUID modelId = modelService.save(getModel()).block().getId();
+
+    Mono<ModelDTO> foundModel = modelService.findOne(modelId);
+
+    StepVerifier.create(foundModel)
+        .expectNextMatches(
+            modelDTO -> {
+              Assert.assertEquals(getModel().getName(), modelDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+
+    Mono<Void> deletion = foundModel.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
+
+    StepVerifier.create(deletion).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdModelService() {
+    UUID modelId = modelService.save(getModel()).block().getId();
+
+    Mono<Boolean> exists = modelService.existsById(modelId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+
+    Mono<Void> deletion = modelService.delete(modelId);
+
+    StepVerifier.create(deletion).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdNotExistingModelService() {
+    UUID existingModelId = modelService.save(getModel()).block().getId();
+    UUID nonExistingModelId = UUID.randomUUID(); // Assuming this ID does not exist
+
+    Mono<Boolean> existsForExistingId = modelService.existsById(existingModelId);
+
+    StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
+
+    Mono<Boolean> existsForNonExistingId = modelService.existsById(nonExistingModelId);
+
+    StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();
+
+    Mono<Void> deletion = modelService.delete(existingModelId);
+
+    StepVerifier.create(deletion).verifyComplete();
   }
 }

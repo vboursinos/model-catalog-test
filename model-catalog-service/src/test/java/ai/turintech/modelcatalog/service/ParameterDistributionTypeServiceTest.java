@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -46,14 +47,35 @@ public class ParameterDistributionTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdParameterDistributionTypeService() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
     Mono<ParameterDistributionTypeDTO> parameterDistributionTypeDTOMono =
-        parameterDistributionTypeService.findOne(
-            UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        parameterDistributionTypeService.findOne(existingId);
 
-    parameterDistributionTypeDTOMono.subscribe(
-        parameterDistributionTypeDTO -> {
-          Assert.assertEquals("parameterdistributiontype1", parameterDistributionTypeDTO.getName());
-        });
+    StepVerifier.create(parameterDistributionTypeDTOMono)
+        .expectNextMatches(
+            parameterDistributionTypeDTO -> {
+              System.out.println(
+                  "Found ParameterDistributionType by ID: " + parameterDistributionTypeDTO);
+              Assert.assertEquals(existingId, parameterDistributionTypeDTO.getId());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdParameterDistributionTypeServiceForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    Mono<Boolean> exists = parameterDistributionTypeService.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdParameterDistributionTypeServiceForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> exists = parameterDistributionTypeService.existsById(nonExistingId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
   @Test
@@ -69,14 +91,20 @@ public class ParameterDistributionTypeServiceTest extends BasicServiceTest {
   }
 
   @Test
-  void testUpdateParameterDistributionTypeDTOService() {
+  void testUpdateParameterDistributionTypeService() {
     Mono<ParameterDistributionTypeDTO> updatedParameterDistributionTypeDTO =
         parameterDistributionTypeService.save(getUpdatedParameterDistributionTypeDTO());
-    updatedParameterDistributionTypeDTO.subscribe(
-        parameterDistributionTypeDTO -> {
-          Assert.assertEquals(
-              getUpdatedParameterDistributionTypeDTO().getName(),
-              parameterDistributionTypeDTO.getName());
-        });
+
+    StepVerifier.create(updatedParameterDistributionTypeDTO)
+        .expectNextMatches(
+            parameterDistributionTypeDTO -> {
+              System.out.println(
+                  "Updated ParameterDistributionType: " + parameterDistributionTypeDTO);
+              Assert.assertEquals(
+                  getUpdatedParameterDistributionTypeDTO().getName(),
+                  parameterDistributionTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
   }
 }

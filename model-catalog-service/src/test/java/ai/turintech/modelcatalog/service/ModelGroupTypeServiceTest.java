@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -42,34 +44,77 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
   }
 
   @Test
-  void testFindByIdModelGroupTypeService() {
-    Mono<ModelGroupTypeDTO> modelGroupTypeDTOMono =
-        modelGroupTypeService.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+  void testFindByIdForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    Mono<ModelGroupTypeDTO> modelGroupType = modelGroupTypeService.findOne(existingId);
 
-    modelGroupTypeDTOMono.subscribe(
-        modelGroupTypeDTO -> {
-          Assert.assertEquals("modelgroup1", modelGroupTypeDTO.getName());
-        });
+    StepVerifier.create(modelGroupType)
+        .expectNextMatches(
+            modelGroupTypeDTO -> {
+              Assert.assertEquals("modelgroup1", modelGroupTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
   }
 
   @Test
-  void testSaveModelGroupTypeService() {
-    Mono<ModelGroupTypeDTO> savedModelGroupTypeDTO =
+  void testFindByIdForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<ModelGroupTypeDTO> modelGroupType = modelGroupTypeService.findOne(nonExistingId);
+
+    StepVerifier.create(modelGroupType).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  void testExistsByIdForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    Mono<Boolean> existsForExistingId = modelGroupTypeService.existsById(existingId);
+
+    StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> existsForNonExistingId = modelGroupTypeService.existsById(nonExistingId);
+
+    StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  void testSaveAndDeleteModelGroupTypeService() {
+    Mono<ModelGroupTypeDTO> savedModelGroupType =
         modelGroupTypeService.save(getModelGroupTypeDTO());
-    savedModelGroupTypeDTO.subscribe(
-        modelGroupTypeDTO -> {
-          Assert.assertEquals(getModelGroupTypeDTO().getName(), modelGroupTypeDTO.getName());
-          modelGroupTypeService.delete(modelGroupTypeDTO.getId()).block();
-        });
+
+    StepVerifier.create(savedModelGroupType)
+        .expectNextMatches(
+            savedModelGroupTypeDTO -> {
+              Assert.assertEquals(
+                  getModelGroupTypeDTO().getName(), savedModelGroupTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+
+    // Verify deletion
+    Mono<Void> deletion =
+        savedModelGroupType.flatMap(
+            modelGroupTypeDTO -> modelGroupTypeService.delete(modelGroupTypeDTO.getId()));
+
+    StepVerifier.create(deletion).verifyComplete();
   }
 
   @Test
   void testUpdateModelGroupTypeService() {
-    Mono<ModelGroupTypeDTO> updatedModelGroupTypeDTO =
+    Mono<ModelGroupTypeDTO> updatedModelGroupType =
         modelGroupTypeService.save(getUpdatedModelGroupTypeDTO());
-    updatedModelGroupTypeDTO.subscribe(
-        modelTypeDTO -> {
-          Assert.assertEquals(getUpdatedModelGroupTypeDTO().getName(), modelTypeDTO.getName());
-        });
+
+    StepVerifier.create(updatedModelGroupType)
+        .expectNextMatches(
+            updatedModelGroupTypeDTO -> {
+              Assert.assertEquals(
+                  getUpdatedModelGroupTypeDTO().getName(), updatedModelGroupTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
   }
 }

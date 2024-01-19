@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -42,14 +44,41 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
   }
 
   @Test
-  void testFindByIdModelFamilyTypeService() {
-    Mono<ModelFamilyTypeDTO> modelFamilyTypeDTOMono =
-        modelFamilyTypeService.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+  void testFindByIdForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    Mono<ModelFamilyTypeDTO> modelFamilyType = modelFamilyTypeService.findOne(existingId);
 
-    modelFamilyTypeDTOMono.subscribe(
-        modelFamilyTypeDTO -> {
-          Assert.assertEquals("modelfamilytype1", modelFamilyTypeDTO.getName());
-        });
+    StepVerifier.create(modelFamilyType)
+        .expectNextMatches(
+            modelFamilyTypeDTO -> {
+              Assert.assertEquals("modelfamilytype1", modelFamilyTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testFindByIdForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<ModelFamilyTypeDTO> modelFamilyType = modelFamilyTypeService.findOne(nonExistingId);
+
+    StepVerifier.create(modelFamilyType).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  void testExistsByIdForExistingId() {
+    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    Mono<Boolean> existsForExistingId = modelFamilyTypeService.existsById(existingId);
+
+    StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  void testExistsByIdForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> existsForNonExistingId = modelFamilyTypeService.existsById(nonExistingId);
+
+    StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();
   }
 
   @Test
@@ -65,12 +94,16 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testUpdateModelFamilyTypeService() {
-    Mono<ModelFamilyTypeDTO> updatedModelFamilyTypeDTO =
+    Mono<ModelFamilyTypeDTO> updatedModelFamilyType =
         modelFamilyTypeService.save(getUpdatedModelFamilyTypeDTO());
-    updatedModelFamilyTypeDTO.subscribe(
-        modelFamilyTypeDTO -> {
-          Assert.assertEquals(
-              getUpdatedModelFamilyTypeDTO().getName(), modelFamilyTypeDTO.getName());
-        });
+
+    StepVerifier.create(updatedModelFamilyType)
+        .expectNextMatches(
+            updatedModelFamilyTypeDTO -> {
+              Assert.assertEquals(
+                  getUpdatedModelFamilyTypeDTO().getName(), updatedModelFamilyTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
   }
 }

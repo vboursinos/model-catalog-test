@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -73,14 +74,37 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testFindByIdParameterTypeDefinitionService() {
+    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
     Mono<ParameterTypeDefinitionDTO> parameterTypeDefinitionDTOMono =
-        parameterTypeDefinitionService.findOne(
-            UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+        parameterTypeDefinitionService.findOne(existingId);
 
-    parameterTypeDefinitionDTOMono.subscribe(
-        parameterTypeDefinitionDTO -> {
-          Assert.assertTrue(1 == parameterTypeDefinitionDTO.getOrdering());
-        });
+    StepVerifier.create(parameterTypeDefinitionDTOMono)
+        .expectNextMatches(
+            parameterTypeDefinitionDTO -> {
+              System.out.println(
+                  "Found ParameterTypeDefinition by ID: " + parameterTypeDefinitionDTO);
+              Assert.assertTrue(1 == parameterTypeDefinitionDTO.getOrdering());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdParameterTypeDefinitionServiceForExistingId() {
+    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    Mono<Boolean> exists = parameterTypeDefinitionService.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testExistsByIdParameterTypeDefinitionServiceForNonExistingId() {
+    UUID nonExistingId = UUID.randomUUID();
+    Mono<Boolean> exists = parameterTypeDefinitionService.existsById(nonExistingId);
+
+    StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
   @Test
@@ -99,14 +123,19 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
 
   @Test
   @Transactional
-  void testUpdateParameterTypeDefinitionServce() {
+  void testUpdateParameterTypeDefinitionService() {
     Mono<ParameterTypeDefinitionDTO> updateParameterTypeDefinitionDTO =
         parameterTypeDefinitionService.save(getUpdatedParameterTypeDefinitionDTO());
-    updateParameterTypeDefinitionDTO.subscribe(
-        parameterTypeDefinitionDTO -> {
-          Assert.assertEquals(
-              getUpdatedParameterTypeDefinitionDTO().getOrdering(),
-              parameterTypeDefinitionDTO.getOrdering());
-        });
+
+    StepVerifier.create(updateParameterTypeDefinitionDTO)
+        .expectNextMatches(
+            parameterTypeDefinitionDTO -> {
+              System.out.println("Updated ParameterTypeDefinition: " + parameterTypeDefinitionDTO);
+              Assert.assertEquals(
+                  getUpdatedParameterTypeDefinitionDTO().getOrdering(),
+                  parameterTypeDefinitionDTO.getOrdering());
+              return true;
+            })
+        .verifyComplete();
   }
 }
