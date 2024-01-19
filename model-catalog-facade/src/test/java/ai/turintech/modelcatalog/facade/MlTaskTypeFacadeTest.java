@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -74,5 +76,34 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
         mlTaskTypeDTO -> {
           Assert.assertEquals(getUpdatedMlTaskTypeDTO().getName(), mlTaskTypeDTO.getName());
         });
+  }
+
+  @Test
+  void testDeleteMlTaskTypeFacade() {
+    // Save a metric first
+    Mono<MlTaskTypeDTO> savedMetric = mlTaskTypeFacade.save(getMlTaskTypeDTO());
+
+    // Subscribe and delete the saved metric
+    savedMetric.subscribe(
+        mlTaskTypeDTO -> {
+          Mono<Void> deleteResult = mlTaskTypeFacade.delete(mlTaskTypeDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted metric by ID
+                Mono<MlTaskTypeDTO> findResult = mlTaskTypeFacade.findOne(mlTaskTypeDTO.getId());
+                findResult.subscribe(
+                    notFoundMetricDTO -> Assert.assertNull(notFoundMetricDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  void testFindByIdNonExistingMlTaskTypeFacade() {
+    // Try to find a metric by a non-existing ID
+    Mono<MlTaskTypeDTO> metric = mlTaskTypeFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }
 }

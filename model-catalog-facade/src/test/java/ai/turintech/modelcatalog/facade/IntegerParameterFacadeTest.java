@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.IntegerParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -58,5 +60,38 @@ public class IntegerParameterFacadeTest extends BasicFacadeTest {
         integerParameterDTO -> {
           Assert.assertTrue(integerParameterDTO.getDefaultValue() == 10);
         });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteIntegerParameterFacade() {
+    // Save an integer parameter first
+    Mono<IntegerParameterDTO> savedIntegerParameter =
+        integerParameterFacade.save(getIntegerParameterDTO());
+
+    // Subscribe and delete the saved integer parameter
+    savedIntegerParameter.subscribe(
+        integerParameterDTO -> {
+          Mono<Void> deleteResult = integerParameterFacade.delete(integerParameterDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted integer parameter by ID
+                Mono<IntegerParameterDTO> findResult =
+                    integerParameterFacade.findOne(integerParameterDTO.getId());
+                findResult.subscribe(
+                    notFoundIntegerParameterDTO -> Assert.assertNull(notFoundIntegerParameterDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingIntegerParameterFacade() {
+    // Try to find an integer parameter by a non-existing ID
+    Mono<IntegerParameterDTO> integerParameter = integerParameterFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(integerParameter).expectError(NoSuchElementException.class).verify();
   }
 }

@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -79,5 +81,35 @@ public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
           Assert.assertEquals(
               getUpdatedModelFamilyTypeDTO().getName(), modelFamilyTypeDTO.getName());
         });
+  }
+
+  @Test
+  void testDeleteModelFamilyTypeFacade() {
+    // Save a metric first
+    Mono<ModelFamilyTypeDTO> savedMetric = modelFamilyTypeFacade.save(getModelFamilyTypeDTO());
+
+    // Subscribe and delete the saved metric
+    savedMetric.subscribe(
+        modelFamilyTypeDTO -> {
+          Mono<Void> deleteResult = modelFamilyTypeFacade.delete(modelFamilyTypeDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted metric by ID
+                Mono<ModelFamilyTypeDTO> findResult =
+                    modelFamilyTypeFacade.findOne(modelFamilyTypeDTO.getId());
+                findResult.subscribe(
+                    notFoundMetricDTO -> Assert.assertNull(notFoundMetricDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  void testFindByIdNonExistingModelFamilyTypeFacade() {
+    // Try to find a metric by a non-existing ID
+    Mono<ModelFamilyTypeDTO> metric = modelFamilyTypeFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }
 }

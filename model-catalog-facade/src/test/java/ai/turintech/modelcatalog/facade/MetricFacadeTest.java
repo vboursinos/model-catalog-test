@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.MetricDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -85,5 +87,34 @@ public class MetricFacadeTest extends BasicFacadeTest {
         metricDTO -> {
           Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric());
         });
+  }
+
+  @Test
+  void testDeleteMetricFacade() {
+    // Save a metric first
+    Mono<MetricDTO> savedMetric = metricFacade.save(getMetricDTO());
+
+    // Subscribe and delete the saved metric
+    savedMetric.subscribe(
+        metricDTO -> {
+          Mono<Void> deleteResult = metricFacade.delete(metricDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted metric by ID
+                Mono<MetricDTO> findResult = metricFacade.findOne(metricDTO.getId());
+                findResult.subscribe(
+                    notFoundMetricDTO -> Assert.assertNull(notFoundMetricDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  void testFindByIdNonExistingMetricFacade() {
+    // Try to find a metric by a non-existing ID
+    Mono<MetricDTO> metric = metricFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }
 }

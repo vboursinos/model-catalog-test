@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -114,6 +116,71 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
           Assert.assertEquals(
               getUpdatedParameterTypeDefinitionDTO().getOrdering(),
               parameterTypeDefinitionDTO.getOrdering());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteParameterTypeDefinitionFacade() {
+    // Save a parameter type definition first
+    Mono<ParameterTypeDefinitionDTO> savedParameterTypeDefinition =
+        parameterTypeDefinitionFacade.save(getParameterTypeDefinitionDTO());
+
+    // Subscribe and delete the saved parameter type definition
+    savedParameterTypeDefinition.subscribe(
+        parameterTypeDefinitionDTO -> {
+          Mono<Void> deleteResult =
+              parameterTypeDefinitionFacade.delete(parameterTypeDefinitionDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted parameter type definition by ID
+                Mono<ParameterTypeDefinitionDTO> findResult =
+                    parameterTypeDefinitionFacade.findOne(parameterTypeDefinitionDTO.getId());
+                findResult.subscribe(
+                    notFoundParameterTypeDefinitionDTO ->
+                        Assert.assertNull(notFoundParameterTypeDefinitionDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingParameterTypeDefinitionFacade() {
+    // Try to find a parameter type definition by a non-existing ID
+    Mono<ParameterTypeDefinitionDTO> parameterTypeDefinition =
+        parameterTypeDefinitionFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(parameterTypeDefinition).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  @Transactional
+  void testSaveAndUpdateParameterTypeDefinitionFacade() {
+    // Save a parameter type definition first
+    Mono<ParameterTypeDefinitionDTO> savedParameterTypeDefinition =
+        parameterTypeDefinitionFacade.save(getParameterTypeDefinitionDTO());
+
+    savedParameterTypeDefinition.subscribe(
+        parameterTypeDefinitionDTO -> {
+          // Update the saved parameter type definition
+          ParameterTypeDefinitionDTO updatedParameterTypeDefinitionDTO =
+              getUpdatedParameterTypeDefinitionDTO();
+          updatedParameterTypeDefinitionDTO.setId(parameterTypeDefinitionDTO.getId());
+          Mono<ParameterTypeDefinitionDTO> updatedParameterTypeDefinitionMono =
+              parameterTypeDefinitionFacade.save(updatedParameterTypeDefinitionDTO);
+
+          updatedParameterTypeDefinitionMono.subscribe(
+              updatedParameterTypeDefinition -> {
+                Assert.assertEquals(
+                    updatedParameterTypeDefinition.getOrdering(),
+                    updatedParameterTypeDefinitionDTO.getOrdering());
+                // Clean up: Delete the updated parameter type definition
+                parameterTypeDefinitionFacade
+                    .delete(updatedParameterTypeDefinition.getId())
+                    .block();
+              });
         });
   }
 }

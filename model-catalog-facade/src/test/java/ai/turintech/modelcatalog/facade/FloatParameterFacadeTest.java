@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -58,5 +60,37 @@ public class FloatParameterFacadeTest extends BasicFacadeTest {
         floatParameterDTO -> {
           Assert.assertTrue(floatParameterDTO.getDefaultValue() == 10.1);
         });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteFloatParameterFacade() {
+    // Save a float parameter first
+    Mono<FloatParameterDTO> savedFloatParameter = floatParameterFacade.save(getFloatParameterDTO());
+
+    // Subscribe and delete the saved float parameter
+    savedFloatParameter.subscribe(
+        floatParameterDTO -> {
+          Mono<Void> deleteResult = floatParameterFacade.delete(floatParameterDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted float parameter by ID
+                Mono<FloatParameterDTO> findResult =
+                    floatParameterFacade.findOne(floatParameterDTO.getId());
+                findResult.subscribe(
+                    notFoundFloatParameterDTO -> Assert.assertNull(notFoundFloatParameterDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingFloatParameterFacade() {
+    // Try to find a float parameter by a non-existing ID
+    Mono<FloatParameterDTO> floatParameter = floatParameterFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(floatParameter).expectError(NoSuchElementException.class).verify();
   }
 }

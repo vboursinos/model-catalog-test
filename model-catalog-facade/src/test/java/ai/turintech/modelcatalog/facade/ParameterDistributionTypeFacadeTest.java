@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -81,6 +83,70 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
           Assert.assertEquals(
               getUpdatedParameterDistributionTypeDTO().getName(),
               parameterDistributionTypeDTO.getName());
+        });
+  }
+
+  @Test
+  void testDeleteParameterDistributionTypeFacade() {
+    // Save a parameter distribution type first
+    Mono<ParameterDistributionTypeDTO> savedParameterDistributionType =
+        parameterDistributionTypeFacade.save(getParameterDistributionTypeDTO());
+
+    // Subscribe and delete the saved parameter distribution type
+    savedParameterDistributionType.subscribe(
+        parameterDistributionTypeDTO -> {
+          Mono<Void> deleteResult =
+              parameterDistributionTypeFacade.delete(parameterDistributionTypeDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted parameter distribution type by ID
+                Mono<ParameterDistributionTypeDTO> findResult =
+                    parameterDistributionTypeFacade.findOne(parameterDistributionTypeDTO.getId());
+                findResult.subscribe(
+                    notFoundParameterDistributionTypeDTO ->
+                        Assert.assertNull(notFoundParameterDistributionTypeDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  void testFindByIdNonExistingParameterDistributionTypeFacade() {
+    // Try to find a parameter distribution type by a non-existing ID
+    Mono<ParameterDistributionTypeDTO> parameterDistributionType =
+        parameterDistributionTypeFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(parameterDistributionType)
+        .expectError(NoSuchElementException.class)
+        .verify();
+  }
+
+  @Test
+  void testSaveAndUpdateParameterDistributionTypeFacade() {
+    // Save a parameter distribution type first
+    Mono<ParameterDistributionTypeDTO> savedParameterDistributionType =
+        parameterDistributionTypeFacade.save(getParameterDistributionTypeDTO());
+
+    savedParameterDistributionType.subscribe(
+        parameterDistributionTypeDTO -> {
+          // Update the saved parameter distribution type
+          ParameterDistributionTypeDTO updatedParameterDistributionTypeDTO =
+              getUpdatedParameterDistributionTypeDTO();
+          updatedParameterDistributionTypeDTO.setId(parameterDistributionTypeDTO.getId());
+          Mono<ParameterDistributionTypeDTO> updatedParameterDistributionTypeMono =
+              parameterDistributionTypeFacade.save(updatedParameterDistributionTypeDTO);
+
+          updatedParameterDistributionTypeMono.subscribe(
+              updatedParameterDistributionType -> {
+                Assert.assertEquals(
+                    updatedParameterDistributionType.getName(),
+                    updatedParameterDistributionTypeDTO.getName());
+                // Clean up: Delete the updated parameter distribution type
+                parameterDistributionTypeFacade
+                    .delete(updatedParameterDistributionType.getId())
+                    .block();
+              });
         });
   }
 }

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.*;
+import jakarta.transaction.Transactional;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -79,5 +82,41 @@ public class IntegerParameterValueFacadeTest extends BasicFacadeTest {
         integerParameterValueDTO -> {
           Assert.assertTrue(integerParameterValueDTO.getLower() == 25);
         });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteIntegerParameterValueFacade() {
+    // Save an integer parameter value first
+    Mono<IntegerParameterValueDTO> savedIntegerParameterValue =
+        integerParameterValueFacade.save(getIntegerParameterValueDTO());
+
+    // Subscribe and delete the saved integer parameter value
+    savedIntegerParameterValue.subscribe(
+        integerParameterValueDTO -> {
+          Mono<Void> deleteResult =
+              integerParameterValueFacade.delete(integerParameterValueDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted integer parameter value by ID
+                Mono<IntegerParameterValueDTO> findResult =
+                    integerParameterValueFacade.findOne(integerParameterValueDTO.getId());
+                findResult.subscribe(
+                    notFoundIntegerParameterValueDTO ->
+                        Assert.assertNull(notFoundIntegerParameterValueDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingIntegerParameterValueFacade() {
+    // Try to find an integer parameter value by a non-existing ID
+    Mono<IntegerParameterValueDTO> integerParameterValue =
+        integerParameterValueFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(integerParameterValue).expectError(NoSuchElementException.class).verify();
   }
 }

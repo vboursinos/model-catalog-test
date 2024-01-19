@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.ModelStructureTypeDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -78,6 +80,61 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
         modelStructureTypeDTO -> {
           Assert.assertEquals(
               getUpdatedModelStructureTypeDTO().getName(), modelStructureTypeDTO.getName());
+        });
+  }
+
+  @Test
+  void testDeleteModelStructureTypeFacade() {
+    // Save a structure type first
+    Mono<ModelStructureTypeDTO> savedStructureType =
+        modelStructureTypeFacade.save(getModelStructureTypeDTO());
+
+    // Subscribe and delete the saved structure type
+    savedStructureType.subscribe(
+        modelStructureTypeDTO -> {
+          Mono<Void> deleteResult = modelStructureTypeFacade.delete(modelStructureTypeDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted structure type by ID
+                Mono<ModelStructureTypeDTO> findResult =
+                    modelStructureTypeFacade.findOne(modelStructureTypeDTO.getId());
+                findResult.subscribe(
+                    notFoundStructureTypeDTO -> Assert.assertNull(notFoundStructureTypeDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  void testFindByIdNonExistingModelStructureTypeFacade() {
+    // Try to find a structure type by a non-existing ID
+    Mono<ModelStructureTypeDTO> structureType = modelStructureTypeFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(structureType).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  void testSaveAndUpdateModelStructureTypeFacade() {
+    // Save a structure type first
+    Mono<ModelStructureTypeDTO> savedStructureType =
+        modelStructureTypeFacade.save(getModelStructureTypeDTO());
+
+    savedStructureType.subscribe(
+        modelStructureTypeDTO -> {
+          // Update the saved structure type
+          ModelStructureTypeDTO updatedStructureTypeDTO = getUpdatedModelStructureTypeDTO();
+          updatedStructureTypeDTO.setId(modelStructureTypeDTO.getId());
+          Mono<ModelStructureTypeDTO> updatedStructureTypeMono =
+              modelStructureTypeFacade.save(updatedStructureTypeDTO);
+
+          updatedStructureTypeMono.subscribe(
+              updatedModelStructureTypeDTO -> {
+                Assert.assertEquals(
+                    updatedStructureTypeDTO.getName(), updatedModelStructureTypeDTO.getName());
+                // Clean up: Delete the updated structure type
+                modelStructureTypeFacade.delete(updatedModelStructureTypeDTO.getId()).block();
+              });
         });
   }
 }

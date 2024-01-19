@@ -2,6 +2,8 @@ package ai.turintech.modelcatalog.facade;
 
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.*;
+import jakarta.transaction.Transactional;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -81,5 +84,41 @@ public class FloatParameterValueFacadeTest extends BasicFacadeTest {
         floatParameterRangeDTO -> {
           Assert.assertTrue(floatParameterRangeDTO.getLower() == 25.3);
         });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteFloatParameterRangeFacade() {
+    // Save a float parameter range first
+    Mono<FloatParameterRangeDTO> savedFloatParameterRange =
+        floatParameterRangeFacade.save(getFloatParameterRangeDTO());
+
+    // Subscribe and delete the saved float parameter range
+    savedFloatParameterRange.subscribe(
+        floatParameterRangeDTO -> {
+          Mono<Void> deleteResult =
+              floatParameterRangeFacade.delete(floatParameterRangeDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted float parameter range by ID
+                Mono<FloatParameterRangeDTO> findResult =
+                    floatParameterRangeFacade.findOne(floatParameterRangeDTO.getId());
+                findResult.subscribe(
+                    notFoundFloatParameterRangeDTO ->
+                        Assert.assertNull(notFoundFloatParameterRangeDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingFloatParameterRangeFacade() {
+    // Try to find a float parameter range by a non-existing ID
+    Mono<FloatParameterRangeDTO> floatParameterRange =
+        floatParameterRangeFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(floatParameterRange).expectError(NoSuchElementException.class).verify();
   }
 }

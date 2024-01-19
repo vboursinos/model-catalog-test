@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.BooleanParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import jakarta.transaction.Transactional;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -55,5 +58,38 @@ public class BooleanParameterFacadeTest extends BasicFacadeTest {
         booleanParameterDTO -> {
           Assert.assertEquals(true, booleanParameterDTO.getDefaultValue());
         });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteBooleanParameterFacade() {
+    // Save a boolean parameter first
+    Mono<BooleanParameterDTO> savedBooleanParameter =
+        booleanParameterFacade.save(getBooleanParameterDTO());
+
+    // Subscribe and delete the saved boolean parameter
+    savedBooleanParameter.subscribe(
+        booleanParameterDTO -> {
+          Mono<Void> deleteResult = booleanParameterFacade.delete(booleanParameterDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted boolean parameter by ID
+                Mono<BooleanParameterDTO> findResult =
+                    booleanParameterFacade.findOne(booleanParameterDTO.getId());
+                findResult.subscribe(
+                    notFoundBooleanParameterDTO -> Assert.assertNull(notFoundBooleanParameterDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingBooleanParameterFacade() {
+    // Try to find a boolean parameter by a non-existing ID
+    Mono<BooleanParameterDTO> booleanParameter = booleanParameterFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(booleanParameter).expectError(NoSuchElementException.class).verify();
   }
 }

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.entity.*;
+import jakarta.transaction.Transactional;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -79,5 +82,43 @@ public class CategoricalParameterValueFacadeTest extends BasicFacadeTest {
         categoricalParameterValueDTO -> {
           Assert.assertTrue(categoricalParameterValueDTO.getValue().equals("Category3"));
         });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteCategoricalParameterValueFacade() {
+    // Save a categorical parameter value first
+    Mono<CategoricalParameterValueDTO> savedCategoricalParameterValue =
+        categoricalParameterValueFacade.save(getCategoricalParameterValueDTO());
+
+    // Subscribe and delete the saved categorical parameter value
+    savedCategoricalParameterValue.subscribe(
+        categoricalParameterValueDTO -> {
+          Mono<Void> deleteResult =
+              categoricalParameterValueFacade.delete(categoricalParameterValueDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted categorical parameter value by ID
+                Mono<CategoricalParameterValueDTO> findResult =
+                    categoricalParameterValueFacade.findOne(categoricalParameterValueDTO.getId());
+                findResult.subscribe(
+                    notFoundCategoricalParameterValueDTO ->
+                        Assert.assertNull(notFoundCategoricalParameterValueDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingCategoricalParameterValueFacade() {
+    // Try to find a categorical parameter value by a non-existing ID
+    Mono<CategoricalParameterValueDTO> categoricalParameterValue =
+        categoricalParameterValueFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(categoricalParameterValue)
+        .expectError(NoSuchElementException.class)
+        .verify();
   }
 }

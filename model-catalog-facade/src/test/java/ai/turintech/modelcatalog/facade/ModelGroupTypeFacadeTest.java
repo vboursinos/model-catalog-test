@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -76,5 +78,35 @@ public class ModelGroupTypeFacadeTest extends BasicFacadeTest {
         modelTypeDTO -> {
           Assert.assertEquals(getUpdatedModelGroupTypeDTO().getName(), modelTypeDTO.getName());
         });
+  }
+
+  @Test
+  void testDeleteModelGroupTypeFacade() {
+    // Save a metric first
+    Mono<ModelGroupTypeDTO> savedMetric = modelGroupTypeFacade.save(getModelGroupTypeDTO());
+
+    // Subscribe and delete the saved metric
+    savedMetric.subscribe(
+        modelGroupTypeDTO -> {
+          Mono<Void> deleteResult = modelGroupTypeFacade.delete(modelGroupTypeDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted metric by ID
+                Mono<ModelGroupTypeDTO> findResult =
+                    modelGroupTypeFacade.findOne(modelGroupTypeDTO.getId());
+                findResult.subscribe(
+                    notFoundMetricDTO -> Assert.assertNull(notFoundMetricDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  void testFindByIdNonExistingModelGroupTypeFacade() {
+    // Try to find a metric by a non-existing ID
+    Mono<ModelGroupTypeDTO> metric = modelGroupTypeFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }
 }

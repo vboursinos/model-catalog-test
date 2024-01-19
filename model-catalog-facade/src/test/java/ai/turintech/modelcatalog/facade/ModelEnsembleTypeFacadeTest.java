@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -78,5 +80,36 @@ public class ModelEnsembleTypeFacadeTest extends BasicFacadeTest {
           Assert.assertEquals(
               getUpdatedModelEnsembleTypeDTO().getName(), modelEnsembleTypeDTO.getName());
         });
+  }
+
+  @Test
+  void testDeleteModelEnsembleTypeFacade() {
+    // Save a metric first
+    Mono<ModelEnsembleTypeDTO> savedMetric =
+        modelEnsembleTypeFacade.save(getModelEnsembleTypeDTO());
+
+    // Subscribe and delete the saved metric
+    savedMetric.subscribe(
+        modelEnsembleTypeDTO -> {
+          Mono<Void> deleteResult = modelEnsembleTypeFacade.delete(modelEnsembleTypeDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted metric by ID
+                Mono<ModelEnsembleTypeDTO> findResult =
+                    modelEnsembleTypeFacade.findOne(modelEnsembleTypeDTO.getId());
+                findResult.subscribe(
+                    notFoundMetricDTO -> Assert.assertNull(notFoundMetricDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  void testFindByIdNonExistingModelEnsembleTypeFacade() {
+    // Try to find a metric by a non-existing ID
+    Mono<ModelEnsembleTypeDTO> metric = modelEnsembleTypeFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }
 }

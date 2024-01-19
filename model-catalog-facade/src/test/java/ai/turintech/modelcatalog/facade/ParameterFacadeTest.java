@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.ParameterDTO;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
@@ -90,6 +92,59 @@ public class ParameterFacadeTest extends BasicFacadeTest {
         parameterDistributionTypeDTO -> {
           Assert.assertEquals(
               getUpdatedParameterDTO().getName(), parameterDistributionTypeDTO.getName());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testDeleteParameterFacade() {
+    // Save a parameter first
+    Mono<ParameterDTO> savedParameter = parameterFacade.save(getParameterDTO());
+
+    // Subscribe and delete the saved parameter
+    savedParameter.subscribe(
+        parameterDTO -> {
+          Mono<Void> deleteResult = parameterFacade.delete(parameterDTO.getId());
+          deleteResult.subscribe(
+              result -> {
+                Assert.assertNull(result); // deletion should return null
+                // Now, try to find the deleted parameter by ID
+                Mono<ParameterDTO> findResult = parameterFacade.findOne(parameterDTO.getId());
+                findResult.subscribe(
+                    notFoundParameterDTO -> Assert.assertNull(notFoundParameterDTO),
+                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
+              });
+        });
+  }
+
+  @Test
+  @Transactional
+  void testFindByIdNonExistingParameterFacade() {
+    // Try to find a parameter by a non-existing ID
+    Mono<ParameterDTO> parameter = parameterFacade.findOne(UUID.randomUUID());
+
+    StepVerifier.create(parameter).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  @Transactional
+  void testSaveAndUpdateParameterFacade() {
+    // Save a parameter first
+    Mono<ParameterDTO> savedParameter = parameterFacade.save(getParameterDTO());
+
+    savedParameter.subscribe(
+        parameterDTO -> {
+          // Update the saved parameter
+          ParameterDTO updatedParameterDTO = getUpdatedParameterDTO();
+          updatedParameterDTO.setId(parameterDTO.getId());
+          Mono<ParameterDTO> updatedParameterMono = parameterFacade.save(updatedParameterDTO);
+
+          updatedParameterMono.subscribe(
+              updatedParameter -> {
+                Assert.assertEquals(updatedParameter.getName(), updatedParameterDTO.getName());
+                // Clean up: Delete the updated parameter
+                parameterFacade.delete(updatedParameter.getId()).block();
+              });
         });
   }
 }
