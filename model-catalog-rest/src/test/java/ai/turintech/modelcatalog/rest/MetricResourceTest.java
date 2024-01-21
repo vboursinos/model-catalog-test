@@ -1,22 +1,18 @@
 package ai.turintech.modelcatalog.rest;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.mockito.Mockito.when;
 
 import ai.turintech.modelcatalog.dto.MetricDTO;
 import ai.turintech.modelcatalog.facade.MetricFacade;
-import ai.turintech.modelcatalog.rest.resource.MetricResource;
-import ai.turintech.modelcatalog.to.MetricTO;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.server.*;
@@ -25,225 +21,174 @@ import reactor.core.publisher.Mono;
 
 @SpringJUnitConfig(TestRestConfig.class)
 public class MetricResourceTest extends BasicRestTest {
+
   @MockBean private MetricFacade metricFacade;
 
-  @MockBean private MetricResource metricResource;
+  private UUID uuid;
+  private MetricDTO metricDTO;
 
-  public UUID uuid = UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26");
-
-  public Mono<ResponseEntity<MetricTO>> getMetricTOMono() {
-    MetricTO metricTO = new MetricTO();
-    metricTO.setId(uuid);
-    metricTO.setMetric("test_metric");
-    Mono<ResponseEntity<MetricTO>> metricTOMono = Mono.just(ok(metricTO));
-    return metricTOMono;
-  }
-
-  public MetricDTO getMetricDTO() {
-    MetricDTO metricDTO = new MetricDTO();
+  @BeforeEach
+  public void setup() {
+    uuid = UUID.randomUUID();
+    metricDTO = new MetricDTO();
     metricDTO.setId(uuid);
     metricDTO.setMetric("test_metric");
-    return metricDTO;
-  }
-
-  public Mono<MetricDTO> getMetricDTOMono() {
-    MetricDTO metricDTO = getMetricDTO();
-    return Mono.just(metricDTO);
-  }
-
-  public MetricDTO getAnotherMetricDTO() {
-    MetricDTO anotherMetricDTO = new MetricDTO();
-    // Set different values for testing
-    anotherMetricDTO.setId(UUID.randomUUID());
-    anotherMetricDTO.setMetric("another_test_metric");
-    return anotherMetricDTO;
   }
 
   @Test
   public void findByIdTest() {
-    Mono<ResponseEntity<MetricTO>> metricTOMono = getMetricTOMono();
-    Mono<MetricDTO> metricDTOMono = getMetricDTOMono();
+    Mono<MetricDTO> metricDTOMono = Mono.just(metricDTO);
     when(metricFacade.findOne(any(UUID.class))).thenReturn(metricDTOMono);
-    when(metricResource.findOne(any(UUID.class))).thenReturn(metricTOMono);
-
-    System.out.println(
-        "metricFacade.findOne(any(UUID.class)) = " + metricFacade.findOne(uuid).block());
-
-    Mono<ServerResponse> responseMono =
-        Mono.just(getMetricDTO())
-            .flatMap(
-                metric ->
-                    ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(metric));
-
-    when(metricResource.findOne(any(UUID.class))).thenReturn(metricTOMono);
-
-    RouterFunction function =
+    RouterFunction<ServerResponse> route =
         RouterFunctions.route(
-            RequestPredicates.GET("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"),
-            request -> responseMono);
-
-    WebTestClient.bindToRouterFunction(function)
-        .build()
-        .get()
-        .uri("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26")
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectBody(MetricDTO.class)
-        .isEqualTo(getMetricDTO());
-
-    // Verify the mock interaction
-    Assert.assertEquals(metricFacade.findOne(uuid).block().getMetric(), "test_metric");
+            RequestPredicates.GET("/metrics/{id}"),
+            request -> ServerResponse.ok().bodyValue(metricDTO));
+    executeGetAndExpect(route, "/metrics/{id}", metricDTO);
   }
 
   @Test
   public void createMetricTest() {
-    MetricTO newMetricTO = new MetricTO();
-    newMetricTO.setMetric("new_metric");
+    when(metricFacade.save(any(MetricDTO.class))).thenReturn(Mono.just(metricDTO));
 
-    Mono<ServerResponse> responseMono =
-        Mono.just(getMetricDTO())
-            .flatMap(
-                metric ->
-                    ServerResponse.created(URI.create("/metrics"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(metric));
+    RouterFunction<ServerResponse> route =
+        RouterFunctions.route(
+            RequestPredicates.POST("/metrics"),
+            request -> ServerResponse.created(URI.create("/metrics")).bodyValue(metricDTO));
 
-    when(metricResource.create(any(MetricTO.class))).thenReturn(getMetricTOMono());
-
-    RouterFunction function =
-        RouterFunctions.route(RequestPredicates.POST("/metrics"), request -> responseMono);
-
-    when(metricFacade.save(any(MetricDTO.class))).thenReturn(Mono.just(getMetricDTO()));
-
-    WebTestClient.bindToRouterFunction(function)
-        .build()
-        .post()
-        .uri("/metrics")
-        .contentType(MediaType.APPLICATION_JSON)
-        .bodyValue(newMetricTO)
-        .exchange()
-        .expectStatus()
-        .isCreated()
-        .expectBody(MetricDTO.class)
-        .isEqualTo(getMetricDTO());
+    executePostAndExpect(route, "/metrics", metricDTO, metricDTO);
   }
 
   @Test
   public void updateMetricTest() {
-    MetricTO existingMetricTO = new MetricTO();
-    existingMetricTO.setId(uuid);
-    existingMetricTO.setMetric("existing_metric");
-
     when(metricFacade.existsById(uuid)).thenReturn(Mono.just(true));
-    when(metricFacade.update(any(MetricDTO.class))).thenReturn(Mono.just(getMetricDTO()));
-
-    Mono<ServerResponse> responseMono =
-        Mono.just(getMetricDTO())
-            .flatMap(
-                metric ->
-                    ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(metric));
-
-    when(metricResource.update(any(UUID.class), any(MetricTO.class))).thenReturn(getMetricTOMono());
-
-    RouterFunction function =
+    when(metricFacade.update(any(MetricDTO.class))).thenReturn(Mono.just(metricDTO));
+    RouterFunction<ServerResponse> route =
         RouterFunctions.route(
-            RequestPredicates.PUT("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"),
-            request -> responseMono);
+            RequestPredicates.PUT("/metrics/{id}"),
+            req -> ServerResponse.ok().bodyValue(metricDTO));
 
-    when(metricFacade.update(any(MetricDTO.class))).thenReturn(Mono.just(getMetricDTO()));
-
-    WebTestClient.bindToRouterFunction(function)
-        .build()
-        .put()
-        .uri("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26")
-        .contentType(MediaType.APPLICATION_JSON)
-        .bodyValue(existingMetricTO)
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectBody(MetricDTO.class)
-        .isEqualTo(getMetricDTO());
+    executePutAndExpect(route, "/metrics/{id}", metricDTO, metricDTO);
   }
 
   @Test
   public void partialUpdateMetricTest() {
-    MetricTO existingMetricTO = new MetricTO();
-    existingMetricTO.setId(uuid);
-    existingMetricTO.setMetric("existing_metric");
-
     when(metricFacade.existsById(uuid)).thenReturn(Mono.just(true));
-    when(metricFacade.partialUpdate(any(MetricDTO.class))).thenReturn(Mono.just(getMetricDTO()));
-
-    Mono<ServerResponse> responseMono =
-        Mono.just(getMetricDTO())
-            .flatMap(
-                metric ->
-                    ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(metric));
-
-    when(metricResource.partialUpdate(any(UUID.class), any(MetricTO.class)))
-        .thenReturn(getMetricTOMono());
-
-    RouterFunction function =
+    when(metricFacade.partialUpdate(any(MetricDTO.class))).thenReturn(Mono.just(metricDTO));
+    RouterFunction<ServerResponse> route =
         RouterFunctions.route(
-            RequestPredicates.PATCH("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"),
-            request -> responseMono);
+            RequestPredicates.PATCH("/metrics/{id}"),
+            req -> ServerResponse.ok().bodyValue(metricDTO));
 
-    when(metricFacade.update(any(MetricDTO.class))).thenReturn(Mono.just(getMetricDTO()));
-
-    WebTestClient.bindToRouterFunction(function)
-        .build()
-        .patch()
-        .uri("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26")
-        .contentType(MediaType.APPLICATION_JSON)
-        .bodyValue(existingMetricTO)
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectBody(MetricDTO.class)
-        .isEqualTo(getMetricDTO());
+    executePatchAndExpect(route, "/metrics/{id}", metricDTO, metricDTO);
   }
 
   @Test
   public void findAllMetricsTest() {
-    List<MetricDTO> metricDTOList = Arrays.asList(getMetricDTO(), getAnotherMetricDTO());
+    List<MetricDTO> metricDTOList = Arrays.asList(metricDTO, generateAnotherMetricDTO());
     when(metricFacade.findAll()).thenReturn(Flux.fromIterable(metricDTOList));
 
-    RouterFunction function =
+    RouterFunction<ServerResponse> route =
         RouterFunctions.route(
             RequestPredicates.GET("/metrics"),
-            request ->
-                ServerResponse.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(metricFacade.findAll(), MetricDTO.class));
-
-    WebTestClient.bindToRouterFunction(function)
-        .build()
-        .get()
-        .uri("/metrics")
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectBodyList(MetricDTO.class)
-        .isEqualTo(metricDTOList);
+            req -> ServerResponse.ok().body(metricFacade.findAll(), MetricDTO.class));
+    executeGetAndExpectMultiple(route, "/metrics", metricDTOList);
   }
 
   @Test
   public void deleteMetricTest() {
     when(metricFacade.existsById(uuid)).thenReturn(Mono.just(true));
     when(metricFacade.delete(uuid)).thenReturn(Mono.empty());
-
-    RouterFunction function =
+    RouterFunction<ServerResponse> route =
         RouterFunctions.route(
-            RequestPredicates.DELETE("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"),
-            request -> ServerResponse.noContent().build());
+            RequestPredicates.DELETE("/metrics/{id}"), req -> ServerResponse.noContent().build());
 
-    WebTestClient.bindToRouterFunction(function)
+    executeDeleteAndExpect(route, "/metrics/{id}");
+  }
+
+  private void executeGetAndExpect(RouterFunction<?> route, String url, MetricDTO metricDTO) {
+    WebTestClient.bindToRouterFunction(route)
+        .build()
+        .get()
+        .uri(url, uuid.toString())
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody(MetricDTO.class)
+        .isEqualTo(metricDTO);
+  }
+
+  private void executePostAndExpect(
+      RouterFunction<?> route, String url, MetricDTO requestBody, MetricDTO responseBody) {
+    WebTestClient.bindToRouterFunction(route)
+        .build()
+        .post()
+        .uri(url)
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(requestBody)
+        .exchange()
+        .expectStatus()
+        .isCreated()
+        .expectBody(MetricDTO.class)
+        .isEqualTo(responseBody);
+  }
+
+  private void executePutAndExpect(
+      RouterFunction<?> route, String url, MetricDTO requestBody, MetricDTO responseBody) {
+    WebTestClient.bindToRouterFunction(route)
+        .build()
+        .put()
+        .uri(url, uuid.toString())
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(requestBody)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody(MetricDTO.class)
+        .isEqualTo(responseBody);
+  }
+
+  private void executePatchAndExpect(
+      RouterFunction<?> route, String url, MetricDTO requestBody, MetricDTO responseBody) {
+    WebTestClient.bindToRouterFunction(route)
+        .build()
+        .patch()
+        .uri(url, uuid.toString())
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(requestBody)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody(MetricDTO.class)
+        .isEqualTo(responseBody);
+  }
+
+  private void executeGetAndExpectMultiple(
+      RouterFunction<?> route, String url, List<MetricDTO> responseBody) {
+    WebTestClient.bindToRouterFunction(route)
+        .build()
+        .get()
+        .uri(url)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBodyList(MetricDTO.class)
+        .isEqualTo(responseBody);
+  }
+
+  private void executeDeleteAndExpect(RouterFunction<?> route, String url) {
+    WebTestClient.bindToRouterFunction(route)
         .build()
         .delete()
-        .uri("/metrics/4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26")
+        .uri(url, uuid.toString())
         .exchange()
         .expectStatus()
         .isNoContent();
+  }
+
+  private MetricDTO generateAnotherMetricDTO() {
+    MetricDTO anotherMetricDTO = new MetricDTO();
+    anotherMetricDTO.setId(UUID.randomUUID());
+    anotherMetricDTO.setMetric("another_test_metric");
+    return anotherMetricDTO;
   }
 }
