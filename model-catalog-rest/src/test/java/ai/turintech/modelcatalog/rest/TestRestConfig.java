@@ -13,7 +13,9 @@ import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
 import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +42,7 @@ import reactor.core.scheduler.Schedulers;
       ModelCatalogRepositoryPackage.class,
       ModelCatalogServicePackage.class,
       ModelPackageFacadePackage.class,
+//      ModelCatalogRestPackage.class,
       ModelCatalogDtoEntityMapperPackage.class,
       JpaSearchPackage.class,
       ArchitectureServicePackage.class,
@@ -118,4 +121,17 @@ public class TestRestConfig {
   public HttpHandler httpHandler(WebHandler customWebHandler) {
     return WebHttpHandlerBuilder.webHandler(customWebHandler).build();
   }
+
+//  @Bean
+//  public SpringLiquibase liquibase(DataSource dataSource, LiquibaseProperties liquibaseProperties) {
+//    System.out.println("LiquibaseProperties: " + liquibaseProperties.getChangeLog());
+//    SpringLiquibase liquibase = new SpringLiquibase();
+//    liquibase.setDataSource(dataSource);
+//    liquibase.setChangeLog(liquibaseProperties.getChangeLog());
+//    liquibase.setContexts(liquibaseProperties.getContexts());
+//    liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
+//    // Other configuration settings...
+//
+//    return liquibase;
+//  }
 }
