@@ -33,6 +33,18 @@ class ReactiveAbstractUUIDIdentityCrudRestImplTest extends BasicRestTest {
   private BooleanParameterTO booleanParameterTO;
   private BooleanParameterDTO booleanParameterDTO;
 
+  private BooleanParameterDTO createBooleanParameterDTO() {
+    BooleanParameterDTO dto = new BooleanParameterDTO();
+    dto.setDefaultValue(true);
+    return dto;
+  }
+
+  private BooleanParameterTO createBooleanParameterTO() {
+    BooleanParameterTO to = new BooleanParameterTO();
+    to.setDefaultValue(true);
+    return to;
+  }
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
@@ -48,25 +60,28 @@ class ReactiveAbstractUUIDIdentityCrudRestImplTest extends BasicRestTest {
     booleanParameterDTO.setDefaultValue(true);
   }
 
-  //  @Test
-  //  void createTest() {
-  //    // Mocking
-  //    when(mapper.from(booleanParameterTO)).thenReturn(booleanParameterDTO);
-  //    when(facade.save(booleanParameterDTO)).thenReturn(Mono.just(booleanParameterDTO));
-  //
-  //    // Test
-  //    ResponseEntity<BooleanParameterTO> response =
-  // restController.create(booleanParameterTO).block();
-  //
-  //    // Assertions
-  //    verify(facade, times(1)).save(booleanParameterDTO);
-  //    verify(mapper, times(1)).to(booleanParameterDTO);
-  //    verifyNoMoreInteractions(facade, mapper);
-  //
-  //    assert response != null;
-  //    assert response.getStatusCode().equals(HttpStatus.CREATED);
-  //    assert response.getBody().equals(booleanParameterTO);
-  //  }
+  @Test
+  void createTest() {
+    // Mocking
+    when(mapper.from(createBooleanParameterTO())).thenReturn(createBooleanParameterDTO());
+    //
+    // when(facade.save(createBooleanParameterDTO())).thenReturn(Mono.just(createBooleanParameterDTO()));
+    when(facade.save(any(BooleanParameterDTO.class)))
+        .thenReturn(Mono.just(createBooleanParameterDTO()));
+
+    // Test
+    //      ResponseEntity<BooleanParameterTO> response =
+    //      restController.create(createBooleanParameterTO()).block();
+
+    // Assertions
+    //      verify(facade, times(1)).save(booleanParameterDTO);
+    //      verify(mapper, times(1)).to(booleanParameterDTO);
+    //      verifyNoMoreInteractions(facade, mapper);
+    //
+    //      assert response != null;
+    //      assert response.getStatusCode().equals(HttpStatus.CREATED);
+    //      assert response.getBody().equals(booleanParameterTO);
+  }
   //
   //  @Test
   //  void updateTest() {
@@ -114,23 +129,23 @@ class ReactiveAbstractUUIDIdentityCrudRestImplTest extends BasicRestTest {
   //    assert response.getBody().equals(booleanParameterTO);
   //  }
   //
-  //  @Test
-  //  void findAllTest() {
-  //    // Mocking
-  //    Flux<BooleanParameterDTO> booleanParameterFlux = Flux.just(booleanParameterDTO);
-  //    when(facade.findAll()).thenReturn(booleanParameterFlux);
-  //    when(mapper.to(booleanParameterDTO)).thenReturn(booleanParameterTO);
+  //    @Test
+  //    void findAllTest() {
+  //      // Mocking
+  //      Flux<BooleanParameterDTO> booleanParameterFlux = Flux.just(booleanParameterDTO);
+  //      when(facade.findAll()).thenReturn(booleanParameterFlux);
+  //      when(mapper.to(booleanParameterDTO)).thenReturn(booleanParameterTO);
   //
-  //    // Test
-  //    Flux<BooleanParameterTO> response = restController.findAll();
+  //      // Test
+  //      Flux<BooleanParameterTO> response = restController.findAll();
   //
-  //    // Assertions
-  //    verify(facade, times(1)).findAll();
-  //    verify(mapper, times(1)).to(booleanParameterDTO);
-  //    verifyNoMoreInteractions(facade, mapper);
+  //      // Assertions
+  //      verify(facade, times(1)).findAll();
+  //      verify(mapper, times(1)).to(booleanParameterDTO);
+  //      verifyNoMoreInteractions(facade, mapper);
   //
-  //    assert response.collectList().block().equals(List.of(booleanParameterTO));
-  //  }
+  //      assert response.collectList().block().equals(List.of(booleanParameterTO));
+  //    }
 
   @Test
   void findOneTest() {
