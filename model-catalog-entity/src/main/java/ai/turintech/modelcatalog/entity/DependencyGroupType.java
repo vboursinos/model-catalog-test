@@ -9,7 +9,7 @@ import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-/** A MlTaskType. */
+/** A DependencyGroupType. */
 @Entity
 @Table(name = "dependency_group_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -68,7 +68,7 @@ public class DependencyGroupType extends AbstractUUIDIdentityEntity implements S
 
   public DependencyGroupType removeModels(Model model) {
     this.models.remove(model);
-    model.setMlTask(null);
+    model.setDependencyGroupType(null);
     return this;
   }
 
@@ -95,6 +95,6 @@ public class DependencyGroupType extends AbstractUUIDIdentityEntity implements S
   // prettier-ignore
   @Override
   public String toString() {
-    return "MlTaskType{" + "id=" + getId() + ", name='" + getName() + "'" + "}";
+    return "DependencyGroupType{" + "id=" + getId() + ", name='" + getName() + "'" + "}";
   }
 }

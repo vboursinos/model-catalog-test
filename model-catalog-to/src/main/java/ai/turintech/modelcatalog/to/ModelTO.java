@@ -43,7 +43,7 @@ public class ModelTO extends AbstractUUIDIdentityTO {
 
   private ModelEnsembleTypeTO ensembleType;
 
-  private DependencyGroupTypeTO dependencyGroup;
+  private DependencyGroupTypeTO dependencyGroupType;
 
   public String getName() {
     return name;
@@ -165,12 +165,12 @@ public class ModelTO extends AbstractUUIDIdentityTO {
     this.parameters = parameters;
   }
 
-  public DependencyGroupTypeTO getDependencyGroup() {
-    return dependencyGroup;
+  public DependencyGroupTypeTO getDependencyGroupType() {
+    return dependencyGroupType;
   }
 
-  public void setDependencyGroup(DependencyGroupTypeTO dependencyGroup) {
-    this.dependencyGroup = dependencyGroup;
+  public void setDependencyGroupType(DependencyGroupTypeTO dependencyGroupType) {
+    this.dependencyGroupType = dependencyGroupType;
   }
 
   @Override
