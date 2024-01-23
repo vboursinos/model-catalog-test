@@ -1,51 +1,61 @@
-// package ai.turintech.modelcatalog.rest;
+//package ai.turintech.modelcatalog.rest;
 //
-// import ai.turintech.modelcatalog.entity.Metric;
-// import java.util.UUID;
-// import org.junit.Assert;
-// import org.junit.jupiter.api.*;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
-// import org.springframework.boot.test.context.SpringBootTest;
-// import org.springframework.graphql.test.tester.HttpGraphQlTester;
-// import org.springframework.test.context.ContextConfiguration;
-// import org.springframework.test.web.reactive.server.WebTestClient;
-// import org.testcontainers.junit.jupiter.Testcontainers;
+//import org.junit.jupiter.api.*;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.test.web.client.TestRestTemplate;
+//import org.springframework.http.HttpEntity;
+//import org.springframework.http.HttpHeaders;
+//import org.springframework.http.HttpMethod;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.test.context.ContextConfiguration;
+//import org.springframework.test.web.reactive.server.WebTestClient;
+//import org.testcontainers.junit.jupiter.Testcontainers;
 //
-// @SpringBootTest
-// @AutoConfigureHttpGraphQlTester
-// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-// @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-// @Testcontainers
-// @ContextConfiguration(classes = TestRestConfig.class)
-// public class GraphQLTest extends BasicRestTest {
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@AutoConfigureHttpGraphQlTester
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@Testcontainers
+//@ContextConfiguration(classes = TestRestConfig.class)
+//public class GraphQLTest extends BasicRestTest {
 //
-//  @Autowired HttpGraphQlTester httpGraphQlTester;
-//  private final String GRAPHQL_ENDPOINT = "http://localhost:8081/graphql";
+////  @Autowired private TestRestTemplate restTemplate;
+//
+//    @Autowired
+//    private WebTestClient webTestClient;
+//  private final String GRAPHQL_ENDPOINT = "/graphql";
 //
 //  @Test
 //  @Order(1)
 //  void findAllMetrics() {
-//    Metric metric =
-//        this.httpGraphQlTester
-//            .document(
-//                """
-//                          query{\\n" +
-//                                             "  Metrics{\\n" +
-//                                             "    pages\\n" +
-//                                             "    total\\n" +
-//                                             "    select{\\n" +
-//                                             "      metric\\n" +
-//                                             "    }\\n" +
-//                                             "  }\\n" +
-//                                             "}
-//                        """)
-//            .execute()
-//            .errors()
-//            .verify()
-//            .path("createProduct")
-//            .entity(Metric.class)
-//            .get();
-//    System.out.println("metric: " + metric);
+//    HttpHeaders headers = new HttpHeaders();
+//    headers.set("Content-Type", "application/graphql");
+//
+//    String requestQuery =
+//        """
+//              query {
+//                 Metrics {
+//                    pages
+//                    total
+//                    select {
+//                      metric
+//                    }
+//                 }
+//              }
+//              """;
+//
+//      webTestClient.post()
+//              .uri(GRAPHQL_ENDPOINT)
+//              .header("Content-Type", "application/graphql")
+//              .syncBody(requestQuery)
+//              .exchange()
+//              .returnResult(String.class)
+//              .getResponseBody()
+//              .subscribe(response -> {
+//                  // Handle response here
+//                  System.out.println("Response: " + response);
+//              });
 //  }
-// }
+//}
