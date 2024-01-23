@@ -92,11 +92,8 @@
 		<dependency>
 			<groupId>org.springframework.graphql</groupId>
 			<artifactId>spring-graphql-test</artifactId>
-			<version>1.2.4</version>
 			<scope>test</scope>
 		</dependency>
-
-
 
 
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webflux-api -->

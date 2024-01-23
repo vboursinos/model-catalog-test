@@ -47,7 +47,7 @@
 		<testcontainers.version>1.15.1</testcontainers.version>
 		<graphql-jpa-query.version>1.2.0</graphql-jpa-query.version>
 		<mockito.version>5.8.0</mockito.version>
-
+		<spring-graphql.version>1.2.4</spring-graphql.version>
 		<!-- Components -->
 		<jpa-search.version>01.00.00-a2-SNAPSHOT</jpa-search.version>
 		<common-data.version>01.00.00-a2-SNAPSHOT</common-data.version>
@@ -162,6 +162,12 @@
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
 				<version>${mockito.version}</version> <!-- Use the latest version available -->
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.graphql</groupId>
+				<artifactId>spring-graphql-test</artifactId>
+				<version>${spring-graphql.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- Internal project dependency management -->
