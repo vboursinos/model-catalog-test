@@ -13,12 +13,12 @@ import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
 import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -26,9 +26,6 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.web.server.WebHandler;
-import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -40,7 +37,6 @@ import reactor.core.scheduler.Schedulers;
       ModelCatalogRepositoryPackage.class,
       ModelCatalogServicePackage.class,
       ModelPackageFacadePackage.class,
-      //      ModelCatalogRestPackage.class,
       ModelCatalogDtoEntityMapperPackage.class,
       JpaSearchPackage.class,
       ArchitectureServicePackage.class,
@@ -49,6 +45,8 @@ import reactor.core.scheduler.Schedulers;
     })
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 public class TestRestConfig {
+
+  private final String GRAPHQL_ENDPOINT = "http://localhost:8081/graphql";
 
   @Bean
   public DataSource dataSource() {
@@ -87,6 +85,20 @@ public class TestRestConfig {
     return Schedulers.immediate();
   }
 
+  public static void main(String[] args) {
+    SpringApplication.from(ModelCatalogRestApplication::main).with(TestRestConfig.class).run(args);
+  }
+
+  //  @Bean
+  //  public HttpGraphQlTester httpGraphQlTester(WebTestClient webTestClient) {
+  //    return HttpGraphQlTester.create(webTestClient());
+  //  }
+  //
+  //  @Bean
+  //  public WebTestClient webTestClient() {
+  //    return WebTestClient.bindToServer().baseUrl(GRAPHQL_ENDPOINT).build();
+  //  }
+
   //  @Bean
   //  public WebTestClient webTestClient() {
   //    // configure and return the WebTestClient instance
@@ -104,21 +116,21 @@ public class TestRestConfig {
   //  }
   //
 
-  @Bean
-  public WebHandler webHandler() {
-    // Implement your custom WebHandler logic here
-    return exchange -> {
-      // Handle the HTTP request and response
-      // For example, you can log some information
-      System.out.println("Custom WebHandler handling request");
-      return Mono.empty(); // Return an empty Mono to signify completion
-    };
-  }
-
-  @Bean
-  public HttpHandler httpHandler(WebHandler customWebHandler) {
-    return WebHttpHandlerBuilder.webHandler(customWebHandler).build();
-  }
+  //  @Bean
+  //  public WebHandler webHandler() {
+  //    // Implement your custom WebHandler logic here
+  //    return exchange -> {
+  //      // Handle the HTTP request and response
+  //      // For example, you can log some information
+  //      System.out.println("Custom WebHandler handling request");
+  //      return Mono.empty(); // Return an empty Mono to signify completion
+  //    };
+  //  }
+  //
+  //  @Bean
+  //  public HttpHandler httpHandler(WebHandler customWebHandler) {
+  //    return WebHttpHandlerBuilder.webHandler(customWebHandler).build();
+  //  }
 
   //  @Bean
   //  public SpringLiquibase liquibase(DataSource dataSource, LiquibaseProperties
