@@ -1,15 +1,13 @@
 package ai.turintech.modelcatalog.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
 
 /** A BooleanParameter. */
 @Entity
 @Table(name = "boolean_parameter")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameter extends BaseTypeParameter {
+public class BooleanParameter extends ParameterTypeDefinition implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -29,18 +27,8 @@ public class BooleanParameter extends BaseTypeParameter {
     this.defaultValue = defaultValue;
   }
 
-  public BooleanParameter parameterTypeDefinition(ParameterTypeDefinition parameterTypeDefinition) {
-    this.setParameterTypeDefinition(parameterTypeDefinition);
-    return this;
-  }
-
   @Override
   public String toString() {
-    return "BooleanParameter{"
-        + "defaultValue="
-        + defaultValue
-        + ", parameterTypeDefinition="
-        + super.getParameterTypeDefinition()
-        + '}';
+    return "BooleanParameter{" + "defaultValue=" + defaultValue + '}';
   }
 }

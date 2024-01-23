@@ -1,6 +1,7 @@
 package ai.turintech.modelcatalog.entity;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -9,9 +10,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /** A IntegerParameter. */
 @Entity
 @Table(name = "integer_parameter")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameter extends BaseTypeParameter {
+public class IntegerParameter extends ParameterTypeDefinition implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,6 @@ public class IntegerParameter extends BaseTypeParameter {
 
   public void setDefaultValue(Integer defaultValue) {
     this.defaultValue = defaultValue;
-  }
-
-  public IntegerParameter parameterTypeDefinition(ParameterTypeDefinition parameterTypeDefinition) {
-    this.setParameterTypeDefinition(parameterTypeDefinition);
-    return this;
   }
 
   public Set<IntegerParameterValue> getIntegerParameterValues() {
@@ -83,8 +78,8 @@ public class IntegerParameter extends BaseTypeParameter {
     return "IntegerParameter{"
         + "defaultValue="
         + defaultValue
-        + ", parameterTypeDefinition="
-        + super.getParameterTypeDefinition()
+        + ", integerParameterValues="
+        + integerParameterValues
         + '}';
   }
 }

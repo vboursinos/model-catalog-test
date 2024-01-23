@@ -1,6 +1,7 @@
 package ai.turintech.modelcatalog.entity;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -9,9 +10,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /** A FloatParameter. */
 @Entity
 @Table(name = "float_parameter")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameter extends BaseTypeParameter {
+public class FloatParameter extends ParameterTypeDefinition implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -75,8 +75,8 @@ public class FloatParameter extends BaseTypeParameter {
     return "FloatParameter{"
         + "defaultValue="
         + defaultValue
-        + ", parameterTypeDefinition="
-        + super.getParameterTypeDefinition()
+        + ", floatParameterRanges="
+        + floatParameterRanges
         + '}';
   }
 }
