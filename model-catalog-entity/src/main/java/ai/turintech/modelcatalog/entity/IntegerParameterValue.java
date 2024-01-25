@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.entity;
 import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -12,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "integer_parameter_value")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterValue extends AbstractUUIDIdentityEntity implements Serializable {
+public class IntegerParameterValue extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;
 

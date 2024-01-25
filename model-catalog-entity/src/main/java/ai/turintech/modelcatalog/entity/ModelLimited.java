@@ -4,7 +4,6 @@ import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -16,7 +15,7 @@ import org.hibernate.annotations.Type;
 @Table(name = "model")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelLimited extends AbstractUUIDIdentityEntity implements Serializable {
+public class ModelLimited extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;
 

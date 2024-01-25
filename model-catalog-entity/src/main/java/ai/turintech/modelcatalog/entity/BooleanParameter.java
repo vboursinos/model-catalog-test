@@ -1,7 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,7 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "boolean_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameter extends BaseTypeParameter implements Serializable {
+public class BooleanParameter extends BaseTypeParameter {
 
   private static final long serialVersionUID = 1L;
 

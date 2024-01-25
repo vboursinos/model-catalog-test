@@ -3,7 +3,6 @@ package ai.turintech.modelcatalog.entity;
 import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -14,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "model_structure_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelStructureType extends AbstractUUIDIdentityEntity implements Serializable {
+public class ModelStructureType extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;
 
