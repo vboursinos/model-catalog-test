@@ -3,10 +3,8 @@ package ai.turintech.modelcatalog.entity;
 import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "model_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelType extends AbstractUUIDIdentityEntity<UUID> implements Serializable {
+public class ModelType extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;
 

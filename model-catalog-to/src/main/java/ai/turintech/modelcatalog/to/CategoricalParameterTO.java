@@ -1,18 +1,14 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
-import java.io.Serializable;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameterTO extends AbstractTO implements Serializable {
+public class CategoricalParameterTO extends AbstractUUIDIdentityTO {
 
   private static final long serialVersionUID = 6418488670699594296L;
-
-  private UUID parameterTypeDefinitionId;
 
   private String defaultValue;
 
@@ -24,14 +20,6 @@ public class CategoricalParameterTO extends AbstractTO implements Serializable {
 
   public void setDefaultValue(String defaultValue) {
     this.defaultValue = defaultValue;
-  }
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
   }
 
   public Set<CategoricalParameterValueTO> getCategoricalParameterValues() {
@@ -53,23 +41,22 @@ public class CategoricalParameterTO extends AbstractTO implements Serializable {
     }
 
     CategoricalParameterTO categoricalParameterDTO = (CategoricalParameterTO) o;
-    if (this.parameterTypeDefinitionId == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, categoricalParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), categoricalParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   @Override
   public String toString() {
     return "CategoricalParameterDTO{"
         + "parameterTypeDefinitionId="
-        + parameterTypeDefinitionId
+        + getId()
         + ", defaultValue='"
         + defaultValue
         + '\''

@@ -6,7 +6,6 @@ import ai.turintech.modelcatalog.dtoentitymapper.ParameterTypeDefinitionMapper;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import ai.turintech.modelcatalog.repository.ParameterTypeDefinitionRepository;
 import java.util.LinkedList;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
@@ -24,7 +23,7 @@ import reactor.core.scheduler.Schedulers;
 @Transactional
 public class ParameterTypeDefinitionServiceImpl
     extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
-        ParameterTypeDefinitionDTO, ParameterTypeDefinition, UUID>
+        ParameterTypeDefinitionDTO, ParameterTypeDefinition>
     implements ParameterTypeDefinitionService {
 
   private final Logger log = LoggerFactory.getLogger(ParameterTypeDefinitionServiceImpl.class);

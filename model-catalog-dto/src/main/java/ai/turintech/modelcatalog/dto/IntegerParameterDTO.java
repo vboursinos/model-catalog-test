@@ -1,28 +1,17 @@
 package ai.turintech.modelcatalog.dto;
 
-import ai.turintech.components.data.common.dto.AbstractDTO;
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /** A DTO for the IntegerParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterDTO extends AbstractDTO {
-
-  private UUID parameterTypeDefinitionId;
+public class IntegerParameterDTO extends AbstractUUIDIdentityDTO {
 
   private Integer defaultValue;
 
   private List<IntegerParameterValueDTO> integerParameterValues = new ArrayList<>();
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
-  }
 
   public Integer getDefaultValue() {
     return defaultValue;
@@ -50,16 +39,15 @@ public class IntegerParameterDTO extends AbstractDTO {
     }
 
     IntegerParameterDTO integerParameterDTO = (IntegerParameterDTO) o;
-    if (this.parameterTypeDefinitionId == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, integerParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), integerParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -67,7 +55,7 @@ public class IntegerParameterDTO extends AbstractDTO {
   public String toString() {
     return "IntegerParameterDTO{"
         + "parameterTypeDefinitionId"
-        + getParameterTypeDefinitionId()
+        + getId()
         + ", defaultValue="
         + getDefaultValue()
         + "}";

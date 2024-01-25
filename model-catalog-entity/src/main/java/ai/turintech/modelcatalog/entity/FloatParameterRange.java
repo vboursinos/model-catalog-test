@@ -3,8 +3,6 @@ package ai.turintech.modelcatalog.entity;
 import ai.turintech.components.data.common.entity.AbstractUUIDIdentityEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.UUID;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -13,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "float_parameter_range")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterRange extends AbstractUUIDIdentityEntity<UUID> implements Serializable {
+public class FloatParameterRange extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -34,9 +32,7 @@ public class FloatParameterRange extends AbstractUUIDIdentityEntity<UUID> implem
   private Double upper;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "parameter_type_definition_id",
-      referencedColumnName = "parameter_type_definition_id")
+  @JoinColumn(name = "parameter_type_definition_id", referencedColumnName = "id")
   private FloatParameter floatParameter;
 
   // jhipster-needle-entity-add-field - JHipster will add fields here

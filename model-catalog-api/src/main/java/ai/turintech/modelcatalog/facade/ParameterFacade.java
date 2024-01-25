@@ -1,15 +1,13 @@
 package ai.turintech.modelcatalog.facade;
 
-import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudFacade;
+import ai.turintech.components.architecture.reactive.ReactiveUUIDIdentityCrudFacade;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ParameterFacade
-    extends ReactiveAbstractUUIDIdentityCrudFacade<ParameterDTO, UUID> {
+public interface ParameterFacade extends ReactiveUUIDIdentityCrudFacade<ParameterDTO> {
 
   /**
    * Get all the parameters in pages as a stream.

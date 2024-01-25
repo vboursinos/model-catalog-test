@@ -2,12 +2,9 @@ package ai.turintech.modelcatalog.to;
 
 import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterRangeTO extends AbstractUUIDIdentityTO<UUID> implements Serializable {
+public class FloatParameterRangeTO extends AbstractUUIDIdentityTO {
 
   private static final long serialVersionUID = -806224531073871956L;
 
@@ -53,27 +50,6 @@ public class FloatParameterRangeTO extends AbstractUUIDIdentityTO<UUID> implemen
 
   public void setUpper(Double upper) {
     this.upper = upper;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof FloatParameterRangeTO)) {
-      return false;
-    }
-
-    FloatParameterRangeTO floatParameterRangeDTO = (FloatParameterRangeTO) o;
-    if (this.getId() == null) {
-      return false;
-    }
-    return Objects.equals(this.getId(), floatParameterRangeDTO.getId());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.getId());
   }
 
   // prettier-ignore

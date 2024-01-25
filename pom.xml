@@ -44,7 +44,7 @@
 		<hibernate-core.version>6.3.1.Final</hibernate-core.version>
 		<com.vladmihalcea.hybernate-types-60.version>2.21.1</com.vladmihalcea.hybernate-types-60.version>
 		<fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
-
+		<graphql-jpa-query.version>1.2.0</graphql-jpa-query.version>
 		<!-- Components -->
 		<jpa-search.version>01.00.00-a2-SNAPSHOT</jpa-search.version>
 		<common-data.version>01.00.00-a2-SNAPSHOT</common-data.version>
@@ -137,7 +137,11 @@
 				<artifactId>springdoc-openapi-common</artifactId>
 				<version>${springdoc-openapi-common.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>com.introproventures</groupId>
+				<artifactId>graphql-jpa-query-boot-starter</artifactId>
+				<version>${graphql-jpa-query.version}</version>
+			</dependency>
 			<!-- Internal project dependency management -->
 			<!-- Internal project modules -->
 			<dependency>

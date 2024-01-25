@@ -1,30 +1,17 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
-import java.io.Serializable;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterTO extends AbstractTO implements Serializable {
+public class IntegerParameterTO extends AbstractUUIDIdentityTO {
 
   private static final long serialVersionUID = -1708744270555813607L;
-
-  private UUID parameterTypeDefinitionId;
-
   private Integer defaultValue;
 
   private List<IntegerParameterValueTO> integerParameterValues = new ArrayList<>();
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
-  }
 
   public Integer getDefaultValue() {
     return defaultValue;
@@ -52,16 +39,15 @@ public class IntegerParameterTO extends AbstractTO implements Serializable {
     }
 
     IntegerParameterTO integerParameterDTO = (IntegerParameterTO) o;
-    if (this.parameterTypeDefinitionId == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, integerParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), integerParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -69,7 +55,7 @@ public class IntegerParameterTO extends AbstractTO implements Serializable {
   public String toString() {
     return "IntegerParameterDTO{"
         + "parameterTypeDefinitionId"
-        + getParameterTypeDefinitionId()
+        + getId()
         + ", defaultValue="
         + getDefaultValue()
         + "}";

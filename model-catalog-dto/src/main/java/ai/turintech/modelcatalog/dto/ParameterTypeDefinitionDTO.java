@@ -9,7 +9,7 @@ import java.util.UUID;
 /** A DTO for the ParameterTypeDefinition entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ParameterTypeDefinitionDTO extends AbstractUUIDIdentityDTO<UUID> {
+public class ParameterTypeDefinitionDTO extends AbstractUUIDIdentityDTO {
 
   @NotNull(message = "must not be null")
   private Integer ordering;

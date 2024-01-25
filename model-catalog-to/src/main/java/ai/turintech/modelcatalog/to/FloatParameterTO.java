@@ -1,19 +1,14 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
-import java.io.Serializable;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterTO extends AbstractTO implements Serializable {
+public class FloatParameterTO extends AbstractUUIDIdentityTO {
 
   private static final long serialVersionUID = -6709359691936403897L;
-
-  private UUID parameterTypeDefinitionId;
-
   private Double defaultValue;
 
   private List<FloatParameterRangeTO> floatParameterRanges = new ArrayList<>();
@@ -24,14 +19,6 @@ public class FloatParameterTO extends AbstractTO implements Serializable {
 
   public void setDefaultValue(Double defaultValue) {
     this.defaultValue = defaultValue;
-  }
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
   }
 
   public List<FloatParameterRangeTO> getFloatParameterRanges() {
@@ -52,16 +39,15 @@ public class FloatParameterTO extends AbstractTO implements Serializable {
     }
 
     FloatParameterTO floatParameterDTO = (FloatParameterTO) o;
-    if (this.parameterTypeDefinitionId == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, floatParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), floatParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -69,7 +55,7 @@ public class FloatParameterTO extends AbstractTO implements Serializable {
   public String toString() {
     return "FloatParameterDTO{"
         + "parameterTypeDefinitionId="
-        + getParameterTypeDefinitionId()
+        + getId()
         + ", defaultValue="
         + getDefaultValue()
         + "}";

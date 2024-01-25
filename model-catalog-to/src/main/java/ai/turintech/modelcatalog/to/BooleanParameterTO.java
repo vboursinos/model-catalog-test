@@ -1,26 +1,13 @@
 package ai.turintech.modelcatalog.to;
 
-import ai.turintech.components.data.common.to.AbstractTO;
-import java.io.Serializable;
+import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import java.util.Objects;
-import java.util.UUID;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameterTO extends AbstractTO implements Serializable {
+public class BooleanParameterTO extends AbstractUUIDIdentityTO {
 
   private static final long serialVersionUID = 1087247945141281117L;
-
-  private UUID parameterTypeDefinitionId;
-
   private Boolean defaultValue;
-
-  public UUID getParameterTypeDefinitionId() {
-    return parameterTypeDefinitionId;
-  }
-
-  public void setParameterTypeDefinitionId(UUID parameterTypeDefinitionId) {
-    this.parameterTypeDefinitionId = parameterTypeDefinitionId;
-  }
 
   public Boolean getDefaultValue() {
     return defaultValue;
@@ -40,16 +27,15 @@ public class BooleanParameterTO extends AbstractTO implements Serializable {
     }
 
     BooleanParameterTO booleanParameterDTO = (BooleanParameterTO) o;
-    if (this.getParameterTypeDefinitionId() == null) {
+    if (this.getId() == null) {
       return false;
     }
-    return Objects.equals(
-        this.parameterTypeDefinitionId, booleanParameterDTO.parameterTypeDefinitionId);
+    return Objects.equals(this.getId(), booleanParameterDTO.getId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.parameterTypeDefinitionId);
+    return Objects.hash(this.getId());
   }
 
   // prettier-ignore
@@ -57,7 +43,7 @@ public class BooleanParameterTO extends AbstractTO implements Serializable {
   public String toString() {
     return "BooleanParameterDTO{"
         + "parameterTypeDefinitionId="
-        + parameterTypeDefinitionId
+        + getId()
         + ", defaultValue="
         + defaultValue
         + '}';

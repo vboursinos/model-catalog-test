@@ -9,7 +9,7 @@ import java.util.UUID;
 
 /** A DTO for the Parameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ParameterDTO extends AbstractUUIDIdentityDTO<UUID> {
+public class ParameterDTO extends AbstractUUIDIdentityDTO {
   @NotNull(message = "must not be null")
   private String name;
 

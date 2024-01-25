@@ -4,7 +4,6 @@ import ai.turintech.components.architecture.rest.impl.reactive.ReactiveAbstractU
 import ai.turintech.modelcatalog.dto.ModelStructureTypeDTO;
 import ai.turintech.modelcatalog.entity.ModelStructureType;
 import ai.turintech.modelcatalog.to.ModelStructureTypeTO;
-import java.util.UUID;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/model-structure-types")
 public class ModelStructureTypeResource
-    extends ReactiveAbstractUUIDIdentityCrudRestImpl<
-        ModelStructureTypeTO, ModelStructureTypeDTO, UUID> {
+    extends ReactiveAbstractUUIDIdentityCrudRestImpl<ModelStructureTypeTO, ModelStructureTypeDTO> {
   private static final String ENTITY_NAME = "modelCatalogModelStructureType";
 
   private static String APPLICATION_NAME = "model-catalog";

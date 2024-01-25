@@ -5,7 +5,6 @@ import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.entity.Parameter;
 import ai.turintech.modelcatalog.service.ParameterService;
 import java.util.List;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,7 @@ import reactor.core.publisher.Mono;
 /** Service Implementation for managing {@link Parameter}. */
 @Component
 @Transactional
-public class ParameterFacadeImpl
-    extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ParameterDTO, Parameter, UUID>
+public class ParameterFacadeImpl extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ParameterDTO>
     implements ParameterFacade {
 
   private final Logger log = LoggerFactory.getLogger(ParameterFacadeImpl.class);

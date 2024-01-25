@@ -1,13 +1,12 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.components.architecture.reactive.ReactiveAbstractUUIDIdentityCrudCallable;
+import ai.turintech.components.architecture.reactive.ReactiveUUIDIdentityCrudCallable;
 import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstractUUIDIdentityCrudServiceImpl;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ParameterMapper;
 import ai.turintech.modelcatalog.entity.Parameter;
 import ai.turintech.modelcatalog.repository.ParameterRepository;
 import java.util.List;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ import reactor.core.scheduler.Scheduler;
 @Service
 @Transactional
 public class ParameterServiceImpl
-    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<ParameterDTO, Parameter, UUID>
+    extends ReactiveAbstractUUIDIdentityCrudServiceImpl<ParameterDTO, Parameter>
     implements ParameterService {
 
   private final Logger log = LoggerFactory.getLogger(ParameterServiceImpl.class);
@@ -43,13 +42,12 @@ public class ParameterServiceImpl
   @Transactional(readOnly = true)
   public Mono<List<ParameterDTO>> findAllPageable(Pageable pageable) {
     log.debug("Request to get all Parameters");
-    ReactiveAbstractUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO, Parameter, UUID>
-        callable =
-            context.getBean(
-                ReactiveAbstractUUIDIdentityCrudCallable.class,
-                "findAll",
-                parameterRepository,
-                parameterMapper);
+    ReactiveUUIDIdentityCrudCallable<List<ParameterDTO>, ParameterDTO> callable =
+        context.getBean(
+            ReactiveUUIDIdentityCrudCallable.class,
+            "findAll",
+            parameterRepository,
+            parameterMapper);
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
