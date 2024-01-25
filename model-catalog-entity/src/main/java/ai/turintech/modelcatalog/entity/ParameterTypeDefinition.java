@@ -20,7 +20,6 @@ public class ParameterTypeDefinition extends AbstractUUIDIdentityEntity {
   @Column(name = "ordering", nullable = false)
   private Integer ordering;
 
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parameter_distribution_type_id", referencedColumnName = "id")
   private ParameterDistributionType distribution;
