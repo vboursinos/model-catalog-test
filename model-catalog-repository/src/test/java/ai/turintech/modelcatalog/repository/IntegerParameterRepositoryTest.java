@@ -16,18 +16,24 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class IntegerParameterRepositoryTest extends BasicRepositoryTest {
   @Autowired private IntegerParameterRepository integerParameterRepository;
 
+  private final String integerParameterId = "323e4567-e89b-12d3-a456-426614174001";
+  private final String parameterId = "523e4567-e89b-12d3-a456-426614174001";
+  private final String parameterTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String parameterDistributionTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String parameterTypeDefinitionId = "323e4567-e89b-12d3-a456-426614174003";
+
   private IntegerParameter getIntegerParameter() {
     Parameter parameter = new Parameter();
-    parameter.setId(UUID.fromString("523e4567-e89b-12d3-a456-426614174001"));
+    parameter.setId(UUID.fromString(parameterId));
 
     ParameterType parameterType = new ParameterType();
-    parameterType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterType.setId(UUID.fromString(parameterTypeId));
 
     ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
-    parameterDistributionType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterDistributionType.setId(UUID.fromString(parameterDistributionTypeId));
 
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    parameterTypeDefinition.setId(UUID.fromString(parameterTypeDefinitionId));
     parameterTypeDefinition.setParameter(parameter);
     parameterTypeDefinition.setType(parameterType);
     parameterTypeDefinition.setDistribution(parameterDistributionType);
@@ -49,9 +55,7 @@ public class IntegerParameterRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdIntegerParameterRepository() {
     IntegerParameter integerParameter =
-        integerParameterRepository
-            .findById(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"))
-            .get();
+        integerParameterRepository.findById(UUID.fromString(integerParameterId)).get();
     Assertions.assertEquals(10, integerParameter.getDefaultValue());
   }
 }

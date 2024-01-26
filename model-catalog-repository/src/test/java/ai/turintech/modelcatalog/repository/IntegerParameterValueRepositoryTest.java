@@ -16,13 +16,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class IntegerParameterValueRepositoryTest extends BasicRepositoryTest {
   @Autowired private IntegerParameterValueRepository integerParameterValueRepository;
 
+  private final String integerParameterValueId = "423e4567-e89b-12d3-a456-426614174004";
+  private final String newIntegerParameterValueId = "423e4567-e89b-12d3-a456-426614174003";
+  private final String integerParameterId = "323e4567-e89b-12d3-a456-426614174001";
+  private final String parameterTypeDefinitionId = "323e4567-e89b-12d3-a456-426614174001";
+
   private IntegerParameterValue getIntegerParameterValue() {
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    parameterTypeDefinition.setId(UUID.fromString(parameterTypeDefinitionId));
     parameterTypeDefinition.setOrdering(10);
 
     IntegerParameter integerParameter = new IntegerParameter();
-    integerParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    integerParameter.setId(UUID.fromString(integerParameterId));
     integerParameter.setDefaultValue(1);
     integerParameter.setParameterTypeDefinition(parameterTypeDefinition);
 
@@ -35,16 +40,16 @@ public class IntegerParameterValueRepositoryTest extends BasicRepositoryTest {
 
   private IntegerParameterValue getUpdatedIntegerParameterValue() {
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    parameterTypeDefinition.setId(UUID.fromString(parameterTypeDefinitionId));
     parameterTypeDefinition.setOrdering(10);
 
     IntegerParameter integerParameter = new IntegerParameter();
-    integerParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    integerParameter.setId(UUID.fromString(integerParameterId));
     integerParameter.setDefaultValue(1);
     integerParameter.setParameterTypeDefinition(parameterTypeDefinition);
 
     IntegerParameterValue integerParameterValue = new IntegerParameterValue();
-    integerParameterValue.setId(UUID.fromString("423e4567-e89b-12d3-a456-426614174004"));
+    integerParameterValue.setId(UUID.fromString(integerParameterValueId));
     integerParameterValue.setIntegerParameter(integerParameter);
     integerParameterValue.setLower(1);
     integerParameterValue.setUpper(10);
@@ -60,9 +65,7 @@ public class IntegerParameterValueRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdIntegerParameterValueRepository() {
     IntegerParameterValue integerParameterValue =
-        integerParameterValueRepository
-            .findById(UUID.fromString("423e4567-e89b-12d3-a456-426614174004"))
-            .get();
+        integerParameterValueRepository.findById(UUID.fromString(integerParameterValueId)).get();
     Assertions.assertEquals(25, integerParameterValue.getLower());
   }
 

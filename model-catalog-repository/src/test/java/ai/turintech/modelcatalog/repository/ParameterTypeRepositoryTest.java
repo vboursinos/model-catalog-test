@@ -16,6 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ParameterTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private ParameterTypeRepository parameterTypeRepository;
 
+  private final String parameterTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private final String newParameterTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+
   private ParameterType getParameterType() {
     ParameterType parameterType = new ParameterType();
     parameterType.setName("test_parameterType");
@@ -24,7 +27,7 @@ public class ParameterTypeRepositoryTest extends BasicRepositoryTest {
 
   private ParameterType getUpdatedParameterType() {
     ParameterType parameterType = new ParameterType();
-    parameterType.setId(UUID.fromString("2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28"));
+    parameterType.setId(UUID.fromString(newParameterTypeId));
     parameterType.setName("test_updated_parameterType");
     return parameterType;
   }
@@ -38,9 +41,7 @@ public class ParameterTypeRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdParameterTypeRepository() {
     ParameterType parameterType =
-        parameterTypeRepository
-            .findById(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29"))
-            .get();
+        parameterTypeRepository.findById(UUID.fromString(parameterTypeId)).get();
     Assertions.assertEquals("parametertype3", parameterType.getName());
   }
 

@@ -16,6 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ModelStructureTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private ModelStructureTypeRepository modelStructureTypeRepository;
 
+  private final String modelStructureTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private final String newModelStructureTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+
   private ModelStructureType getModelStructureType() {
     ModelStructureType modelStructureType = new ModelStructureType();
     modelStructureType.setName("test_modelStructureType");
@@ -24,7 +27,7 @@ public class ModelStructureTypeRepositoryTest extends BasicRepositoryTest {
 
   private ModelStructureType getUpdatedModelStructureType() {
     ModelStructureType modelStructureType = new ModelStructureType();
-    modelStructureType.setId(UUID.fromString("2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28"));
+    modelStructureType.setId(UUID.fromString(newModelStructureTypeId));
     modelStructureType.setName("test_updated_modelStructureType");
     return modelStructureType;
   }
@@ -38,9 +41,7 @@ public class ModelStructureTypeRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdModelStructureTypeRepository() {
     ModelStructureType modelStructureType =
-        modelStructureTypeRepository
-            .findById(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29"))
-            .get();
+        modelStructureTypeRepository.findById(UUID.fromString(modelStructureTypeId)).get();
     Assertions.assertEquals("modelstructuretype3", modelStructureType.getName());
   }
 

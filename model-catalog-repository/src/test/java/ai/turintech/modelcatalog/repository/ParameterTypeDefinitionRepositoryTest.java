@@ -16,9 +16,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ParameterTypeDefinitionRepositoryTest extends BasicRepositoryTest {
   @Autowired private ParameterTypeDefinitionRepository parameterTypeDefinitionRepository;
 
+  private final String parameterTypeDefinitionId = "323e4567-e89b-12d3-a456-426614174001";
+  private final String parameterId = "523e4567-e89b-12d3-a456-426614174001";
+  private final String parameterDistributionTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String parameterTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+
   private ParameterTypeDefinition getParameterTypeDefinition() {
     Parameter parameter = new Parameter();
-    parameter.setId(UUID.fromString("523e4567-e89b-12d3-a456-426614174001"));
+    parameter.setId(UUID.fromString(parameterId));
     parameter.setName("test_parameter");
     parameter.setDescription("test_description");
     parameter.setEnabled(true);
@@ -27,11 +32,11 @@ public class ParameterTypeDefinitionRepositoryTest extends BasicRepositoryTest {
     parameter.setOrdering(1);
 
     ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
-    parameterDistributionType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterDistributionType.setId(UUID.fromString(parameterDistributionTypeId));
     parameterDistributionType.setName("parameterdistributiontype1");
 
     ParameterType parameterType = new ParameterType();
-    parameterType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterType.setId(UUID.fromString(parameterTypeId));
     parameterType.setName("parametertype1");
 
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
@@ -45,7 +50,7 @@ public class ParameterTypeDefinitionRepositoryTest extends BasicRepositoryTest {
 
   private ParameterTypeDefinition getUpdatedParameterTypeDefinition() {
     Parameter parameter = new Parameter();
-    parameter.setId(UUID.fromString("523e4567-e89b-12d3-a456-426614174001"));
+    parameter.setId(UUID.fromString(parameterId));
     parameter.setName("test_parameter");
     parameter.setDescription("test_description");
     parameter.setEnabled(true);
@@ -54,15 +59,15 @@ public class ParameterTypeDefinitionRepositoryTest extends BasicRepositoryTest {
     parameter.setOrdering(1);
 
     ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
-    parameterDistributionType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterDistributionType.setId(UUID.fromString(parameterDistributionTypeId));
     parameterDistributionType.setName("parameterdistributiontype1");
 
     ParameterType parameterType = new ParameterType();
-    parameterType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterType.setId(UUID.fromString(parameterTypeId));
     parameterType.setName("parametertype1");
 
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    parameterTypeDefinition.setId(UUID.fromString(parameterTypeDefinitionId));
     parameterTypeDefinition.setParameter(parameter);
     parameterTypeDefinition.setDistribution(parameterDistributionType);
     parameterTypeDefinition.setType(parameterType);
@@ -82,7 +87,7 @@ public class ParameterTypeDefinitionRepositoryTest extends BasicRepositoryTest {
   void testFindByIdParameterTypeDefinitionRepository() {
     ParameterTypeDefinition parameterTypeDefinition =
         parameterTypeDefinitionRepository
-            .findById(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"))
+            .findById(UUID.fromString(parameterTypeDefinitionId))
             .get();
     Assertions.assertEquals(1, parameterTypeDefinition.getOrdering());
   }

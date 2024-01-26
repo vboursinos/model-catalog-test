@@ -16,6 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class MetricRepositoryTest extends BasicRepositoryTest {
   @Autowired private MetricRepository metricRepository;
 
+  private final String metricId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23";
+  private final String newMetricId = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26";
+
   private Metric getMetric() {
     Metric metric = new Metric();
     metric.setMetric("test_metric");
@@ -24,42 +27,33 @@ public class MetricRepositoryTest extends BasicRepositoryTest {
 
   private Metric getUpdatedMetric() {
     Metric metric = new Metric();
-    metric.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"));
+    metric.setId(UUID.fromString(newMetricId));
     metric.setMetric("test_updated_metric");
     return metric;
   }
 
   @Test
   void testFindAllMetricRepository() {
-    System.out.println("MetricRepository: " + metricRepository);
     List<Metric> metrics = metricRepository.findAll();
-    System.out.println("Metrics: " + metrics);
     Assertions.assertEquals(4, metrics.size());
   }
 
   @Test
   void testFindByIdMetricRepository() {
-    System.out.println("MetricRepository: " + metricRepository);
-    Metric metric =
-        metricRepository.findById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23")).get();
-    System.out.println("Metric: " + metric);
+    Metric metric = metricRepository.findById(UUID.fromString(metricId)).get();
     Assertions.assertEquals("Metric1", metric.getMetric());
   }
 
   @Test
   void testSaveMetricRepository() {
-    System.out.println("MetricRepository: " + metricRepository);
     Metric savedMetric = metricRepository.save(getMetric());
-    System.out.println("Saved Metric: " + savedMetric);
     Assertions.assertEquals(getMetric().getMetric(), savedMetric.getMetric());
     metricRepository.delete(savedMetric);
   }
 
   @Test
   void testUpdateMetricRepository() {
-    System.out.println("MetricRepository: " + metricRepository);
     Metric savedMetric = metricRepository.save(getUpdatedMetric());
-    System.out.println("Saved Metric: " + savedMetric);
     Assertions.assertEquals(getUpdatedMetric().getMetric(), savedMetric.getMetric());
   }
 }

@@ -17,7 +17,6 @@ public class ConnectionTest extends BasicRepositoryTest {
 
   @Test
   void testDatabaseConnection() {
-    // Assuming there's a users table in your schema.sql
     int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM metric", Integer.class);
     System.out.println("Count: " + count);
     assertNotNull(count, "Count should not be null");

@@ -16,6 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class MlTaskTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private MlTaskTypeRepository mlTaskTypeRepository;
 
+  private final String mlTaskTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+  private final String newMlTaskTypeId = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26";
+
   private MlTaskType getMlTaskType() {
     MlTaskType mlTaskType = new MlTaskType();
     mlTaskType.setName("test_mlTaskType");
@@ -24,7 +27,7 @@ public class MlTaskTypeRepositoryTest extends BasicRepositoryTest {
 
   private MlTaskType getUpdatedMlTaskType() {
     MlTaskType mlTaskType = new MlTaskType();
-    mlTaskType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+    mlTaskType.setId(UUID.fromString(newMlTaskTypeId));
     mlTaskType.setName("test_updated_mlTaskType");
     return mlTaskType;
   }
@@ -37,10 +40,7 @@ public class MlTaskTypeRepositoryTest extends BasicRepositoryTest {
 
   @Test
   void testFindByIdMlTaskRepository() {
-    MlTaskType mlTaskType =
-        mlTaskTypeRepository
-            .findById(UUID.fromString("2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28"))
-            .get();
+    MlTaskType mlTaskType = mlTaskTypeRepository.findById(UUID.fromString(mlTaskTypeId)).get();
     Assertions.assertEquals("mltask2", mlTaskType.getName());
   }
 
