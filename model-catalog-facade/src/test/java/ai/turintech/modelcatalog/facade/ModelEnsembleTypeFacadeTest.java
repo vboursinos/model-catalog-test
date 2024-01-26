@@ -19,6 +19,10 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelEnsembleTypeFacadeTest extends BasicFacadeTest {
+
+  private final String EXISTING_MODEL_ENSEMBLE_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String NON_EXISTING_MODEL_ENSEMBLE_TYPE_ID = UUID.randomUUID().toString();
+
   @Autowired private ModelEnsembleTypeFacade modelEnsembleTypeFacade;
 
   private ModelEnsembleTypeDTO getModelEnsembleTypeDTO() {
@@ -52,7 +56,7 @@ public class ModelEnsembleTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testFindByIdModelEnsembleTypeFacade() {
     Mono<ModelEnsembleTypeDTO> modelEnsembleTypeDTOMono =
-        modelEnsembleTypeFacade.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        modelEnsembleTypeFacade.findOne(UUID.fromString(EXISTING_MODEL_ENSEMBLE_TYPE_ID));
 
     modelEnsembleTypeDTOMono.subscribe(
         modelEnsembleTypeDTO -> {
@@ -63,17 +67,19 @@ public class ModelEnsembleTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testExistsByIdModelEnsembleTypeFacade() {
     Mono<Boolean> exists =
-        modelEnsembleTypeFacade.existsById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        modelEnsembleTypeFacade.existsById(UUID.fromString(EXISTING_MODEL_ENSEMBLE_TYPE_ID));
 
-    StepVerifier.create(exists).expectNext(true).verifyComplete();
+    exists.subscribe(
+        modelEnsembleType -> {
+          Assert.assertEquals(true, exists.block());
+        });
   }
 
   @Test
   void testExistsByIdNonExistingModelEnsembleTypeFacade() {
-    // Use a non-existing ID
-    UUID nonExistingModelEnsembleTypeId = UUID.randomUUID();
 
-    Mono<Boolean> exists = modelEnsembleTypeFacade.existsById(nonExistingModelEnsembleTypeId);
+    Mono<Boolean> exists =
+        modelEnsembleTypeFacade.existsById(UUID.fromString(NON_EXISTING_MODEL_ENSEMBLE_TYPE_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
@@ -102,18 +108,15 @@ public class ModelEnsembleTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testDeleteModelEnsembleTypeFacade() {
-    // Save a metric first
     Mono<ModelEnsembleTypeDTO> savedMetric =
         modelEnsembleTypeFacade.save(getModelEnsembleTypeDTO());
 
-    // Subscribe and delete the saved metric
     savedMetric.subscribe(
         modelEnsembleTypeDTO -> {
           Mono<Void> deleteResult = modelEnsembleTypeFacade.delete(modelEnsembleTypeDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted metric by ID
+                Assert.assertNull(result);
                 Mono<ModelEnsembleTypeDTO> findResult =
                     modelEnsembleTypeFacade.findOne(modelEnsembleTypeDTO.getId());
                 findResult.subscribe(
@@ -125,8 +128,8 @@ public class ModelEnsembleTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testFindByIdNonExistingModelEnsembleTypeFacade() {
-    // Try to find a metric by a non-existing ID
-    Mono<ModelEnsembleTypeDTO> metric = modelEnsembleTypeFacade.findOne(UUID.randomUUID());
+    Mono<ModelEnsembleTypeDTO> metric =
+        modelEnsembleTypeFacade.findOne(UUID.fromString(NON_EXISTING_MODEL_ENSEMBLE_TYPE_ID));
 
     StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }

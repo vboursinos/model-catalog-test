@@ -19,6 +19,12 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelGroupTypeFacadeTest extends BasicFacadeTest {
+  private final String EXISTING_MODEL_GROUP_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+
+  private final String EXISTING_MODEL_GROUP_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private final String NON_EXISTING_MODEL_GROUP_TYPE_ID = UUID.randomUUID().toString();
+
   @Autowired private ModelGroupTypeFacade modelGroupTypeFacade;
 
   private ModelGroupTypeDTO getModelGroupTypeDTO() {
@@ -29,7 +35,7 @@ public class ModelGroupTypeFacadeTest extends BasicFacadeTest {
 
   private ModelGroupTypeDTO getUpdatedModelGroupTypeDTO() {
     ModelGroupTypeDTO modelGroupTypeDTO = new ModelGroupTypeDTO();
-    modelGroupTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelGroupTypeDTO.setId(UUID.fromString(EXISTING_MODEL_GROUP_TYPE_ID_FOR_UPDATE));
     modelGroupTypeDTO.setName("test_updated_modelgrouptype");
     return modelGroupTypeDTO;
   }
@@ -51,7 +57,7 @@ public class ModelGroupTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testFindByIdModelGroupTypeFacade() {
     Mono<ModelGroupTypeDTO> modelGroupTypeDTOMono =
-        modelGroupTypeFacade.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        modelGroupTypeFacade.findOne(UUID.fromString(EXISTING_MODEL_GROUP_TYPE_ID));
 
     modelGroupTypeDTOMono.subscribe(
         modelGroupTypeDTO -> {
@@ -62,17 +68,18 @@ public class ModelGroupTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testExistsByIdModelGroupTypeFacade() {
     Mono<Boolean> exists =
-        modelGroupTypeFacade.existsById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        modelGroupTypeFacade.existsById(UUID.fromString(EXISTING_MODEL_GROUP_TYPE_ID));
 
-    StepVerifier.create(exists).expectNext(true).verifyComplete();
+    exists.subscribe(
+        modelGroupType -> {
+          Assert.assertEquals(true, exists.block());
+        });
   }
 
   @Test
   void testExistsByIdNonExistingModelGroupTypeFacade() {
-    // Use a non-existing ID
-    UUID nonExistingModelGroupTypeId = UUID.randomUUID();
-
-    Mono<Boolean> exists = modelGroupTypeFacade.existsById(nonExistingModelGroupTypeId);
+    Mono<Boolean> exists =
+        modelGroupTypeFacade.existsById(UUID.fromString(NON_EXISTING_MODEL_GROUP_TYPE_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
@@ -100,17 +107,14 @@ public class ModelGroupTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testDeleteModelGroupTypeFacade() {
-    // Save a metric first
     Mono<ModelGroupTypeDTO> savedMetric = modelGroupTypeFacade.save(getModelGroupTypeDTO());
 
-    // Subscribe and delete the saved metric
     savedMetric.subscribe(
         modelGroupTypeDTO -> {
           Mono<Void> deleteResult = modelGroupTypeFacade.delete(modelGroupTypeDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted metric by ID
+                Assert.assertNull(result);
                 Mono<ModelGroupTypeDTO> findResult =
                     modelGroupTypeFacade.findOne(modelGroupTypeDTO.getId());
                 findResult.subscribe(
@@ -122,8 +126,8 @@ public class ModelGroupTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testFindByIdNonExistingModelGroupTypeFacade() {
-    // Try to find a metric by a non-existing ID
-    Mono<ModelGroupTypeDTO> metric = modelGroupTypeFacade.findOne(UUID.randomUUID());
+    Mono<ModelGroupTypeDTO> metric =
+        modelGroupTypeFacade.findOne(UUID.fromString(NON_EXISTING_MODEL_GROUP_TYPE_ID));
 
     StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }

@@ -19,6 +19,10 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class MlTaskTypeFacadeTest extends BasicFacadeTest {
+
+  private final String EXISTING_ML_TASK_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String NON_EXISTING_ML_TASK_TYPE_ID = UUID.randomUUID().toString();
+
   @Autowired private MlTaskTypeFacade mlTaskTypeFacade;
 
   private MlTaskTypeDTO getMlTaskTypeDTO() {
@@ -51,7 +55,7 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testFindByIdMlTaksFacade() {
     Mono<MlTaskTypeDTO> mlTaskTypeDTOMono =
-        mlTaskTypeFacade.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        mlTaskTypeFacade.findOne(UUID.fromString(EXISTING_ML_TASK_TYPE_ID));
 
     mlTaskTypeDTOMono.subscribe(
         mlTaskTypeDTO -> {
@@ -61,8 +65,7 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdMlTaksFacade() {
-    Mono<Boolean> exists =
-        mlTaskTypeFacade.existsById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    Mono<Boolean> exists = mlTaskTypeFacade.existsById(UUID.fromString(EXISTING_ML_TASK_TYPE_ID));
 
     exists.subscribe(
         mlTaskType -> {
@@ -72,10 +75,9 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdNonExistingMlTaskTypeFacade() {
-    // Use a non-existing ID
-    UUID nonExistingMlTaskTypeId = UUID.randomUUID();
 
-    Mono<Boolean> exists = mlTaskTypeFacade.existsById(nonExistingMlTaskTypeId);
+    Mono<Boolean> exists =
+        mlTaskTypeFacade.existsById(UUID.fromString(NON_EXISTING_ML_TASK_TYPE_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
@@ -101,17 +103,14 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testDeleteMlTaskTypeFacade() {
-    // Save a metric first
     Mono<MlTaskTypeDTO> savedMetric = mlTaskTypeFacade.save(getMlTaskTypeDTO());
 
-    // Subscribe and delete the saved metric
     savedMetric.subscribe(
         mlTaskTypeDTO -> {
           Mono<Void> deleteResult = mlTaskTypeFacade.delete(mlTaskTypeDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted metric by ID
+                Assert.assertNull(result);
                 Mono<MlTaskTypeDTO> findResult = mlTaskTypeFacade.findOne(mlTaskTypeDTO.getId());
                 findResult.subscribe(
                     notFoundMetricDTO -> Assert.assertNull(notFoundMetricDTO),
@@ -122,8 +121,8 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testFindByIdNonExistingMlTaskTypeFacade() {
-    // Try to find a metric by a non-existing ID
-    Mono<MlTaskTypeDTO> metric = mlTaskTypeFacade.findOne(UUID.randomUUID());
+    Mono<MlTaskTypeDTO> metric =
+        mlTaskTypeFacade.findOne(UUID.fromString(NON_EXISTING_ML_TASK_TYPE_ID));
 
     StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }

@@ -20,10 +20,13 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterFacadeTest extends BasicFacadeTest {
+  private final String EXISTING_PARAMETER_ID = "523e4567-e89b-12d3-a456-426614174001";
+  private final String EXISTING_PARAMETER_ID_FOR_UPDATE = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private final String NON_EXISTING_PARAMETER_ID = UUID.randomUUID().toString();
+
   @Autowired private ParameterFacade parameterFacade;
 
   private ParameterDTO getParameterDTO() {
-
     ParameterDTO parameter = new ParameterDTO();
     parameter.setName("test_parameter");
     parameter.setDescription("test_description");
@@ -31,19 +34,18 @@ public class ParameterFacadeTest extends BasicFacadeTest {
     parameter.setFixedValue(true);
     parameter.setLabel("test_label");
     parameter.setOrdering(1);
-
     return parameter;
   }
 
   private ParameterDTO getUpdatedParameterDTO() {
     ParameterDTO parameterDTO = new ParameterDTO();
+    parameterDTO.setId(UUID.fromString(EXISTING_PARAMETER_ID_FOR_UPDATE));
     parameterDTO.setName("update_parameter");
     parameterDTO.setDescription("test_description");
     parameterDTO.setEnabled(true);
     parameterDTO.setFixedValue(true);
     parameterDTO.setLabel("test_label");
     parameterDTO.setOrdering(1);
-
     return parameterDTO;
   }
 
@@ -65,7 +67,7 @@ public class ParameterFacadeTest extends BasicFacadeTest {
   @Transactional
   void testFindByIdParameterFacade() {
     Mono<ParameterDTO> parameterDTOMono =
-        parameterFacade.findOne(UUID.fromString("523e4567-e89b-12d3-a456-426614174001"));
+        parameterFacade.findOne(UUID.fromString(EXISTING_PARAMETER_ID));
 
     parameterDTOMono.subscribe(
         parameterDTO -> {
@@ -76,8 +78,7 @@ public class ParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testExistsByIdParameterFacade() {
-    // Assume you have a known ID for an existing parameter
-    UUID existingParameterId = UUID.fromString("523e4567-e89b-12d3-a456-426614174001");
+    UUID existingParameterId = UUID.fromString(EXISTING_PARAMETER_ID);
 
     Mono<Boolean> exists = parameterFacade.existsById(existingParameterId);
 
@@ -87,10 +88,8 @@ public class ParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testExistsByIdNonExistingParameterFacade() {
-    // Use a non-existing ID
-    UUID nonExistingParameterId = UUID.randomUUID();
 
-    Mono<Boolean> exists = parameterFacade.existsById(nonExistingParameterId);
+    Mono<Boolean> exists = parameterFacade.existsById(UUID.fromString(NON_EXISTING_PARAMETER_ID));
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
@@ -119,17 +118,14 @@ public class ParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testDeleteParameterFacade() {
-    // Save a parameter first
     Mono<ParameterDTO> savedParameter = parameterFacade.save(getParameterDTO());
 
-    // Subscribe and delete the saved parameter
     savedParameter.subscribe(
         parameterDTO -> {
           Mono<Void> deleteResult = parameterFacade.delete(parameterDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted parameter by ID
+                Assert.assertNull(result);
                 Mono<ParameterDTO> findResult = parameterFacade.findOne(parameterDTO.getId());
                 findResult.subscribe(
                     notFoundParameterDTO -> Assert.assertNull(notFoundParameterDTO),
@@ -141,8 +137,8 @@ public class ParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testFindByIdNonExistingParameterFacade() {
-    // Try to find a parameter by a non-existing ID
-    Mono<ParameterDTO> parameter = parameterFacade.findOne(UUID.randomUUID());
+    Mono<ParameterDTO> parameter =
+        parameterFacade.findOne(UUID.fromString(NON_EXISTING_PARAMETER_ID));
 
     StepVerifier.create(parameter).expectError(NoSuchElementException.class).verify();
   }
@@ -150,12 +146,10 @@ public class ParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testSaveAndUpdateParameterFacade() {
-    // Save a parameter first
     Mono<ParameterDTO> savedParameter = parameterFacade.save(getParameterDTO());
 
     savedParameter.subscribe(
         parameterDTO -> {
-          // Update the saved parameter
           ParameterDTO updatedParameterDTO = getUpdatedParameterDTO();
           updatedParameterDTO.setId(parameterDTO.getId());
           Mono<ParameterDTO> updatedParameterMono = parameterFacade.save(updatedParameterDTO);
@@ -163,7 +157,6 @@ public class ParameterFacadeTest extends BasicFacadeTest {
           updatedParameterMono.subscribe(
               updatedParameter -> {
                 Assert.assertEquals(updatedParameter.getName(), updatedParameterDTO.getName());
-                // Clean up: Delete the updated parameter
                 parameterFacade.delete(updatedParameter.getId()).block();
               });
         });

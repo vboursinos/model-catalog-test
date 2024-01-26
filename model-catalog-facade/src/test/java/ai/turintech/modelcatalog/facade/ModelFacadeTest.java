@@ -19,19 +19,26 @@ import reactor.test.StepVerifier;
 public class ModelFacadeTest extends BasicFacadeTest {
   @Autowired private ModelFacade modelFacade;
 
+  private final String EXISTING_MODEL_ID = "123e4567-e89b-12d3-a456-426614174001";
+  private final String NON_EXISTING_MODEL_ID = UUID.randomUUID().toString();
+  private final String ML_TASK_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String MODEL_STRUCTURE_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String MODEL_ENSEMBLE_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private final String MODEL_FAMILY_TYPE_ID = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+
   private ModelDTO getModel() {
     MlTaskTypeDTO mlTaskType = new MlTaskTypeDTO();
     mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
     ModelStructureTypeDTO modelStructureType = new ModelStructureTypeDTO();
     modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
     ModelEnsembleTypeDTO modelEnsembleType = new ModelEnsembleTypeDTO();
     modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29"));
+    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
     ModelFamilyTypeDTO modelFamilyType = new ModelFamilyTypeDTO();
     modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
 
     ModelDTO model = new ModelDTO();
     model.setName("test_model");
@@ -50,19 +57,19 @@ public class ModelFacadeTest extends BasicFacadeTest {
 
   private ModelDTO getUpdatedModel() {
     ModelDTO model = new ModelDTO();
-    model.setId(UUID.fromString("123e4567-e89b-12d3-a456-426614174001"));
+    model.setId(UUID.fromString(EXISTING_MODEL_ID));
     MlTaskTypeDTO mlTaskType = new MlTaskTypeDTO();
     mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
     ModelStructureTypeDTO modelStructureType = new ModelStructureTypeDTO();
     modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
     ModelEnsembleTypeDTO modelEnsembleType = new ModelEnsembleTypeDTO();
     modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29"));
+    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
     ModelFamilyTypeDTO modelFamilyType = new ModelFamilyTypeDTO();
     modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
 
     model.setName("updated_test_model");
     model.setEnabled(true);
@@ -91,7 +98,6 @@ public class ModelFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testFindByIdModelFacade() {
-    // Save a model first
     Mono<ModelDTO> savedModelDTO = modelFacade.save(getModel());
 
     savedModelDTO.subscribe(
@@ -102,7 +108,6 @@ public class ModelFacadeTest extends BasicFacadeTest {
                 Assert.assertEquals(modelDTO.getId(), foundDTO.getId());
                 Assert.assertEquals(modelDTO.getName(), foundDTO.getName());
               });
-          // Clean up: delete the saved model
           modelFacade.delete(modelDTO.getId()).block();
         });
   }
@@ -110,14 +115,12 @@ public class ModelFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testExistsByIdModelFacade() {
-    // Save a model first
     Mono<ModelDTO> savedModelDTO = modelFacade.save(getModel());
 
     savedModelDTO.subscribe(
         modelDTO -> {
           Mono<Boolean> exists = modelFacade.existsById(modelDTO.getId());
           StepVerifier.create(exists).expectNext(true).verifyComplete();
-          // Clean up: delete the saved model
           modelFacade.delete(modelDTO.getId()).block();
         });
   }
@@ -125,19 +128,14 @@ public class ModelFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testFindByIdNotExistingModelFacade() {
-    // Try to find a model by a non-existing ID
-    Mono<ModelDTO> modelMono = modelFacade.findOne(UUID.randomUUID());
-
+    Mono<ModelDTO> modelMono = modelFacade.findOne(UUID.fromString(NON_EXISTING_MODEL_ID));
     StepVerifier.create(modelMono).expectError(NoSuchElementException.class).verify();
   }
 
   @Test
   @Transactional
   void testExistsByIdNotExistingModelFacade() {
-    // Use a non-existing ID
-    UUID nonExistingModelId = UUID.randomUUID();
-
-    Mono<Boolean> exists = modelFacade.existsById(nonExistingModelId);
+    Mono<Boolean> exists = modelFacade.existsById(UUID.fromString(NON_EXISTING_MODEL_ID));
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 }

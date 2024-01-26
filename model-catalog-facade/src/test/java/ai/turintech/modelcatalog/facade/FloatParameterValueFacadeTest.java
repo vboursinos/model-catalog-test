@@ -22,18 +22,16 @@ import reactor.test.StepVerifier;
 public class FloatParameterValueFacadeTest extends BasicFacadeTest {
   @Autowired private FloatParameterRangeFacade floatParameterRangeFacade;
 
-  private FloatParameterRangeDTO getFloatParameterRangeDTO() {
-    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    parameterTypeDefinition.setOrdering(10);
+  private static final String PARAMETER_TYPE_ID = "323e4567-e89b-12d3-a456-426614174001";
+  private static final String EXISTING_FLOAT_PARAMETER_RANGE_ID =
+      "423e4567-e89b-12d3-a456-426614174004";
 
-    FloatParameter floatParameter = new FloatParameter();
-    floatParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174002"));
-    floatParameter.setDefaultValue(1.0);
-    floatParameter.setParameterTypeDefinition(parameterTypeDefinition);
+  private FloatParameterRangeDTO getFloatParameterRangeDTO() {
+    ParameterTypeDefinition parameterTypeDefinition = createParameterTypeDefinition();
+
+    FloatParameter floatParameter = createFloatParameter();
 
     FloatParameterRangeDTO floatParameterRangeDTO = new FloatParameterRangeDTO();
-    //    floatParameterRange.setFloatParameter(floatParameter);
     floatParameterRangeDTO.setLower(1.0);
     floatParameterRangeDTO.setUpper(10.0);
     floatParameterRangeDTO.setIsLeftOpen(false);
@@ -42,18 +40,12 @@ public class FloatParameterValueFacadeTest extends BasicFacadeTest {
   }
 
   private FloatParameterRangeDTO getUpdatedFloatParameterRangeDTO() {
-    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    parameterTypeDefinition.setOrdering(10);
+    ParameterTypeDefinition parameterTypeDefinition = createParameterTypeDefinition();
 
-    FloatParameter floatParameter = new FloatParameter();
-    floatParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174002"));
-    floatParameter.setDefaultValue(1.0);
-    floatParameter.setParameterTypeDefinition(parameterTypeDefinition);
+    FloatParameter floatParameter = createFloatParameter();
 
     FloatParameterRangeDTO floatParameterRangeDTO = new FloatParameterRangeDTO();
-    floatParameterRangeDTO.setId(UUID.fromString("423e4567-e89b-12d3-a456-426614174003"));
-    //    floatParameterRange.setFloatParameter(floatParameter);
+    floatParameterRangeDTO.setId(UUID.fromString(EXISTING_FLOAT_PARAMETER_RANGE_ID));
     floatParameterRangeDTO.setLower(1.0);
     floatParameterRangeDTO.setUpper(10.0);
     floatParameterRangeDTO.setIsLeftOpen(false);
@@ -61,34 +53,47 @@ public class FloatParameterValueFacadeTest extends BasicFacadeTest {
     return floatParameterRangeDTO;
   }
 
+  private ParameterTypeDefinition createParameterTypeDefinition() {
+    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
+    parameterTypeDefinition.setId(UUID.fromString(PARAMETER_TYPE_ID));
+    parameterTypeDefinition.setOrdering(10);
+    return parameterTypeDefinition;
+  }
+
+  private FloatParameter createFloatParameter() {
+    FloatParameter floatParameter = new FloatParameter();
+    floatParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174002"));
+    floatParameter.setDefaultValue(1.0);
+    floatParameter.setParameterTypeDefinition(createParameterTypeDefinition());
+    return floatParameter;
+  }
+
   @Test
   void testFindAllFloatParameterRangeFacade() {
     Flux<FloatParameterRangeDTO> floatParameterRangesDTOMono = floatParameterRangeFacade.findAll();
-    floatParameterRangesDTOMono
-        .collectList()
-        .blockOptional()
-        .ifPresent(
-            floatParameterRangeDTOS -> {
-              Assertions.assertEquals(
-                  4,
-                  floatParameterRangeDTOS.size(),
-                  "Returned float parameter ranges do not match expected size");
-            });
+    StepVerifier.create(floatParameterRangesDTOMono.collectList())
+        .assertNext(
+            floatParameterRangeDTOS ->
+                Assertions.assertEquals(
+                    4,
+                    floatParameterRangeDTOS.size(),
+                    "Returned float parameter ranges do not match expected size"))
+        .verifyComplete();
   }
 
   @Test
   void testFindByIdFloatParameterRangeFacade() {
     Mono<FloatParameterRangeDTO> floatParameterRangeDTOMono =
-        floatParameterRangeFacade.findOne(UUID.fromString("423e4567-e89b-12d3-a456-426614174004"));
-    floatParameterRangeDTOMono.subscribe(
-        floatParameterRangeDTO -> {
-          Assert.assertTrue(floatParameterRangeDTO.getLower() == 25.3);
-        });
+        floatParameterRangeFacade.findOne(UUID.fromString(EXISTING_FLOAT_PARAMETER_RANGE_ID));
+    StepVerifier.create(floatParameterRangeDTOMono)
+        .assertNext(
+            floatParameterRangeDTO -> Assert.assertTrue(floatParameterRangeDTO.getLower() == 25.3))
+        .verifyComplete();
   }
 
   @Test
   void testExistsByIdFloatParameterRangeFacade() {
-    UUID existingFloatParameterRangeId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+    UUID existingFloatParameterRangeId = UUID.fromString(EXISTING_FLOAT_PARAMETER_RANGE_ID);
 
     Mono<Boolean> exists = floatParameterRangeFacade.existsById(existingFloatParameterRangeId);
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -96,7 +101,6 @@ public class FloatParameterValueFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdNonExistingFloatParameterRangeFacade() {
-    // Use a non-existing ID
     UUID nonExistingFloatParameterRangeId = UUID.randomUUID();
 
     Mono<Boolean> exists = floatParameterRangeFacade.existsById(nonExistingFloatParameterRangeId);
@@ -106,33 +110,26 @@ public class FloatParameterValueFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testDeleteFloatParameterRangeFacade() {
-    // Save a float parameter range first
     Mono<FloatParameterRangeDTO> savedFloatParameterRange =
         floatParameterRangeFacade.save(getFloatParameterRangeDTO());
 
-    // Subscribe and delete the saved float parameter range
-    savedFloatParameterRange.subscribe(
-        floatParameterRangeDTO -> {
-          Mono<Void> deleteResult =
-              floatParameterRangeFacade.delete(floatParameterRangeDTO.getId());
-          deleteResult.subscribe(
-              result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted float parameter range by ID
-                Mono<FloatParameterRangeDTO> findResult =
-                    floatParameterRangeFacade.findOne(floatParameterRangeDTO.getId());
-                findResult.subscribe(
-                    notFoundFloatParameterRangeDTO ->
-                        Assert.assertNull(notFoundFloatParameterRangeDTO),
-                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
-              });
-        });
+    StepVerifier.create(savedFloatParameterRange)
+        .assertNext(
+            floatParameterRangeDTO -> {
+              StepVerifier.create(floatParameterRangeFacade.delete(floatParameterRangeDTO.getId()))
+                  .expectNextCount(0)
+                  .verifyComplete();
+
+              StepVerifier.create(floatParameterRangeFacade.findOne(floatParameterRangeDTO.getId()))
+                  .expectError(NoSuchElementException.class)
+                  .verify();
+            })
+        .verifyComplete();
   }
 
   @Test
   @Transactional
   void testFindByIdNonExistingFloatParameterRangeFacade() {
-    // Try to find a float parameter range by a non-existing ID
     Mono<FloatParameterRangeDTO> floatParameterRange =
         floatParameterRangeFacade.findOne(UUID.randomUUID());
 

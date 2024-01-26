@@ -22,16 +22,24 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
+  private final String EXISTING_PARAMETER_TYPE_DEFINITION_ID =
+      "323e4567-e89b-12d3-a456-426614174001";
+  private final String NON_EXISTING_PARAMETER_TYPE_DEFINITION_ID = UUID.randomUUID().toString();
+
+  private final String EXISTING_PARAMETER_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+
   @Autowired private ParameterTypeDefinitionFacade parameterTypeDefinitionFacade;
 
   private ParameterTypeDefinitionDTO getParameterTypeDefinitionDTO() {
 
     ParameterDistributionTypeDTO parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
-    parameterDistributionTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterDistributionTypeDTO.setId(UUID.fromString(EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID));
     parameterDistributionTypeDTO.setName("parameterdistributiontype1");
 
     ParameterTypeDTO parameterTypeDTO = new ParameterTypeDTO();
-    parameterTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterTypeDTO.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_ID));
     parameterTypeDTO.setName("parametertype1");
 
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
@@ -45,15 +53,15 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
   private ParameterTypeDefinitionDTO getUpdatedParameterTypeDefinitionDTO() {
 
     ParameterDistributionTypeDTO parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
-    parameterDistributionTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterDistributionTypeDTO.setId(UUID.fromString(EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID));
     parameterDistributionTypeDTO.setName("parameterdistributiontype1");
 
     ParameterTypeDTO parameterTypeDTO = new ParameterTypeDTO();
-    parameterTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterTypeDTO.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_ID));
     parameterTypeDTO.setName("parametertype1");
 
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
-    parameterTypeDefinitionDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    parameterTypeDefinitionDTO.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID));
     parameterTypeDefinitionDTO.setDistribution(parameterDistributionTypeDTO);
     parameterTypeDefinitionDTO.setType(parameterTypeDTO);
     parameterTypeDefinitionDTO.setOrdering(12);
@@ -84,7 +92,7 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
   void testFindByIdParameterTypeDefinitionFacade() {
     Mono<ParameterTypeDefinitionDTO> parameterTypeDefinitionDTOMono =
         parameterTypeDefinitionFacade.findOne(
-            UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+            UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID));
 
     parameterTypeDefinitionDTOMono.subscribe(
         parameterTypeDefinitionDTO -> {
@@ -95,9 +103,7 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testExistsByIdParameterTypeDefinitionFacade() {
-    // Assume you have a known ID for an existing parameter type definition
-    UUID existingParameterTypeDefinitionId =
-        UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingParameterTypeDefinitionId = UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID);
 
     Mono<Boolean> exists =
         parameterTypeDefinitionFacade.existsById(existingParameterTypeDefinitionId);
@@ -108,11 +114,9 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testExistsByIdNonExistingParameterTypeDefinitionFacade() {
-    // Use a non-existing ID
-    UUID nonExistingParameterTypeDefinitionId = UUID.randomUUID();
-
     Mono<Boolean> exists =
-        parameterTypeDefinitionFacade.existsById(nonExistingParameterTypeDefinitionId);
+        parameterTypeDefinitionFacade.existsById(
+            UUID.fromString(NON_EXISTING_PARAMETER_TYPE_DEFINITION_ID));
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
@@ -146,19 +150,16 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testDeleteParameterTypeDefinitionFacade() {
-    // Save a parameter type definition first
     Mono<ParameterTypeDefinitionDTO> savedParameterTypeDefinition =
         parameterTypeDefinitionFacade.save(getParameterTypeDefinitionDTO());
 
-    // Subscribe and delete the saved parameter type definition
     savedParameterTypeDefinition.subscribe(
         parameterTypeDefinitionDTO -> {
           Mono<Void> deleteResult =
               parameterTypeDefinitionFacade.delete(parameterTypeDefinitionDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted parameter type definition by ID
+                Assert.assertNull(result);
                 Mono<ParameterTypeDefinitionDTO> findResult =
                     parameterTypeDefinitionFacade.findOne(parameterTypeDefinitionDTO.getId());
                 findResult.subscribe(
@@ -172,9 +173,9 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testFindByIdNonExistingParameterTypeDefinitionFacade() {
-    // Try to find a parameter type definition by a non-existing ID
     Mono<ParameterTypeDefinitionDTO> parameterTypeDefinition =
-        parameterTypeDefinitionFacade.findOne(UUID.randomUUID());
+        parameterTypeDefinitionFacade.findOne(
+            UUID.fromString(NON_EXISTING_PARAMETER_TYPE_DEFINITION_ID));
 
     StepVerifier.create(parameterTypeDefinition).expectError(NoSuchElementException.class).verify();
   }
@@ -182,13 +183,11 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testSaveAndUpdateParameterTypeDefinitionFacade() {
-    // Save a parameter type definition first
     Mono<ParameterTypeDefinitionDTO> savedParameterTypeDefinition =
         parameterTypeDefinitionFacade.save(getParameterTypeDefinitionDTO());
 
     savedParameterTypeDefinition.subscribe(
         parameterTypeDefinitionDTO -> {
-          // Update the saved parameter type definition
           ParameterTypeDefinitionDTO updatedParameterTypeDefinitionDTO =
               getUpdatedParameterTypeDefinitionDTO();
           updatedParameterTypeDefinitionDTO.setId(parameterTypeDefinitionDTO.getId());
@@ -200,7 +199,6 @@ public class ParameterTypeDefinitionFacadeTest extends BasicFacadeTest {
                 Assert.assertEquals(
                     updatedParameterTypeDefinition.getOrdering(),
                     updatedParameterTypeDefinitionDTO.getOrdering());
-                // Clean up: Delete the updated parameter type definition
                 parameterTypeDefinitionFacade
                     .delete(updatedParameterTypeDefinition.getId())
                     .block();

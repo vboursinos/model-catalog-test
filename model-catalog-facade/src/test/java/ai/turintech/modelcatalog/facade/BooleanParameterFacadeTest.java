@@ -23,14 +23,18 @@ import reactor.test.StepVerifier;
 public class BooleanParameterFacadeTest extends BasicFacadeTest {
   @Autowired private BooleanParameterFacade booleanParameterFacade;
 
+  private final String BOOLEAN_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
+  private final String NEW_BOOLEAN_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174003";
+  private final String PARAMETER_TYPE_DEFINITION_ID = "323e4567-e89b-12d3-a456-426614174003";
+
   private BooleanParameterDTO getBooleanParameterDTO() {
 
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
-    parameterTypeDefinitionDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    parameterTypeDefinitionDTO.setId(UUID.fromString(PARAMETER_TYPE_DEFINITION_ID));
     parameterTypeDefinitionDTO.setOrdering(10);
 
     BooleanParameterDTO booleanParameterDTO = new BooleanParameterDTO();
-    booleanParameterDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    booleanParameterDTO.setId(UUID.fromString(NEW_BOOLEAN_PARAMETER_ID));
     booleanParameterDTO.setDefaultValue(false);
     return booleanParameterDTO;
   }
@@ -53,7 +57,7 @@ public class BooleanParameterFacadeTest extends BasicFacadeTest {
   @Test
   void testFindByIdBooleanParameterFacade() {
     Mono<BooleanParameterDTO> booleanParameterDTOMono =
-        booleanParameterFacade.findOne(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+        booleanParameterFacade.findOne(UUID.fromString(BOOLEAN_PARAMETER_ID));
     booleanParameterDTOMono.subscribe(
         booleanParameterDTO -> {
           Assert.assertEquals(true, booleanParameterDTO.getDefaultValue());
@@ -63,7 +67,7 @@ public class BooleanParameterFacadeTest extends BasicFacadeTest {
   @Test
   void testExistsByIdBooleanParameterFacade() {
     // Assume you have a known ID for an existing boolean parameter
-    UUID existingBooleanParameterId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingBooleanParameterId = UUID.fromString(BOOLEAN_PARAMETER_ID);
 
     Mono<Boolean> exists = booleanParameterFacade.existsById(existingBooleanParameterId);
 
@@ -82,18 +86,15 @@ public class BooleanParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testDeleteBooleanParameterFacade() {
-    // Save a boolean parameter first
     Mono<BooleanParameterDTO> savedBooleanParameter =
         booleanParameterFacade.save(getBooleanParameterDTO());
 
-    // Subscribe and delete the saved boolean parameter
     savedBooleanParameter.subscribe(
         booleanParameterDTO -> {
           Mono<Void> deleteResult = booleanParameterFacade.delete(booleanParameterDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted boolean parameter by ID
+                Assert.assertNull(result);
                 Mono<BooleanParameterDTO> findResult =
                     booleanParameterFacade.findOne(booleanParameterDTO.getId());
                 findResult.subscribe(

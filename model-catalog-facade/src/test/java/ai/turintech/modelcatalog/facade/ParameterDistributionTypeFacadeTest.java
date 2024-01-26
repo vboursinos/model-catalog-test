@@ -19,6 +19,13 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
+  private final String EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+
+  private final String EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private final String NON_EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID = UUID.randomUUID().toString();
+
   @Autowired private ParameterDistributionTypeFacade parameterDistributionTypeFacade;
 
   private ParameterDistributionTypeDTO getParameterDistributionTypeDTO() {
@@ -29,7 +36,8 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
 
   private ParameterDistributionTypeDTO getUpdatedParameterDistributionTypeDTO() {
     ParameterDistributionTypeDTO parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
-    parameterDistributionTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    parameterDistributionTypeDTO.setId(
+        UUID.fromString(EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID_FOR_UPDATE));
     parameterDistributionTypeDTO.setName("test_updated_parametertype");
     return parameterDistributionTypeDTO;
   }
@@ -54,7 +62,7 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
   void testFindByIdParameterDistributionTypeFacade() {
     Mono<ParameterDistributionTypeDTO> parameterDistributionTypeDTOMono =
         parameterDistributionTypeFacade.findOne(
-            UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+            UUID.fromString(EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID));
 
     parameterDistributionTypeDTOMono.subscribe(
         parameterDistributionTypeDTO -> {
@@ -64,9 +72,8 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdParameterDistributionTypeFacade() {
-    // Assume you have a known ID for an existing distribution type
     UUID existingParameterDistributionTypeId =
-        UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+        UUID.fromString(EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID);
 
     Mono<Boolean> exists =
         parameterDistributionTypeFacade.existsById(existingParameterDistributionTypeId);
@@ -76,11 +83,10 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdNonExistingParameterDistributionTypeFacade() {
-    // Use a non-existing ID
-    UUID nonExistingParameterDistributionTypeId = UUID.randomUUID();
 
     Mono<Boolean> exists =
-        parameterDistributionTypeFacade.existsById(nonExistingParameterDistributionTypeId);
+        parameterDistributionTypeFacade.existsById(
+            UUID.fromString(NON_EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID));
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
@@ -110,19 +116,16 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testDeleteParameterDistributionTypeFacade() {
-    // Save a parameter distribution type first
     Mono<ParameterDistributionTypeDTO> savedParameterDistributionType =
         parameterDistributionTypeFacade.save(getParameterDistributionTypeDTO());
 
-    // Subscribe and delete the saved parameter distribution type
     savedParameterDistributionType.subscribe(
         parameterDistributionTypeDTO -> {
           Mono<Void> deleteResult =
               parameterDistributionTypeFacade.delete(parameterDistributionTypeDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted parameter distribution type by ID
+                Assert.assertNull(result);
                 Mono<ParameterDistributionTypeDTO> findResult =
                     parameterDistributionTypeFacade.findOne(parameterDistributionTypeDTO.getId());
                 findResult.subscribe(
@@ -137,7 +140,8 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
   void testFindByIdNonExistingParameterDistributionTypeFacade() {
     // Try to find a parameter distribution type by a non-existing ID
     Mono<ParameterDistributionTypeDTO> parameterDistributionType =
-        parameterDistributionTypeFacade.findOne(UUID.randomUUID());
+        parameterDistributionTypeFacade.findOne(
+            UUID.fromString(NON_EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID));
 
     StepVerifier.create(parameterDistributionType)
         .expectError(NoSuchElementException.class)
@@ -146,13 +150,11 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testSaveAndUpdateParameterDistributionTypeFacade() {
-    // Save a parameter distribution type first
     Mono<ParameterDistributionTypeDTO> savedParameterDistributionType =
         parameterDistributionTypeFacade.save(getParameterDistributionTypeDTO());
 
     savedParameterDistributionType.subscribe(
         parameterDistributionTypeDTO -> {
-          // Update the saved parameter distribution type
           ParameterDistributionTypeDTO updatedParameterDistributionTypeDTO =
               getUpdatedParameterDistributionTypeDTO();
           updatedParameterDistributionTypeDTO.setId(parameterDistributionTypeDTO.getId());
@@ -164,7 +166,6 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
                 Assert.assertEquals(
                     updatedParameterDistributionType.getName(),
                     updatedParameterDistributionTypeDTO.getName());
-                // Clean up: Delete the updated parameter distribution type
                 parameterDistributionTypeFacade
                     .delete(updatedParameterDistributionType.getId())
                     .block();

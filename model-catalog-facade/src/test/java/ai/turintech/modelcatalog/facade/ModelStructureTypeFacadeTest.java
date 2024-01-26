@@ -19,6 +19,12 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
+  private final String EXISTING_MODEL_STRUCTURE_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+
+  private final String EXISTING_MODEL_STRUCTURE_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private final String NON_EXISTING_MODEL_STRUCTURE_TYPE_ID = UUID.randomUUID().toString();
+
   @Autowired private ModelStructureTypeFacade modelStructureTypeFacade;
 
   private ModelStructureTypeDTO getModelStructureTypeDTO() {
@@ -29,7 +35,7 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
 
   private ModelStructureTypeDTO getUpdatedModelStructureTypeDTO() {
     ModelStructureTypeDTO modelStructureTypeDTO = new ModelStructureTypeDTO();
-    modelStructureTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelStructureTypeDTO.setId(UUID.fromString(EXISTING_MODEL_STRUCTURE_TYPE_ID_FOR_UPDATE));
     modelStructureTypeDTO.setName("test_updated_modelstructuretype");
     return modelStructureTypeDTO;
   }
@@ -52,7 +58,7 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testFindByIdModelStructureTypeFacade() {
     Mono<ModelStructureTypeDTO> modelStructureTypeDTOMono =
-        modelStructureTypeFacade.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        modelStructureTypeFacade.findOne(UUID.fromString(EXISTING_MODEL_STRUCTURE_TYPE_ID));
 
     modelStructureTypeDTOMono.subscribe(
         modelStructureTypeDTO -> {
@@ -63,7 +69,7 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testExistsByIdModelStructureTypeFacade() {
     // Assume you have a known ID for an existing structure type
-    UUID existingStructureTypeId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingStructureTypeId = UUID.fromString(EXISTING_MODEL_STRUCTURE_TYPE_ID);
 
     Mono<Boolean> exists = modelStructureTypeFacade.existsById(existingStructureTypeId);
 
@@ -73,9 +79,9 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testExistsByIdNonExistingModelStructureTypeFacade() {
     // Use a non-existing ID
-    UUID nonExistingStructureTypeId = UUID.randomUUID();
 
-    Mono<Boolean> exists = modelStructureTypeFacade.existsById(nonExistingStructureTypeId);
+    Mono<Boolean> exists =
+        modelStructureTypeFacade.existsById(UUID.fromString(NON_EXISTING_MODEL_STRUCTURE_TYPE_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
@@ -105,18 +111,15 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testDeleteModelStructureTypeFacade() {
-    // Save a structure type first
     Mono<ModelStructureTypeDTO> savedStructureType =
         modelStructureTypeFacade.save(getModelStructureTypeDTO());
 
-    // Subscribe and delete the saved structure type
     savedStructureType.subscribe(
         modelStructureTypeDTO -> {
           Mono<Void> deleteResult = modelStructureTypeFacade.delete(modelStructureTypeDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted structure type by ID
+                Assert.assertNull(result);
                 Mono<ModelStructureTypeDTO> findResult =
                     modelStructureTypeFacade.findOne(modelStructureTypeDTO.getId());
                 findResult.subscribe(
@@ -128,21 +131,19 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testFindByIdNonExistingModelStructureTypeFacade() {
-    // Try to find a structure type by a non-existing ID
-    Mono<ModelStructureTypeDTO> structureType = modelStructureTypeFacade.findOne(UUID.randomUUID());
+    Mono<ModelStructureTypeDTO> structureType =
+        modelStructureTypeFacade.findOne(UUID.fromString(NON_EXISTING_MODEL_STRUCTURE_TYPE_ID));
 
     StepVerifier.create(structureType).expectError(NoSuchElementException.class).verify();
   }
 
   @Test
   void testSaveAndUpdateModelStructureTypeFacade() {
-    // Save a structure type first
     Mono<ModelStructureTypeDTO> savedStructureType =
         modelStructureTypeFacade.save(getModelStructureTypeDTO());
 
     savedStructureType.subscribe(
         modelStructureTypeDTO -> {
-          // Update the saved structure type
           ModelStructureTypeDTO updatedStructureTypeDTO = getUpdatedModelStructureTypeDTO();
           updatedStructureTypeDTO.setId(modelStructureTypeDTO.getId());
           Mono<ModelStructureTypeDTO> updatedStructureTypeMono =
@@ -152,7 +153,6 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
               updatedModelStructureTypeDTO -> {
                 Assert.assertEquals(
                     updatedStructureTypeDTO.getName(), updatedModelStructureTypeDTO.getName());
-                // Clean up: Delete the updated structure type
                 modelStructureTypeFacade.delete(updatedModelStructureTypeDTO.getId()).block();
               });
         });

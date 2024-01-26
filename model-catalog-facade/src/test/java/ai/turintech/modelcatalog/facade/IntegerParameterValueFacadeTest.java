@@ -3,7 +3,8 @@ package ai.turintech.modelcatalog.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
-import ai.turintech.modelcatalog.entity.*;
+import ai.turintech.modelcatalog.entity.IntegerParameter;
+import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import jakarta.transaction.Transactional;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -21,80 +22,73 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class IntegerParameterValueFacadeTest extends BasicFacadeTest {
+
   @Autowired private IntegerParameterValueFacade integerParameterValueFacade;
 
-  private IntegerParameterValueDTO getIntegerParameterValueDTO() {
-    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    parameterTypeDefinition.setOrdering(10);
+  private static final String PARAMETER_TYPE_ID = "323e4567-e89b-12d3-a456-426614174001";
+  private static final String EXISTING_INTEGER_PARAMETER_VALUE_ID =
+      "423e4567-e89b-12d3-a456-426614174004";
 
-    IntegerParameter integerParameter = new IntegerParameter();
-    integerParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    integerParameter.setDefaultValue(1);
-    integerParameter.setParameterTypeDefinition(parameterTypeDefinition);
+  private IntegerParameterValueDTO getIntegerParameterValueDTO() {
+    ParameterTypeDefinition parameterTypeDefinition = createParameterTypeDefinition();
+
+    IntegerParameter integerParameter = createIntegerParameter(parameterTypeDefinition);
 
     IntegerParameterValueDTO integerParameterValueDTO = new IntegerParameterValueDTO();
-    //    integerParameterValueDTO.setIntegerParameter(integerParameter);
     integerParameterValueDTO.setLower(1);
     integerParameterValueDTO.setUpper(10);
     return integerParameterValueDTO;
   }
 
-  private IntegerParameterValueDTO getUpdatedIntegerParameterValueDTO() {
-    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    parameterTypeDefinition.setOrdering(10);
-
+  private IntegerParameter createIntegerParameter(ParameterTypeDefinition parameterTypeDefinition) {
     IntegerParameter integerParameter = new IntegerParameter();
-    integerParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    integerParameter.setId(UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID));
     integerParameter.setDefaultValue(1);
     integerParameter.setParameterTypeDefinition(parameterTypeDefinition);
+    return integerParameter;
+  }
 
-    IntegerParameterValueDTO integerParameterValueDTO = new IntegerParameterValueDTO();
-    integerParameterValueDTO.setId(UUID.fromString("423e4567-e89b-12d3-a456-426614174004"));
-    //    integerParameterValueDTO.setIntegerParameter(integerParameter);
-    integerParameterValueDTO.setLower(1);
-    integerParameterValueDTO.setUpper(10);
-    return integerParameterValueDTO;
+  private ParameterTypeDefinition createParameterTypeDefinition() {
+    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
+    parameterTypeDefinition.setId(UUID.fromString(PARAMETER_TYPE_ID));
+    parameterTypeDefinition.setOrdering(10);
+    return parameterTypeDefinition;
   }
 
   @Test
   void testFindAllIntegerParameterValueFacade() {
     Flux<IntegerParameterValueDTO> integerParameterValues = integerParameterValueFacade.findAll();
-    integerParameterValues
-        .collectList()
-        .blockOptional()
-        .ifPresent(
-            integerParameterValueDTOS -> {
-              assertEquals(
-                  4,
-                  integerParameterValueDTOS.size(),
-                  "Returned integer parameter values do not match expected size");
-            });
+    StepVerifier.create(integerParameterValues.collectList())
+        .assertNext(
+            integerParameterValueDTOS ->
+                assertEquals(
+                    4,
+                    integerParameterValueDTOS.size(),
+                    "Returned integer parameter values do not match expected size"))
+        .verifyComplete();
   }
 
   @Test
   void testFindByIdIntegerParameterValueFacade() {
     Mono<IntegerParameterValueDTO> integerParameterValueMonoDTO =
-        integerParameterValueFacade.findOne(
-            UUID.fromString("423e4567-e89b-12d3-a456-426614174004"));
-    integerParameterValueMonoDTO.subscribe(
-        integerParameterValueDTO -> {
-          Assert.assertTrue(integerParameterValueDTO.getLower() == 25);
-        });
+        integerParameterValueFacade.findOne(UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID));
+    StepVerifier.create(integerParameterValueMonoDTO)
+        .assertNext(
+            integerParameterValueDTO ->
+                Assert.assertTrue(integerParameterValueDTO.getLower() == 25))
+        .verifyComplete();
   }
 
   @Test
   void testExistsByIdIntegerParameterValueFacade() {
-    UUID existingIntegerParameterValueId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
-
-    Mono<Boolean> exists = integerParameterValueFacade.existsById(existingIntegerParameterValueId);
+    Mono<Boolean> exists =
+        integerParameterValueFacade.existsById(
+            UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID));
     StepVerifier.create(exists).expectNext(true).verifyComplete();
   }
 
   @Test
   void testExistsByIdNonExistingIntegerParameterValueFacade() {
-    // Use a non-existing ID
     UUID nonExistingIntegerParameterValueId = UUID.randomUUID();
 
     Mono<Boolean> exists =
@@ -105,33 +99,28 @@ public class IntegerParameterValueFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testDeleteIntegerParameterValueFacade() {
-    // Save an integer parameter value first
     Mono<IntegerParameterValueDTO> savedIntegerParameterValue =
         integerParameterValueFacade.save(getIntegerParameterValueDTO());
 
-    // Subscribe and delete the saved integer parameter value
-    savedIntegerParameterValue.subscribe(
-        integerParameterValueDTO -> {
-          Mono<Void> deleteResult =
-              integerParameterValueFacade.delete(integerParameterValueDTO.getId());
-          deleteResult.subscribe(
-              result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted integer parameter value by ID
-                Mono<IntegerParameterValueDTO> findResult =
-                    integerParameterValueFacade.findOne(integerParameterValueDTO.getId());
-                findResult.subscribe(
-                    notFoundIntegerParameterValueDTO ->
-                        Assert.assertNull(notFoundIntegerParameterValueDTO),
-                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
-              });
-        });
+    StepVerifier.create(savedIntegerParameterValue)
+        .assertNext(
+            integerParameterValueDTO -> {
+              StepVerifier.create(
+                      integerParameterValueFacade.delete(integerParameterValueDTO.getId()))
+                  .expectNextCount(0)
+                  .verifyComplete();
+
+              StepVerifier.create(
+                      integerParameterValueFacade.findOne(integerParameterValueDTO.getId()))
+                  .expectError(NoSuchElementException.class)
+                  .verify();
+            })
+        .verifyComplete();
   }
 
   @Test
   @Transactional
   void testFindByIdNonExistingIntegerParameterValueFacade() {
-    // Try to find an integer parameter value by a non-existing ID
     Mono<IntegerParameterValueDTO> integerParameterValue =
         integerParameterValueFacade.findOne(UUID.randomUUID());
 

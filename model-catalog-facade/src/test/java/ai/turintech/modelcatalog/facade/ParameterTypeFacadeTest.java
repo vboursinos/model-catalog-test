@@ -19,6 +19,12 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterTypeFacadeTest extends BasicFacadeTest {
+  private final String EXISTING_PARAMETER_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private final String NON_EXISTING_PARAMETER_TYPE_ID = UUID.randomUUID().toString();
+
+  private final String EXISTING_PARAMETER_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+
   @Autowired private ParameterTypeFacade parameterTypeFacade;
 
   private ParameterTypeDTO getParameterTypeDTO() {
@@ -29,7 +35,7 @@ public class ParameterTypeFacadeTest extends BasicFacadeTest {
 
   private ParameterTypeDTO getUpdatedParameterTypeDTO() {
     ParameterTypeDTO parameterTypeDTO = new ParameterTypeDTO();
-    parameterTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    parameterTypeDTO.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_ID_FOR_UPDATE));
     parameterTypeDTO.setName("test_updated_parametertype");
     return parameterTypeDTO;
   }
@@ -52,7 +58,7 @@ public class ParameterTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testFindByIdParameterTypeFacade() {
     Mono<ParameterTypeDTO> parameterTypeDTOMono =
-        parameterTypeFacade.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        parameterTypeFacade.findOne(UUID.fromString(EXISTING_PARAMETER_TYPE_ID));
 
     parameterTypeDTOMono.subscribe(
         parameterTypeDTO -> {
@@ -62,8 +68,7 @@ public class ParameterTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdParameterTypeFacade() {
-    // Assume you have a known ID for an existing parameter type
-    UUID existingParameterTypeId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingParameterTypeId = UUID.fromString(EXISTING_PARAMETER_TYPE_ID);
 
     Mono<Boolean> exists = parameterTypeFacade.existsById(existingParameterTypeId);
 
@@ -72,10 +77,9 @@ public class ParameterTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdNonExistingParameterTypeFacade() {
-    // Use a non-existing ID
-    UUID nonExistingParameterTypeId = UUID.randomUUID();
 
-    Mono<Boolean> exists = parameterTypeFacade.existsById(nonExistingParameterTypeId);
+    Mono<Boolean> exists =
+        parameterTypeFacade.existsById(UUID.fromString(NON_EXISTING_PARAMETER_TYPE_ID));
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
@@ -101,17 +105,14 @@ public class ParameterTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testDeleteParameterTypeFacade() {
-    // Save a parameter type first
     Mono<ParameterTypeDTO> savedParameterType = parameterTypeFacade.save(getParameterTypeDTO());
 
-    // Subscribe and delete the saved parameter type
     savedParameterType.subscribe(
         parameterTypeDTO -> {
           Mono<Void> deleteResult = parameterTypeFacade.delete(parameterTypeDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted parameter type by ID
+                Assert.assertNull(result);
                 Mono<ParameterTypeDTO> findResult =
                     parameterTypeFacade.findOne(parameterTypeDTO.getId());
                 findResult.subscribe(
@@ -123,20 +124,18 @@ public class ParameterTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testFindByIdNonExistingParameterTypeFacade() {
-    // Try to find a parameter type by a non-existing ID
-    Mono<ParameterTypeDTO> parameterType = parameterTypeFacade.findOne(UUID.randomUUID());
+    Mono<ParameterTypeDTO> parameterType =
+        parameterTypeFacade.findOne(UUID.fromString(NON_EXISTING_PARAMETER_TYPE_ID));
 
     StepVerifier.create(parameterType).expectError(NoSuchElementException.class).verify();
   }
 
   @Test
   void testSaveAndUpdateParameterTypeFacade() {
-    // Save a parameter type first
     Mono<ParameterTypeDTO> savedParameterType = parameterTypeFacade.save(getParameterTypeDTO());
 
     savedParameterType.subscribe(
         parameterTypeDTO -> {
-          // Update the saved parameter type
           ParameterTypeDTO updatedParameterTypeDTO = getUpdatedParameterTypeDTO();
           updatedParameterTypeDTO.setId(parameterTypeDTO.getId());
           Mono<ParameterTypeDTO> updatedParameterTypeMono =
@@ -146,7 +145,6 @@ public class ParameterTypeFacadeTest extends BasicFacadeTest {
               updatedParameterType -> {
                 Assert.assertEquals(
                     updatedParameterType.getName(), updatedParameterTypeDTO.getName());
-                // Clean up: Delete the updated parameter type
                 parameterTypeFacade.delete(updatedParameterType.getId()).block();
               });
         });

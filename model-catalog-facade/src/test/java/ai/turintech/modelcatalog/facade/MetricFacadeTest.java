@@ -19,6 +19,10 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class MetricFacadeTest extends BasicFacadeTest {
+
+  private final String EXISTING_METRIC_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23";
+  private final String NON_EXISTING_METRIC_ID = UUID.randomUUID().toString();
+
   @Autowired private MetricFacade metricFacade;
 
   private MetricDTO getMetricDTO() {
@@ -36,46 +40,34 @@ public class MetricFacadeTest extends BasicFacadeTest {
 
   @Test
   void testFindAllMetricFacade() {
-    // Assuming metricFacade is an instance of MetricFacade
     Flux<MetricDTO> metrics = metricFacade.findAll();
-    metrics
-        .collectList()
-        .blockOptional()
-        .ifPresent(
-            metricDTOList -> {
-              assertEquals(4, metricDTOList.size(), "Returned metrics do not match expected size");
-            });
+    StepVerifier.create(metrics.collectList())
+        .assertNext(
+            metricDTOList ->
+                assertEquals(
+                    4, metricDTOList.size(), "Returned metrics do not match expected size"))
+        .verifyComplete();
   }
 
   @Test
   void testFindByIdMetricFacade() {
-    Mono<MetricDTO> metric =
-        metricFacade.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+    Mono<MetricDTO> metric = metricFacade.findOne(UUID.fromString(EXISTING_METRIC_ID));
 
-    metric.subscribe(
-        metricDTO -> {
-          System.out.println(metricDTO.getMetric());
-          Assert.assertEquals("Metric1", metricDTO.getMetric());
-        });
+    StepVerifier.create(metric)
+        .assertNext(metricDTO -> Assert.assertEquals("Metric1", metricDTO.getMetric()))
+        .verifyComplete();
   }
 
   @Test
   void testExistsByIdMetricFacade() {
-    Mono<Boolean> exists =
-        metricFacade.existsById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23"));
+    Mono<Boolean> exists = metricFacade.existsById(UUID.fromString(EXISTING_METRIC_ID));
 
-    exists.subscribe(
-        metricDTO -> {
-          Assert.assertEquals(true, exists.block());
-        });
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
   }
 
   @Test
   void testExistsByIdNonExistingMetricFacade() {
-    // Use a non-existing ID
-    UUID nonExistingMetricId = UUID.randomUUID();
-
-    Mono<Boolean> exists = metricFacade.existsById(nonExistingMetricId);
+    Mono<Boolean> exists = metricFacade.existsById(UUID.fromString(NON_EXISTING_METRIC_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
@@ -83,47 +75,46 @@ public class MetricFacadeTest extends BasicFacadeTest {
   @Test
   void testSaveMetricFacade() {
     Mono<MetricDTO> savedMetric = metricFacade.save(getMetricDTO());
-    savedMetric.subscribe(
-        metricDTO -> {
-          Assert.assertEquals(getMetricDTO().getMetric(), metricDTO.getMetric());
-          metricFacade.delete(metricDTO.getId()).block();
-        });
+    StepVerifier.create(savedMetric)
+        .assertNext(
+            metricDTO -> {
+              Assert.assertEquals(getMetricDTO().getMetric(), metricDTO.getMetric());
+              metricFacade.delete(metricDTO.getId()).block();
+            })
+        .verifyComplete();
   }
 
   @Test
   void testUpdateMetricFacade() {
     Mono<MetricDTO> updatedMetric = metricFacade.save(getUpdatedMetricDTO());
-    updatedMetric.subscribe(
-        metricDTO -> {
-          Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric());
-        });
+    StepVerifier.create(updatedMetric)
+        .assertNext(
+            metricDTO ->
+                Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric()))
+        .verifyComplete();
   }
 
   @Test
   void testDeleteMetricFacade() {
-    // Save a metric first
     Mono<MetricDTO> savedMetric = metricFacade.save(getMetricDTO());
 
-    // Subscribe and delete the saved metric
-    savedMetric.subscribe(
-        metricDTO -> {
-          Mono<Void> deleteResult = metricFacade.delete(metricDTO.getId());
-          deleteResult.subscribe(
-              result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted metric by ID
-                Mono<MetricDTO> findResult = metricFacade.findOne(metricDTO.getId());
-                findResult.subscribe(
-                    notFoundMetricDTO -> Assert.assertNull(notFoundMetricDTO),
-                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
-              });
-        });
+    StepVerifier.create(savedMetric)
+        .assertNext(
+            metricDTO -> {
+              StepVerifier.create(metricFacade.delete(metricDTO.getId()))
+                  .expectNextCount(0)
+                  .verifyComplete();
+
+              StepVerifier.create(metricFacade.findOne(metricDTO.getId()))
+                  .expectError(NoSuchElementException.class)
+                  .verify();
+            })
+        .verifyComplete();
   }
 
   @Test
   void testFindByIdNonExistingMetricFacade() {
-    // Try to find a metric by a non-existing ID
-    Mono<MetricDTO> metric = metricFacade.findOne(UUID.randomUUID());
+    Mono<MetricDTO> metric = metricFacade.findOne(UUID.fromString(NON_EXISTING_METRIC_ID));
 
     StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }

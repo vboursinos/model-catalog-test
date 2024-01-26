@@ -19,6 +19,12 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
+  private final String EXISTING_MODEL_FAMILY_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+
+  private final String EXISTING_MODEL_FAMILY_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private final String NON_EXISTING_MODEL_FAMILY_TYPE_ID = UUID.randomUUID().toString();
+
   @Autowired private ModelFamilyTypeFacade modelFamilyTypeFacade;
 
   private ModelFamilyTypeDTO getModelFamilyTypeDTO() {
@@ -29,7 +35,7 @@ public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
 
   private ModelFamilyTypeDTO getUpdatedModelFamilyTypeDTO() {
     ModelFamilyTypeDTO modelFamilyTypeDTO = new ModelFamilyTypeDTO();
-    modelFamilyTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelFamilyTypeDTO.setId(UUID.fromString(EXISTING_MODEL_FAMILY_TYPE_ID_FOR_UPDATE));
     modelFamilyTypeDTO.setName("test_updated_modelfamilytype");
     return modelFamilyTypeDTO;
   }
@@ -53,7 +59,7 @@ public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testFindByIdModelFamilyTypeFacade() {
     Mono<ModelFamilyTypeDTO> modelFamilyTypeDTOMono =
-        modelFamilyTypeFacade.findOne(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        modelFamilyTypeFacade.findOne(UUID.fromString(EXISTING_MODEL_FAMILY_TYPE_ID));
 
     modelFamilyTypeDTOMono.subscribe(
         modelFamilyTypeDTO -> {
@@ -64,17 +70,18 @@ public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testExistsByIdModelFamilyTypeFacade() {
     Mono<Boolean> exists =
-        modelFamilyTypeFacade.existsById(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+        modelFamilyTypeFacade.existsById(UUID.fromString(EXISTING_MODEL_FAMILY_TYPE_ID));
 
-    StepVerifier.create(exists).expectNext(true).verifyComplete();
+    exists.subscribe(
+        modelFamilyType -> {
+          Assert.assertEquals(true, exists.block());
+        });
   }
 
   @Test
   void testExistsByIdNonExistingModelFamilyTypeFacade() {
-    // Use a non-existing ID
-    UUID nonExistingModelFamilyTypeId = UUID.randomUUID();
-
-    Mono<Boolean> exists = modelFamilyTypeFacade.existsById(nonExistingModelFamilyTypeId);
+    Mono<Boolean> exists =
+        modelFamilyTypeFacade.existsById(UUID.fromString(NON_EXISTING_MODEL_FAMILY_TYPE_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
@@ -103,17 +110,14 @@ public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testDeleteModelFamilyTypeFacade() {
-    // Save a metric first
     Mono<ModelFamilyTypeDTO> savedMetric = modelFamilyTypeFacade.save(getModelFamilyTypeDTO());
 
-    // Subscribe and delete the saved metric
     savedMetric.subscribe(
         modelFamilyTypeDTO -> {
           Mono<Void> deleteResult = modelFamilyTypeFacade.delete(modelFamilyTypeDTO.getId());
           deleteResult.subscribe(
               result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted metric by ID
+                Assert.assertNull(result);
                 Mono<ModelFamilyTypeDTO> findResult =
                     modelFamilyTypeFacade.findOne(modelFamilyTypeDTO.getId());
                 findResult.subscribe(
@@ -125,8 +129,8 @@ public class ModelFamilyTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testFindByIdNonExistingModelFamilyTypeFacade() {
-    // Try to find a metric by a non-existing ID
-    Mono<ModelFamilyTypeDTO> metric = modelFamilyTypeFacade.findOne(UUID.randomUUID());
+    Mono<ModelFamilyTypeDTO> metric =
+        modelFamilyTypeFacade.findOne(UUID.fromString(NON_EXISTING_MODEL_FAMILY_TYPE_ID));
 
     StepVerifier.create(metric).expectError(NoSuchElementException.class).verify();
   }

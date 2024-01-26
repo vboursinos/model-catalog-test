@@ -6,7 +6,6 @@ import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,14 +22,16 @@ import reactor.test.StepVerifier;
 public class CategoricalParameterFacadeTest extends BasicFacadeTest {
   @Autowired private CategoricalParameterFacade categoricalParameterFacade;
 
-  private CategoricalParameterDTO getCategoricalParameterDTO() {
+  private static final String PARAMETER_TYPE_ID = "323e4567-e89b-12d3-a456-426614174003";
+  private static final String EXISTING_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
 
+  private CategoricalParameterDTO getCategoricalParameterDTO() {
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
-    parameterTypeDefinitionDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    parameterTypeDefinitionDTO.setId(UUID.fromString(PARAMETER_TYPE_ID));
     parameterTypeDefinitionDTO.setOrdering(10);
 
     CategoricalParameterDTO categoricalParameterDTO = new CategoricalParameterDTO();
-    categoricalParameterDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    categoricalParameterDTO.setId(UUID.fromString(EXISTING_PARAMETER_ID));
     categoricalParameterDTO.setDefaultValue("test_default_value");
     return categoricalParameterDTO;
   }
@@ -39,78 +40,66 @@ public class CategoricalParameterFacadeTest extends BasicFacadeTest {
   @Transactional
   void testFindAllCategoricalParameterFacade() {
     Flux<CategoricalParameterDTO> categoricalParametersMono = categoricalParameterFacade.findAll();
-    categoricalParametersMono
-        .collectList()
-        .blockOptional()
-        .ifPresent(
-            categoricalParameterDTOS -> {
-              assertEquals(
-                  2,
-                  categoricalParameterDTOS.size(),
-                  "Returned categorical parameters do not match expected size");
-            });
+    StepVerifier.create(categoricalParametersMono.collectList())
+        .assertNext(
+            categoricalParameterDTOS ->
+                assertEquals(
+                    2,
+                    categoricalParameterDTOS.size(),
+                    "Returned categorical parameters do not match expected size"))
+        .verifyComplete();
   }
 
   @Test
   @Transactional
   void testFindByIdCategoricalParameterFacade() {
     Mono<CategoricalParameterDTO> categoricalParameterDTOMono =
-        categoricalParameterFacade.findOne(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    categoricalParameterDTOMono.subscribe(
-        categoricalParameterDTO -> {
-          Assert.assertEquals("value1", categoricalParameterDTO.getDefaultValue());
-        });
+        categoricalParameterFacade.findOne(UUID.fromString(EXISTING_PARAMETER_ID));
+    StepVerifier.create(categoricalParameterDTOMono)
+        .assertNext(
+            categoricalParameterDTO ->
+                assertEquals("value1", categoricalParameterDTO.getDefaultValue()))
+        .verifyComplete();
   }
 
   @Test
   void testExistsByIdCategoricalParameterFacade() {
-    // Assume you have a known ID for an existing categorical parameter
-    UUID existingCategoricalParameterId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
-
-    Mono<Boolean> exists = categoricalParameterFacade.existsById(existingCategoricalParameterId);
-
+    Mono<Boolean> exists =
+        categoricalParameterFacade.existsById(UUID.fromString(EXISTING_PARAMETER_ID));
     StepVerifier.create(exists).expectNext(true).verifyComplete();
   }
 
   @Test
   void testExistsByIdNonExistingCategoricalParameterFacade() {
-    // Use a non-existing ID
-    UUID nonExistingCategoricalParameterId = UUID.randomUUID();
-
-    Mono<Boolean> exists = categoricalParameterFacade.existsById(nonExistingCategoricalParameterId);
+    Mono<Boolean> exists = categoricalParameterFacade.existsById(UUID.randomUUID());
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }
 
   @Test
   @Transactional
   void testDeleteCategoricalParameterFacade() {
-    // Save a categorical parameter first
     Mono<CategoricalParameterDTO> savedCategoricalParameter =
         categoricalParameterFacade.save(getCategoricalParameterDTO());
 
-    // Subscribe and delete the saved categorical parameter
-    savedCategoricalParameter.subscribe(
-        categoricalParameterDTO -> {
-          Mono<Void> deleteResult =
-              categoricalParameterFacade.delete(categoricalParameterDTO.getId());
-          deleteResult.subscribe(
-              result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted categorical parameter by ID
-                Mono<CategoricalParameterDTO> findResult =
-                    categoricalParameterFacade.findOne(categoricalParameterDTO.getId());
-                findResult.subscribe(
-                    notFoundCategoricalParameterDTO ->
-                        Assert.assertNull(notFoundCategoricalParameterDTO),
-                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
-              });
-        });
+    StepVerifier.create(savedCategoricalParameter)
+        .assertNext(
+            categoricalParameterDTO -> {
+              StepVerifier.create(
+                      categoricalParameterFacade.delete(categoricalParameterDTO.getId()))
+                  .expectNextCount(0)
+                  .verifyComplete();
+
+              StepVerifier.create(
+                      categoricalParameterFacade.findOne(categoricalParameterDTO.getId()))
+                  .expectError(NoSuchElementException.class)
+                  .verify();
+            })
+        .verifyComplete();
   }
 
   @Test
   @Transactional
   void testFindByIdNonExistingCategoricalParameterFacade() {
-    // Try to find a categorical parameter by a non-existing ID
     Mono<CategoricalParameterDTO> categoricalParameter =
         categoricalParameterFacade.findOne(UUID.randomUUID());
 

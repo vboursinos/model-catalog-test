@@ -23,49 +23,53 @@ import reactor.test.StepVerifier;
 public class FloatParameterFacadeTest extends BasicFacadeTest {
   @Autowired private FloatParameterFacade floatParameterFacade;
 
-  private FloatParameterDTO getFloatParameterDTO() {
+  private static final String PARAMETER_TYPE_ID = "323e4567-e89b-12d3-a456-426614174003";
+  private static final String EXISTING_FLOAT_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
 
-    ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
-    parameterTypeDefinitionDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
-    parameterTypeDefinitionDTO.setOrdering(10);
+  private FloatParameterDTO getFloatParameterDTO() {
+    ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = createParameterTypeDefinition();
 
     FloatParameterDTO floatParameterDTO = new FloatParameterDTO();
-    floatParameterDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    floatParameterDTO.setId(UUID.fromString(EXISTING_FLOAT_PARAMETER_ID));
     floatParameterDTO.setDefaultValue(1.1);
     return floatParameterDTO;
+  }
+
+  private ParameterTypeDefinitionDTO createParameterTypeDefinition() {
+    ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
+    parameterTypeDefinitionDTO.setId(UUID.fromString(PARAMETER_TYPE_ID));
+    parameterTypeDefinitionDTO.setOrdering(10);
+    return parameterTypeDefinitionDTO;
   }
 
   @Test
   @Transactional
   void testFindAllFloatParameterFacade() {
     Flux<FloatParameterDTO> floatParametersMono = floatParameterFacade.findAll();
-    floatParametersMono
-        .collectList()
-        .blockOptional()
-        .ifPresent(
-            floatParameterDTOS -> {
-              assertEquals(
-                  2,
-                  floatParameterDTOS.size(),
-                  "Returned float parameters do not match expected size");
-            });
+    StepVerifier.create(floatParametersMono.collectList())
+        .assertNext(
+            floatParameterDTOS ->
+                assertEquals(
+                    2,
+                    floatParameterDTOS.size(),
+                    "Returned float parameters do not match expected size"))
+        .verifyComplete();
   }
 
   @Test
   @Transactional
   void testFindByIdFloatParameterFacade() {
     Mono<FloatParameterDTO> floatParameterDTOMono =
-        floatParameterFacade.findOne(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
-    floatParameterDTOMono.subscribe(
-        floatParameterDTO -> {
-          Assert.assertTrue(floatParameterDTO.getDefaultValue() == 10.1);
-        });
+        floatParameterFacade.findOne(UUID.fromString(EXISTING_FLOAT_PARAMETER_ID));
+    StepVerifier.create(floatParameterDTOMono)
+        .assertNext(
+            floatParameterDTO -> Assert.assertTrue(floatParameterDTO.getDefaultValue() == 10.1))
+        .verifyComplete();
   }
 
   @Test
   void testExistsByIdFloatParameterFacade() {
-    // Assume you have a known ID for an existing categorical parameter
-    UUID existingFloatParameterId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingFloatParameterId = UUID.fromString(EXISTING_FLOAT_PARAMETER_ID);
 
     Mono<Boolean> exists = floatParameterFacade.existsById(existingFloatParameterId);
 
@@ -74,7 +78,6 @@ public class FloatParameterFacadeTest extends BasicFacadeTest {
 
   @Test
   void testExistsByIdNonExistingFloatParameterFacade() {
-    // Use a non-existing ID
     UUID nonExistingFloatParameterId = UUID.randomUUID();
 
     Mono<Boolean> exists = floatParameterFacade.existsById(nonExistingFloatParameterId);
@@ -84,30 +87,25 @@ public class FloatParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testDeleteFloatParameterFacade() {
-    // Save a float parameter first
     Mono<FloatParameterDTO> savedFloatParameter = floatParameterFacade.save(getFloatParameterDTO());
 
-    // Subscribe and delete the saved float parameter
-    savedFloatParameter.subscribe(
-        floatParameterDTO -> {
-          Mono<Void> deleteResult = floatParameterFacade.delete(floatParameterDTO.getId());
-          deleteResult.subscribe(
-              result -> {
-                Assert.assertNull(result); // deletion should return null
-                // Now, try to find the deleted float parameter by ID
-                Mono<FloatParameterDTO> findResult =
-                    floatParameterFacade.findOne(floatParameterDTO.getId());
-                findResult.subscribe(
-                    notFoundFloatParameterDTO -> Assert.assertNull(notFoundFloatParameterDTO),
-                    throwable -> Assert.assertTrue(throwable instanceof NoSuchElementException));
-              });
-        });
+    StepVerifier.create(savedFloatParameter)
+        .assertNext(
+            floatParameterDTO -> {
+              StepVerifier.create(floatParameterFacade.delete(floatParameterDTO.getId()))
+                  .expectNextCount(0)
+                  .verifyComplete();
+
+              StepVerifier.create(floatParameterFacade.findOne(floatParameterDTO.getId()))
+                  .expectError(NoSuchElementException.class)
+                  .verify();
+            })
+        .verifyComplete();
   }
 
   @Test
   @Transactional
   void testFindByIdNonExistingFloatParameterFacade() {
-    // Try to find a float parameter by a non-existing ID
     Mono<FloatParameterDTO> floatParameter = floatParameterFacade.findOne(UUID.randomUUID());
 
     StepVerifier.create(floatParameter).expectError(NoSuchElementException.class).verify();
