@@ -16,6 +16,13 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterTypeServiceTest extends BasicServiceTest {
+
+  private static final String EXISTING_PARAMETER_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String NON_EXISTING_PARAMETER_TYPE_ID =
+      "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String EXISTING_PARAMETER_TYPE_UPDATED_ID =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+
   @Autowired private ParameterTypeService parameterTypeService;
 
   private ParameterTypeDTO getParameterTypeDTO() {
@@ -26,7 +33,7 @@ public class ParameterTypeServiceTest extends BasicServiceTest {
 
   private ParameterTypeDTO getUpdatedParameterTypeDTO() {
     ParameterTypeDTO parameterTypeDTO = new ParameterTypeDTO();
-    parameterTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    parameterTypeDTO.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_UPDATED_ID));
     parameterTypeDTO.setName("test_updated_parametertype");
     return parameterTypeDTO;
   }
@@ -44,7 +51,7 @@ public class ParameterTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdParameterTypeService() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_PARAMETER_TYPE_ID);
     Mono<ParameterTypeDTO> parameterTypeDTOMono = parameterTypeService.findOne(existingId);
 
     StepVerifier.create(parameterTypeDTOMono)
@@ -59,7 +66,7 @@ public class ParameterTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdParameterTypeServiceForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_PARAMETER_TYPE_ID);
     Mono<Boolean> exists = parameterTypeService.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -67,7 +74,7 @@ public class ParameterTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdParameterTypeServiceForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_PARAMETER_TYPE_ID);
     Mono<Boolean> exists = parameterTypeService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();

@@ -18,16 +18,22 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class CategoricalParameterServiceTest extends BasicServiceTest {
+
+  private final String EXISTING_CATEGORICAL_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
+  private final String EXISTING_CATEGORICAL_PARAMETER_TYPE_DEFINITION_ID =
+      "323e4567-e89b-12d3-a456-426614174003";
+  private final String NON_EXISTING_CATEGORICAL_PARAMETER_ID = UUID.randomUUID().toString();
+
   @Autowired private CategoricalParameterService categoricalParameterService;
 
   private CategoricalParameterDTO getCategoricalParameterDTO() {
-
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
-    parameterTypeDefinitionDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    parameterTypeDefinitionDTO.setId(
+        UUID.fromString(EXISTING_CATEGORICAL_PARAMETER_TYPE_DEFINITION_ID));
     parameterTypeDefinitionDTO.setOrdering(10);
 
     CategoricalParameterDTO categoricalParameterDTO = new CategoricalParameterDTO();
-    categoricalParameterDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    categoricalParameterDTO.setId(UUID.fromString(EXISTING_CATEGORICAL_PARAMETER_ID));
     categoricalParameterDTO.setDefaultValue("test_default_value");
     return categoricalParameterDTO;
   }
@@ -45,7 +51,7 @@ public class CategoricalParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testFindByIdCategoricalParameterService() {
-    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingId = UUID.fromString(EXISTING_CATEGORICAL_PARAMETER_ID);
     Mono<CategoricalParameterDTO> categoricalParameterDTOMono =
         categoricalParameterService.findOne(existingId);
 
@@ -62,7 +68,7 @@ public class CategoricalParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testExistsByIdCategoricalParameterServiceForExistingId() {
-    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingId = UUID.fromString(EXISTING_CATEGORICAL_PARAMETER_ID);
     Mono<Boolean> exists = categoricalParameterService.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -71,8 +77,9 @@ public class CategoricalParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testExistsByIdCategoricalParameterServiceForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
-    Mono<Boolean> exists = categoricalParameterService.existsById(nonExistingId);
+    Mono<Boolean> exists =
+        categoricalParameterService.existsById(
+            UUID.fromString(NON_EXISTING_CATEGORICAL_PARAMETER_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }

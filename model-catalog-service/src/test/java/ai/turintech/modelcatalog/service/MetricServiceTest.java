@@ -17,6 +17,13 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class MetricServiceTest extends BasicServiceTest {
+
+  // String IDs for testing
+  private static final String EXISTING_METRIC_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23";
+  private static final String NON_EXISTING_METRIC_ID = "123e4567-e89b-12d3-a456-426614174099";
+
+  private static final String EXISTING_METRIC_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26";
   @Autowired private MetricService metricService;
 
   private MetricDTO getMetricDTO() {
@@ -27,7 +34,7 @@ public class MetricServiceTest extends BasicServiceTest {
 
   private MetricDTO getUpdatedMetricDTO() {
     MetricDTO metricDTO = new MetricDTO();
-    metricDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"));
+    metricDTO.setId(UUID.fromString(EXISTING_METRIC_ID_FOR_UPDATE));
     metricDTO.setMetric("test_updated_metric");
     return metricDTO;
   }
@@ -45,7 +52,7 @@ public class MetricServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23");
+    UUID existingId = UUID.fromString(EXISTING_METRIC_ID);
     Mono<MetricDTO> metric = metricService.findOne(existingId);
 
     StepVerifier.create(metric)
@@ -60,7 +67,7 @@ public class MetricServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID(); // Assuming this ID does not exist in your data
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_METRIC_ID);
     Mono<MetricDTO> metric = metricService.findOne(nonExistingId);
 
     StepVerifier.create(metric)
@@ -71,7 +78,7 @@ public class MetricServiceTest extends BasicServiceTest {
   @Test
   void testExistsByIdForExistingId() {
     // Test case when the ID exists
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23");
+    UUID existingId = UUID.fromString(EXISTING_METRIC_ID);
     Mono<Boolean> existsForExistingId = metricService.existsById(existingId);
 
     StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
@@ -80,7 +87,7 @@ public class MetricServiceTest extends BasicServiceTest {
   @Test
   void testExistsByIdForNonExistingId() {
     // Test case when the ID does not exist
-    UUID nonExistingId = UUID.randomUUID(); // Assuming this ID does not exist in your data
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_METRIC_ID);
     Mono<Boolean> existsForNonExistingId = metricService.existsById(nonExistingId);
 
     StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();

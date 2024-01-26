@@ -17,6 +17,15 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
+
+  // String IDs for testing
+  private static final String EXISTING_MODEL_ENSEMBLE_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String EXISTING_MODEL_ENSEMBLE_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private static final String NON_EXISTING_MODEL_ENSEMBLE_TYPE_ID =
+      "123e4567-e89b-12d3-a456-426614174099";
+
   @Autowired private ModelEnsembleTypeService modelEnsembleTypeService;
 
   private ModelEnsembleTypeDTO getModelEnsembleTypeDTO() {
@@ -27,7 +36,7 @@ public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
 
   private ModelEnsembleTypeDTO getUpdatedModelEnsembleTypeDTO() {
     ModelEnsembleTypeDTO modelEnsembleTypeDTO = new ModelEnsembleTypeDTO();
-    modelEnsembleTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelEnsembleTypeDTO.setId(UUID.fromString(EXISTING_MODEL_ENSEMBLE_TYPE_ID_FOR_UPDATE));
     modelEnsembleTypeDTO.setName("test_updated_modelEnsembletype");
     return modelEnsembleTypeDTO;
   }
@@ -44,7 +53,7 @@ public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_ENSEMBLE_TYPE_ID);
     Mono<ModelEnsembleTypeDTO> modelEnsembleType = modelEnsembleTypeService.findOne(existingId);
 
     StepVerifier.create(modelEnsembleType)
@@ -58,7 +67,7 @@ public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_ENSEMBLE_TYPE_ID);
     Mono<ModelEnsembleTypeDTO> modelEnsembleType = modelEnsembleTypeService.findOne(nonExistingId);
 
     StepVerifier.create(modelEnsembleType).expectError(NoSuchElementException.class).verify();
@@ -66,7 +75,7 @@ public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_ENSEMBLE_TYPE_ID);
     Mono<Boolean> existsForExistingId = modelEnsembleTypeService.existsById(existingId);
 
     StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
@@ -74,7 +83,7 @@ public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_ENSEMBLE_TYPE_ID);
     Mono<Boolean> existsForNonExistingId = modelEnsembleTypeService.existsById(nonExistingId);
 
     StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();

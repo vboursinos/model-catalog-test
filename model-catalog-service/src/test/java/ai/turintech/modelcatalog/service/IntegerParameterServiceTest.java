@@ -19,16 +19,19 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class IntegerParameterServiceTest extends BasicServiceTest {
+
+  private final String EXISTING_INTEGER_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
+  private final String NON_EXISTING_INTEGER_PARAMETER_ID = UUID.randomUUID().toString();
+
   @Autowired private IntegerParameterService integerParameterService;
 
   private IntegerParameterDTO getIntegerParameterDTO() {
-
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
     parameterTypeDefinitionDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
     parameterTypeDefinitionDTO.setOrdering(10);
 
     IntegerParameterDTO integerParameterDTO = new IntegerParameterDTO();
-    integerParameterDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
+    integerParameterDTO.setId(UUID.fromString(EXISTING_INTEGER_PARAMETER_ID));
     integerParameterDTO.setDefaultValue(1);
     return integerParameterDTO;
   }
@@ -45,7 +48,7 @@ public class IntegerParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testFindByIdIntegerParameterService() {
-    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingId = UUID.fromString(EXISTING_INTEGER_PARAMETER_ID);
     Mono<IntegerParameterDTO> integerParameterDTOMono = integerParameterService.findOne(existingId);
 
     StepVerifier.create(integerParameterDTOMono)
@@ -61,7 +64,7 @@ public class IntegerParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testExistsByIdIntegerParameterServiceForExistingId() {
-    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingId = UUID.fromString(EXISTING_INTEGER_PARAMETER_ID);
     Mono<Boolean> exists = integerParameterService.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -70,7 +73,7 @@ public class IntegerParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testExistsByIdIntegerParameterServiceForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_INTEGER_PARAMETER_ID);
     Mono<Boolean> exists = integerParameterService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();

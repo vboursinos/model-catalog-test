@@ -17,6 +17,16 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelStructureTypeServiceTest extends BasicServiceTest {
+
+  // String IDs for testing
+  private static final String EXISTING_MODEL_STRUCTURE_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String NON_EXISTING_MODEL_STRUCTURE_TYPE_ID =
+      "123e4567-e89b-12d3-a456-426614174099";
+
+  private static final String EXISTING_MODEL_STRUCTURE_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+
   @Autowired private ModelStructureTypeService modelStructureTypeService;
 
   private ModelStructureTypeDTO getModelStructureTypeDTO() {
@@ -27,7 +37,7 @@ public class ModelStructureTypeServiceTest extends BasicServiceTest {
 
   private ModelStructureTypeDTO getUpdatedModelStructureTypeDTO() {
     ModelStructureTypeDTO modelStructureTypeDTO = new ModelStructureTypeDTO();
-    modelStructureTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelStructureTypeDTO.setId(UUID.fromString(EXISTING_MODEL_STRUCTURE_TYPE_ID_FOR_UPDATE));
     modelStructureTypeDTO.setName("test_updated_modelstructuretype");
     return modelStructureTypeDTO;
   }
@@ -45,7 +55,7 @@ public class ModelStructureTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdModelStructureTypeService() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_STRUCTURE_TYPE_ID);
     Mono<ModelStructureTypeDTO> modelStructureType = modelStructureTypeService.findOne(existingId);
 
     StepVerifier.create(modelStructureType)
@@ -60,7 +70,7 @@ public class ModelStructureTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID(); // Assuming this ID does not exist in your data
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_STRUCTURE_TYPE_ID);
     Mono<ModelStructureTypeDTO> modelStructureType =
         modelStructureTypeService.findOne(nonExistingId);
 
@@ -99,7 +109,7 @@ public class ModelStructureTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdModelStructureTypeServiceForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_STRUCTURE_TYPE_ID);
     Mono<Boolean> exists = modelStructureTypeService.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -107,7 +117,7 @@ public class ModelStructureTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdModelStructureTypeServiceForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_STRUCTURE_TYPE_ID);
     Mono<Boolean> exists = modelStructureTypeService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();

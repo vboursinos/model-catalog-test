@@ -17,6 +17,14 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelTypeServiceTest extends BasicServiceTest {
+
+  // String IDs for testing
+  private static final String EXISTING_MODEL_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String NON_EXISTING_MODEL_TYPE_ID = "123e4567-e89b-12d3-a456-426614174099";
+
+  private static final String EXISTING_MODEL_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+
   @Autowired private ModelTypeService modelTypeService;
 
   private ModelTypeDTO getModelTypeDTO() {
@@ -27,7 +35,7 @@ public class ModelTypeServiceTest extends BasicServiceTest {
 
   private ModelTypeDTO getUpdatedModelTypeDTO() {
     ModelTypeDTO modelTypeDTO = new ModelTypeDTO();
-    modelTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelTypeDTO.setId(UUID.fromString(EXISTING_MODEL_TYPE_ID_FOR_UPDATE));
     modelTypeDTO.setName("test_updated_modeltype");
     return modelTypeDTO;
   }
@@ -45,7 +53,7 @@ public class ModelTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdModelTypeService() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_TYPE_ID);
     Mono<ModelTypeDTO> modelTypeMono = modelTypeService.findOne(existingId);
 
     StepVerifier.create(modelTypeMono)
@@ -60,7 +68,7 @@ public class ModelTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_TYPE_ID);
     Mono<ModelTypeDTO> modelTypeMono = modelTypeService.findOne(nonExistingId);
 
     StepVerifier.create(modelTypeMono).expectError(NoSuchElementException.class).verify();
@@ -82,7 +90,7 @@ public class ModelTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdModelTypeServiceForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_TYPE_ID);
     Mono<Boolean> exists = modelTypeService.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -90,7 +98,7 @@ public class ModelTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdModelTypeServiceForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_TYPE_ID);
     Mono<Boolean> exists = modelTypeService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();

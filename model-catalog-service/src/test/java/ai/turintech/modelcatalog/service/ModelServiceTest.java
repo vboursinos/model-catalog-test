@@ -17,21 +17,30 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelServiceTest extends BasicServiceTest {
+  private static final String ML_TASK_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String MODEL_STRUCTURE_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String MODEL_ENSEMBLE_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private static final String MODEL_FAMILY_TYPE_ID = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private static final String EXISTING_MODEL_ID = "123e4567-e89b-12d3-a456-426614174001";
+
   @Autowired private ModelService modelService;
 
   private ModelDTO getModel() {
     MlTaskTypeDTO mlTaskType = new MlTaskTypeDTO();
     mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
+
     ModelStructureTypeDTO modelStructureType = new ModelStructureTypeDTO();
     modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
+
     ModelEnsembleTypeDTO modelEnsembleType = new ModelEnsembleTypeDTO();
     modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29"));
+    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
+
     ModelFamilyTypeDTO modelFamilyType = new ModelFamilyTypeDTO();
     modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
 
     ModelDTO model = new ModelDTO();
     model.setName("test_model");
@@ -50,19 +59,23 @@ public class ModelServiceTest extends BasicServiceTest {
 
   private ModelDTO getUpdatedModel() {
     ModelDTO model = new ModelDTO();
-    model.setId(UUID.fromString("123e4567-e89b-12d3-a456-426614174001"));
+    model.setId(UUID.fromString(EXISTING_MODEL_ID));
+
     MlTaskTypeDTO mlTaskType = new MlTaskTypeDTO();
     mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
+
     ModelStructureTypeDTO modelStructureType = new ModelStructureTypeDTO();
     modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
+
     ModelEnsembleTypeDTO modelEnsembleType = new ModelEnsembleTypeDTO();
     modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString("3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29"));
+    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
+
     ModelFamilyTypeDTO modelFamilyType = new ModelFamilyTypeDTO();
     modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
 
     model.setName("updated_test_model");
     model.setEnabled(true);

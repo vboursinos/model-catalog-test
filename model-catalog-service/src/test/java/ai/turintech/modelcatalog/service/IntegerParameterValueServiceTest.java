@@ -1,7 +1,8 @@
 package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
-import ai.turintech.modelcatalog.entity.*;
+import ai.turintech.modelcatalog.entity.IntegerParameter;
+import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +18,11 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class IntegerParameterValueServiceTest extends BasicServiceTest {
+
+  private final String EXISTING_INTEGER_PARAMETER_VALUE_ID = "423e4567-e89b-12d3-a456-426614174004";
+  private final String NON_EXISTING_INTEGER_PARAMETER_VALUE_ID =
+      "123e4567-e89b-12d3-a456-426614174099";
+
   @Autowired private IntegerParameterValueService integerParameterValueService;
 
   private IntegerParameterValueDTO getIntegerParameterValueDTO() {
@@ -30,7 +36,6 @@ public class IntegerParameterValueServiceTest extends BasicServiceTest {
     integerParameter.setParameterTypeDefinition(parameterTypeDefinition);
 
     IntegerParameterValueDTO integerParameterValueDTO = new IntegerParameterValueDTO();
-    //    integerParameterValueDTO.setIntegerParameter(integerParameter);
     integerParameterValueDTO.setLower(1);
     integerParameterValueDTO.setUpper(10);
     return integerParameterValueDTO;
@@ -47,7 +52,7 @@ public class IntegerParameterValueServiceTest extends BasicServiceTest {
     integerParameter.setParameterTypeDefinition(parameterTypeDefinition);
 
     IntegerParameterValueDTO integerParameterValueDTO = new IntegerParameterValueDTO();
-    integerParameterValueDTO.setId(UUID.fromString("423e4567-e89b-12d3-a456-426614174004"));
+    integerParameterValueDTO.setId(UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID));
     //    integerParameterValueDTO.setIntegerParameter(integerParameter);
     integerParameterValueDTO.setLower(1);
     integerParameterValueDTO.setUpper(10);
@@ -65,7 +70,7 @@ public class IntegerParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdIntegerParameterValueService() {
-    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+    UUID existingId = UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID);
     Mono<IntegerParameterValueDTO> integerParameterValueMonoDTO =
         integerParameterValueService.findOne(existingId);
 
@@ -81,7 +86,7 @@ public class IntegerParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdWithExistingId() {
-    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+    UUID existingId = UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID);
     Mono<Boolean> existsMono = integerParameterValueService.existsById(existingId);
 
     StepVerifier.create(existsMono).expectNext(true).verifyComplete();
@@ -89,7 +94,7 @@ public class IntegerParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdWithNonExistingId() {
-    UUID nonExistingId = UUID.fromString("123e4567-e89b-12d3-a456-426614174099");
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_INTEGER_PARAMETER_VALUE_ID);
     Mono<Boolean> existsMono = integerParameterValueService.existsById(nonExistingId);
 
     StepVerifier.create(existsMono).expectNext(false).verifyComplete();

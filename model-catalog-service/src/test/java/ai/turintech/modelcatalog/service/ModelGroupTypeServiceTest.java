@@ -17,6 +17,15 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelGroupTypeServiceTest extends BasicServiceTest {
+
+  // String IDs for testing
+  private static final String EXISTING_MODEL_GROUP_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String NON_EXISTING_MODEL_GROUP_TYPE_ID =
+      "123e4567-e89b-12d3-a456-426614174099";
+
+  private static final String EXISTING_MODEL_GROUP_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+
   @Autowired private ModelGroupTypeService modelGroupTypeService;
 
   private ModelGroupTypeDTO getModelGroupTypeDTO() {
@@ -27,7 +36,7 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
 
   private ModelGroupTypeDTO getUpdatedModelGroupTypeDTO() {
     ModelGroupTypeDTO modelGroupTypeDTO = new ModelGroupTypeDTO();
-    modelGroupTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelGroupTypeDTO.setId(UUID.fromString(EXISTING_MODEL_GROUP_TYPE_ID_FOR_UPDATE));
     modelGroupTypeDTO.setName("test_updated_modelgrouptype");
     return modelGroupTypeDTO;
   }
@@ -45,7 +54,7 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_GROUP_TYPE_ID);
     Mono<ModelGroupTypeDTO> modelGroupType = modelGroupTypeService.findOne(existingId);
 
     StepVerifier.create(modelGroupType)
@@ -59,7 +68,7 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_GROUP_TYPE_ID);
     Mono<ModelGroupTypeDTO> modelGroupType = modelGroupTypeService.findOne(nonExistingId);
 
     StepVerifier.create(modelGroupType).expectError(NoSuchElementException.class).verify();
@@ -67,7 +76,7 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_GROUP_TYPE_ID);
     Mono<Boolean> existsForExistingId = modelGroupTypeService.existsById(existingId);
 
     StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
@@ -75,7 +84,7 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_GROUP_TYPE_ID);
     Mono<Boolean> existsForNonExistingId = modelGroupTypeService.existsById(nonExistingId);
 
     StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();

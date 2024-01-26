@@ -17,6 +17,15 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ModelFamilyTypeServiceTest extends BasicServiceTest {
+
+  // String IDs for testing
+  private static final String EXISTING_MODEL_FAMILY_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String EXISTING_MODEL_FAMILY_TYPE_ID_FOR_UPDATE =
+      "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private static final String NON_EXISTING_MODEL_FAMILY_TYPE_ID =
+      "123e4567-e89b-12d3-a456-426614174099";
+
   @Autowired private ModelFamilyTypeService modelFamilyTypeService;
 
   private ModelFamilyTypeDTO getModelFamilyTypeDTO() {
@@ -27,7 +36,7 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
 
   private ModelFamilyTypeDTO getUpdatedModelFamilyTypeDTO() {
     ModelFamilyTypeDTO modelFamilyTypeDTO = new ModelFamilyTypeDTO();
-    modelFamilyTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    modelFamilyTypeDTO.setId(UUID.fromString(EXISTING_MODEL_FAMILY_TYPE_ID_FOR_UPDATE));
     modelFamilyTypeDTO.setName("test_updated_modelfamilytype");
     return modelFamilyTypeDTO;
   }
@@ -45,7 +54,7 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_FAMILY_TYPE_ID);
     Mono<ModelFamilyTypeDTO> modelFamilyType = modelFamilyTypeService.findOne(existingId);
 
     StepVerifier.create(modelFamilyType)
@@ -59,7 +68,7 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_FAMILY_TYPE_ID);
     Mono<ModelFamilyTypeDTO> modelFamilyType = modelFamilyTypeService.findOne(nonExistingId);
 
     StepVerifier.create(modelFamilyType).expectError(NoSuchElementException.class).verify();
@@ -67,7 +76,7 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
+    UUID existingId = UUID.fromString(EXISTING_MODEL_FAMILY_TYPE_ID);
     Mono<Boolean> existsForExistingId = modelFamilyTypeService.existsById(existingId);
 
     StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
@@ -75,7 +84,7 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_FAMILY_TYPE_ID);
     Mono<Boolean> existsForNonExistingId = modelFamilyTypeService.existsById(nonExistingId);
 
     StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();

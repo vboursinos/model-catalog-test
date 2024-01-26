@@ -16,6 +16,13 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterDistributionTypeServiceTest extends BasicServiceTest {
+
+  private static final String EXISTING_PARAMETER_DISTRIBUTION_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+
+  private static final String NON_EXISTING_PARAMETER_DISTRIBUTION_ID =
+      "123e4567-e89b-12d3-a456-426614174099";
+
   @Autowired private ParameterDistributionTypeService parameterDistributionTypeService;
 
   private ParameterDistributionTypeDTO getParameterDistributionTypeDTO() {
@@ -47,11 +54,9 @@ public class ParameterDistributionTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdParameterDistributionTypeService() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
-    Mono<ParameterDistributionTypeDTO> parameterDistributionTypeDTOMono =
-        parameterDistributionTypeService.findOne(existingId);
+    UUID existingId = UUID.fromString(EXISTING_PARAMETER_DISTRIBUTION_ID);
 
-    StepVerifier.create(parameterDistributionTypeDTOMono)
+    StepVerifier.create(parameterDistributionTypeService.findOne(existingId))
         .expectNextMatches(
             parameterDistributionTypeDTO -> {
               System.out.println(
@@ -64,18 +69,20 @@ public class ParameterDistributionTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdParameterDistributionTypeServiceForExistingId() {
-    UUID existingId = UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27");
-    Mono<Boolean> exists = parameterDistributionTypeService.existsById(existingId);
+    UUID existingId = UUID.fromString(EXISTING_PARAMETER_DISTRIBUTION_ID);
 
-    StepVerifier.create(exists).expectNext(true).verifyComplete();
+    StepVerifier.create(parameterDistributionTypeService.existsById(existingId))
+        .expectNext(true)
+        .verifyComplete();
   }
 
   @Test
   void testExistsByIdParameterDistributionTypeServiceForNonExistingId() {
     UUID nonExistingId = UUID.randomUUID();
-    Mono<Boolean> exists = parameterDistributionTypeService.existsById(nonExistingId);
 
-    StepVerifier.create(exists).expectNext(false).verifyComplete();
+    StepVerifier.create(parameterDistributionTypeService.existsById(nonExistingId))
+        .expectNext(false)
+        .verifyComplete();
   }
 
   @Test

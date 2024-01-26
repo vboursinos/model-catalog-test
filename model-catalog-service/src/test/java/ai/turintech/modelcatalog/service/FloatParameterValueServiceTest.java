@@ -1,7 +1,8 @@
 package ai.turintech.modelcatalog.service;
 
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
-import ai.turintech.modelcatalog.entity.*;
+import ai.turintech.modelcatalog.entity.FloatParameter;
+import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +18,10 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class FloatParameterValueServiceTest extends BasicServiceTest {
+
+  private final String EXISTING_FLOAT_PARAMETER_RANGE_ID = "423e4567-e89b-12d3-a456-426614174004";
+  private final String NON_EXISTING_FLOAT_PARAMETER_RANGE_ID = UUID.randomUUID().toString();
+
   @Autowired private FloatParameterRangeService floatParameterRangeService;
 
   private FloatParameterRangeDTO getFloatParameterRangeDTO() {
@@ -30,7 +35,6 @@ public class FloatParameterValueServiceTest extends BasicServiceTest {
     floatParameter.setParameterTypeDefinition(parameterTypeDefinition);
 
     FloatParameterRangeDTO floatParameterRangeDTO = new FloatParameterRangeDTO();
-    //    floatParameterRange.setFloatParameter(floatParameter);
     floatParameterRangeDTO.setLower(1.0);
     floatParameterRangeDTO.setUpper(10.0);
     floatParameterRangeDTO.setIsLeftOpen(false);
@@ -50,7 +54,6 @@ public class FloatParameterValueServiceTest extends BasicServiceTest {
 
     FloatParameterRangeDTO floatParameterRangeDTO = new FloatParameterRangeDTO();
     floatParameterRangeDTO.setId(UUID.fromString("423e4567-e89b-12d3-a456-426614174003"));
-    //    floatParameterRange.setFloatParameter(floatParameter);
     floatParameterRangeDTO.setLower(1.0);
     floatParameterRangeDTO.setUpper(10.0);
     floatParameterRangeDTO.setIsLeftOpen(false);
@@ -69,7 +72,7 @@ public class FloatParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testFindByIdFloatParameterRangeService() {
-    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+    UUID existingId = UUID.fromString(EXISTING_FLOAT_PARAMETER_RANGE_ID);
     Mono<FloatParameterRangeDTO> floatParameterRangeDTOMono =
         floatParameterRangeService.findOne(existingId);
 
@@ -85,7 +88,7 @@ public class FloatParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdFloatParameterRangeServiceForExistingId() {
-    UUID existingId = UUID.fromString("423e4567-e89b-12d3-a456-426614174004");
+    UUID existingId = UUID.fromString(EXISTING_FLOAT_PARAMETER_RANGE_ID);
     Mono<Boolean> exists = floatParameterRangeService.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -93,7 +96,7 @@ public class FloatParameterValueServiceTest extends BasicServiceTest {
 
   @Test
   void testExistsByIdFloatParameterRangeServiceForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_FLOAT_PARAMETER_RANGE_ID);
     Mono<Boolean> exists = floatParameterRangeService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();

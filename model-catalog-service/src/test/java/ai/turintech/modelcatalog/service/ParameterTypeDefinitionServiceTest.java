@@ -19,16 +19,27 @@ import reactor.test.StepVerifier;
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
+
   @Autowired private ParameterTypeDefinitionService parameterTypeDefinitionService;
+
+  // UUID strings
+  private static final String EXISTING_PARAMETER_TYPE_DEFINITION_ID =
+      "323e4567-e89b-12d3-a456-426614174001";
+  private static final String NON_EXISTING_PARAMETER_TYPE_DEFINITION_ID =
+      "a12b34cd-5678-90ef-1234-567890abcdef";
+
+  private static final String PARAMETER_DISTRIBUTION_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String PARAMETER_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
 
   private ParameterTypeDefinitionDTO getParameterTypeDefinitionDTO() {
 
     ParameterDistributionTypeDTO parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
-    parameterDistributionTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterDistributionTypeDTO.setId(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID));
     parameterDistributionTypeDTO.setName("parameterdistributiontype1");
 
     ParameterTypeDTO parameterTypeDTO = new ParameterTypeDTO();
-    parameterTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterTypeDTO.setId(UUID.fromString(PARAMETER_TYPE_ID));
     parameterTypeDTO.setName("parametertype1");
 
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
@@ -42,15 +53,15 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
   private ParameterTypeDefinitionDTO getUpdatedParameterTypeDefinitionDTO() {
 
     ParameterDistributionTypeDTO parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
-    parameterDistributionTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterDistributionTypeDTO.setId(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID));
     parameterDistributionTypeDTO.setName("parameterdistributiontype1");
 
     ParameterTypeDTO parameterTypeDTO = new ParameterTypeDTO();
-    parameterTypeDTO.setId(UUID.fromString("1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27"));
+    parameterTypeDTO.setId(UUID.fromString(PARAMETER_TYPE_ID));
     parameterTypeDTO.setName("parametertype1");
 
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
-    parameterTypeDefinitionDTO.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"));
+    parameterTypeDefinitionDTO.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID));
     parameterTypeDefinitionDTO.setDistribution(parameterDistributionTypeDTO);
     parameterTypeDefinitionDTO.setType(parameterTypeDTO);
     parameterTypeDefinitionDTO.setOrdering(12);
@@ -74,7 +85,7 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testFindByIdParameterTypeDefinitionService() {
-    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingId = UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID);
     Mono<ParameterTypeDefinitionDTO> parameterTypeDefinitionDTOMono =
         parameterTypeDefinitionService.findOne(existingId);
 
@@ -92,7 +103,7 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testExistsByIdParameterTypeDefinitionServiceForExistingId() {
-    UUID existingId = UUID.fromString("323e4567-e89b-12d3-a456-426614174001");
+    UUID existingId = UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID);
     Mono<Boolean> exists = parameterTypeDefinitionService.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
@@ -101,7 +112,7 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testExistsByIdParameterTypeDefinitionServiceForNonExistingId() {
-    UUID nonExistingId = UUID.randomUUID();
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_PARAMETER_TYPE_DEFINITION_ID);
     Mono<Boolean> exists = parameterTypeDefinitionService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
