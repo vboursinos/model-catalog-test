@@ -16,26 +16,25 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ModelRepositoryTest extends BasicRepositoryTest {
   @Autowired private ModelRepository modelRepository;
 
-  private final String modelId = "123e4567-e89b-12d3-a456-426614174001";
-  private final String newModelId = "123e4567-e89b-12d3-a456-426614174002";
-  private final String mlTaskTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private final String modelStructureTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private final String modelEnsembleTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
-  private final String modelFamilyTypeId = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+  private static final String MODEL_ID = "123e4567-e89b-12d3-a456-426614174001";
+  private static final String ML_TASK_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String MODEL_STRUCTURE_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String MODEL_ENSEMBLE_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private static final String MODEL_FAMILY_TYPE_ID = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
 
   private Model getModel() {
     MlTaskType mlTaskType = new MlTaskType();
     mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString(mlTaskTypeId));
+    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
     ModelStructureType modelStructureType = new ModelStructureType();
     modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString(modelStructureTypeId));
+    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
     ModelEnsembleType modelEnsembleType = new ModelEnsembleType();
     modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString(modelEnsembleTypeId));
+    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
     ModelFamilyType modelFamilyType = new ModelFamilyType();
     modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString(modelFamilyTypeId));
+    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
 
     Model model = new Model();
     model.setName("test_model");
@@ -54,19 +53,19 @@ public class ModelRepositoryTest extends BasicRepositoryTest {
 
   private Model getUpdatedModel() {
     Model model = new Model();
-    model.setId(UUID.fromString(modelId));
+    model.setId(UUID.fromString(MODEL_ID));
     MlTaskType mlTaskType = new MlTaskType();
     mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString(mlTaskTypeId));
+    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
     ModelStructureType modelStructureType = new ModelStructureType();
     modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString(modelStructureTypeId));
+    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
     ModelEnsembleType modelEnsembleType = new ModelEnsembleType();
     modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString(modelEnsembleTypeId));
+    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
     ModelFamilyType modelFamilyType = new ModelFamilyType();
     modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString(modelFamilyTypeId));
+    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
 
     model.setName("updated_test_model");
     model.setEnabled(true);
@@ -89,7 +88,7 @@ public class ModelRepositoryTest extends BasicRepositoryTest {
 
   @Test
   void testFindByIdModelRepository() {
-    Model model = modelRepository.findById(UUID.fromString(modelId)).get();
+    Model model = modelRepository.findById(UUID.fromString(MODEL_ID)).get();
     Assertions.assertEquals("Display1", model.getDisplayName());
   }
 

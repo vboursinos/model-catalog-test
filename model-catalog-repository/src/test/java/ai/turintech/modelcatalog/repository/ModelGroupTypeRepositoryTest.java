@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ModelGroupTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private ModelGroupTypeRepository modelGroupTypeRepository;
 
-  private final String modelGroupTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
-  private final String newModelGroupTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+  private static final String MODEL_GROUP_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private static final String NEW_MODEL_GROUP_TYPE_ID = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
 
   private ModelGroupType getModelGroupType() {
     ModelGroupType modelGroupType = new ModelGroupType();
@@ -27,7 +27,7 @@ public class ModelGroupTypeRepositoryTest extends BasicRepositoryTest {
 
   private ModelGroupType getUpdatedModelGroupType() {
     ModelGroupType modelGroupType = new ModelGroupType();
-    modelGroupType.setId(UUID.fromString(newModelGroupTypeId));
+    modelGroupType.setId(UUID.fromString(NEW_MODEL_GROUP_TYPE_ID));
     modelGroupType.setName("test_updated_modelGroupType");
     return modelGroupType;
   }
@@ -41,7 +41,7 @@ public class ModelGroupTypeRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdModelGroupTypeRepository() {
     ModelGroupType modelGroupType =
-        modelGroupTypeRepository.findById(UUID.fromString(modelGroupTypeId)).get();
+        modelGroupTypeRepository.findById(UUID.fromString(MODEL_GROUP_TYPE_ID)).get();
     Assertions.assertEquals("modelgroup3", modelGroupType.getName());
   }
 

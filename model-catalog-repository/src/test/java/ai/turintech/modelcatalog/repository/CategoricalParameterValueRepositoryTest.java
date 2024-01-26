@@ -16,7 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class CategoricalParameterValueRepositoryTest extends BasicRepositoryTest {
   @Autowired private CategoricalParameterValueRepository categoricalParameterValueRepository;
 
-  private final String categoricalParameterValueId = "423e4567-e89b-12d3-a456-426614174003";
+  private static final String CATEGORICAL_PARAMETER_VALUE_ID =
+      "423e4567-e89b-12d3-a456-426614174003";
 
   private CategoricalParameterValue getCategoricalParameterValue() {
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
@@ -62,7 +63,7 @@ public class CategoricalParameterValueRepositoryTest extends BasicRepositoryTest
   void testFindByIdCategoricalParameterValueRepository() {
     CategoricalParameterValue categoricalParameterValue =
         categoricalParameterValueRepository
-            .findById(UUID.fromString(categoricalParameterValueId))
+            .findById(UUID.fromString(CATEGORICAL_PARAMETER_VALUE_ID))
             .get();
     Assertions.assertEquals("Category3", categoricalParameterValue.getValue());
   }

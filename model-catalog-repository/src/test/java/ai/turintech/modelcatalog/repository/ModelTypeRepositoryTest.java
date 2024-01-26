@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ModelTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private ModelTypeRepository modelTypeRepository;
 
-  private final String modelTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
-  private final String newModelTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+  private static final String MODEL_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private static final String NEW_MODEL_TYPE_ID = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
 
   private ModelType getModelType() {
     ModelType modelType = new ModelType();
@@ -27,7 +27,7 @@ public class ModelTypeRepositoryTest extends BasicRepositoryTest {
 
   private ModelType getUpdatedModelType() {
     ModelType modelType = new ModelType();
-    modelType.setId(UUID.fromString(newModelTypeId));
+    modelType.setId(UUID.fromString(NEW_MODEL_TYPE_ID));
     modelType.setName("test_updated_modelType");
     return modelType;
   }
@@ -40,7 +40,7 @@ public class ModelTypeRepositoryTest extends BasicRepositoryTest {
 
   @Test
   void testFindByIdModelTypeRepository() {
-    ModelType modelType = modelTypeRepository.findById(UUID.fromString(modelTypeId)).get();
+    ModelType modelType = modelTypeRepository.findById(UUID.fromString(MODEL_TYPE_ID)).get();
     Assertions.assertEquals("modeltype3", modelType.getName());
   }
 

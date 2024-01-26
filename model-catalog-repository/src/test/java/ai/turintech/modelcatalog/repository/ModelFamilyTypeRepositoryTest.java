@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ModelFamilyTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private ModelFamilyTypeRepository modelFamilyTypeRepository;
 
-  private final String modelFamilyTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
-  private final String newModelFamilyTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+  private static final String MODEL_FAMILY_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private static final String NEW_MODEL_FAMILY_TYPE_ID = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
 
   private ModelFamilyType getModelFamilyType() {
     ModelFamilyType modelFamilyType = new ModelFamilyType();
@@ -27,7 +27,7 @@ public class ModelFamilyTypeRepositoryTest extends BasicRepositoryTest {
 
   private ModelFamilyType getUpdatedModelFamilyType() {
     ModelFamilyType modelFamilyType = new ModelFamilyType();
-    modelFamilyType.setId(UUID.fromString(newModelFamilyTypeId));
+    modelFamilyType.setId(UUID.fromString(NEW_MODEL_FAMILY_TYPE_ID));
     modelFamilyType.setName("test_updated_modelFamilyType");
     return modelFamilyType;
   }
@@ -41,7 +41,7 @@ public class ModelFamilyTypeRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdModelFamilyTypeRepository() {
     ModelFamilyType modelFamilyType =
-        modelFamilyTypeRepository.findById(UUID.fromString(modelFamilyTypeId)).get();
+        modelFamilyTypeRepository.findById(UUID.fromString(MODEL_FAMILY_TYPE_ID)).get();
     Assertions.assertEquals("modelfamilytype3", modelFamilyType.getName());
   }
 

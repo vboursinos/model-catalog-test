@@ -16,24 +16,25 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class IntegerParameterRepositoryTest extends BasicRepositoryTest {
   @Autowired private IntegerParameterRepository integerParameterRepository;
 
-  private final String integerParameterId = "323e4567-e89b-12d3-a456-426614174001";
-  private final String parameterId = "523e4567-e89b-12d3-a456-426614174001";
-  private final String parameterTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private final String parameterDistributionTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private final String parameterTypeDefinitionId = "323e4567-e89b-12d3-a456-426614174003";
+  private static final String INTEGER_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
+  private static final String PARAMETER_ID = "523e4567-e89b-12d3-a456-426614174001";
+  private static final String PARAMETER_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String PARAMETER_DISTRIBUTION_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String PARAMETER_TYPE_DEFINITION_ID = "323e4567-e89b-12d3-a456-426614174003";
 
   private IntegerParameter getIntegerParameter() {
     Parameter parameter = new Parameter();
-    parameter.setId(UUID.fromString(parameterId));
+    parameter.setId(UUID.fromString(PARAMETER_ID));
 
     ParameterType parameterType = new ParameterType();
-    parameterType.setId(UUID.fromString(parameterTypeId));
+    parameterType.setId(UUID.fromString(PARAMETER_TYPE_ID));
 
     ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
-    parameterDistributionType.setId(UUID.fromString(parameterDistributionTypeId));
+    parameterDistributionType.setId(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID));
 
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString(parameterTypeDefinitionId));
+    parameterTypeDefinition.setId(UUID.fromString(PARAMETER_TYPE_DEFINITION_ID));
     parameterTypeDefinition.setParameter(parameter);
     parameterTypeDefinition.setType(parameterType);
     parameterTypeDefinition.setDistribution(parameterDistributionType);
@@ -55,7 +56,7 @@ public class IntegerParameterRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdIntegerParameterRepository() {
     IntegerParameter integerParameter =
-        integerParameterRepository.findById(UUID.fromString(integerParameterId)).get();
+        integerParameterRepository.findById(UUID.fromString(INTEGER_PARAMETER_ID)).get();
     Assertions.assertEquals(10, integerParameter.getDefaultValue());
   }
 }

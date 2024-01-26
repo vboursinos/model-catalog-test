@@ -16,24 +16,25 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class BooleanParameterRepositoryTest extends BasicRepositoryTest {
   @Autowired private BooleanParameterRepository booleanParameterRepository;
 
-  private final String booleanParameterId = "323e4567-e89b-12d3-a456-426614174001";
-  private final String parameterId = "523e4567-e89b-12d3-a456-426614174001";
-  private final String parameterTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private final String parameterDistributionTypeId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private final String parameterTypeDefinitionId = "323e4567-e89b-12d3-a456-426614174003";
+  private static final String BOOLEAN_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
+  private static final String PARAMETER_ID = "523e4567-e89b-12d3-a456-426614174001";
+  private static final String PARAMETER_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String PARAMETER_DISTRIBUTION_TYPE_ID =
+      "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
+  private static final String PARAMETER_DEFINITION_TYPE_ID = "323e4567-e89b-12d3-a456-426614174003";
 
   private BooleanParameter getBooleanParameter() {
     Parameter parameter = new Parameter();
-    parameter.setId(UUID.fromString(parameterId));
+    parameter.setId(UUID.fromString(PARAMETER_ID));
 
     ParameterType parameterType = new ParameterType();
-    parameterType.setId(UUID.fromString(parameterTypeId));
+    parameterType.setId(UUID.fromString(PARAMETER_TYPE_ID));
 
     ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
-    parameterDistributionType.setId(UUID.fromString(parameterDistributionTypeId));
+    parameterDistributionType.setId(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID));
 
     ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString(parameterTypeDefinitionId));
+    parameterTypeDefinition.setId(UUID.fromString(PARAMETER_DEFINITION_TYPE_ID));
     parameterTypeDefinition.setParameter(parameter);
     parameterTypeDefinition.setType(parameterType);
     parameterTypeDefinition.setDistribution(parameterDistributionType);
@@ -55,7 +56,7 @@ public class BooleanParameterRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdBooleanParameterRepository() {
     BooleanParameter booleanParameter =
-        booleanParameterRepository.findById(UUID.fromString(booleanParameterId)).get();
+        booleanParameterRepository.findById(UUID.fromString(BOOLEAN_PARAMETER_ID)).get();
     Assertions.assertEquals(true, booleanParameter.getDefaultValue());
   }
 }

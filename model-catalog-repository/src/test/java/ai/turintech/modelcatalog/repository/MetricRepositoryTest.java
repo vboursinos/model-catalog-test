@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class MetricRepositoryTest extends BasicRepositoryTest {
   @Autowired private MetricRepository metricRepository;
 
-  private final String metricId = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23";
-  private final String newMetricId = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26";
+  private static final String METRIC_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23";
+  private static final String NEW_METRIC_ID = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26";
 
   private Metric getMetric() {
     Metric metric = new Metric();
@@ -27,7 +27,7 @@ public class MetricRepositoryTest extends BasicRepositoryTest {
 
   private Metric getUpdatedMetric() {
     Metric metric = new Metric();
-    metric.setId(UUID.fromString(newMetricId));
+    metric.setId(UUID.fromString(NEW_METRIC_ID));
     metric.setMetric("test_updated_metric");
     return metric;
   }
@@ -40,7 +40,7 @@ public class MetricRepositoryTest extends BasicRepositoryTest {
 
   @Test
   void testFindByIdMetricRepository() {
-    Metric metric = metricRepository.findById(UUID.fromString(metricId)).get();
+    Metric metric = metricRepository.findById(UUID.fromString(METRIC_ID)).get();
     Assertions.assertEquals("Metric1", metric.getMetric());
   }
 

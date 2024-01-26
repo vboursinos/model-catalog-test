@@ -16,8 +16,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ParameterDistributionTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private ParameterDistributionTypeRepository parameterDistributionTypeRepository;
 
-  private final String parameterDistributionTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
-  private final String newParameterDistributionTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+  private static final String PARAMETER_DISTRIBUTION_TYPE_ID =
+      "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private static final String NEW_PARAMETER_DISTRIBUTION_TYPE_ID =
+      "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
 
   private ParameterDistributionType getParameterDistributionType() {
     ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
@@ -27,7 +29,7 @@ public class ParameterDistributionTypeRepositoryTest extends BasicRepositoryTest
 
   private ParameterDistributionType getUpdatedParameterDistributionType() {
     ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
-    parameterDistributionType.setId(UUID.fromString(newParameterDistributionTypeId));
+    parameterDistributionType.setId(UUID.fromString(NEW_PARAMETER_DISTRIBUTION_TYPE_ID));
     parameterDistributionType.setName("test_updated_parameterDistributionType");
     return parameterDistributionType;
   }
@@ -43,7 +45,7 @@ public class ParameterDistributionTypeRepositoryTest extends BasicRepositoryTest
   void testFindByIdParameterDistributionTypeRepository() {
     ParameterDistributionType parameterDistributionType =
         parameterDistributionTypeRepository
-            .findById(UUID.fromString(parameterDistributionTypeId))
+            .findById(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID))
             .get();
     Assertions.assertEquals("parameterdistributiontype3", parameterDistributionType.getName());
   }

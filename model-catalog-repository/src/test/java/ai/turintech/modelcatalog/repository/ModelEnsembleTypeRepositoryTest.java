@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ModelEnsembleTypeRepositoryTest extends BasicRepositoryTest {
   @Autowired private ModelEnsembleTypeRepository modelEnsembleTypeRepository;
 
-  private final String modelEnsembleTypeId = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
-  private final String newModelEnsembleTypeId = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
+  private static final String MODEL_ENSEMBLE_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
+  private static final String NEW_MODEL_ENSEMBLE_TYPE_ID = "2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28";
 
   private ModelEnsembleType getModelEnsembleType() {
     ModelEnsembleType modelEnsembleType = new ModelEnsembleType();
@@ -27,7 +27,7 @@ public class ModelEnsembleTypeRepositoryTest extends BasicRepositoryTest {
 
   private ModelEnsembleType getUpdatedModelEnsembleType() {
     ModelEnsembleType modelEnsembleType = new ModelEnsembleType();
-    modelEnsembleType.setId(UUID.fromString(newModelEnsembleTypeId));
+    modelEnsembleType.setId(UUID.fromString(NEW_MODEL_ENSEMBLE_TYPE_ID));
     modelEnsembleType.setName("test_updated_modelEnsembleType");
     return modelEnsembleType;
   }
@@ -41,7 +41,7 @@ public class ModelEnsembleTypeRepositoryTest extends BasicRepositoryTest {
   @Test
   void testFindByIdModelEnsembleTypeRepository() {
     ModelEnsembleType modelEnsembleType =
-        modelEnsembleTypeRepository.findById(UUID.fromString(modelEnsembleTypeId)).get();
+        modelEnsembleTypeRepository.findById(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID)).get();
     Assertions.assertEquals("modelensembletype3", modelEnsembleType.getName());
   }
 
