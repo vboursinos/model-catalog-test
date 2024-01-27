@@ -58,7 +58,6 @@ public class MetricServiceTest extends BasicServiceTest {
     StepVerifier.create(metric)
         .expectNextMatches(
             metricDTO -> {
-              System.out.println("Found Metric by ID: " + metricDTO);
               Assert.assertEquals(existingId, metricDTO.getId());
               return true;
             })
@@ -100,7 +99,6 @@ public class MetricServiceTest extends BasicServiceTest {
     StepVerifier.create(savedMetric)
         .expectNextMatches(
             metricDTO -> {
-              System.out.println("Saved Metric: " + metricDTO);
               Assert.assertEquals(getMetricDTO().getMetric(), metricDTO.getMetric());
               return true;
             })
@@ -114,12 +112,24 @@ public class MetricServiceTest extends BasicServiceTest {
 
   @Test
   void testUpdateMetricService() {
-    Mono<MetricDTO> updatedMetric = metricService.save(getUpdatedMetricDTO());
+    Mono<MetricDTO> updatedMetric = metricService.update(getUpdatedMetricDTO());
 
     StepVerifier.create(updatedMetric)
         .expectNextMatches(
             metricDTO -> {
-              System.out.println("Updated Metric: " + metricDTO);
+              Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateMetricService() {
+    Mono<MetricDTO> updatedMetric = metricService.partialUpdate(getUpdatedMetricDTO());
+
+    StepVerifier.create(updatedMetric)
+        .expectNextMatches(
+            metricDTO -> {
               Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric());
               return true;
             })

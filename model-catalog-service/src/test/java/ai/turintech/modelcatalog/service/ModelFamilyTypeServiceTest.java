@@ -104,7 +104,22 @@ public class ModelFamilyTypeServiceTest extends BasicServiceTest {
   @Test
   void testUpdateModelFamilyTypeService() {
     Mono<ModelFamilyTypeDTO> updatedModelFamilyType =
-        modelFamilyTypeService.save(getUpdatedModelFamilyTypeDTO());
+        modelFamilyTypeService.update(getUpdatedModelFamilyTypeDTO());
+
+    StepVerifier.create(updatedModelFamilyType)
+        .expectNextMatches(
+            updatedModelFamilyTypeDTO -> {
+              Assert.assertEquals(
+                  getUpdatedModelFamilyTypeDTO().getName(), updatedModelFamilyTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateModelFamilyTypeService() {
+    Mono<ModelFamilyTypeDTO> updatedModelFamilyType =
+        modelFamilyTypeService.partialUpdate(getUpdatedModelFamilyTypeDTO());
 
     StepVerifier.create(updatedModelFamilyType)
         .expectNextMatches(

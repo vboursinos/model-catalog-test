@@ -114,7 +114,23 @@ public class ModelEnsembleTypeServiceTest extends BasicServiceTest {
   @Test
   void testUpdateModelEnsembleTypeService() {
     Mono<ModelEnsembleTypeDTO> updatedModelEnsembleType =
-        modelEnsembleTypeService.save(getUpdatedModelEnsembleTypeDTO());
+        modelEnsembleTypeService.update(getUpdatedModelEnsembleTypeDTO());
+
+    StepVerifier.create(updatedModelEnsembleType)
+        .expectNextMatches(
+            updatedModelEnsembleTypeDTO -> {
+              Assert.assertEquals(
+                  getUpdatedModelEnsembleTypeDTO().getName(),
+                  updatedModelEnsembleTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateModelEnsembleTypeService() {
+    Mono<ModelEnsembleTypeDTO> updatedModelEnsembleType =
+        modelEnsembleTypeService.partialUpdate(getUpdatedModelEnsembleTypeDTO());
 
     StepVerifier.create(updatedModelEnsembleType)
         .expectNextMatches(

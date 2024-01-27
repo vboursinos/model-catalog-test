@@ -130,7 +130,33 @@ public class ModelServiceTest extends BasicServiceTest {
             initialModel -> {
               ModelDTO updatedModelDTO = getUpdatedModel();
               updatedModelDTO.setId(initialModel.getId());
-              return modelService.save(updatedModelDTO);
+              return modelService.update(updatedModelDTO);
+            });
+
+    StepVerifier.create(updatedModel)
+        .expectNextMatches(
+            updatedModelDTO -> {
+              Assert.assertEquals(getUpdatedModel().getName(), updatedModelDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+
+    Mono<Void> deletion = updatedModel.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
+
+    StepVerifier.create(deletion).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateModelService() {
+    Mono<ModelDTO> savedModel = modelService.save(getModel());
+
+    Mono<ModelDTO> updatedModel =
+        savedModel.flatMap(
+            initialModel -> {
+              ModelDTO updatedModelDTO = getUpdatedModel();
+              updatedModelDTO.setId(initialModel.getId());
+              return modelService.partialUpdate(updatedModelDTO);
             });
 
     StepVerifier.create(updatedModel)

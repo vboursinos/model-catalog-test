@@ -57,7 +57,6 @@ public class ParameterTypeServiceTest extends BasicServiceTest {
     StepVerifier.create(parameterTypeDTOMono)
         .expectNextMatches(
             parameterTypeDTO -> {
-              System.out.println("Found ParameterType by ID: " + parameterTypeDTO);
               Assert.assertEquals(existingId, parameterTypeDTO.getId());
               return true;
             })
@@ -93,12 +92,26 @@ public class ParameterTypeServiceTest extends BasicServiceTest {
   @Test
   void testUpdateParameterTypeService() {
     Mono<ParameterTypeDTO> updatedParameterTypeDTO =
-        parameterTypeService.save(getUpdatedParameterTypeDTO());
+        parameterTypeService.update(getUpdatedParameterTypeDTO());
 
     StepVerifier.create(updatedParameterTypeDTO)
         .expectNextMatches(
             parameterTypeDTO -> {
-              System.out.println("Updated ParameterType: " + parameterTypeDTO);
+              Assert.assertEquals(
+                  getUpdatedParameterTypeDTO().getName(), parameterTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateParameterTypeService() {
+    Mono<ParameterTypeDTO> updatedParameterTypeDTO =
+        parameterTypeService.partialUpdate(getUpdatedParameterTypeDTO());
+
+    StepVerifier.create(updatedParameterTypeDTO)
+        .expectNextMatches(
+            parameterTypeDTO -> {
               Assert.assertEquals(
                   getUpdatedParameterTypeDTO().getName(), parameterTypeDTO.getName());
               return true;

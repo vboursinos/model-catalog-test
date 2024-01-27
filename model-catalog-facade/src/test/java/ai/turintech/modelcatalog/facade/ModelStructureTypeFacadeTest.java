@@ -101,7 +101,18 @@ public class ModelStructureTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testUpdateModelStructureTypeFacade() {
     Mono<ModelStructureTypeDTO> updatedModelStructureTypeDTO =
-        modelStructureTypeFacade.save(getUpdatedModelStructureTypeDTO());
+        modelStructureTypeFacade.update(getUpdatedModelStructureTypeDTO());
+    updatedModelStructureTypeDTO.subscribe(
+        modelStructureTypeDTO -> {
+          Assert.assertEquals(
+              getUpdatedModelStructureTypeDTO().getName(), modelStructureTypeDTO.getName());
+        });
+  }
+
+  @Test
+  void testPartialUpdateModelStructureTypeFacade() {
+    Mono<ModelStructureTypeDTO> updatedModelStructureTypeDTO =
+        modelStructureTypeFacade.partialUpdate(getUpdatedModelStructureTypeDTO());
     updatedModelStructureTypeDTO.subscribe(
         modelStructureTypeDTO -> {
           Assert.assertEquals(

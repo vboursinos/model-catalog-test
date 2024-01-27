@@ -59,8 +59,6 @@ public class ParameterDistributionTypeServiceTest extends BasicServiceTest {
     StepVerifier.create(parameterDistributionTypeService.findOne(existingId))
         .expectNextMatches(
             parameterDistributionTypeDTO -> {
-              System.out.println(
-                  "Found ParameterDistributionType by ID: " + parameterDistributionTypeDTO);
               Assert.assertEquals(existingId, parameterDistributionTypeDTO.getId());
               return true;
             })
@@ -100,13 +98,27 @@ public class ParameterDistributionTypeServiceTest extends BasicServiceTest {
   @Test
   void testUpdateParameterDistributionTypeService() {
     Mono<ParameterDistributionTypeDTO> updatedParameterDistributionTypeDTO =
-        parameterDistributionTypeService.save(getUpdatedParameterDistributionTypeDTO());
+        parameterDistributionTypeService.update(getUpdatedParameterDistributionTypeDTO());
 
     StepVerifier.create(updatedParameterDistributionTypeDTO)
         .expectNextMatches(
             parameterDistributionTypeDTO -> {
-              System.out.println(
-                  "Updated ParameterDistributionType: " + parameterDistributionTypeDTO);
+              Assert.assertEquals(
+                  getUpdatedParameterDistributionTypeDTO().getName(),
+                  parameterDistributionTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateParameterDistributionTypeService() {
+    Mono<ParameterDistributionTypeDTO> updatedParameterDistributionTypeDTO =
+        parameterDistributionTypeService.partialUpdate(getUpdatedParameterDistributionTypeDTO());
+
+    StepVerifier.create(updatedParameterDistributionTypeDTO)
+        .expectNextMatches(
+            parameterDistributionTypeDTO -> {
               Assert.assertEquals(
                   getUpdatedParameterDistributionTypeDTO().getName(),
                   parameterDistributionTypeDTO.getName());

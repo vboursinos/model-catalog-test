@@ -49,6 +49,13 @@ public class ParameterFacadeTest extends BasicFacadeTest {
     return parameterDTO;
   }
 
+  private ParameterDTO getPartialUpdatedParameterDTO() {
+    ParameterDTO parameterDTO = new ParameterDTO();
+    parameterDTO.setId(UUID.fromString(EXISTING_PARAMETER_ID));
+    parameterDTO.setName("update_parameter_partial");
+    return parameterDTO;
+  }
+
   @Test
   @Transactional
   void testFindAllParameterFacade() {
@@ -107,11 +114,23 @@ public class ParameterFacadeTest extends BasicFacadeTest {
   @Test
   @Transactional
   void testUpdateParameterFacade() {
-    Mono<ParameterDTO> updateParameterDTO = parameterFacade.save(getUpdatedParameterDTO());
+    Mono<ParameterDTO> updateParameterDTO = parameterFacade.update(getUpdatedParameterDTO());
     updateParameterDTO.subscribe(
         parameterDistributionTypeDTO -> {
           Assert.assertEquals(
               getUpdatedParameterDTO().getName(), parameterDistributionTypeDTO.getName());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateParameterFacade() {
+    Mono<ParameterDTO> updateParameterDTO =
+        parameterFacade.partialUpdate(getPartialUpdatedParameterDTO());
+    updateParameterDTO.subscribe(
+        parameterDistributionTypeDTO -> {
+          Assert.assertEquals(
+              getPartialUpdatedParameterDTO().getName(), parameterDistributionTypeDTO.getName());
         });
   }
 

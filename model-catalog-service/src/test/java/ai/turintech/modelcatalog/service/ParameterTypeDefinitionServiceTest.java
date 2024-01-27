@@ -92,8 +92,6 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
     StepVerifier.create(parameterTypeDefinitionDTOMono)
         .expectNextMatches(
             parameterTypeDefinitionDTO -> {
-              System.out.println(
-                  "Found ParameterTypeDefinition by ID: " + parameterTypeDefinitionDTO);
               Assert.assertTrue(1 == parameterTypeDefinitionDTO.getOrdering());
               return true;
             })
@@ -136,12 +134,28 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
   @Transactional
   void testUpdateParameterTypeDefinitionService() {
     Mono<ParameterTypeDefinitionDTO> updateParameterTypeDefinitionDTO =
-        parameterTypeDefinitionService.save(getUpdatedParameterTypeDefinitionDTO());
+        parameterTypeDefinitionService.update(getUpdatedParameterTypeDefinitionDTO());
 
     StepVerifier.create(updateParameterTypeDefinitionDTO)
         .expectNextMatches(
             parameterTypeDefinitionDTO -> {
-              System.out.println("Updated ParameterTypeDefinition: " + parameterTypeDefinitionDTO);
+              Assert.assertEquals(
+                  getUpdatedParameterTypeDefinitionDTO().getOrdering(),
+                  parameterTypeDefinitionDTO.getOrdering());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateParameterTypeDefinitionService() {
+    Mono<ParameterTypeDefinitionDTO> updateParameterTypeDefinitionDTO =
+        parameterTypeDefinitionService.partialUpdate(getUpdatedParameterTypeDefinitionDTO());
+
+    StepVerifier.create(updateParameterTypeDefinitionDTO)
+        .expectNextMatches(
+            parameterTypeDefinitionDTO -> {
               Assert.assertEquals(
                   getUpdatedParameterTypeDefinitionDTO().getOrdering(),
                   parameterTypeDefinitionDTO.getOrdering());

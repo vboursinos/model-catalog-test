@@ -38,6 +38,13 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
     return mlTaskTypeDTO;
   }
 
+  private MlTaskTypeDTO getPartialUpdatedMlTaskTypeDTO() {
+    MlTaskTypeDTO mlTaskTypeDTO = new MlTaskTypeDTO();
+    mlTaskTypeDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21"));
+    mlTaskTypeDTO.setName("test_updated_mltasktype_partial");
+    return mlTaskTypeDTO;
+  }
+
   @Test
   void testFindAllMlTaskTypeFacade() {
     Flux<MlTaskTypeDTO> mlTaskTypes = mlTaskTypeFacade.findAll();
@@ -94,10 +101,20 @@ public class MlTaskTypeFacadeTest extends BasicFacadeTest {
 
   @Test
   void testUpdateMlTaskTypeFacade() {
-    Mono<MlTaskTypeDTO> updatedMlTaskTypeDTO = mlTaskTypeFacade.save(getUpdatedMlTaskTypeDTO());
+    Mono<MlTaskTypeDTO> updatedMlTaskTypeDTO = mlTaskTypeFacade.update(getUpdatedMlTaskTypeDTO());
     updatedMlTaskTypeDTO.subscribe(
         mlTaskTypeDTO -> {
           Assert.assertEquals(getUpdatedMlTaskTypeDTO().getName(), mlTaskTypeDTO.getName());
+        });
+  }
+
+  @Test
+  void testPartialUpdateMlTaskTypeFacade() {
+    Mono<MlTaskTypeDTO> updatedMlTaskTypeDTO =
+        mlTaskTypeFacade.partialUpdate(getPartialUpdatedMlTaskTypeDTO());
+    updatedMlTaskTypeDTO.subscribe(
+        mlTaskTypeDTO -> {
+          Assert.assertEquals(getPartialUpdatedMlTaskTypeDTO().getName(), mlTaskTypeDTO.getName());
         });
   }
 

@@ -109,7 +109,22 @@ public class MlTaskTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testUpdateMlTaskTypeService() {
-    Mono<MlTaskTypeDTO> updatedMlTaskType = mlTaskTypeService.save(getUpdatedMlTaskTypeDTO());
+    Mono<MlTaskTypeDTO> updatedMlTaskType = mlTaskTypeService.update(getUpdatedMlTaskTypeDTO());
+
+    StepVerifier.create(updatedMlTaskType)
+        .expectNextMatches(
+            updatedMlTaskTypeDTO -> {
+              Assert.assertEquals(
+                  getUpdatedMlTaskTypeDTO().getName(), updatedMlTaskTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateMlTaskTypeService() {
+    Mono<MlTaskTypeDTO> updatedMlTaskType =
+        mlTaskTypeService.partialUpdate(getUpdatedMlTaskTypeDTO());
 
     StepVerifier.create(updatedMlTaskType)
         .expectNextMatches(

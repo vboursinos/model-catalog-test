@@ -59,7 +59,6 @@ public class ModelTypeServiceTest extends BasicServiceTest {
     StepVerifier.create(modelTypeMono)
         .expectNextMatches(
             modelTypeDTO -> {
-              System.out.println("Found ModelType by ID: " + modelTypeDTO);
               Assert.assertEquals(existingId, modelTypeDTO.getId());
               return true;
             })
@@ -76,12 +75,25 @@ public class ModelTypeServiceTest extends BasicServiceTest {
 
   @Test
   void testUpdateModelTypeService() {
-    Mono<ModelTypeDTO> updatedModelType = modelTypeService.save(getUpdatedModelTypeDTO());
+    Mono<ModelTypeDTO> updatedModelType = modelTypeService.update(getUpdatedModelTypeDTO());
 
     StepVerifier.create(updatedModelType)
         .expectNextMatches(
             modelTypeDTO -> {
               System.out.println("Updated ModelType: " + modelTypeDTO);
+              Assert.assertEquals(getUpdatedModelTypeDTO().getName(), modelTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateModelTypeService() {
+    Mono<ModelTypeDTO> updatedModelType = modelTypeService.partialUpdate(getUpdatedModelTypeDTO());
+
+    StepVerifier.create(updatedModelType)
+        .expectNextMatches(
+            modelTypeDTO -> {
               Assert.assertEquals(getUpdatedModelTypeDTO().getName(), modelTypeDTO.getName());
               return true;
             })

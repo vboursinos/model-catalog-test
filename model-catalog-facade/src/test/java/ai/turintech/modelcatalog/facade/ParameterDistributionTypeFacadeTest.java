@@ -105,7 +105,19 @@ public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
   @Test
   void testUpdateParameterDistributionTypeDTOFacade() {
     Mono<ParameterDistributionTypeDTO> updatedParameterDistributionTypeDTO =
-        parameterDistributionTypeFacade.save(getUpdatedParameterDistributionTypeDTO());
+        parameterDistributionTypeFacade.update(getUpdatedParameterDistributionTypeDTO());
+    updatedParameterDistributionTypeDTO.subscribe(
+        parameterDistributionTypeDTO -> {
+          Assert.assertEquals(
+              getUpdatedParameterDistributionTypeDTO().getName(),
+              parameterDistributionTypeDTO.getName());
+        });
+  }
+
+  @Test
+  void testPartialUpdateParameterDistributionTypeDTOFacade() {
+    Mono<ParameterDistributionTypeDTO> updatedParameterDistributionTypeDTO =
+        parameterDistributionTypeFacade.partialUpdate(getUpdatedParameterDistributionTypeDTO());
     updatedParameterDistributionTypeDTO.subscribe(
         parameterDistributionTypeDTO -> {
           Assert.assertEquals(

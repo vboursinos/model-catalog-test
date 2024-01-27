@@ -38,6 +38,13 @@ public class MetricFacadeTest extends BasicFacadeTest {
     return metricDTO;
   }
 
+  private MetricDTO getPartialUpdatedMetricDTO() {
+    MetricDTO metricDTO = new MetricDTO();
+    metricDTO.setId(UUID.fromString("4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26"));
+    metricDTO.setMetric("test_updated_metric_partial");
+    return metricDTO;
+  }
+
   @Test
   void testFindAllMetricFacade() {
     Flux<MetricDTO> metrics = metricFacade.findAll();
@@ -86,11 +93,23 @@ public class MetricFacadeTest extends BasicFacadeTest {
 
   @Test
   void testUpdateMetricFacade() {
-    Mono<MetricDTO> updatedMetric = metricFacade.save(getUpdatedMetricDTO());
+    Mono<MetricDTO> updatedMetric = metricFacade.update(getUpdatedMetricDTO());
     StepVerifier.create(updatedMetric)
         .assertNext(
             metricDTO ->
                 Assert.assertEquals(getUpdatedMetricDTO().getMetric(), metricDTO.getMetric()))
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateMetricFacade() {
+
+    Mono<MetricDTO> updatedMetric = metricFacade.partialUpdate(getPartialUpdatedMetricDTO());
+    StepVerifier.create(updatedMetric)
+        .assertNext(
+            metricDTOPartial ->
+                Assert.assertEquals(
+                    getPartialUpdatedMetricDTO().getMetric(), metricDTOPartial.getMetric()))
         .verifyComplete();
   }
 

@@ -108,7 +108,23 @@ public class ParameterServiceTest extends BasicServiceTest {
   @Test
   @Transactional
   void testUpdateParameterService() {
-    Mono<ParameterDTO> updateParameterDTO = parameterService.save(getUpdatedParameterDTO());
+    Mono<ParameterDTO> updateParameterDTO = parameterService.update(getUpdatedParameterDTO());
+
+    StepVerifier.create(updateParameterDTO)
+        .expectNextMatches(
+            parameterDTO -> {
+              System.out.println("Updated Parameter: " + parameterDTO);
+              Assert.assertEquals(getUpdatedParameterDTO().getName(), parameterDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void tesPartialtUpdateParameterService() {
+    Mono<ParameterDTO> updateParameterDTO =
+        parameterService.partialUpdate(getUpdatedParameterDTO());
 
     StepVerifier.create(updateParameterDTO)
         .expectNextMatches(

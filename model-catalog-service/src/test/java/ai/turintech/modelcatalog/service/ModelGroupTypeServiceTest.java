@@ -115,7 +115,22 @@ public class ModelGroupTypeServiceTest extends BasicServiceTest {
   @Test
   void testUpdateModelGroupTypeService() {
     Mono<ModelGroupTypeDTO> updatedModelGroupType =
-        modelGroupTypeService.save(getUpdatedModelGroupTypeDTO());
+        modelGroupTypeService.update(getUpdatedModelGroupTypeDTO());
+
+    StepVerifier.create(updatedModelGroupType)
+        .expectNextMatches(
+            updatedModelGroupTypeDTO -> {
+              Assert.assertEquals(
+                  getUpdatedModelGroupTypeDTO().getName(), updatedModelGroupTypeDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateModelGroupTypeService() {
+    Mono<ModelGroupTypeDTO> updatedModelGroupType =
+        modelGroupTypeService.partialUpdate(getUpdatedModelGroupTypeDTO());
 
     StepVerifier.create(updatedModelGroupType)
         .expectNextMatches(
