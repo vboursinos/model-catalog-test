@@ -24,7 +24,6 @@ public class ParameterRepositoryTest extends BasicRepositoryTest {
   private static final String MODEL_ENSEMBLE_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
   private static final String MODEL_FAMILY_TYPE_ID = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
 
-
   private Parameter getParameter() {
     MlTaskType mlTaskType = new MlTaskType();
     mlTaskType.setName("mltask1");
