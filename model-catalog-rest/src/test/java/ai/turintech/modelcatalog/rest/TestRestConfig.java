@@ -46,8 +46,6 @@ import reactor.core.scheduler.Schedulers;
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 public class TestRestConfig {
 
-  private final String GRAPHQL_ENDPOINT = "http://localhost:8081/graphql";
-
   @Bean
   public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -88,61 +86,4 @@ public class TestRestConfig {
   public static void main(String[] args) {
     SpringApplication.from(ModelCatalogRestApplication::main).with(TestRestConfig.class).run(args);
   }
-
-  //  @Bean
-  //  public HttpGraphQlTester httpGraphQlTester(WebTestClient webTestClient) {
-  //    return HttpGraphQlTester.create(webTestClient());
-  //  }
-  //
-  //  @Bean
-  //  public WebTestClient webTestClient() {
-  //    return WebTestClient.bindToServer().baseUrl(GRAPHQL_ENDPOINT).build();
-  //  }
-
-  //  @Bean
-  //  public WebTestClient webTestClient() {
-  //    // configure and return the WebTestClient instance
-  //    return WebTestClient.bindToServer().baseUrl("http://localhost").build();
-  //  }
-  //
-  //  @Bean
-  //  public WebClient.Builder webClientBuilder() {
-  //    return WebClient.builder();
-  //  }
-  //
-  //  @Bean
-  //  public ReactiveWebServerFactory reactiveWebServerFactory() {
-  //    return new NettyReactiveWebServerFactory(); // Use the appropriate server factory
-  //  }
-  //
-
-  //  @Bean
-  //  public WebHandler webHandler() {
-  //    // Implement your custom WebHandler logic here
-  //    return exchange -> {
-  //      // Handle the HTTP request and response
-  //      // For example, you can log some information
-  //      System.out.println("Custom WebHandler handling request");
-  //      return Mono.empty(); // Return an empty Mono to signify completion
-  //    };
-  //  }
-  //
-  //  @Bean
-  //  public HttpHandler httpHandler(WebHandler customWebHandler) {
-  //    return WebHttpHandlerBuilder.webHandler(customWebHandler).build();
-  //  }
-
-  //  @Bean
-  //  public SpringLiquibase liquibase(DataSource dataSource, LiquibaseProperties
-  // liquibaseProperties) {
-  //    System.out.println("LiquibaseProperties: " + liquibaseProperties.getChangeLog());
-  //    SpringLiquibase liquibase = new SpringLiquibase();
-  //    liquibase.setDataSource(dataSource);
-  //    liquibase.setChangeLog(liquibaseProperties.getChangeLog());
-  //    liquibase.setContexts(liquibaseProperties.getContexts());
-  //    liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
-  //    // Other configuration settings...
-  //
-  //    return liquibase;
-  //  }
 }
