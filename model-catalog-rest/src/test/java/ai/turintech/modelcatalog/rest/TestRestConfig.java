@@ -1,8 +1,6 @@
 package ai.turintech.modelcatalog.rest;
 
 import ai.turintech.components.architecture.ArchitectureServicePackage;
-import ai.turintech.components.architecture.facade.impl.ArchitectureFacadePackage;
-import ai.turintech.components.architecture.rest.ArchitectureRestPackage;
 import ai.turintech.components.jpa.search.JpaSearchPackage;
 import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
 import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
@@ -39,9 +37,7 @@ import reactor.core.scheduler.Schedulers;
       ModelPackageFacadePackage.class,
       ModelCatalogDtoEntityMapperPackage.class,
       JpaSearchPackage.class,
-      ArchitectureServicePackage.class,
-      ArchitectureFacadePackage.class,
-      ArchitectureRestPackage.class
+      ArchitectureServicePackage.class
     })
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 public class TestRestConfig {
