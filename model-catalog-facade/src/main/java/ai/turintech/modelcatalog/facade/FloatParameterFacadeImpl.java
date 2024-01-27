@@ -4,11 +4,9 @@ import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstrac
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
 import ai.turintech.modelcatalog.entity.FloatParameter;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /** Service Implementation for managing {@link FloatParameter}. */
 @Component
-@Transactional
 public class FloatParameterFacadeImpl
     extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<FloatParameterDTO>
     implements FloatParameterFacade {}

@@ -4,11 +4,9 @@ import ai.turintech.components.architecture.facade.impl.reactive.ReactiveAbstrac
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
 import ai.turintech.modelcatalog.entity.CategoricalParameter;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /** Service Implementation for managing {@link CategoricalParameter} */
 @Component
-@Transactional
 public class CategoricalParameterFacadeImpl
     extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<CategoricalParameterDTO>
     implements CategoricalParameterFacade {}

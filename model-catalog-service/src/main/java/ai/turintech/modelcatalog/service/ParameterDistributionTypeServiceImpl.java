@@ -4,11 +4,9 @@ import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstra
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /** Service Implementation for managing {@link ParameterDistributionType}. */
 @Service
-@Transactional
 public class ParameterDistributionTypeServiceImpl
     extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
         ParameterDistributionTypeDTO, ParameterDistributionType>

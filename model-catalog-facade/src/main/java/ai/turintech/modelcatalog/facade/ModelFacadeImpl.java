@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 /** Service Implementation for managing {@link Model}. */
 @Component
-@Transactional
 public class ModelFacadeImpl extends AbstractSearchFacade<ModelDTO, ModelServiceImpl>
     implements SearchFacade<ModelDTO>, ModelFacade {
 

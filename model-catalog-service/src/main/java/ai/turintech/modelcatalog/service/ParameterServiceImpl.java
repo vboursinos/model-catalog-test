@@ -20,7 +20,6 @@ import reactor.core.scheduler.Scheduler;
 
 /** Service Implementation for managing {@link Parameter}. */
 @Service
-@Transactional
 public class ParameterServiceImpl
     extends ReactiveAbstractUUIDIdentityCrudServiceImpl<ParameterDTO, Parameter>
     implements ParameterService {
