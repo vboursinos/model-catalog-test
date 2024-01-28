@@ -1,8 +1,11 @@
 package ai.turintech.modelcatalog.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ai.turintech.modelcatalog.dto.IntegerParameterValueDTO;
 import ai.turintech.modelcatalog.entity.IntegerParameter;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
@@ -98,5 +101,46 @@ public class IntegerParameterValueServiceTest extends BasicServiceTest {
     Mono<Boolean> existsMono = integerParameterValueService.existsById(nonExistingId);
 
     StepVerifier.create(existsMono).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateIntegerParameterValueService() {
+    Mono<IntegerParameterValueDTO> updatedIntegerParameterValue =
+        integerParameterValueService.partialUpdate(getUpdatedIntegerParameterValueDTO());
+    updatedIntegerParameterValue.subscribe(
+        integerParameterValueDTO -> {
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getUpper(), integerParameterValueDTO.getUpper());
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getId(), integerParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateIntegerParameterValueService() {
+    Mono<IntegerParameterValueDTO> updatedIntegerParameterValue =
+        integerParameterValueService.update(getUpdatedIntegerParameterValueDTO());
+    updatedIntegerParameterValue.subscribe(
+        integerParameterValueDTO -> {
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getUpper(), integerParameterValueDTO.getUpper());
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getId(), integerParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testSaveIntegerParameterValueService() {
+    Mono<IntegerParameterValueDTO> savedIntegerParameterValue =
+        integerParameterValueService.save(getIntegerParameterValueDTO());
+    savedIntegerParameterValue.subscribe(
+        integerParameterValueDTO -> {
+          assertEquals(
+              getIntegerParameterValueDTO().getUpper(), integerParameterValueDTO.getUpper());
+          integerParameterValueService.delete(integerParameterValueDTO.getId()).block();
+        });
   }
 }

@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.facade;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.*;
 import jakarta.transaction.Transactional;
@@ -134,5 +136,43 @@ public class FloatParameterValueFacadeTest extends BasicFacadeTest {
         floatParameterRangeFacade.findOne(UUID.randomUUID());
 
     StepVerifier.create(floatParameterRange).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateFloatParameterRangeFacade() {
+    Mono<FloatParameterRangeDTO> updatedFloatParameterRange =
+        floatParameterRangeFacade.partialUpdate(getUpdatedFloatParameterRangeDTO());
+    updatedFloatParameterRange.subscribe(
+        floatParameterRangeDTO -> {
+          assertEquals(
+              getUpdatedFloatParameterRangeDTO().getLower(), floatParameterRangeDTO.getLower());
+          assertEquals(getUpdatedFloatParameterRangeDTO().getId(), floatParameterRangeDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateFloatParameterRangeFacade() {
+    Mono<FloatParameterRangeDTO> updatedFloatParameterRange =
+        floatParameterRangeFacade.update(getUpdatedFloatParameterRangeDTO());
+    updatedFloatParameterRange.subscribe(
+        floatParameterRangeDTO -> {
+          assertEquals(
+              getUpdatedFloatParameterRangeDTO().getLower(), floatParameterRangeDTO.getLower());
+          assertEquals(getUpdatedFloatParameterRangeDTO().getId(), floatParameterRangeDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testSaveFloatParameterRangeFacade() {
+    Mono<FloatParameterRangeDTO> savedFloatParameterRange =
+        floatParameterRangeFacade.save(getFloatParameterRangeDTO());
+    savedFloatParameterRange.subscribe(
+        floatParameterRangeDTO -> {
+          assertEquals(getFloatParameterRangeDTO().getLower(), floatParameterRangeDTO.getLower());
+          floatParameterRangeFacade.delete(floatParameterRangeDTO.getId()).block();
+        });
   }
 }

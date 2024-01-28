@@ -50,7 +50,7 @@ public class ModelFacadeTest extends BasicFacadeTest {
     model.setEnsembleType(modelEnsembleType);
     model.setFamilyType(modelFamilyType);
     model.setDecisionTree(true);
-    model.setDisplayName("test_displayName");
+    model.setDisplayName("Display1");
 
     return model;
   }
@@ -84,14 +84,46 @@ public class ModelFacadeTest extends BasicFacadeTest {
     return model;
   }
 
+  private ModelDTO getPartialUpdatedModel() {
+    ModelDTO model = new ModelDTO();
+    model.setId(UUID.fromString(EXISTING_MODEL_ID));
+    model.setName("partial_updated_test_model");
+    return model;
+  }
+
   @Test
-  void testSaveModelEnsembleTypeFacade() {
+  void testSaveModelFacade() {
     Mono<ModelDTO> savedModelDTO = modelFacade.save(getModel());
 
     savedModelDTO.subscribe(
         modelDTO -> {
           Assert.assertEquals(getModel().getName(), modelDTO.getName());
           modelFacade.delete(modelDTO.getId()).block();
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateModelFacade() {
+    Mono<ModelDTO> updatedModelDTO = modelFacade.update(getUpdatedModel());
+
+    updatedModelDTO.subscribe(
+        modelDTO -> {
+          Assert.assertEquals(getUpdatedModel().getName(), modelDTO.getName());
+          Assert.assertEquals(getUpdatedModel().getId(), modelDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateModelFacade() {
+    Mono<ModelDTO> updatedModelDTO = modelFacade.partialUpdate(getPartialUpdatedModel());
+
+    updatedModelDTO.subscribe(
+        modelDTO -> {
+          Assert.assertEquals(getPartialUpdatedModel().getName(), modelDTO.getName());
+          Assert.assertEquals(getPartialUpdatedModel().getId(), modelDTO.getId());
+          Assert.assertEquals(getModel().getDisplayName(), modelDTO.getDisplayName());
         });
   }
 

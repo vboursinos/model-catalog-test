@@ -40,6 +40,18 @@ public class IntegerParameterValueFacadeTest extends BasicFacadeTest {
     return integerParameterValueDTO;
   }
 
+  private IntegerParameterValueDTO getUpdatedIntegerParameterValueDTO() {
+    ParameterTypeDefinition parameterTypeDefinition = createParameterTypeDefinition();
+
+    IntegerParameter integerParameter = createIntegerParameter(parameterTypeDefinition);
+
+    IntegerParameterValueDTO integerParameterValueDTO = new IntegerParameterValueDTO();
+    integerParameterValueDTO.setId(UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID));
+    integerParameterValueDTO.setLower(1);
+    integerParameterValueDTO.setUpper(12);
+    return integerParameterValueDTO;
+  }
+
   private IntegerParameter createIntegerParameter(ParameterTypeDefinition parameterTypeDefinition) {
     IntegerParameter integerParameter = new IntegerParameter();
     integerParameter.setId(UUID.fromString(EXISTING_INTEGER_PARAMETER_VALUE_ID));
@@ -125,5 +137,46 @@ public class IntegerParameterValueFacadeTest extends BasicFacadeTest {
         integerParameterValueFacade.findOne(UUID.randomUUID());
 
     StepVerifier.create(integerParameterValue).expectError(NoSuchElementException.class).verify();
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateIntegerParameterValueFacade() {
+    Mono<IntegerParameterValueDTO> updatedIntegerParameterValue =
+        integerParameterValueFacade.partialUpdate(getUpdatedIntegerParameterValueDTO());
+    updatedIntegerParameterValue.subscribe(
+        integerParameterValueDTO -> {
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getUpper(), integerParameterValueDTO.getUpper());
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getId(), integerParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateIntegerParameterValueFacade() {
+    Mono<IntegerParameterValueDTO> updatedIntegerParameterValue =
+        integerParameterValueFacade.update(getUpdatedIntegerParameterValueDTO());
+    updatedIntegerParameterValue.subscribe(
+        integerParameterValueDTO -> {
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getUpper(), integerParameterValueDTO.getUpper());
+          assertEquals(
+              getUpdatedIntegerParameterValueDTO().getId(), integerParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testSaveIntegerParameterValueFacade() {
+    Mono<IntegerParameterValueDTO> savedIntegerParameterValue =
+        integerParameterValueFacade.save(getIntegerParameterValueDTO());
+    savedIntegerParameterValue.subscribe(
+        integerParameterValueDTO -> {
+          assertEquals(
+              getIntegerParameterValueDTO().getUpper(), integerParameterValueDTO.getUpper());
+          integerParameterValueFacade.delete(integerParameterValueDTO.getId()).block();
+        });
   }
 }

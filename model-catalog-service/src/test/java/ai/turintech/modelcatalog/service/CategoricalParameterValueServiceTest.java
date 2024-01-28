@@ -1,7 +1,10 @@
 package ai.turintech.modelcatalog.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import ai.turintech.modelcatalog.entity.*;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
@@ -96,5 +99,51 @@ public class CategoricalParameterValueServiceTest extends BasicServiceTest {
     Mono<Boolean> exists = categoricalParameterValueService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateCategoricalParameterValueService() {
+    Mono<CategoricalParameterValueDTO> updatedCategoricalParameterValue =
+        categoricalParameterValueService.partialUpdate(getUpdatedCategoricalParameterValueDTO());
+    updatedCategoricalParameterValue.subscribe(
+        categoricalParameterValueDTO -> {
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getValue(),
+              categoricalParameterValueDTO.getValue());
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getId(),
+              categoricalParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateCategoricalParameterValueService() {
+    Mono<CategoricalParameterValueDTO> updatedCategoricalParameterValue =
+        categoricalParameterValueService.update(getUpdatedCategoricalParameterValueDTO());
+    updatedCategoricalParameterValue.subscribe(
+        categoricalParameterValueDTO -> {
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getValue(),
+              categoricalParameterValueDTO.getValue());
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getId(),
+              categoricalParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testSaveCategoricalParameterValueService() {
+    Mono<CategoricalParameterValueDTO> savedCategoricalParameterValue =
+        categoricalParameterValueService.save(getCategoricalParameterValueDTO());
+    savedCategoricalParameterValue.subscribe(
+        categoricalParameterValueDTO -> {
+          assertEquals(
+              getCategoricalParameterValueDTO().getValue(),
+              categoricalParameterValueDTO.getValue());
+          categoricalParameterValueService.delete(categoricalParameterValueDTO.getId()).block();
+        });
   }
 }

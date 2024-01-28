@@ -1,8 +1,11 @@
 package ai.turintech.modelcatalog.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.entity.FloatParameter;
 import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
@@ -100,5 +103,43 @@ public class FloatParameterValueServiceTest extends BasicServiceTest {
     Mono<Boolean> exists = floatParameterRangeService.existsById(nonExistingId);
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
+  }
+
+  @Test
+  @Transactional
+  void testPartialUpdateFloatParameterRangeService() {
+    Mono<FloatParameterRangeDTO> updatedFloatParameterRange =
+        floatParameterRangeService.partialUpdate(getUpdatedFloatParameterRangeDTO());
+    updatedFloatParameterRange.subscribe(
+        floatParameterRangeDTO -> {
+          assertEquals(
+              getUpdatedFloatParameterRangeDTO().getLower(), floatParameterRangeDTO.getLower());
+          assertEquals(getUpdatedFloatParameterRangeDTO().getId(), floatParameterRangeDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateFloatParameterRangeService() {
+    Mono<FloatParameterRangeDTO> updatedFloatParameterRange =
+        floatParameterRangeService.update(getUpdatedFloatParameterRangeDTO());
+    updatedFloatParameterRange.subscribe(
+        floatParameterRangeDTO -> {
+          assertEquals(
+              getUpdatedFloatParameterRangeDTO().getLower(), floatParameterRangeDTO.getLower());
+          assertEquals(getUpdatedFloatParameterRangeDTO().getId(), floatParameterRangeDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testSaveFloatParameterRangeService() {
+    Mono<FloatParameterRangeDTO> savedFloatParameterRange =
+        floatParameterRangeService.save(getFloatParameterRangeDTO());
+    savedFloatParameterRange.subscribe(
+        floatParameterRangeDTO -> {
+          assertEquals(getFloatParameterRangeDTO().getLower(), floatParameterRangeDTO.getLower());
+          floatParameterRangeService.delete(floatParameterRangeDTO.getId()).block();
+        });
   }
 }

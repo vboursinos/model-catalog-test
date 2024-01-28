@@ -92,18 +92,6 @@ public class ModelServiceTest extends BasicServiceTest {
 
   @Test
   @Transactional
-  void testSaveModelEnsembleTypeService() {
-    Mono<ModelDTO> savedModelDTO = modelService.save(getModel());
-
-    savedModelDTO.subscribe(
-        modelDTO -> {
-          Assert.assertEquals(getModel().getName(), modelDTO.getName());
-          modelService.delete(modelDTO.getId()).block();
-        });
-  }
-
-  @Test
-  @Transactional
   void testSaveModelService() {
     Mono<ModelDTO> savedModelDTO = modelService.save(getModel());
 
@@ -210,7 +198,7 @@ public class ModelServiceTest extends BasicServiceTest {
   @Transactional
   void testExistsByIdNotExistingModelService() {
     UUID existingModelId = modelService.save(getModel()).block().getId();
-    UUID nonExistingModelId = UUID.randomUUID(); // Assuming this ID does not exist
+    UUID nonExistingModelId = UUID.randomUUID();
 
     Mono<Boolean> existsForExistingId = modelService.existsById(existingModelId);
 

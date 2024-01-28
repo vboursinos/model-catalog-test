@@ -140,4 +140,50 @@ public class CategoricalParameterValueFacadeTest extends BasicFacadeTest {
         .expectError(NoSuchElementException.class)
         .verify();
   }
+
+  @Test
+  @Transactional
+  void testPartialUpdateCategoricalParameterValueFacade() {
+    Mono<CategoricalParameterValueDTO> updatedCategoricalParameterValue =
+        categoricalParameterValueFacade.partialUpdate(getUpdatedCategoricalParameterValueDTO());
+    updatedCategoricalParameterValue.subscribe(
+        categoricalParameterValueDTO -> {
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getValue(),
+              categoricalParameterValueDTO.getValue());
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getId(),
+              categoricalParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testUpdateCategoricalParameterValueFacade() {
+    Mono<CategoricalParameterValueDTO> updatedCategoricalParameterValue =
+        categoricalParameterValueFacade.update(getUpdatedCategoricalParameterValueDTO());
+    updatedCategoricalParameterValue.subscribe(
+        categoricalParameterValueDTO -> {
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getValue(),
+              categoricalParameterValueDTO.getValue());
+          assertEquals(
+              getUpdatedCategoricalParameterValueDTO().getId(),
+              categoricalParameterValueDTO.getId());
+        });
+  }
+
+  @Test
+  @Transactional
+  void testSaveCategoricalParameterValueFacade() {
+    Mono<CategoricalParameterValueDTO> savedCategoricalParameterValue =
+        categoricalParameterValueFacade.save(getCategoricalParameterValueDTO());
+    savedCategoricalParameterValue.subscribe(
+        categoricalParameterValueDTO -> {
+          assertEquals(
+              getCategoricalParameterValueDTO().getValue(),
+              categoricalParameterValueDTO.getValue());
+          categoricalParameterValueFacade.delete(categoricalParameterValueDTO.getId()).block();
+        });
+  }
 }
