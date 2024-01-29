@@ -38,10 +38,12 @@ import reactor.core.scheduler.Schedulers;
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 public class TestServiceConfig {
 
+  private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
+
   @Bean
   public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    dataSource.setDriverClassName("org.postgresql.Driver");
+    dataSource.setDriverClassName(DRIVER_CLASS_NAME);
     dataSource.setUrl(SingletonPostgresContainer.getInstance().getJdbcUrl());
     dataSource.setUsername(SingletonPostgresContainer.getInstance().getUsername());
     dataSource.setPassword(SingletonPostgresContainer.getInstance().getPassword());

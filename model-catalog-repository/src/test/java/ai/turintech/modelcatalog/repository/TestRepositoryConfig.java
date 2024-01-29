@@ -22,10 +22,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class})
 public class TestRepositoryConfig {
 
+  private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
+
   @Bean
   public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    dataSource.setDriverClassName("org.postgresql.Driver");
+    dataSource.setDriverClassName(DRIVER_CLASS_NAME);
     dataSource.setUrl(SingletonPostgresContainer.getInstance().getJdbcUrl());
     dataSource.setUsername(SingletonPostgresContainer.getInstance().getUsername());
     dataSource.setPassword(SingletonPostgresContainer.getInstance().getPassword());
