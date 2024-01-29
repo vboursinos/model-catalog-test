@@ -216,9 +216,7 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
   @Override
   public String toString() {
     return "ModelDTO{"
-        + "id="
-        + getId()
-        + ", name='"
+        + "name='"
         + name
         + '\''
         + ", displayName='"
@@ -227,12 +225,10 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
         + ", description='"
         + description
         + '\''
-        + ", advantages='"
-        + advantages
-        + '\''
-        + ", disadvantages='"
-        + disadvantages
-        + '\''
+        + ", advantages="
+        + Arrays.toString(advantages)
+        + ", disadvantages="
+        + Arrays.toString(disadvantages)
         + ", enabled="
         + enabled
         + ", decisionTree="
@@ -247,13 +243,14 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
         + mlTask
         + ", structure="
         + structure
+        + ", dependencyGroupType="
+        + dependencyGroupType
         + ", type="
         + type
         + ", familyType="
         + familyType
         + ", ensembleType="
         + ensembleType
-        + '\''
         + '}';
   }
 }

@@ -25,6 +25,10 @@ public class DependencyGroupType extends AbstractUUIDIdentityEntity {
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   private Set<Model> models = new HashSet<>();
 
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "dependencyGroupType")
+  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+  private Set<DependencyType> dependencyTypes = new HashSet<>();
+
   // jhipster-needle-entity-add-field - JHipster will add fields here
 
   public String getName() {
@@ -71,7 +75,13 @@ public class DependencyGroupType extends AbstractUUIDIdentityEntity {
     return this;
   }
 
-  // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+  public Set<DependencyType> getDependencyTypes() {
+    return this.dependencyTypes;
+  }
+
+  public void setDependencyTypes(Set<DependencyType> dependencyTypes) {
+    this.dependencyTypes = dependencyTypes;
+  }
 
   @Override
   public boolean equals(Object o) {
@@ -91,9 +101,16 @@ public class DependencyGroupType extends AbstractUUIDIdentityEntity {
     return getClass().hashCode();
   }
 
-  // prettier-ignore
   @Override
   public String toString() {
-    return "DependencyGroupType{" + "id=" + getId() + ", name='" + getName() + "'" + "}";
+    return "DependencyGroupType{"
+        + "name='"
+        + name
+        + '\''
+        + ", models="
+        + models
+        + ", dependencyTypes="
+        + dependencyTypes
+        + '}';
   }
 }

@@ -344,32 +344,45 @@ public class Model extends AbstractUUIDIdentityEntity {
   }
 
   // prettier-ignore
+
   @Override
   public String toString() {
     return "Model{"
-        + "id="
-        + getId()
-        + ", name='"
-        + getName()
-        + "'"
+        + "name='"
+        + name
+        + '\''
         + ", displayName='"
-        + getDisplayName()
-        + "'"
+        + displayName
+        + '\''
         + ", description='"
-        + getDescription()
-        + "'"
-        + ", advantages='"
-        + getAdvantages()
-        + "'"
-        + ", disadvantages='"
-        + getDisadvantages()
-        + "'"
-        + ", enabled='"
-        + getEnabled()
-        + "'"
-        + ", decisionTree='"
-        + getDecisionTree()
-        + "'"
-        + "}";
+        + description
+        + '\''
+        + ", advantages="
+        + Arrays.toString(advantages)
+        + ", disadvantages="
+        + Arrays.toString(disadvantages)
+        + ", enabled="
+        + enabled
+        + ", decisionTree="
+        + decisionTree
+        + ", parameters="
+        + parameters
+        + ", groups="
+        + groups
+        + ", incompatibleMetrics="
+        + incompatibleMetrics
+        + ", mlTask="
+        + mlTask
+        + ", structure="
+        + structure
+        + ", dependencyGroupType="
+        + dependencyGroupType
+        + ", type="
+        + type
+        + ", familyType="
+        + familyType
+        + ", ensembleType="
+        + ensembleType
+        + '}';
   }
 }
