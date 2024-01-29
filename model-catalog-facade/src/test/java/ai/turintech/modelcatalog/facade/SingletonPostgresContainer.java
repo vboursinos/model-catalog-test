@@ -12,7 +12,7 @@ public class SingletonPostgresContainer {
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass")
-            .withInitScript("sql/schema.sql");
+            .withInitScript("sql/create_and_insert.sql");
     container.start();
   }
 
