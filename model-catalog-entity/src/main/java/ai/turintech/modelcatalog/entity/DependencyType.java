@@ -66,8 +66,6 @@ public class DependencyType extends AbstractUUIDIdentityEntity {
         + "name='"
         + name
         + '\''
-        + ", dependencyGroupType="
-        + dependencyGroupType
         + '}';
   }
 }
