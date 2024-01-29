@@ -22,7 +22,6 @@ import reactor.core.scheduler.Schedulers;
 
 /** Service Implementation for managing {@link Model}. */
 @Service
-@Transactional
 public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelDTO>
     implements SearchService<ModelDTO>, ModelService {
   private Logger log = LoggerFactory.getLogger(ModelServiceImpl.class);
@@ -42,7 +41,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
    * @param modelDTO the entity to save.
    * @return the persisted entity.
    */
-  @Transactional
+  @Transactional(readOnly = false)
   public Mono<ModelDTO> save(ModelDTO modelDTO) {
     log.debug("Request to save Model : {}", modelDTO);
     ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO> callable =
@@ -61,7 +60,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
    * @param modelDTO the entity to save.
    * @return the persisted entity.
    */
-  @Transactional
+  @Transactional(readOnly = false)
   public Mono<ModelDTO> update(ModelDTO modelDTO) {
     log.debug("Request to update Model : {}", modelDTO);
     ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO> callable =
@@ -80,7 +79,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
    * @param modelDTO the entity to update partially.
    * @return the persisted entity.
    */
-  @Transactional
+  @Transactional(readOnly = false)
   public Mono<ModelDTO> partialUpdate(ModelDTO modelDTO) {
     log.debug("Request to partially update Model : {}", modelDTO);
     ReactiveUUIDIdentityCrudCallable<ModelDTO, ModelDTO> callable =
@@ -98,6 +97,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
    *
    * @return the list of entities.
    */
+  @Transactional(readOnly = true)
   public Flux<ModelDTO> findAll() {
     log.debug("Request to get all Models");
     return Flux.defer(
@@ -125,7 +125,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
    *
    * @param id the id of the entity.
    */
-  @Transactional
+  @Transactional(readOnly = false)
   public Mono<Void> delete(UUID id) {
     log.debug("Request to delete Model : {}", id);
     ReactiveUUIDIdentityCrudCallable<Void, ModelDTO> callable =
@@ -134,7 +134,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
     return Mono.fromCallable(callable).subscribeOn(jdbcScheduler);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   public Mono<Boolean> existsById(UUID id) {
     log.debug("Request to check if ModelGroupType exists : {}", id);
     ReactiveUUIDIdentityCrudCallable<Boolean, ModelDTO> callable =

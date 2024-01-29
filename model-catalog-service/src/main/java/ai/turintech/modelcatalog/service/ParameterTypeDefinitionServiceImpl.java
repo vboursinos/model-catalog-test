@@ -20,7 +20,6 @@ import reactor.core.scheduler.Schedulers;
 
 /** Service Implementation for managing {@link ParameterTypeDefinition}. */
 @Service
-@Transactional
 public class ParameterTypeDefinitionServiceImpl
     extends ReactiveAbstractUUIDIdentityCrudServiceImpl<
         ParameterTypeDefinitionDTO, ParameterTypeDefinition>

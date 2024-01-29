@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 
 /** Service Implementation for managing {@link Parameter}. */
 @Component
-@Transactional
 public class ParameterFacadeImpl extends ReactiveAbstractUUIDIdentityCrudFacadeImpl<ParameterDTO>
     implements ParameterFacade {
 
