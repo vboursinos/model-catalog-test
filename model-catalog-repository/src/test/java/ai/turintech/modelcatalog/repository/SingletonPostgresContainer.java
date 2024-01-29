@@ -8,7 +8,7 @@ public class SingletonPostgresContainer {
 
   static {
     container =
-        new PostgreSQLContainer<>("postgres:latest")
+        new PostgreSQLContainer<>("postgres:16.1")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass")
