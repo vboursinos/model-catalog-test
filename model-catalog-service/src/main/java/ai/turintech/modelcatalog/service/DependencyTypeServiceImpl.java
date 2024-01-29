@@ -4,7 +4,6 @@ import ai.turintech.components.architecture.service.impl.reactive.ReactiveAbstra
 import ai.turintech.modelcatalog.dto.DependencyTypeDTO;
 import ai.turintech.modelcatalog.entity.DependencyType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /** Service Implementation for managing {@link DependencyType}. */
 @Service

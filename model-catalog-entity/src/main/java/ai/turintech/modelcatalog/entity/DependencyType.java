@@ -62,10 +62,6 @@ public class DependencyType extends AbstractUUIDIdentityEntity {
 
   @Override
   public String toString() {
-    return "DependencyType{"
-        + "name='"
-        + name
-        + '\''
-        + '}';
+    return "DependencyType{" + "name='" + name + '\'' + '}';
   }
 }
