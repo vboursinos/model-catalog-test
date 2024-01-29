@@ -2,11 +2,10 @@ package ai.turintech.modelcatalog.to;
 
 import ai.turintech.components.data.common.to.AbstractUUIDIdentityTO;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Objects;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class DependencyGroupTypeTO extends AbstractUUIDIdentityTO implements Serializable {
+public class DependencyGroupTypeTO extends AbstractUUIDIdentityTO {
 
   private static final long serialVersionUID = -536759035872405018L;
 
