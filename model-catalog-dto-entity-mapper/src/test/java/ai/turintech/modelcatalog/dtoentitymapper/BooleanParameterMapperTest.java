@@ -20,7 +20,8 @@ public class BooleanParameterMapperTest {
   @Autowired private BooleanParameterMapper booleanParameterMapper;
 
   @Test
-  public void testToEntity() {    BooleanParameterDTO booleanParameterDTO = new BooleanParameterDTO();
+  public void testToEntity() {
+    BooleanParameterDTO booleanParameterDTO = new BooleanParameterDTO();
     booleanParameterDTO.setId(UUID.randomUUID());
     booleanParameterDTO.setDefaultValue(true);
 
