@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
-@SpringBootTest
-public class ParameterRepositoryTest extends BasicRepositoryTest {
+@ContextConfiguration(classes = TestRepositoryConfig.class)
+public class ParameterRepositoryTest {
   @Autowired private ParameterRepository parameterRepository;
 
   private static final String PARAMETER_ID = "523e4567-e89b-12d3-a456-426614174001";

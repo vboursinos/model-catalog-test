@@ -1,133 +1,146 @@
 create TABLE metric (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE ml_task_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE model_group_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE model_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE model_family_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE model_ensemble_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE model_structure_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE parameter_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE parameter_distribution_type (
-    id UUID PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 create TABLE model (
-    id uuid PRIMARY KEY,
-    model_type_id uuid REFERENCES model_type (id),
-    ml_task_id uuid REFERENCES ml_task_type (id) NOT NULL,
-    name varchar NOT NULL UNIQUE,
-    display_name varchar NOT NULL,
-    structure_id uuid REFERENCES model_structure_type (id) NOT NULL,
-    description varchar,
-    advantages text[],
-    disadvantages text[],
+    id VARCHAR(36) PRIMARY KEY,
+    model_type_id VARCHAR(36),
+    ml_task_id VARCHAR(36),
+    name VARCHAR NOT NULL UNIQUE,
+    display_name VARCHAR NOT NULL,
+    structure_id VARCHAR(36),
+    description VARCHAR,
+    advantages VARCHAR,
+    disadvantages VARCHAR,
     enabled boolean NOT NULL,
-    ensemble_type_id uuid REFERENCES model_ensemble_type (id),
-    family_type_id uuid REFERENCES model_family_type (id),
-    decision_tree boolean NOT NULL
+    ensemble_type_id VARCHAR(36),
+    family_type_id VARCHAR(36),
+    decision_tree boolean NOT NULL,
+    FOREIGN KEY(model_type_id) REFERENCES model_type(id),
+    FOREIGN KEY(ml_task_id) REFERENCES ml_task_type(id),
+    FOREIGN KEY(structure_id) REFERENCES model_structure_type(id),
+    FOREIGN KEY(ensemble_type_id) REFERENCES model_ensemble_type(id),
+    FOREIGN KEY(family_type_id) REFERENCES model_family_type(id)
 );
 
 create TABLE rel_model__groups (
-    model_id uuid REFERENCES model (id),
-    group_id uuid REFERENCES model_group_type (id)
+    model_id VARCHAR(36),
+    group_id VARCHAR(36),
+    FOREIGN KEY(model_id) REFERENCES model(id),
+    FOREIGN KEY(group_id) REFERENCES model_group_type(id)
 );
 
 create TABLE rel_model__incompatible_metrics (
-    model_id uuid REFERENCES model (id),
-    metric_id uuid REFERENCES metric (id)
+    model_id VARCHAR(36),
+    metric_id VARCHAR(36),
+    FOREIGN KEY(model_id) REFERENCES model(id),
+    FOREIGN KEY(metric_id) REFERENCES metric(id)
 );
 
 create TABLE parameter (
-  id uuid PRIMARY KEY,
-  model_id uuid REFERENCES model (id),
-  name varchar NOT NULL,
-  label varchar NOT NULL,
-  description varchar,
+  id VARCHAR(36) PRIMARY KEY,
+  model_id VARCHAR(36),
+  name VARCHAR NOT NULL,
+  label VARCHAR NOT NULL,
+  description VARCHAR,
   enabled boolean NOT NULL,
   fixed_value boolean NOT NULL,
-  ordering integer NOT NULL
+  ordering integer NOT NULL,
+  FOREIGN KEY(model_id) REFERENCES model(id)
 );
 
 create TABLE parameter_type_definition (
-  id uuid PRIMARY KEY,
-  parameter_id uuid REFERENCES parameter (id) NOT NULL,
-  parameter_type_id uuid REFERENCES parameter_type (id) NOT NULL,
-  parameter_distribution_type_id uuid REFERENCES parameter_distribution_type (id) NOT NULL,
-  ordering integer NOT NULL
+  id VARCHAR(36) PRIMARY KEY,
+  parameter_id VARCHAR(36) NOT NULL,
+  parameter_type_id VARCHAR(36) NOT NULL,
+  parameter_distribution_type_id VARCHAR(36) NOT NULL,
+  ordering integer NOT NULL,
+  FOREIGN KEY(parameter_id) REFERENCES parameter(id),
+  FOREIGN KEY(parameter_type_id) REFERENCES parameter_type(id),
+  FOREIGN KEY(parameter_distribution_type_id) REFERENCES parameter_distribution_type(id)
 );
-
+--
 create TABLE boolean_parameter (
-    id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
-    default_value boolean
+    id VARCHAR(36) PRIMARY KEY,
+    default_value boolean,
+    FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
 
 create TABLE categorical_parameter (
-  id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
-  default_value varchar
+  id VARCHAR(36) PRIMARY KEY,
+  default_value VARCHAR,
+  FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
 
 create TABLE integer_parameter (
-  id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
-  default_value integer
+  id VARCHAR(36) PRIMARY KEY,
+  default_value integer,
+  FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
 
 create TABLE float_parameter (
-  id uuid PRIMARY KEY REFERENCES parameter_type_definition (id),
-  default_value double precision
-);
-
-CREATE TABLE categorical_parameter_value (
-  id uuid PRIMARY KEY,
-  parameter_type_definition_id uuid REFERENCES categorical_parameter (id) NOT NULL,
-  value varchar NOT NULL
+  id VARCHAR(36) PRIMARY KEY,
+  default_value double,
+  FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
 
 CREATE TABLE integer_parameter_value (
-  id uuid PRIMARY KEY,
-  parameter_type_definition_id uuid REFERENCES integer_parameter (id) NOT NULL,
+  id VARCHAR(36) PRIMARY KEY,
+  parameter_type_definition_id VARCHAR(36) NOT NULL,
   lower integer NOT NULL,
-  upper integer NOT NULL
+  upper integer NOT NULL,
+  FOREIGN KEY(parameter_type_definition_id) REFERENCES integer_parameter(id)
 );
 
 CREATE TABLE float_parameter_range (
-  id uuid PRIMARY KEY,
-  parameter_type_definition_id uuid REFERENCES float_parameter (id) NOT NULL,
+  id VARCHAR(36) PRIMARY KEY,
+  parameter_type_definition_id VARCHAR(36) NOT NULL,
   is_left_open boolean NOT NULL,
   is_right_open boolean NOT NULL,
-  lower double precision NOT NULL,
-  upper double precision NOT NULL
+  lower double NOT NULL,
+  upper double NOT NULL,
+  FOREIGN KEY(parameter_type_definition_id) REFERENCES float_parameter(id)
 );
 
 -- Inserting sample data into the "metrics" table
@@ -228,13 +241,6 @@ insert into float_parameter (id, default_value)
 values
   ('323e4567-e89b-12d3-a456-426614174001', 10.1),
   ('323e4567-e89b-12d3-a456-426614174002', 20.2);
-
-INSERT INTO categorical_parameter_value (id, parameter_type_definition_id, value)
-VALUES
-  ('423e4567-e89b-12d3-a456-426614174001', '323e4567-e89b-12d3-a456-426614174001', 'Category1'),
-  ('423e4567-e89b-12d3-a456-426614174002', '323e4567-e89b-12d3-a456-426614174001', 'Category2'),
-  ('423e4567-e89b-12d3-a456-426614174003', '323e4567-e89b-12d3-a456-426614174002', 'Category3'),
-  ('423e4567-e89b-12d3-a456-426614174004', '323e4567-e89b-12d3-a456-426614174002', 'Category4');
 
 INSERT INTO integer_parameter_value (id, parameter_type_definition_id, lower, upper)
 VALUES

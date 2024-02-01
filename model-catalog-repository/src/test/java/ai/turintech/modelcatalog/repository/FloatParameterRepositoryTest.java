@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
-@SpringBootTest
-public class FloatParameterRepositoryTest extends BasicRepositoryTest {
+@ContextConfiguration(classes = TestRepositoryConfig.class)
+public class FloatParameterRepositoryTest {
   @Autowired private FloatParameterRepository floatParameterRepository;
 
   private static final String FLOAT_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";

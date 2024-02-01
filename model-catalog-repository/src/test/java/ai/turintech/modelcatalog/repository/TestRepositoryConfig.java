@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
 import jakarta.persistence.EntityManagerFactory;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -25,29 +27,25 @@ public class TestRepositoryConfig {
   private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
 
   @Bean
-  public DataSource dataSource() {
-    DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    dataSource.setDriverClassName(DRIVER_CLASS_NAME);
-    dataSource.setUrl(SingletonPostgresContainer.getInstance().getJdbcUrl());
-    dataSource.setUsername(SingletonPostgresContainer.getInstance().getUsername());
-    dataSource.setPassword(SingletonPostgresContainer.getInstance().getPassword());
-    return dataSource;
-  }
-
-  @Bean
   public JdbcTemplate jdbcTemplate(DataSource dataSource) {
     return new JdbcTemplate(dataSource);
   }
 
+  @Bean(name = "dataSource")
+  public DataSource h2Database() {
+    EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+    return builder
+        .setType(EmbeddedDatabaseType.H2)
+        .addScript("classpath:sql/create_and_insert_h2.sql")
+        .build();
+  }
+
   @Bean
-  public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
     LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-    em.setDataSource(dataSource);
-    em.setPackagesToScan(
-        "ai.turintech.modelcatalog.entity"); // Package where your JPA entities are located
-    // Additional JPA configuration can be added here
-    JpaVendorAdapter vendorAdapter =
-        new HibernateJpaVendorAdapter(); // or any other JPA vendor adapter
+    em.setDataSource(h2Database());
+    em.setPackagesToScan("ai.turintech.modelcatalog.entity");
+    JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     em.setJpaVendorAdapter(vendorAdapter);
     return em;
   }

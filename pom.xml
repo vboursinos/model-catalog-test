@@ -48,6 +48,7 @@
 		<graphql-jpa-query.version>1.2.0</graphql-jpa-query.version>
 		<mockito.version>5.8.0</mockito.version>
 		<spring-graphql.version>1.2.4</spring-graphql.version>
+		<h2.version>2.1.214</h2.version>
 		<!-- Components -->
 		<jpa-search.version>01.00.00-a2-SNAPSHOT</jpa-search.version>
 		<common-data.version>01.00.00-a2-SNAPSHOT</common-data.version>
@@ -146,6 +147,11 @@
 				<version>${graphql-jpa-query.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.testcontainers</groupId>
 				<artifactId>postgresql</artifactId>
