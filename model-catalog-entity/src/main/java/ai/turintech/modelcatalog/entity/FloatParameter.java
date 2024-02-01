@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "float_parameter")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameter extends ParameterTypeDefinition implements Serializable {
+public class FloatParameter extends ParameterTypeDefinition {
 
   private static final long serialVersionUID = 1L;
 

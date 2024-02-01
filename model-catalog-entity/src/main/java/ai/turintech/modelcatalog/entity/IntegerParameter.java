@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "integer_parameter")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameter extends ParameterTypeDefinition implements Serializable {
+public class IntegerParameter extends ParameterTypeDefinition {
 
   private static final long serialVersionUID = 1L;
 

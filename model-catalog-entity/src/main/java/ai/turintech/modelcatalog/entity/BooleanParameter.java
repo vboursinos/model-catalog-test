@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "boolean_parameter")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameter extends ParameterTypeDefinition implements Serializable {
+public class BooleanParameter extends ParameterTypeDefinition {
 
   private static final long serialVersionUID = 1L;
 

@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "categorical_parameter")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class CategoricalParameter extends ParameterTypeDefinition implements Serializable {
+public class CategoricalParameter extends ParameterTypeDefinition {
 
   private static final long serialVersionUID = 1L;
 
