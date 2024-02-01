@@ -1,7 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 
 /** A BooleanParameter. */
 @Entity

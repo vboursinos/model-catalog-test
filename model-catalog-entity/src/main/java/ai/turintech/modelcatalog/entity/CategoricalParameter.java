@@ -1,7 +1,6 @@
 package ai.turintech.modelcatalog.entity;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
