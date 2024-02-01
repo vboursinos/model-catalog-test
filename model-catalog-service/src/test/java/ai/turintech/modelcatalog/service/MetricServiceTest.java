@@ -1,22 +1,33 @@
 package ai.turintech.modelcatalog.service;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.MetricDTO;
+import ai.turintech.modelcatalog.entity.Metric;
+import ai.turintech.modelcatalog.repository.MetricRepository;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
-@SpringBootTest
-public class MetricServiceTest extends BasicServiceTest {
+@ExtendWith(MockitoExtension.class)
+public class MetricServiceTest {
 
   // String IDs for testing
   private static final String EXISTING_METRIC_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d23";
@@ -24,7 +35,12 @@ public class MetricServiceTest extends BasicServiceTest {
 
   private static final String EXISTING_METRIC_ID_FOR_UPDATE =
       "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d26";
-  @Autowired private MetricService metricService;
+
+  private static final String METRIC_ID_SAVE_RESPONSE = "123e4567-e89b-12d3-a456-426614174099";
+  @Mock private ApplicationContext context;
+  @Mock private MetricRepository repository;
+  @Mock private MapperInterface<MetricDTO, Metric> mapperInterface;
+  @InjectMocks private MetricServiceImpl metricServiceImpl;
 
   private MetricDTO getMetricDTO() {
     MetricDTO metricDTO = new MetricDTO();
@@ -39,26 +55,65 @@ public class MetricServiceTest extends BasicServiceTest {
     return metricDTO;
   }
 
+  private MetricDTO getMetricDTOSaveResponse() {
+    MetricDTO metricDTO = new MetricDTO();
+    metricDTO.setId(UUID.fromString(METRIC_ID_SAVE_RESPONSE));
+    metricDTO.setMetric("test_metric");
+    return metricDTO;
+  }
+
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+
+    ReflectionTestUtils.setField(metricServiceImpl, "context", context);
+    ReflectionTestUtils.setField(metricServiceImpl, "jdbcScheduler", Schedulers.immediate());
+    ReflectionTestUtils.setField(metricServiceImpl, "repository", repository);
+    ReflectionTestUtils.setField(metricServiceImpl, "mapperInterface", mapperInterface);
+  }
+
   @Test
   void testFindAllMetricService() {
-    Mono<List<MetricDTO>> metrics = metricService.findAll();
 
-    List<MetricDTO> metricDTOList = metrics.block();
+    List<MetricDTO> metricDTOList = Arrays.asList(getMetricDTO());
 
-    Assert.assertNotNull(metricDTOList);
-    Assert.assertEquals(4, metricDTOList.size());
-    Assert.assertEquals("Metric1", metricDTOList.get(0).getMetric());
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<List<MetricDTO>, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("findAll"),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(metricDTOList);
+
+    Mono<List<MetricDTO>> metricListMono = metricServiceImpl.findAll();
+    StepVerifier.create(metricListMono).expectNext(metricDTOList).verifyComplete();
   }
 
   @Test
   void testFindByIdForExistingId() {
     UUID existingId = UUID.fromString(EXISTING_METRIC_ID);
-    Mono<MetricDTO> metric = metricService.findOne(existingId);
 
-    StepVerifier.create(metric)
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<MetricDTO, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("findById"),
+            eq(existingId),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+    when(callable.call()).thenReturn(getMetricDTO());
+
+    Mono<MetricDTO> metricDTOMono = metricServiceImpl.findOne(existingId);
+
+    StepVerifier.create(metricDTOMono)
         .expectNextMatches(
             metricDTO -> {
-              Assert.assertEquals(existingId, metricDTO.getId());
+              Assert.assertEquals("test_metric", metricDTO.getMetric());
               return true;
             })
         .verifyComplete();
@@ -67,52 +122,105 @@ public class MetricServiceTest extends BasicServiceTest {
   @Test
   void testFindByIdForNonExistingId() {
     UUID nonExistingId = UUID.fromString(NON_EXISTING_METRIC_ID);
-    Mono<MetricDTO> metric = metricService.findOne(nonExistingId);
 
-    StepVerifier.create(metric)
-        .expectError(NoSuchElementException.class) // Expect a NoSuchElementException
-        .verify();
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<MetricDTO, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("findById"),
+            eq(nonExistingId),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+    when(callable.call()).thenThrow(NoSuchElementException.class);
+
+    Mono<MetricDTO> metricDTOMono = metricServiceImpl.findOne(nonExistingId);
+
+    StepVerifier.create(metricDTOMono).expectError(NoSuchElementException.class).verify();
   }
 
   @Test
   void testExistsByIdForExistingId() {
-    // Test case when the ID exists
     UUID existingId = UUID.fromString(EXISTING_METRIC_ID);
-    Mono<Boolean> existsForExistingId = metricService.existsById(existingId);
 
-    StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Boolean, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("existsById"),
+            eq(existingId),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(true);
+
+    Mono<Boolean> exists = metricServiceImpl.existsById(existingId);
+
+    StepVerifier.create(exists).expectNext(true).verifyComplete();
   }
 
   @Test
   void testExistsByIdForNonExistingId() {
-    // Test case when the ID does not exist
     UUID nonExistingId = UUID.fromString(NON_EXISTING_METRIC_ID);
-    Mono<Boolean> existsForNonExistingId = metricService.existsById(nonExistingId);
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Boolean, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("existsById"),
+            eq(nonExistingId),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(false);
+
+    Mono<Boolean> existsForNonExistingId = metricServiceImpl.existsById(nonExistingId);
 
     StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();
   }
 
   @Test
-  void testSaveAndDeleteMetricService() {
-    Mono<MetricDTO> savedMetric = metricService.save(getMetricDTO());
+  void testSaveMetricService() {
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<MetricDTO, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("create"),
+            eq(getMetricDTOSaveResponse()),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(getMetricDTOSaveResponse());
+
+    Mono<MetricDTO> savedMetric = metricServiceImpl.save(getMetricDTOSaveResponse());
 
     StepVerifier.create(savedMetric)
         .expectNextMatches(
             metricDTO -> {
-              Assert.assertEquals(getMetricDTO().getMetric(), metricDTO.getMetric());
+              Assert.assertEquals(getMetricDTOSaveResponse().getMetric(), metricDTO.getMetric());
               return true;
             })
         .verifyComplete();
-
-    // Verify deletion
-    Mono<Void> deletion = savedMetric.flatMap(metricDTO -> metricService.delete(metricDTO.getId()));
-
-    StepVerifier.create(deletion).verifyComplete();
   }
 
   @Test
   void testUpdateMetricService() {
-    Mono<MetricDTO> updatedMetric = metricService.update(getUpdatedMetricDTO());
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<MetricDTO, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("update"),
+            eq(getUpdatedMetricDTO()),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(getUpdatedMetricDTO());
+
+    Mono<MetricDTO> updatedMetric = metricServiceImpl.update(getUpdatedMetricDTO());
 
     StepVerifier.create(updatedMetric)
         .expectNextMatches(
@@ -125,7 +233,20 @@ public class MetricServiceTest extends BasicServiceTest {
 
   @Test
   void testPartialUpdateMetricService() {
-    Mono<MetricDTO> updatedMetric = metricService.partialUpdate(getUpdatedMetricDTO());
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<MetricDTO, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("partialUpdate"),
+            eq(getUpdatedMetricDTO()),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(getUpdatedMetricDTO());
+
+    Mono<MetricDTO> updatedMetric = metricServiceImpl.partialUpdate(getUpdatedMetricDTO());
 
     StepVerifier.create(updatedMetric)
         .expectNextMatches(
@@ -134,5 +255,21 @@ public class MetricServiceTest extends BasicServiceTest {
               return true;
             })
         .verifyComplete();
+  }
+
+  @Test
+  void testDeleteMetricService() {
+    UUID existingId = UUID.fromString(EXISTING_METRIC_ID);
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Void, MetricDTO, Metric> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("delete"),
+            eq(existingId),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+    metricServiceImpl.delete(existingId);
   }
 }

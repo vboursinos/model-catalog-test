@@ -1,29 +1,42 @@
 package ai.turintech.modelcatalog.service;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.entity.FloatParameter;
+import ai.turintech.modelcatalog.repository.FloatParameterRepository;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
-@SpringBootTest
-public class FloatParameterServiceTest extends BasicServiceTest {
+@ExtendWith(MockitoExtension.class)
+public class FloatParameterServiceTest {
 
   private final String EXISTING_FLOAT_PARAMETER_ID = "323e4567-e89b-12d3-a456-426614174001";
   private final String NON_EXISTING_FLOAT_PARAMETER_ID = UUID.randomUUID().toString();
 
-  @Autowired private FloatParameterService floatParameterService;
+  @Mock private ApplicationContext context;
+  @Mock private FloatParameterRepository repository;
+  @Mock private MapperInterface<FloatParameterDTO, FloatParameter> mapperInterface;
+  @InjectMocks private FloatParameterServiceImpl floatParameterServiceImpl;
 
   private FloatParameterDTO getFloatParameterDTO() {
     ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
@@ -36,26 +49,62 @@ public class FloatParameterServiceTest extends BasicServiceTest {
     return floatParameterDTO;
   }
 
-  @Test
-  @Transactional
-  void testFindAllFloatParameterService() {
-    Mono<List<FloatParameterDTO>> floatParametersMono = floatParameterService.findAll();
-    List<FloatParameterDTO> floatParameterDTOS = floatParametersMono.block();
-    Assert.assertNotNull(floatParameterDTOS);
-    Assert.assertEquals(2, floatParameterDTOS.size());
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+
+    ReflectionTestUtils.setField(floatParameterServiceImpl, "context", context);
+    ReflectionTestUtils.setField(
+        floatParameterServiceImpl, "jdbcScheduler", Schedulers.immediate());
+    ReflectionTestUtils.setField(floatParameterServiceImpl, "repository", repository);
+    ReflectionTestUtils.setField(floatParameterServiceImpl, "mapperInterface", mapperInterface);
   }
 
   @Test
-  @Transactional
+  void testFindAllFloatParameterService() {
+
+    List<FloatParameterDTO> floatParameterDTOList = Arrays.asList(getFloatParameterDTO());
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<
+            List<FloatParameterDTO>, FloatParameterDTO, FloatParameter>
+        callable = mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("findAll"),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(floatParameterDTOList);
+
+    Mono<List<FloatParameterDTO>> floatParametersMono = floatParameterServiceImpl.findAll();
+    StepVerifier.create(floatParametersMono).expectNext(floatParameterDTOList).verifyComplete();
+  }
+
+  @Test
   void testFindByIdFloatParameterService() {
     UUID existingId = UUID.fromString(EXISTING_FLOAT_PARAMETER_ID);
-    Mono<FloatParameterDTO> floatParameterDTOMono = floatParameterService.findOne(existingId);
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<
+            FloatParameterDTO, FloatParameterDTO, FloatParameter>
+        callable = mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("findById"),
+            eq(existingId),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+    when(callable.call()).thenReturn(getFloatParameterDTO());
+
+    Mono<FloatParameterDTO> floatParameterDTOMono = floatParameterServiceImpl.findOne(existingId);
 
     StepVerifier.create(floatParameterDTOMono)
         .expectNextMatches(
             floatParameterDTO -> {
-              System.out.println("Found FloatParameter by ID: " + floatParameterDTO);
-              Assertions.assertTrue(floatParameterDTO.getDefaultValue() == 10.1);
+              Assert.assertEquals(
+                  getFloatParameterDTO().getDefaultValue(), floatParameterDTO.getDefaultValue());
               return true;
             })
         .verifyComplete();
@@ -64,15 +113,37 @@ public class FloatParameterServiceTest extends BasicServiceTest {
   @Test
   void testExistsByIdFloatParameterServiceForExistingId() {
     UUID existingId = UUID.fromString(EXISTING_FLOAT_PARAMETER_ID);
-    Mono<Boolean> exists = floatParameterService.existsById(existingId);
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Boolean, FloatParameterDTO, FloatParameter>
+        callable = mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("existsById"),
+            eq(existingId),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+    when(callable.call()).thenReturn(true);
+
+    Mono<Boolean> exists = floatParameterServiceImpl.existsById(existingId);
 
     StepVerifier.create(exists).expectNext(true).verifyComplete();
   }
 
   @Test
   void testExistsByIdFloatParameterServiceForNonExistingId() {
-    UUID nonExistingId = UUID.fromString(NON_EXISTING_FLOAT_PARAMETER_ID);
-    Mono<Boolean> exists = floatParameterService.existsById(nonExistingId);
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Boolean, FloatParameterDTO, FloatParameter>
+        callable = mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveAbstractUUIDIdentityCrudCallableImpl.class),
+            eq("existsById"),
+            eq(UUID.fromString(NON_EXISTING_FLOAT_PARAMETER_ID)),
+            eq(repository),
+            eq(mapperInterface)))
+        .thenReturn(callable);
+    when(callable.call()).thenReturn(false);
+
+    Mono<Boolean> exists =
+        floatParameterServiceImpl.existsById(UUID.fromString(NON_EXISTING_FLOAT_PARAMETER_ID));
 
     StepVerifier.create(exists).expectNext(false).verifyComplete();
   }

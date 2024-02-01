@@ -1,215 +1,263 @@
 package ai.turintech.modelcatalog.service;
 
-import ai.turintech.modelcatalog.dto.*;
-import ai.turintech.modelcatalog.entity.*;
-import jakarta.transaction.Transactional;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
+import ai.turintech.components.architecture.reactive.ReactiveUUIDIdentityCrudCallable;
+import ai.turintech.components.mapper.api.MapperInterface;
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
+import ai.turintech.modelcatalog.entity.Model;
+import ai.turintech.modelcatalog.repository.ModelRepository;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
-@SpringBootTest
-public class ModelServiceTest extends BasicServiceTest {
-  private static final String ML_TASK_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private static final String MODEL_STRUCTURE_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
-  private static final String MODEL_ENSEMBLE_TYPE_ID = "3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29";
-  private static final String MODEL_FAMILY_TYPE_ID = "4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21";
+@ExtendWith({MockitoExtension.class})
+public class ModelServiceTest {
+
   private static final String EXISTING_MODEL_ID = "123e4567-e89b-12d3-a456-426614174001";
+  private static final String NON_EXISTING_MODEL_ID = "123e4567-e89b-12d3-a456-426614174099";
 
-  @Autowired private ModelService modelService;
+  @Mock private ApplicationContext context;
+  @Mock private ModelRepository repository;
+  @Mock private MapperInterface<ModelDTO, Model> mapperInterface;
 
-  private ModelDTO getModel() {
-    MlTaskTypeDTO mlTaskType = new MlTaskTypeDTO();
-    mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
+  @Mock private ModelMapper modelMapper;
+  @InjectMocks private ModelServiceImpl modelServiceImpl;
 
-    ModelStructureTypeDTO modelStructureType = new ModelStructureTypeDTO();
-    modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
 
-    ModelEnsembleTypeDTO modelEnsembleType = new ModelEnsembleTypeDTO();
-    modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
-
-    ModelFamilyTypeDTO modelFamilyType = new ModelFamilyTypeDTO();
-    modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
-
-    ModelDTO model = new ModelDTO();
-    model.setName("test_model");
-    model.setEnabled(true);
-    model.setAdvantages(new String[] {"advantage1", "advantage2"});
-    model.setDisadvantages(new String[] {"disadvantage1", "disadvantage2"});
-    model.setMlTask(mlTaskType);
-    model.setStructure(modelStructureType);
-    model.setEnsembleType(modelEnsembleType);
-    model.setFamilyType(modelFamilyType);
-    model.setDecisionTree(true);
-    model.setDisplayName("test_displayName");
-
-    return model;
+    ReflectionTestUtils.setField(modelServiceImpl, "context", context);
+    ReflectionTestUtils.setField(modelServiceImpl, "jdbcScheduler", Schedulers.immediate());
+    //    ReflectionTestUtils.setField(modelServiceImpl, "repository", repository);
+    //    ReflectionTestUtils.setField(modelServiceImpl, "mapperInterface", mapperInterface);
   }
 
-  private ModelDTO getUpdatedModel() {
-    ModelDTO model = new ModelDTO();
-    model.setId(UUID.fromString(EXISTING_MODEL_ID));
+  private ModelDTO getModelDTO() {
+    ModelDTO modelDTO = new ModelDTO();
+    modelDTO.setName("test_name");
+    return modelDTO;
+  }
 
-    MlTaskTypeDTO mlTaskType = new MlTaskTypeDTO();
-    mlTaskType.setName("mltask1");
-    mlTaskType.setId(UUID.fromString(ML_TASK_TYPE_ID));
+  private ModelDTO getUpdatedModelDTO() {
+    ModelDTO modelDTO = new ModelDTO();
+    modelDTO.setId(UUID.fromString(EXISTING_MODEL_ID));
+    modelDTO.setName("test_updated_model");
+    return modelDTO;
+  }
 
-    ModelStructureTypeDTO modelStructureType = new ModelStructureTypeDTO();
-    modelStructureType.setName("modelstructuretype1");
-    modelStructureType.setId(UUID.fromString(MODEL_STRUCTURE_TYPE_ID));
-
-    ModelEnsembleTypeDTO modelEnsembleType = new ModelEnsembleTypeDTO();
-    modelEnsembleType.setName("modelensembletype3");
-    modelEnsembleType.setId(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID));
-
-    ModelFamilyTypeDTO modelFamilyType = new ModelFamilyTypeDTO();
-    modelFamilyType.setName("modelfamilytype4");
-    modelFamilyType.setId(UUID.fromString(MODEL_FAMILY_TYPE_ID));
-
-    model.setName("updated_test_model");
-    model.setEnabled(true);
-    model.setAdvantages(new String[] {"advantage1", "advantage2"});
-    model.setDisadvantages(new String[] {"disadvantage1", "disadvantage2"});
-    model.setMlTask(mlTaskType);
-    model.setStructure(modelStructureType);
-    model.setEnsembleType(modelEnsembleType);
-    model.setFamilyType(modelFamilyType);
-    model.setDecisionTree(true);
-    model.setDisplayName("Display1");
-    return model;
+  private ModelDTO getSavedModelDTO() {
+    ModelDTO modelDTO = new ModelDTO();
+    modelDTO.setId(UUID.fromString(EXISTING_MODEL_ID));
+    modelDTO.setName("test_save_model");
+    return modelDTO;
   }
 
   @Test
-  @Transactional
-  void testSaveModelService() {
-    Mono<ModelDTO> savedModelDTO = modelService.save(getModel());
+  void testFindByIdModelServiceForExistingId() {
+    UUID existingId = UUID.fromString(EXISTING_MODEL_ID);
 
-    StepVerifier.create(savedModelDTO)
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<ModelDTO, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("findById"),
+            eq(existingId),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(getModelDTO());
+
+    Mono<ModelDTO> model = modelServiceImpl.findOne(existingId);
+
+    StepVerifier.create(model)
         .expectNextMatches(
             modelDTO -> {
-              Assert.assertEquals(getModel().getName(), modelDTO.getName());
+              Assert.assertEquals("test_name", modelDTO.getName());
               return true;
             })
         .verifyComplete();
-
-    Mono<Void> deletion = savedModelDTO.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
-
-    StepVerifier.create(deletion).verifyComplete();
   }
 
   @Test
-  @Transactional
-  void testUpdateModelService() {
-    Mono<ModelDTO> savedModel = modelService.save(getModel());
+  void testFindByIdModelServiceForNonExistingId() {
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_ID);
 
-    Mono<ModelDTO> updatedModel =
-        savedModel.flatMap(
-            initialModel -> {
-              ModelDTO updatedModelDTO = getUpdatedModel();
-              updatedModelDTO.setId(initialModel.getId());
-              return modelService.update(updatedModelDTO);
-            });
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<ModelDTO, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
 
-    StepVerifier.create(updatedModel)
-        .expectNextMatches(
-            updatedModelDTO -> {
-              Assert.assertEquals(getUpdatedModel().getName(), updatedModelDTO.getName());
-              return true;
-            })
-        .verifyComplete();
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("findById"),
+            eq(nonExistingId),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
 
-    Mono<Void> deletion = updatedModel.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
+    when(callable.call()).thenThrow(NoSuchElementException.class);
 
-    StepVerifier.create(deletion).verifyComplete();
+    Mono<ModelDTO> model = modelServiceImpl.findOne(nonExistingId);
+
+    StepVerifier.create(model).expectError(NoSuchElementException.class).verify();
   }
 
   @Test
-  @Transactional
-  void testPartialUpdateModelService() {
-    Mono<ModelDTO> savedModel = modelService.save(getModel());
+  void testExistsByIdModelServiceForExistingId() {
+    UUID existingId = UUID.fromString(EXISTING_MODEL_ID);
 
-    Mono<ModelDTO> updatedModel =
-        savedModel.flatMap(
-            initialModel -> {
-              ModelDTO updatedModelDTO = getUpdatedModel();
-              updatedModelDTO.setId(initialModel.getId());
-              return modelService.partialUpdate(updatedModelDTO);
-            });
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Boolean, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
 
-    StepVerifier.create(updatedModel)
-        .expectNextMatches(
-            updatedModelDTO -> {
-              Assert.assertEquals(getUpdatedModel().getName(), updatedModelDTO.getName());
-              return true;
-            })
-        .verifyComplete();
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("existsById"),
+            eq(existingId),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
 
-    Mono<Void> deletion = updatedModel.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
+    when(callable.call()).thenReturn(true);
 
-    StepVerifier.create(deletion).verifyComplete();
-  }
-
-  @Test
-  @Transactional
-  void testFindByIdModelService() {
-    UUID modelId = modelService.save(getModel()).block().getId();
-
-    Mono<ModelDTO> foundModel = modelService.findOne(modelId);
-
-    StepVerifier.create(foundModel)
-        .expectNextMatches(
-            modelDTO -> {
-              Assert.assertEquals(getModel().getName(), modelDTO.getName());
-              return true;
-            })
-        .verifyComplete();
-
-    Mono<Void> deletion = foundModel.flatMap(modelDTO -> modelService.delete(modelDTO.getId()));
-
-    StepVerifier.create(deletion).verifyComplete();
-  }
-
-  @Test
-  @Transactional
-  void testExistsByIdModelService() {
-    UUID modelId = modelService.save(getModel()).block().getId();
-
-    Mono<Boolean> exists = modelService.existsById(modelId);
-
-    StepVerifier.create(exists).expectNext(true).verifyComplete();
-
-    Mono<Void> deletion = modelService.delete(modelId);
-
-    StepVerifier.create(deletion).verifyComplete();
-  }
-
-  @Test
-  @Transactional
-  void testExistsByIdNotExistingModelService() {
-    UUID existingModelId = modelService.save(getModel()).block().getId();
-    UUID nonExistingModelId = UUID.randomUUID();
-
-    Mono<Boolean> existsForExistingId = modelService.existsById(existingModelId);
+    Mono<Boolean> existsForExistingId = modelServiceImpl.existsById(existingId);
 
     StepVerifier.create(existsForExistingId).expectNext(true).verifyComplete();
+  }
 
-    Mono<Boolean> existsForNonExistingId = modelService.existsById(nonExistingModelId);
+  @Test
+  void testExistsByIdModelServiceForNonExistingId() {
+    UUID nonExistingId = UUID.fromString(NON_EXISTING_MODEL_ID);
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Boolean, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("existsById"),
+            eq(nonExistingId),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(false);
+
+    Mono<Boolean> existsForNonExistingId = modelServiceImpl.existsById(nonExistingId);
 
     StepVerifier.create(existsForNonExistingId).expectNext(false).verifyComplete();
+  }
 
-    Mono<Void> deletion = modelService.delete(existingModelId);
+  @Test
+  void testSaveModelService() {
 
-    StepVerifier.create(deletion).verifyComplete();
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<ModelDTO, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("create"),
+            eq(getSavedModelDTO()),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(getSavedModelDTO());
+
+    Mono<ModelDTO> savedModel = modelServiceImpl.save(getSavedModelDTO());
+
+    StepVerifier.create(savedModel)
+        .expectNextMatches(
+            savedModelDTO -> {
+              Assert.assertEquals(getSavedModelDTO().getName(), savedModelDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testUpdateModelService() {
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<ModelDTO, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("update"),
+            eq(getUpdatedModelDTO()),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(getUpdatedModelDTO());
+
+    Mono<ModelDTO> updatedModel = modelServiceImpl.update(getUpdatedModelDTO());
+
+    StepVerifier.create(updatedModel)
+        .expectNextMatches(
+            updatedModelDTO -> {
+              Assert.assertEquals(getUpdatedModelDTO().getName(), updatedModelDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testPartialUpdateModelService() {
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<ModelDTO, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("partialUpdate"),
+            eq(getUpdatedModelDTO()),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
+
+    when(callable.call()).thenReturn(getUpdatedModelDTO());
+
+    Mono<ModelDTO> partialUpdatedModel = modelServiceImpl.partialUpdate(getUpdatedModelDTO());
+
+    StepVerifier.create(partialUpdatedModel)
+        .expectNextMatches(
+            partialUpdatedModelDTO -> {
+              Assert.assertEquals(getUpdatedModelDTO().getName(), partialUpdatedModelDTO.getName());
+              return true;
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  void testDeleteModelService() {
+    UUID existingId = UUID.fromString(EXISTING_MODEL_ID);
+
+    ReactiveAbstractUUIDIdentityCrudCallableImpl<Void, ModelDTO, Model> callable =
+        mock(ReactiveAbstractUUIDIdentityCrudCallableImpl.class);
+    when(context.getBean(
+            eq(ReactiveUUIDIdentityCrudCallable.class),
+            eq("delete"),
+            eq(existingId),
+            eq(repository),
+            eq(modelMapper)))
+        .thenReturn(callable);
+    modelServiceImpl.delete(existingId);
   }
 }

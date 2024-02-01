@@ -1,57 +1,62 @@
 package ai.turintech.modelcatalog.service;
 
+import static org.mockito.Mockito.when;
+
+import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.dtoentitymapper.ParameterTypeDefinitionMapper;
+import ai.turintech.modelcatalog.entity.ParameterTypeDefinition;
+import ai.turintech.modelcatalog.repository.ParameterTypeDefinitionRepository;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
-@SpringBootTest
-public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
+@ExtendWith({MockitoExtension.class})
+public class ParameterTypeDefinitionServiceTest extends TestServiceConfig {
 
-  @Autowired private ParameterTypeDefinitionService parameterTypeDefinitionService;
-
-  // UUID strings
   private static final String EXISTING_PARAMETER_TYPE_DEFINITION_ID =
       "323e4567-e89b-12d3-a456-426614174001";
-  private static final String NON_EXISTING_PARAMETER_TYPE_DEFINITION_ID =
-      "a12b34cd-5678-90ef-1234-567890abcdef";
 
   private static final String PARAMETER_DISTRIBUTION_TYPE_ID =
       "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
   private static final String PARAMETER_TYPE_ID = "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
 
-  private ParameterTypeDefinitionDTO getParameterTypeDefinitionDTO() {
+  @Mock private ApplicationContext context;
+  @Mock private ParameterTypeDefinitionRepository repository;
 
-    ParameterDistributionTypeDTO parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
-    parameterDistributionTypeDTO.setId(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID));
-    parameterDistributionTypeDTO.setName("parameterdistributiontype1");
+  @Mock
+  private MapperInterface<ParameterTypeDefinitionDTO, ParameterTypeDefinition> mapperInterface;
 
-    ParameterTypeDTO parameterTypeDTO = new ParameterTypeDTO();
-    parameterTypeDTO.setId(UUID.fromString(PARAMETER_TYPE_ID));
-    parameterTypeDTO.setName("parametertype1");
+  @Mock private ParameterTypeDefinitionMapper parameterTypeDefinitionMapper;
+  @InjectMocks private ParameterTypeDefinitionServiceImpl parameterTypeDefinitionServiceImpl;
 
-    ParameterTypeDefinitionDTO parameterTypeDefinitionDTO = new ParameterTypeDefinitionDTO();
-    parameterTypeDefinitionDTO.setDistribution(parameterDistributionTypeDTO);
-    parameterTypeDefinitionDTO.setType(parameterTypeDTO);
-    parameterTypeDefinitionDTO.setOrdering(10);
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
 
-    return parameterTypeDefinitionDTO;
+    ReflectionTestUtils.setField(parameterTypeDefinitionServiceImpl, "context", context);
+    ReflectionTestUtils.setField(
+        parameterTypeDefinitionServiceImpl, "jdbcScheduler", Schedulers.immediate());
+    ReflectionTestUtils.setField(parameterTypeDefinitionServiceImpl, "repository", repository);
+    ReflectionTestUtils.setField(
+        parameterTypeDefinitionServiceImpl, "mapperInterface", mapperInterface);
   }
 
-  private ParameterTypeDefinitionDTO getUpdatedParameterTypeDefinitionDTO() {
-
+  private ParameterTypeDefinitionDTO getSavedParameterTypeDefinitionDTO() {
     ParameterDistributionTypeDTO parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
     parameterDistributionTypeDTO.setId(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID));
     parameterDistributionTypeDTO.setName("parameterdistributiontype1");
@@ -64,103 +69,112 @@ public class ParameterTypeDefinitionServiceTest extends BasicServiceTest {
     parameterTypeDefinitionDTO.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID));
     parameterTypeDefinitionDTO.setDistribution(parameterDistributionTypeDTO);
     parameterTypeDefinitionDTO.setType(parameterTypeDTO);
-    parameterTypeDefinitionDTO.setOrdering(12);
+    parameterTypeDefinitionDTO.setOrdering(13);
 
     return parameterTypeDefinitionDTO;
   }
 
-  @Test
-  @Transactional
-  void testFindAllParameterTypeDefinitionService() {
-    Mono<List<ParameterTypeDefinitionDTO>> parameterTypeDefinitionDTOsMono =
-        parameterTypeDefinitionService.findAll();
-    List<ParameterTypeDefinitionDTO> parameterTypeDefinitionDTOs =
-        parameterTypeDefinitionDTOsMono.block();
+  private ParameterTypeDefinition getSavedParameterTypeDefinition() {
+    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
+    parameterTypeDefinition.setId(UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID));
+    parameterTypeDefinition.setOrdering(13);
 
-    Assert.assertNotNull(parameterTypeDefinitionDTOs);
-    Assert.assertEquals(3, parameterTypeDefinitionDTOs.size());
-    Assert.assertTrue(1 == parameterTypeDefinitionDTOs.get(0).getOrdering());
+    return parameterTypeDefinition;
   }
 
   @Test
-  @Transactional
-  void testFindByIdParameterTypeDefinitionService() {
-    UUID existingId = UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID);
-    Mono<ParameterTypeDefinitionDTO> parameterTypeDefinitionDTOMono =
-        parameterTypeDefinitionService.findOne(existingId);
+  void testFindAllStream() {
+    List<ParameterTypeDefinition> mockParameterTypeDefinitions =
+        Arrays.asList(getSavedParameterTypeDefinition());
 
-    StepVerifier.create(parameterTypeDefinitionDTOMono)
-        .expectNextMatches(
-            parameterTypeDefinitionDTO -> {
-              Assert.assertTrue(1 == parameterTypeDefinitionDTO.getOrdering());
-              return true;
-            })
+    List<ParameterTypeDefinitionDTO> mockParameterTypeDefinitionDTOList =
+        Arrays.asList(getSavedParameterTypeDefinitionDTO());
+
+    when(repository.findAll()).thenReturn(mockParameterTypeDefinitions);
+
+    when(parameterTypeDefinitionMapper.to(mockParameterTypeDefinitions.get(0)))
+        .thenReturn(mockParameterTypeDefinitionDTOList.get(0));
+
+    Flux<ParameterTypeDefinitionDTO> result = parameterTypeDefinitionServiceImpl.findAllStream();
+
+    StepVerifier.create(result)
+        .expectNextCount(mockParameterTypeDefinitions.size())
         .verifyComplete();
   }
 
   @Test
-  @Transactional
-  void testExistsByIdParameterTypeDefinitionServiceForExistingId() {
-    UUID existingId = UUID.fromString(EXISTING_PARAMETER_TYPE_DEFINITION_ID);
-    Mono<Boolean> exists = parameterTypeDefinitionService.existsById(existingId);
+  void testFindAllWhereIntegerParameterIsNull() {
+    List<ParameterTypeDefinition> mockParameterTypeDefinitions =
+        Arrays.asList(getSavedParameterTypeDefinition());
 
-    StepVerifier.create(exists).expectNext(true).verifyComplete();
+    List<ParameterTypeDefinitionDTO> mockParameterTypeDefinitionDTOList =
+        Arrays.asList(getSavedParameterTypeDefinitionDTO());
+
+    when(repository.findAll()).thenReturn(Arrays.asList(getSavedParameterTypeDefinition()));
+
+    when(parameterTypeDefinitionMapper.to(mockParameterTypeDefinitions.get(0)))
+        .thenReturn(mockParameterTypeDefinitionDTOList.get(0));
+
+    Flux<ParameterTypeDefinitionDTO> result =
+        parameterTypeDefinitionServiceImpl.findAllWhereIntegerParameterIsNull();
+
+    StepVerifier.create(result).expectNextCount(1).verifyComplete();
   }
 
   @Test
-  @Transactional
-  void testExistsByIdParameterTypeDefinitionServiceForNonExistingId() {
-    UUID nonExistingId = UUID.fromString(NON_EXISTING_PARAMETER_TYPE_DEFINITION_ID);
-    Mono<Boolean> exists = parameterTypeDefinitionService.existsById(nonExistingId);
+  void testFindAllWhereCategoricalParameterIsNull() {
+    List<ParameterTypeDefinition> mockParameterTypeDefinitions =
+        Arrays.asList(getSavedParameterTypeDefinition());
 
-    StepVerifier.create(exists).expectNext(false).verifyComplete();
+    List<ParameterTypeDefinitionDTO> mockParameterTypeDefinitionDTOList =
+        Arrays.asList(getSavedParameterTypeDefinitionDTO());
+
+    when(repository.findAll()).thenReturn(Arrays.asList(getSavedParameterTypeDefinition()));
+
+    when(parameterTypeDefinitionMapper.to(mockParameterTypeDefinitions.get(0)))
+        .thenReturn(mockParameterTypeDefinitionDTOList.get(0));
+
+    Flux<ParameterTypeDefinitionDTO> result =
+        parameterTypeDefinitionServiceImpl.findAllWhereCategoricalParameterIsNull();
+
+    StepVerifier.create(result).expectNextCount(1).verifyComplete();
   }
 
   @Test
-  @Transactional
-  void testSaveParameterTypeDefinitionService() {
-    Mono<ParameterTypeDefinitionDTO> savedParameterTypeDefinitionDTO =
-        parameterTypeDefinitionService.save(getParameterTypeDefinitionDTO());
-    savedParameterTypeDefinitionDTO.subscribe(
-        parameterTypeDefinitionDTO -> {
-          Assert.assertEquals(
-              getParameterTypeDefinitionDTO().getOrdering(),
-              parameterTypeDefinitionDTO.getOrdering());
-          parameterTypeDefinitionService.delete(parameterTypeDefinitionDTO.getId()).block();
-        });
+  void testFindAllWhereFloatParameterIsNull() {
+    List<ParameterTypeDefinition> mockParameterTypeDefinitions =
+        Arrays.asList(getSavedParameterTypeDefinition());
+
+    List<ParameterTypeDefinitionDTO> mockParameterTypeDefinitionDTOList =
+        Arrays.asList(getSavedParameterTypeDefinitionDTO());
+
+    when(repository.findAll()).thenReturn(Arrays.asList(getSavedParameterTypeDefinition()));
+
+    when(parameterTypeDefinitionMapper.to(mockParameterTypeDefinitions.get(0)))
+        .thenReturn(mockParameterTypeDefinitionDTOList.get(0));
+
+    Flux<ParameterTypeDefinitionDTO> result =
+        parameterTypeDefinitionServiceImpl.findAllWhereFloatParameterIsNull();
+
+    StepVerifier.create(result).expectNextCount(1).verifyComplete();
   }
 
   @Test
-  @Transactional
-  void testUpdateParameterTypeDefinitionService() {
-    Mono<ParameterTypeDefinitionDTO> updateParameterTypeDefinitionDTO =
-        parameterTypeDefinitionService.update(getUpdatedParameterTypeDefinitionDTO());
+  void testFindAllWhereBooleanParameterIsNull() {
+    List<ParameterTypeDefinition> mockParameterTypeDefinitions =
+        Arrays.asList(getSavedParameterTypeDefinition());
 
-    StepVerifier.create(updateParameterTypeDefinitionDTO)
-        .expectNextMatches(
-            parameterTypeDefinitionDTO -> {
-              Assert.assertEquals(
-                  getUpdatedParameterTypeDefinitionDTO().getOrdering(),
-                  parameterTypeDefinitionDTO.getOrdering());
-              return true;
-            })
-        .verifyComplete();
-  }
+    List<ParameterTypeDefinitionDTO> mockParameterTypeDefinitionDTOList =
+        Arrays.asList(getSavedParameterTypeDefinitionDTO());
 
-  @Test
-  @Transactional
-  void testPartialUpdateParameterTypeDefinitionService() {
-    Mono<ParameterTypeDefinitionDTO> updateParameterTypeDefinitionDTO =
-        parameterTypeDefinitionService.partialUpdate(getUpdatedParameterTypeDefinitionDTO());
+    when(repository.findAll()).thenReturn(Arrays.asList(getSavedParameterTypeDefinition()));
 
-    StepVerifier.create(updateParameterTypeDefinitionDTO)
-        .expectNextMatches(
-            parameterTypeDefinitionDTO -> {
-              Assert.assertEquals(
-                  getUpdatedParameterTypeDefinitionDTO().getOrdering(),
-                  parameterTypeDefinitionDTO.getOrdering());
-              return true;
-            })
-        .verifyComplete();
+    when(parameterTypeDefinitionMapper.to(mockParameterTypeDefinitions.get(0)))
+        .thenReturn(mockParameterTypeDefinitionDTOList.get(0));
+
+    Flux<ParameterTypeDefinitionDTO> result =
+        parameterTypeDefinitionServiceImpl.findAllWhereBooleanParameterIsNull();
+
+    StepVerifier.create(result).expectNextCount(1).verifyComplete();
   }
 }
