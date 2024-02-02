@@ -1,10 +1,9 @@
 package ai.turintech.modelcatalog.to;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class BooleanParameterTO extends ParameterTypeDefinitionTO implements Serializable {
+public class BooleanParameterTO extends ParameterTypeDefinitionTO {
 
   private static final long serialVersionUID = 1087247945141281117L;
   private Boolean defaultValue;
