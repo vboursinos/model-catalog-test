@@ -2,8 +2,8 @@ package ai.turintech.modelcatalog.dtoentitymapper;
 
 import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
+import ai.turintech.modelcatalog.dtoentitymapper.utlis.ParameterTypeDefinitionMapperUtils;
 import ai.turintech.modelcatalog.entity.FloatParameter;
-import ai.turintech.modelcatalog.entity.Parameter;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -14,8 +14,8 @@ public interface FloatParameterMapper extends MapperInterface<FloatParameterDTO,
 
   @AfterMapping
   default void addParameter(@MappingTarget FloatParameter target, FloatParameterDTO source) {
-    Parameter parameter = new Parameter();
-    parameter.setId(source.getParameterId());
-    target.setParameter(parameter);
+    ParameterTypeDefinitionMapperUtils<FloatParameter, FloatParameterDTO> mapperUtils =
+        new ParameterTypeDefinitionMapperUtils<FloatParameter, FloatParameterDTO>();
+    mapperUtils.addParameter(target, source);
   }
 }

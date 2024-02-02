@@ -2,8 +2,8 @@ package ai.turintech.modelcatalog.dtoentitymapper;
 
 import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.CategoricalParameterDTO;
+import ai.turintech.modelcatalog.dtoentitymapper.utlis.ParameterTypeDefinitionMapperUtils;
 import ai.turintech.modelcatalog.entity.CategoricalParameter;
-import ai.turintech.modelcatalog.entity.Parameter;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -18,8 +18,8 @@ public interface CategoricalParameterMapper
   @AfterMapping
   default void addParameter(
       @MappingTarget CategoricalParameter target, CategoricalParameterDTO source) {
-    Parameter parameter = new Parameter();
-    parameter.setId(source.getParameterId());
-    target.setParameter(parameter);
+    ParameterTypeDefinitionMapperUtils<CategoricalParameter, CategoricalParameterDTO> mapperUtils =
+        new ParameterTypeDefinitionMapperUtils<CategoricalParameter, CategoricalParameterDTO>();
+    mapperUtils.addParameter(target, source);
   }
 }
