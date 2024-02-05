@@ -57,17 +57,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -210,11 +209,6 @@
 			<groupId>ai.turintech.model-catalog</groupId>
 			<artifactId>model-catalog-to-dto-mapper</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
 	</dependencies>
 
 
@@ -226,36 +220,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.diffplug.spotless</groupId>
-				<artifactId>spotless-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-idea-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -265,10 +231,16 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
+<!--			todo Configure these 2 plugins in the POM file of the module containing your tests.-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>properties-maven-plugin</artifactId>
@@ -278,19 +250,11 @@
 				<artifactId>modernizer-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<!-- Plugin that provides API-first development using openapi-generator-cli 
 					to generate Spring-MVC endpoint stubs at compile time from an OpenAPI definition 
 					file -->
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -745,11 +709,6 @@
 							<artifactId>jakarta.validation-api</artifactId>
 							<version>${validation-api.version}</version>
 						</dependency>
-						<dependency>
-							<groupId>com.h2database</groupId>
-							<artifactId>h2</artifactId>
-							<version>${h2.version}</version>
-						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
@@ -789,214 +748,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<profiles>
-		<profile>
-			<id>api-docs</id>
-			<properties>
-				<profile.api-docs>,api-docs</profile.api-docs>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<!-- default Spring profiles -->
-				<spring.profiles.active>dev${profile.tls}${profile.no-liquibase}</spring.profiles.active>
-				<profile.test>testdev</profile.test>
-				<liquibase-plugin.hibernate-dialect>org.hibernate.dialect.H2Dialect</liquibase-plugin.hibernate-dialect>
-				<liquibase-plugin.driver>org.h2.Driver</liquibase-plugin.driver>
-				<liquibase-plugin.url>jdbc:h2:file:${project.build.directory}/h2db/db/model_catalog</liquibase-plugin.url>
-				<liquibase-plugin.username>model_catalog</liquibase-plugin.username>
-				<liquibase-plugin.password />
-			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-devtools</artifactId>
-					<optional>true</optional>
-				</dependency>
-
-			</dependencies>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<configuration>
-							<testExcludes>
-								<testExclude>ai/turintech/catalog/config/PostgreSqlTestContainer.java</testExclude>
-							</testExcludes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<!-- This is automatically activated when working in Eclipse -->
-			<id>eclipse</id>
-			<activation>
-				<property>
-					<name>m2e.version</name>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<!-- The following dependency is added due to issue #9175 -->
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-undertow</artifactId>
-				</dependency>
-			</dependencies>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<!-- This plugin's configuration is used to store Eclipse m2e settings 
-							only. It has no influence on the Maven build itself. Remove when the m2e 
-							plugin can correctly bind to Maven lifecycle -->
-						<plugin>
-							<groupId>org.eclipse.m2e</groupId>
-							<artifactId>lifecycle-mapping</artifactId>
-							<version>${lifecycle-mapping.version}</version>
-							<configuration>
-								<lifecycleMappingMetadata>
-									<pluginExecutions>
-										<pluginExecution>
-											<pluginExecutionFilter>
-												<groupId>org.jacoco</groupId>
-												<artifactId>jacoco-maven-plugin</artifactId>
-												<versionRange>${jacoco-maven-plugin.version}</versionRange>
-												<goals>
-													<goal>prepare-agent</goal>
-												</goals>
-											</pluginExecutionFilter>
-											<action>
-												<ignore />
-											</action>
-										</pluginExecution>
-										<pluginExecution>
-											<pluginExecutionFilter>
-												<groupId>org.openapitools</groupId>
-												<artifactId>openapi-generator-maven-plugin</artifactId>
-												<versionRange>${openapi-generator-maven-plugin.version}</versionRange>
-												<goals>
-													<goal>generate</goal>
-												</goals>
-											</pluginExecutionFilter>
-											<action>
-												<ignore />
-											</action>
-										</pluginExecution>
-									</pluginExecutions>
-								</lifecycleMappingMetadata>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
-		<profile>
-			<!-- Profile for applying IDE-specific configuration. At the moment it 
-				configures MapStruct and Hibernate JPA Metamodel Generator, which you need 
-				when working with DTOs and entity filtering. -->
-			<id>IDE</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.mapstruct</groupId>
-					<artifactId>mapstruct-processor</artifactId>
-					<version>${mapstruct.version}</version>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>no-liquibase</id>
-			<properties>
-				<profile.no-liquibase>,no-liquibase</profile.no-liquibase>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<!-- default Spring profiles -->
-				<spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}</spring.profiles.active>
-				<profile.test>testprod</profile.test>
-				<liquibase-plugin.hibernate-dialect>org.hibernate.dialect.PostgreSQLDialect</liquibase-plugin.hibernate-dialect>
-				<liquibase-plugin.driver>org.postgresql.Driver</liquibase-plugin.driver>
-				<liquibase-plugin.url>jdbc:postgresql://localhost:5432/model_catalog</liquibase-plugin.url>
-				<liquibase-plugin.username>model_catalog</liquibase-plugin.username>
-				<liquibase-plugin.password />
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-clean-plugin</artifactId>
-						<configuration>
-							<filesets>
-								<fileset>
-									<directory>target/classes/static/</directory>
-								</fileset>
-							</filesets>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>build-info</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>io.github.git-commit-id</groupId>
-						<artifactId>git-commit-id-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-			<dependencies>
-				<dependency>
-					<groupId>org.postgresql</groupId>
-					<artifactId>postgresql</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>tls</id>
-			<properties>
-				<profile.tls>,tls</profile.tls>
-			</properties>
-		</profile>
-		<profile>
-			<id>war</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<!-- Profile for tracing requests with Zipkin. -->
-			<id>zipkin</id>
-			<dependencies>
-				<dependency>
-					<groupId>io.micrometer</groupId>
-					<artifactId>micrometer-tracing</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>io.micrometer</groupId>
-					<artifactId>micrometer-tracing-bridge-brave</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>io.zipkin.reporter2</groupId>
-					<artifactId>zipkin-reporter-brave</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
 </project>
