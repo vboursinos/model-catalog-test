@@ -266,6 +266,14 @@ located at /jacoco-coverage-aggregate-report/target/site/jacoco-aggregate/jacoco
 * This allows for a unified overview to quickly assess the state of code coverage across multiple modules of the project, 
 in a format that is easy to integrate into Sonarqube.
 
+## Git Revision Plugin ##
+* This application uses the git-commit-id-plugin to generate a properties file containing the git commit id and other information like the branch name, build time, etc. This information is then used in the application to display the git commit id and other information in the Swagger UI.
+* During the Maven build process, execute the following command to generate the git.properties file:
+    ```
+    mvn git-commit-id:revision
+    ```
+* Once generated, the git.properties file will be located in the target directory and can be utilized within the application to display version information or include in build artifacts.
+
 ## Adding Additional Modules ##
 
 If you add any additional modules to the project, please make sure to include them in the POM configuration of the 
