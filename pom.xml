@@ -649,6 +649,24 @@
                         <mainClass>${start-class}</mainClass>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-war</id>
+                            <goals>
+                                <goal>war</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -665,15 +683,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!-- default Spring profiles -->
-                <spring.profiles.active>dev${profile.tls}${profile.no-liquibase}</spring.profiles.active>
-                <profile.test>testdev</profile.test>
-                <liquibase-plugin.hibernate-dialect>org.hibernate.dialect.H2Dialect</liquibase-plugin.hibernate-dialect>
-                <liquibase-plugin.driver>org.h2.Driver</liquibase-plugin.driver>
-                <liquibase-plugin.url>jdbc:h2:file:${project.build.directory}/h2db/db/model_catalog
-                </liquibase-plugin.url>
-                <liquibase-plugin.username>model_catalog</liquibase-plugin.username>
-                <liquibase-plugin.password/>
+                <spring.profiles.active>dev${profile.tls}</spring.profiles.active>
             </properties>
             <dependencies>
                 <dependency>
@@ -793,9 +803,6 @@
             </build>
         </profile>
         <profile>
-            <!-- Profile for applying IDE-specific configuration. At the moment it
-                configures MapStruct and Hibernate JPA Metamodel Generator, which you need
-                when working with DTOs and entity filtering. -->
             <id>IDE</id>
             <dependencies>
                 <dependency>
@@ -814,16 +821,7 @@
         <profile>
             <id>prod</id>
             <properties>
-                <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}
-                </spring.profiles.active>
-                <profile.test>testprod</profile.test>
-                <liquibase-plugin.hibernate-dialect>org.hibernate.dialect.PostgreSQLDialect
-                </liquibase-plugin.hibernate-dialect>
-                <liquibase-plugin.driver>org.postgresql.Driver</liquibase-plugin.driver>
-                <liquibase-plugin.url>jdbc:postgresql://localhost:5432/model_catalog</liquibase-plugin.url>
-                <liquibase-plugin.username>model_catalog</liquibase-plugin.username>
-                <liquibase-plugin.password/>
+                <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}</spring.profiles.active>
             </properties>
             <build>
                 <plugins>
