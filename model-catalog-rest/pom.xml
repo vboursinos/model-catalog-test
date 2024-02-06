@@ -273,7 +273,7 @@
 					<configuration>
 						<finalName>${project.artifactId}</finalName>
 						<mainClass>${start-class}</mainClass>
-						<!-- Enable the line below to have remote debugging of your application 
+						<!-- Enable the line below to have remote debugging of your application
 							on port 5005 <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments> -->
 					</configuration>
 				</plugin>
@@ -342,11 +342,6 @@
 							<includeOnlyProperty>^git.branch$</includeOnlyProperty>
 						</includeOnlyProperties>
 					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>${maven-clean-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

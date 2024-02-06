@@ -243,6 +243,18 @@ This application is configured to use the Google Java Style Guide for formatting
   mvn com.coveo:fmt-maven-plugin:check
   ```
 
+## Checkstyle ##
+
+In the application there is specific plugin "maven-checkstyle-plugin", which is used to perform code style checks on Java source code.
+
+* To run checkstyle checks use the following command:
+  ```
+  mvn checkstyle:check
+  ```
+* The rules are defined in the checkstyle.xml file in the root directory of the repository.
+  The checkstyle.xml is a configuration file used by the Checkstyle tool to define the coding standards and rules that should be enforced during code analysis. Checkstyle is a static code analysis tool that checks Java code for adherence to a set of coding standards, which helps ensure code quality, maintainability, and readability.
+
+
 ## Jacoco Coverage Module ##
 
 * This application also includes an aggregated Jacoco coverage module, which is designed specifically for aggregating 
