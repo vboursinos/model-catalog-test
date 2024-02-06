@@ -332,6 +332,36 @@
 							</outputDirectory>
 						</configuration>
 					</execution>
+					<execution>
+						<id>pre-unit-tests</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- Ensures that the code coverage report for unit tests is created
+                            after unit tests have been run -->
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>pre-integration-tests</id>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- Ensures that the code coverage report for integration tests is
+                            created after integration tests have been run -->
+						<id>post-integration-tests</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>report-integration</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -405,6 +435,23 @@
 						<includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
 						<includeOnlyProperty>^git.branch$</includeOnlyProperty>
 					</includeOnlyProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.gaul</groupId>
+				<artifactId>modernizer-maven-plugin</artifactId>
+				<version>${modernizer-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>modernizer</id>
+						<phase>package</phase>
+						<goals>
+							<goal>modernizer</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<javaVersion>${java.version}</javaVersion>
 				</configuration>
 			</plugin>
 			<plugin>

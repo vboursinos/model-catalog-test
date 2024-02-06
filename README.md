@@ -254,6 +254,14 @@ In the application there is specific plugin "maven-checkstyle-plugin", which is 
 * The rules are defined in the checkstyle.xml file in the root directory of the repository.
   The checkstyle.xml is a configuration file used by the Checkstyle tool to define the coding standards and rules that should be enforced during code analysis. Checkstyle is a static code analysis tool that checks Java code for adherence to a set of coding standards, which helps ensure code quality, maintainability, and readability.
 
+## Modernizer ##
+
+The application uses the Modernizer Maven Plugin to check for the use of outdated Java APIs. It checks your code against a set of rules to identify any usage of deprecated or outdated APIs and provides reports on them.
+* The plugin will be triggered during the build process.
+* To explicitly run the Modernizer Maven Plugin and trigger the modernizer goal defined in your Maven configuration, you can use the following command:
+  ```
+  mvn modernizer:modernizer
+  ```
 
 ## Jacoco Coverage Module ##
 
