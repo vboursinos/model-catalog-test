@@ -717,9 +717,26 @@
             </properties>
         </profile>
         <profile>
-            <id>dev</id>
+            <id>local</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>local</spring.profiles.active>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <spring.profiles.active>dev${profile.tls}</spring.profiles.active>
@@ -728,7 +745,7 @@
                 </liquibase-plugin.hibernate-dialect>
                 <liquibase-plugin.password>secret</liquibase-plugin.password>
                 <liquibase-plugin.username>myuser</liquibase-plugin.username>
-                <liquibase-plugin.url>jdbc:postgresql://localhost:5432/mydatabase</liquibase-plugin.url>
+                <liquibase-plugin.url>jdbc:postgresql://model-catalog-postgres:5432/mydatabase</liquibase-plugin.url>
             </properties>
             <dependencies>
                 <dependency>
