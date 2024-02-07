@@ -12,7 +12,7 @@ public class SentryIntegrationManagerImpl implements SentryIntegrationManager {
   @Autowired(required = false)
   private SentryIntegrationWrapper sentryWrapper;
 
-  @Value("#{new Boolean('${SENTRY_ENABLED}')}")
+  @Value("#{new Boolean('${sentry.enabled}')}")
   private Boolean isSentryEnabled;
 
   @Value("${sentry.dsn}")
