@@ -667,6 +667,45 @@
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                    <version>${liquibase.version}</version>
+                    <configuration>
+                        <changeLogFile>config/liquibase/master.xml</changeLogFile>
+                        <searchPath>model-catalog-entity/src/main/resources</searchPath>
+                        <driver>${liquibase-plugin.driver}</driver>
+                        <url>${liquibase-plugin.url}</url>
+                        <defaultSchemaName/>
+                        <username>${liquibase-plugin.username}</username>
+                        <password>${liquibase-plugin.password}</password>
+                        <verbose>true</verbose>
+                        <logging>debug</logging>
+                        <contexts>v0.1</contexts>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.liquibase</groupId>
+                            <artifactId>liquibase-core</artifactId>
+                            <version>${liquibase.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.liquibase.ext</groupId>
+                            <artifactId>liquibase-hibernate6</artifactId>
+                            <version>${liquibase.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-data-jpa</artifactId>
+                            <version>${spring-boot.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>jakarta.validation</groupId>
+                            <artifactId>jakarta.validation-api</artifactId>
+                            <version>${validation-api.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -684,12 +723,22 @@
             </activation>
             <properties>
                 <spring.profiles.active>dev${profile.tls}</spring.profiles.active>
+                <liquibase-plugin.driver>org.postgresql.Driver</liquibase-plugin.driver>
+                <liquibase-plugin.hibernate-dialect>org.hibernate.dialect.PostgreSQLDialect
+                </liquibase-plugin.hibernate-dialect>
+                <liquibase-plugin.password>secret</liquibase-plugin.password>
+                <liquibase-plugin.username>myuser</liquibase-plugin.username>
+                <liquibase-plugin.url>jdbc:postgresql://localhost:5432/mydatabase</liquibase-plugin.url>
             </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-devtools</artifactId>
                     <optional>true</optional>
+                </dependency>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
                 </dependency>
             </dependencies>
             <build>
@@ -822,6 +871,9 @@
             <id>prod</id>
             <properties>
                 <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}</spring.profiles.active>
+                <liquibase-plugin.driver>org.postgresql.Driver</liquibase-plugin.driver>
+                <liquibase-plugin.hibernate-dialect>org.hibernate.dialect.PostgreSQLDialect
+                </liquibase-plugin.hibernate-dialect>
             </properties>
             <build>
                 <plugins>
