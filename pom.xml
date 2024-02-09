@@ -965,7 +965,7 @@
         <profile>
             <id>sentry</id>
             <properties>
-                <profile.tls>,sentry</profile.tls>
+                <profile.sentry>,sentry</profile.sentry>
             </properties>
         </profile>
     </profiles>
