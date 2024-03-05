@@ -152,7 +152,37 @@ docker-compose down
 * When the application is running, as described in the previous section (local run, docker run or from IDE), you can 
 access the Swagger UI.
 * Local Swagger UI is available at http://localhost:8081/swagger-ui/index.html
+* Dev Swagger UI is available at http://192.168.58.242:8081/swagger-ui/index.html
 
+## GraphQL ##
+
+* GraphiQL is a powerful tool for exploring and testing GraphQL APIs. It provides an interactive interface that allows you to build and execute GraphQL queries, visualize query results, and inspect schema documentation.
+
+#### Accessing GraphiQL
+You can access GraphiQL for your GraphQL API using the following endpoints:
+
+* Local GraphiQL: http://localhost:8081/graphql
+* Dev GraphiQL: http://192.168.58.242:8081/graphql
+
+#### Testing Queries
+You can test queries against your GraphQL API using GraphiQL. Here's a sample query to fetch all enabled models:
+
+```
+query {
+  Models(where: {
+    enabled: { EQ: true }
+  }) {
+    select {
+      id
+      name
+      enabled(orderBy: ASC)
+      mlTask {
+        name
+      }
+    }
+  }
+}
+```
 ## Profiles/Configuration ##
 The application supports different profiles for dev and prod environments. To switch between them, adjust the spring.profiles.active setting in model-catalog-rest src/main/resources/application.properties.
 
