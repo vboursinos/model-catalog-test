@@ -161,8 +161,8 @@ access the Swagger UI.
 #### Accessing GraphiQL
 You can access GraphiQL for your GraphQL API using the following endpoints:
 
-* Local GraphiQL: http://localhost:8081/graphql
-* Dev GraphiQL: http://192.168.58.242:8081/graphql
+* Local GraphiQL: http://localhost:8081/graphiql?path=/graphql
+* Dev GraphiQL: http://192.168.58.242:8081/graphiql?path=/graphql
 
 #### Testing Queries
 You can test queries against your GraphQL API using GraphiQL. Here's a sample query to fetch all enabled models:
