@@ -2,7 +2,7 @@ package ai.turintech.modelcatalog.dtoentitymapper;
 
 import ai.turintech.components.mapper.api.MapperInterface;
 import ai.turintech.modelcatalog.dto.FloatParameterDTO;
-import ai.turintech.modelcatalog.dtoentitymapper.utlis.ParameterTypeDefinitionMapperUtils;
+import ai.turintech.modelcatalog.dtoentitymapper.utils.ParameterTypeDefinitionMapperUtils;
 import ai.turintech.modelcatalog.entity.FloatParameter;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;

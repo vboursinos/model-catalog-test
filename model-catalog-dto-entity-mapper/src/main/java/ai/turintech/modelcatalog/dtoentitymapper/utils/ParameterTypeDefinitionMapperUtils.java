@@ -1,4 +1,4 @@
-package ai.turintech.modelcatalog.dtoentitymapper.utlis;
+package ai.turintech.modelcatalog.dtoentitymapper.utils;
 
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import ai.turintech.modelcatalog.entity.Parameter;
