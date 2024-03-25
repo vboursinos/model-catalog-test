@@ -43,6 +43,17 @@ create TABLE parameter_distribution_type (
     name VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE dependency_group_type (
+  id uuid PRIMARY KEY,
+  name varchar NOT NULL
+);
+
+CREATE TABLE dependency_type (
+  id uuid PRIMARY KEY,
+  name varchar NOT NULL,
+  dependency_group_id uuid REFERENCES dependency_group_type (id) NOT NULL
+);
+
 create TABLE model (
     id uuid PRIMARY KEY,
     model_type_id uuid REFERENCES model_type (id),
@@ -56,7 +67,8 @@ create TABLE model (
     enabled boolean NOT NULL,
     ensemble_type_id uuid REFERENCES model_ensemble_type (id),
     family_type_id uuid REFERENCES model_family_type (id),
-    decision_tree boolean NOT NULL
+    decision_tree boolean NOT NULL,
+    dependency_group_id uuid REFERENCES dependency_group_type (id)
 );
 
 create TABLE rel_model__groups (

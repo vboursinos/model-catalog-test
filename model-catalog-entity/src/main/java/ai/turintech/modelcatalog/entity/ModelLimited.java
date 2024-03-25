@@ -84,7 +84,9 @@ public class ModelLimited extends AbstractUUIDIdentityEntity {
   @JoinColumn(name = "ensemble_type_id", referencedColumnName = "id")
   private ModelEnsembleType ensembleType;
 
-  // jhipster-needle-entity-add-field - JHipster will add fields here
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "dependency_group_id", referencedColumnName = "id")
+  private DependencyGroupType dependencyGroupType;
 
   public String getName() {
     return this.name;
@@ -129,11 +131,6 @@ public class ModelLimited extends AbstractUUIDIdentityEntity {
     return this.advantages;
   }
 
-  //    public Model advantages(String advantages) {
-  //        this.setAdvantages(advantages);
-  //        return this;
-  //    }
-
   public void setAdvantages(String[] advantages) {
     this.advantages = advantages;
   }
@@ -141,11 +138,6 @@ public class ModelLimited extends AbstractUUIDIdentityEntity {
   public String[] getDisadvantages() {
     return this.disadvantages;
   }
-
-  //    public Model disadvantages(String disadvantages) {
-  //        this.setDisadvantages(disadvantages);
-  //        return this;
-  //    }
 
   public void setDisadvantages(String[] disadvantages) {
     this.disadvantages = disadvantages;
@@ -286,6 +278,14 @@ public class ModelLimited extends AbstractUUIDIdentityEntity {
   public ModelLimited ensembleType(ModelEnsembleType modelEnsembleType) {
     this.setEnsembleType(modelEnsembleType);
     return this;
+  }
+
+  public DependencyGroupType getDependencyGroupType() {
+    return dependencyGroupType;
+  }
+
+  public void setDependencyGroupType(DependencyGroupType dependencyGroupType) {
+    this.dependencyGroupType = dependencyGroupType;
   }
 
   // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

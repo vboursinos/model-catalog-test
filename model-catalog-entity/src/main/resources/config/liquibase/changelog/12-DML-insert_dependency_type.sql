@@ -1,0 +1,16 @@
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('catboost',(select id from dependency_group_type where name='catboost'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('darts',(select id from dependency_group_type where name='darts'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('tensorboardx',(select id from dependency_group_type where name='darts'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('holidays',(select id from dependency_group_type where name='darts'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('ipython',(select id from dependency_group_type where name='darts'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('transformers',(select id from dependency_group_type where name='huggingface'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('datasets',(select id from dependency_group_type where name='huggingface'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('scikit-learn-intelex',(select id from dependency_group_type where name='intelex'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('lightgbm',(select id from dependency_group_type where name='lightgbm'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('sklearn-contrib-lightning',(select id from dependency_group_type where name='lightning'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('mrmr-selection',(select id from dependency_group_type where name='stacking'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('polars',(select id from dependency_group_type where name='stacking'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('statsforecast',(select id from dependency_group_type where name='statsforecast'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('sktime',(select id from dependency_group_type where name='sktime'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('pmdarima',(select id from dependency_group_type where name='sktime'));
+INSERT INTO dependency_type(name,dependency_group_id) VALUES ('xgboost',(select id from dependency_group_type where name='xgboost'));

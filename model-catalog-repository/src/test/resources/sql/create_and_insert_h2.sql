@@ -43,6 +43,18 @@ create TABLE parameter_distribution_type (
     name VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE dependency_group_type (
+  id VARCHAR(36) PRIMARY KEY,
+  name varchar NOT NULL
+);
+
+CREATE TABLE dependency_type (
+  id VARCHAR(36) PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  dependency_group_id VARCHAR(36),
+  FOREIGN KEY(dependency_group_id) REFERENCES dependency_group_type(id)
+);
+
 create TABLE model (
     id VARCHAR(36) PRIMARY KEY,
     model_type_id VARCHAR(36),
@@ -57,11 +69,13 @@ create TABLE model (
     ensemble_type_id VARCHAR(36),
     family_type_id VARCHAR(36),
     decision_tree boolean NOT NULL,
+    dependency_group_id VARCHAR(36),
     FOREIGN KEY(model_type_id) REFERENCES model_type(id),
     FOREIGN KEY(ml_task_id) REFERENCES ml_task_type(id),
     FOREIGN KEY(structure_id) REFERENCES model_structure_type(id),
     FOREIGN KEY(ensemble_type_id) REFERENCES model_ensemble_type(id),
-    FOREIGN KEY(family_type_id) REFERENCES model_family_type(id)
+    FOREIGN KEY(family_type_id) REFERENCES model_family_type(id),
+    FOREIGN KEY(dependency_group_id) REFERENCES dependency_group_type(id)
 );
 
 create TABLE rel_model__groups (
@@ -157,6 +171,21 @@ values
     ('2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'mltask2'),
     ('3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29', 'mltask3'),
     ('4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21', 'mltask4');
+
+insert into dependency_group_type (id, name)
+values
+    ('1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'dependencygroup1'),
+    ('2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'dependencygroup2'),
+    ('3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29', 'dependencygroup3'),
+    ('4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21', 'dependencygroup4');
+
+insert into dependency_type (id, name, dependency_group_id)
+values
+    ('1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'dependency1', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27'),
+    ('2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'dependency2', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28'),
+    ('3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29', 'dependency3', '3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29'),
+    ('4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21', 'dependency4', '4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21');
+
 
 insert into model_group_type (id, name)
 values
