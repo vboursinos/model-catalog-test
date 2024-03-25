@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.ModelGroupType;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,9 @@ public class ModelGroupTypeRepositoryTest {
   @Test
   void testFindByIdModelGroupTypeRepository() {
     ModelGroupType modelGroupType =
-        modelGroupTypeRepository.findById(UUID.fromString(MODEL_GROUP_TYPE_ID)).get();
+        modelGroupTypeRepository
+            .findById(UUID.fromString(MODEL_GROUP_TYPE_ID))
+            .orElseThrow(() -> new NoSuchElementException("Model group type not found"));
     Assertions.assertEquals("modelgroup3", modelGroupType.getName());
   }
 

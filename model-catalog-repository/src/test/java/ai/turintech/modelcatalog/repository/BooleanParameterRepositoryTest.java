@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,9 @@ public class BooleanParameterRepositoryTest {
   @Test
   void testFindByIdBooleanParameterRepository() {
     BooleanParameter booleanParameter =
-        booleanParameterRepository.findById(UUID.fromString(BOOLEAN_PARAMETER_ID)).get();
-    Assertions.assertEquals(true, booleanParameter.getDefaultValue());
+        booleanParameterRepository
+            .findById(UUID.fromString(BOOLEAN_PARAMETER_ID))
+            .orElseThrow(() -> new NoSuchElementException("Boolean parameter not found"));
+    Assertions.assertTrue(booleanParameter.getDefaultValue());
   }
 }

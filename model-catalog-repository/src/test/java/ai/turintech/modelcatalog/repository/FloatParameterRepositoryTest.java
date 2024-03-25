@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,12 @@ public class FloatParameterRepositoryTest {
   @Test
   void testFindByIdFloatParameterRepository() {
     FloatParameter floatParameter =
-        floatParameterRepository.findById(UUID.fromString(FLOAT_PARAMETER_ID)).get();
-    Assertions.assertEquals(10.1, floatParameter.getDefaultValue());
+        floatParameterRepository
+            .findById(UUID.fromString(FLOAT_PARAMETER_ID))
+            .orElseThrow(() -> new NoSuchElementException("Float parameter not found"));
+    Assertions.assertEquals(
+        10.1,
+        floatParameter.getDefaultValue(),
+        0.001); // Provide delta for floating-point comparison
   }
 }

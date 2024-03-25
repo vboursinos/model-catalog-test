@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.ParameterType;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,9 @@ public class ParameterTypeRepositoryTest {
   @Test
   void testFindByIdParameterTypeRepository() {
     ParameterType parameterType =
-        parameterTypeRepository.findById(UUID.fromString(PARAMETER_TYPE_ID)).get();
+        parameterTypeRepository
+            .findById(UUID.fromString(PARAMETER_TYPE_ID))
+            .orElseThrow(() -> new NoSuchElementException("Parameter type not found"));
     Assertions.assertEquals("parametertype3", parameterType.getName());
   }
 

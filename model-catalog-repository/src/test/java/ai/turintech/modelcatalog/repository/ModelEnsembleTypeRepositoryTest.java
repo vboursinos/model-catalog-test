@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.ModelEnsembleType;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,9 @@ public class ModelEnsembleTypeRepositoryTest {
   @Test
   void testFindByIdModelEnsembleTypeRepository() {
     ModelEnsembleType modelEnsembleType =
-        modelEnsembleTypeRepository.findById(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID)).get();
+        modelEnsembleTypeRepository
+            .findById(UUID.fromString(MODEL_ENSEMBLE_TYPE_ID))
+            .orElseThrow(() -> new NoSuchElementException("Model ensemble type not found"));
     Assertions.assertEquals("modelensembletype3", modelEnsembleType.getName());
   }
 

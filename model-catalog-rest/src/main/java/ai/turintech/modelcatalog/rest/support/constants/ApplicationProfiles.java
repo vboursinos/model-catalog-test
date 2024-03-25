@@ -6,10 +6,6 @@ public interface ApplicationProfiles {
   // Spring profiles for development, test and production, see https://www.jhipster.tech/profiles/
   /** Constant <code>SPRING_PROFILE_DEVELOPMENT="dev"</code> */
   String SPRING_PROFILE_DEVELOPMENT = "dev";
-  /** Constant <code>SPRING_PROFILE_TEST="test"</code> */
-  String SPRING_PROFILE_TEST = "test";
-  /** Constant <code>SPRING_PROFILE_E2E="e2e"</code> */
-  String SPRING_PROFILE_E2E = "e2e";
   /** Constant <code>SPRING_PROFILE_PRODUCTION="prod"</code> */
   String SPRING_PROFILE_PRODUCTION = "prod";
   /**
@@ -32,9 +28,7 @@ public interface ApplicationProfiles {
    * SPRING_PROFILE_NO_LIQUIBASE="no-liquibase"</code>
    */
   String SPRING_PROFILE_NO_LIQUIBASE = "no-liquibase";
-  /**
-   * Spring profile used when deploying to Kubernetes and OpenShift Constant <code>
-   * SPRING_PROFILE_K8S="k8s"</code>
-   */
-  String SPRING_PROFILE_K8S = "k8s";
+
+  /** Spring profile used when Sentry is enabled Constant <code>SENTRY="sentry"</code> */
+  String SENTRY = "sentry";
 }

@@ -186,6 +186,42 @@ query {
 ## Profiles/Configuration ##
 The application supports different profiles for dev and prod environments. To switch between them, adjust the spring.profiles.active setting in model-catalog-rest src/main/resources/application.properties.
 
+Available Profiles
+1. api-docs
+   * Purpose: This profile is intended for generating API documentation.
+   * Usage: It can be activated to include API documentation-related configurations.
+2. local
+   * Purpose: Automatically activated profile for local development.
+   * Activation: Active by default.
+   * Usage: Sets the Spring profile to local and includes necessary dependencies and configurations for local development.
+3. dev
+   * Purpose: Profile for development environment.
+   * Activation: Not active by default.
+   * Usage: Configures settings specific to development environment such as database connection, dependencies for development tools, and test configurations.
+4. prod
+   * Purpose: Profile for production environment.
+   * Activation: Not active by default.
+   * Usage: Configures settings specific to production environment such as Spring profiles, database connection, and build plugins for creating production-ready artifacts.
+5. zipkin
+   * Purpose: Profile for tracing requests with Zipkin.
+   * Activation: Not active by default.
+   * Usage: Includes dependencies related to request tracing with Zipkin.
+6. sentry
+   * Purpose: Profile for integrating with Sentry for error monitoring.
+   * Activation: Active by default.
+   * Usage: Activating this profile will include configurations for Sentry integration.
+
+In order to activate a profile, you can set the spring.profiles.active property in the application.properties file. For example, to activate the dev profile, you can set the property as follows:
+   
+ ``` 
+    spring.profiles.active=dev
+ ```
+Also in .env file, you can set the profile as follows:
+
+ ``` 
+    SPRING_PROFILES_ACTIVE=dev
+ ```
+
 ## SQL Migration ##
 SQL schema migration is performed using Liquibase. The changesets are located in model-catalog-entity src/main/resources/config.liquibase/changelog. There are 13 changesets in total, 2 DDLs and 11 DMLs, and they are run in the order they are listed in db.changelog-master.xml.
 
@@ -243,6 +279,26 @@ This application is configured to use the Google Java Style Guide for formatting
   mvn com.coveo:fmt-maven-plugin:check
   ```
 
+## Checkstyle ##
+
+In the application there is specific plugin "maven-checkstyle-plugin", which is used to perform code style checks on Java source code.
+
+* To run checkstyle checks use the following command:
+  ```
+  mvn checkstyle:check
+  ```
+* The rules are defined in the checkstyle.xml file in the root directory of the repository.
+  The checkstyle.xml is a configuration file used by the Checkstyle tool to define the coding standards and rules that should be enforced during code analysis. Checkstyle is a static code analysis tool that checks Java code for adherence to a set of coding standards, which helps ensure code quality, maintainability, and readability.
+
+## Modernizer ##
+
+The application uses the Modernizer Maven Plugin to check for the use of outdated Java APIs. It checks your code against a set of rules to identify any usage of deprecated or outdated APIs and provides reports on them.
+* The plugin will be triggered during the build process.
+* To explicitly run the Modernizer Maven Plugin and trigger the modernizer goal defined in your Maven configuration, you can use the following command:
+  ```
+  mvn modernizer:modernizer
+  ```
+
 ## Jacoco Coverage Module ##
 
 * This application also includes an aggregated Jacoco coverage module, which is designed specifically for aggregating 
@@ -253,6 +309,14 @@ located at /jacoco-coverage-aggregate-report/target/site/jacoco-aggregate/jacoco
 
 * This allows for a unified overview to quickly assess the state of code coverage across multiple modules of the project, 
 in a format that is easy to integrate into Sonarqube.
+
+## Git Revision Plugin ##
+* This application uses the git-commit-id-plugin to generate a properties file containing the git commit id and other information like the branch name, build time, etc. This information is then used in the application to display the git commit id and other information in the Swagger UI.
+* During the Maven build process, execute the following command to generate the git.properties file:
+    ```
+    mvn git-commit-id:revision
+    ```
+* Once generated, the git.properties file will be located in the target directory and can be utilized within the application to display version information or include in build artifacts.
 
 ## Adding Additional Modules ##
 

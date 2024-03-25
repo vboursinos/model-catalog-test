@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.ModelType;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,10 @@ public class ModelTypeRepositoryTest {
 
   @Test
   void testFindByIdModelTypeRepository() {
-    ModelType modelType = modelTypeRepository.findById(UUID.fromString(MODEL_TYPE_ID)).get();
+    ModelType modelType =
+        modelTypeRepository
+            .findById(UUID.fromString(MODEL_TYPE_ID))
+            .orElseThrow(() -> new NoSuchElementException("Model type not found"));
     Assertions.assertEquals("modeltype3", modelType.getName());
   }
 
