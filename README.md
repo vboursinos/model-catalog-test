@@ -323,3 +323,23 @@ in a format that is easy to integrate into Sonarqube.
 If you add any additional modules to the project, please make sure to include them in the POM configuration of the 
 Jacoco module. This will ensure they are included in the coverage report. This is crucial to maintain an accurate and 
 comprehensive understanding of the overall code coverage of the project.
+
+## Entities - Tables explanation ##
+
+All the enum types are good to be individual tables with type at the end of the name.
+
+Those entities (tables) are:
+
+* MlTaskType (ml_task_type) : Model main category (Classification, Regression, Forecasting)
+* ModelEnsembleType (model_ensemble_type) : Category of ensemble algorithms (right now we have forest, other or none)
+* ModelFamilyType (model_family_type) : Each ml model can be in one of the following wider category (linear, tree. other)
+* ModelGroupType (model_group_type) : Front end wants to categorised the ml models to be easier for the user. When the user starts a trial, he/she can see the selected models based on this (fast, explainable, advanced)
+* ModelStructureType (model_structure_type) : dynamic, base
+* ModelType (model_type) : An other category of an Ml model ( Linear Model, Kernel Model, Baseline Model, Tree-Based Model, Nearest Neighbours Model, Ensemble Model, Bayesian Model, Deep Learning Model, Gradient Model, Statistical Model
+* ParameterDistributionType (parameter_distribution_type) : uniform, log uniform
+* ParameterType (parameter_type) : categorical, float, integer, boolean
+and at this pr I want to add
+* DependencyType (dependency_type) : Specific dependency per dependency group. What dependency each dependency group has.
+* DependencyGroupType (dependency_group_type) : dependencies wider groups (lightning, catboost, sktime, statsforecast, darts, huggingface, intelex, lightgbm, xgboost, base, stacking)
+
+In general, we keep the naming from metaml the same, and we add the "type" suffix for the enum value tables. That was our convention.
