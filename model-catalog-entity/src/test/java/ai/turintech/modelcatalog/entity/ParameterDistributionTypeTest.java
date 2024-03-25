@@ -9,14 +9,12 @@ import org.junit.jupiter.api.Test;
 
 public class ParameterDistributionTypeTest {
 
-  private ParameterDistributionType parameterDistributionTypeUnderTest;
-  private ParameterTypeDefinition definition;
+  private final ParameterDistributionType parameterDistributionTypeUnderTest =
+      new ParameterDistributionType();
+  private final ParameterTypeDefinition definition = new ParameterTypeDefinition();
 
   @BeforeEach
   public void setUp() {
-    parameterDistributionTypeUnderTest = new ParameterDistributionType();
-    definition = new ParameterTypeDefinition();
-
     UUID id = UUID.randomUUID();
     parameterDistributionTypeUnderTest.setId(id);
     parameterDistributionTypeUnderTest.setName("Test");

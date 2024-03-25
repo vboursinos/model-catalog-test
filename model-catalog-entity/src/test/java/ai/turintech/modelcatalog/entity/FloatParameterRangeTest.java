@@ -2,16 +2,10 @@ package ai.turintech.modelcatalog.entity;
 
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class FloatParameterRangeTest {
-  private FloatParameterRange floatParameterRange;
-
-  @BeforeEach
-  public void setUp() {
-    floatParameterRange = new FloatParameterRange();
-  }
+  private final FloatParameterRange floatParameterRange = new FloatParameterRange();
 
   @Test
   public void testIsLeftOpen() {

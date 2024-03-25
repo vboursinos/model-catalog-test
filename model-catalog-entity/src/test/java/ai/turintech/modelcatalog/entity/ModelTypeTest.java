@@ -8,14 +8,11 @@ import org.junit.jupiter.api.Test;
 
 public class ModelTypeTest {
 
-  private ModelType modelTypeUnderTest;
-  private Model model;
+  private final ModelType modelTypeUnderTest = new ModelType();
+  private final Model model = new Model();
 
   @BeforeEach
   public void setUp() {
-    modelTypeUnderTest = new ModelType();
-    model = new Model();
-
     UUID id = UUID.randomUUID();
     modelTypeUnderTest.setId(id);
     modelTypeUnderTest.setName("Test");

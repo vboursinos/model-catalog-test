@@ -8,14 +8,11 @@ import org.junit.jupiter.api.Test;
 
 public class ModelGroupTypeTest {
 
-  private ModelGroupType modelGroupTypeUnderTest;
-  private Model model;
+  private final ModelGroupType modelGroupTypeUnderTest = new ModelGroupType();
+  private final Model model = new Model();
 
   @BeforeEach
   public void setUp() {
-    modelGroupTypeUnderTest = new ModelGroupType();
-    model = new Model();
-
     UUID id = UUID.randomUUID();
     modelGroupTypeUnderTest.setId(id);
     modelGroupTypeUnderTest.setName("Test");

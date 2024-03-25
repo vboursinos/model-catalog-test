@@ -4,16 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class FloatParameterTest {
-  private FloatParameter floatParameter;
-
-  @BeforeEach
-  public void setUp() {
-    floatParameter = new FloatParameter();
-  }
+  private final FloatParameter floatParameter = new FloatParameter();
 
   @Test
   public void testDefaultValue() {

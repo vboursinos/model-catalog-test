@@ -9,15 +9,12 @@ import org.junit.jupiter.api.Test;
 
 public class ParameterTest {
 
-  private Parameter parameterUnderTest;
-  private Model model;
-  private ParameterTypeDefinition definition;
+  private final Parameter parameterUnderTest = new Parameter();
+  private final Model model = new Model();
+  private final ParameterTypeDefinition definition = new ParameterTypeDefinition();
 
   @BeforeEach
   public void setUp() {
-    parameterUnderTest = new Parameter();
-    model = new Model();
-    definition = new ParameterTypeDefinition();
 
     UUID id = UUID.randomUUID();
     parameterUnderTest.setId(id);

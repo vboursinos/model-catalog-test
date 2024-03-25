@@ -4,17 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class MetricTest {
 
-  private Metric metric;
-
-  @BeforeEach
-  public void setUp() {
-    metric = new Metric();
-  }
+  private final Metric metric = new Metric();
 
   @Test
   public void testMetric() {

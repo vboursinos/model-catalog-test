@@ -4,17 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ModelEnsembleTypeTest {
 
-  private ModelEnsembleType modelEnsembleType;
-
-  @BeforeEach
-  public void setUp() {
-    modelEnsembleType = new ModelEnsembleType();
-  }
+  private final ModelEnsembleType modelEnsembleType = new ModelEnsembleType();
 
   @Test
   public void testName() {

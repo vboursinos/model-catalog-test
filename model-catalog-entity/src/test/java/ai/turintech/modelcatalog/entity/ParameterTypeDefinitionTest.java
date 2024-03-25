@@ -2,17 +2,11 @@ package ai.turintech.modelcatalog.entity;
 
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ParameterTypeDefinitionTest {
 
-  private ParameterTypeDefinition parameterTypeDefinition;
-
-  @BeforeEach
-  public void setUp() {
-    parameterTypeDefinition = new ParameterTypeDefinition();
-  }
+  private final ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
 
   @Test
   public void testOrdering() {

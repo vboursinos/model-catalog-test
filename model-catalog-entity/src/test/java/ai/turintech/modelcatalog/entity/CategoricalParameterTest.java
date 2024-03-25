@@ -4,17 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class CategoricalParameterTest {
 
-  private CategoricalParameter categoricalParameter;
-
-  @BeforeEach
-  public void setUp() {
-    categoricalParameter = new CategoricalParameter();
-  }
+  private final CategoricalParameter categoricalParameter = new CategoricalParameter();
 
   @Test
   public void testDefaultValue() {

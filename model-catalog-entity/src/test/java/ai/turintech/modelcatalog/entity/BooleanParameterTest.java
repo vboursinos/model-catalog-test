@@ -1,17 +1,11 @@
 package ai.turintech.modelcatalog.entity;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BooleanParameterTest {
 
-  private BooleanParameter booleanParameter;
-
-  @BeforeEach
-  public void setUp() {
-    booleanParameter = new BooleanParameter();
-  }
+  private final BooleanParameter booleanParameter = new BooleanParameter();
 
   @Test
   public void testDefaultValue() {

@@ -8,12 +8,7 @@ import org.junit.jupiter.api.*;
 
 class MlTaskTypeTest {
 
-  private MlTaskType mlTaskType;
-
-  @BeforeEach
-  public void setUp() {
-    mlTaskType = new MlTaskType();
-  }
+  private final MlTaskType mlTaskType = new MlTaskType();
 
   @Test
   public void testName() {

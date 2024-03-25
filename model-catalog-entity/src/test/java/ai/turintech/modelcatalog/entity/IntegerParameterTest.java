@@ -4,17 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class IntegerParameterTest {
 
-  private IntegerParameter integerParameterUnderTest;
-
-  @BeforeEach
-  public void setUp() {
-    integerParameterUnderTest = new IntegerParameter();
-  }
+  private final IntegerParameter integerParameterUnderTest = new IntegerParameter();
 
   @Test
   public void testDefaultValue() {

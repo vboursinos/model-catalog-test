@@ -2,17 +2,12 @@ package ai.turintech.modelcatalog.entity;
 
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class CategoricalParameterValueTest {
 
-  private CategoricalParameterValue categoricalParameterValue;
-
-  @BeforeEach
-  public void setUp() {
-    categoricalParameterValue = new CategoricalParameterValue();
-  }
+  private final CategoricalParameterValue categoricalParameterValue =
+      new CategoricalParameterValue();
 
   @Test
   public void testValue() {

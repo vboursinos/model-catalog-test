@@ -2,17 +2,11 @@ package ai.turintech.modelcatalog.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class IntegerParameterValueTest {
 
-  private IntegerParameterValue integerParameterValueUnderTest;
-
-  @BeforeEach
-  public void setUp() {
-    integerParameterValueUnderTest = new IntegerParameterValue();
-  }
+  private final IntegerParameterValue integerParameterValueUnderTest = new IntegerParameterValue();
 
   @Test
   public void testUpperValue() {
