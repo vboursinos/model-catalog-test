@@ -23,30 +23,6 @@ public class BooleanParameterRepositoryTest {
       "1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27";
   private static final String PARAMETER_DEFINITION_TYPE_ID = "323e4567-e89b-12d3-a456-426614174003";
 
-  private BooleanParameter getBooleanParameter() {
-    Parameter parameter = new Parameter();
-    parameter.setId(UUID.fromString(PARAMETER_ID));
-
-    ParameterType parameterType = new ParameterType();
-    parameterType.setId(UUID.fromString(PARAMETER_TYPE_ID));
-
-    ParameterDistributionType parameterDistributionType = new ParameterDistributionType();
-    parameterDistributionType.setId(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID));
-
-    ParameterTypeDefinition parameterTypeDefinition = new ParameterTypeDefinition();
-    parameterTypeDefinition.setId(UUID.fromString(PARAMETER_DEFINITION_TYPE_ID));
-    parameterTypeDefinition.setParameter(parameter);
-    parameterTypeDefinition.setType(parameterType);
-    parameterTypeDefinition.setDistribution(parameterDistributionType);
-    parameterTypeDefinition.setOrdering(10);
-
-    BooleanParameter booleanParameter = new BooleanParameter();
-    booleanParameter.setId(UUID.fromString("323e4567-e89b-12d3-a456-426614174003"));
-    booleanParameter.setDefaultValue(false);
-    booleanParameter.setParameterTypeDefinition(parameterTypeDefinition);
-    return booleanParameter;
-  }
-
   @Test
   void testFindAllBooleanParameterRepository() {
     List<BooleanParameter> booleanParameters = booleanParameterRepository.findAll();
