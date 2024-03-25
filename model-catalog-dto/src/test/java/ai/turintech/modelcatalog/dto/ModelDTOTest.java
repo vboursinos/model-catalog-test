@@ -1,7 +1,6 @@
 package ai.turintech.modelcatalog.dto;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import java.util.HashSet;
 import java.util.List;
