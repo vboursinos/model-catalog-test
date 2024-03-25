@@ -32,14 +32,13 @@ public class SentryIntegrationManagerImpl implements SentryIntegrationManager {
 
   @PostConstruct
   public void init() {
-    if (!isSentryEnabled) {
-      sentryDSN = "";
+    if (isSentryEnabled) {
+      Sentry.init(
+          options -> {
+            options.setDsn(sentryDSN);
+            options.setEnvironment(sentryEnv);
+            options.setSampleRate(sentrySampleRate);
+          });
     }
-    Sentry.init(
-        options -> {
-          options.setDsn(sentryDSN);
-          options.setEnvironment(sentryEnv);
-          options.setSampleRate(sentrySampleRate);
-        });
   }
 }
