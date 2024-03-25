@@ -44,7 +44,11 @@
 		<hibernate-core.version>6.3.1.Final</hibernate-core.version>
 		<com.vladmihalcea.hybernate-types-60.version>2.21.1</com.vladmihalcea.hybernate-types-60.version>
 		<fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
+		<testcontainers.version>1.15.1</testcontainers.version>
 		<graphql-jpa-query.version>1.2.0</graphql-jpa-query.version>
+		<mockito.version>5.8.0</mockito.version>
+		<spring-graphql.version>1.2.4</spring-graphql.version>
+		<h2.version>2.1.214</h2.version>
 		<!-- Components -->
 		<jpa-search.version>01.00.00-a2-SNAPSHOT</jpa-search.version>
 		<common-data.version>01.00.00-a2-SNAPSHOT</common-data.version>
@@ -141,6 +145,36 @@
 				<groupId>com.introproventures</groupId>
 				<artifactId>graphql-jpa-query-boot-starter</artifactId>
 				<version>${graphql-jpa-query.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${testcontainers.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${testcontainers.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version> <!-- Use the latest version available -->
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.graphql</groupId>
+				<artifactId>spring-graphql-test</artifactId>
+				<version>${spring-graphql.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<!-- Internal project dependency management -->
 			<!-- Internal project modules -->

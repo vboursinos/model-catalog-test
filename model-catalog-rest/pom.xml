@@ -89,6 +89,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.graphql</groupId>
+			<artifactId>spring-graphql-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webflux-api -->
 		<dependency>
@@ -103,7 +109,16 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-common</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
@@ -120,6 +135,61 @@
 			<groupId>com.introproventures</groupId>
 			<artifactId>graphql-jpa-query-boot-starter</artifactId>
 		</dependency>
+<!--
+		todo remove versions from here
+-->
+		<dependency>
+			<groupId>com.introproventures</groupId>
+			<artifactId>graphql-jpa-query</artifactId>
+			<version>1.2.3</version>
+			<type>pom</type>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.introproventures/graphql-jpa-query-web -->
+		<dependency>
+			<groupId>com.introproventures</groupId>
+			<artifactId>graphql-jpa-query-web</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.introproventures</groupId>-->
+<!--			<artifactId>graphql-jpa-query-schema</artifactId>-->
+<!--			<version>1.2.3</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.introproventures</groupId>-->
+<!--			<artifactId>graphql-jpa-query-autoconfigure</artifactId>-->
+<!--			<version>1.2.3</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-configuration-processor</artifactId>-->
+<!--			<optional>true</optional>-->
+<!--		</dependency>-->
+
+		<!--		<dependency>-->
+<!--			<groupId>org.springframework.graphql</groupId>-->
+<!--			<artifactId>spring-graphql-test</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.graphql</groupId>-->
+<!--			<artifactId>spring-graphql</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.graphql-java-kickstart</groupId>-->
+<!--			<artifactId>graphql-spring-boot-starter</artifactId>-->
+<!--			<version>11.1.0</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.graphql-java-kickstart</groupId>-->
+<!--			<artifactId>graphql-java-tools</artifactId>-->
+<!--			<version>11.1.0</version>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+
 
 		<!-- java components -->
 		<dependency>

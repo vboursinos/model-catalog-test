@@ -54,7 +54,7 @@ public class IntegerParameterTO extends AbstractUUIDIdentityTO {
   @Override
   public String toString() {
     return "IntegerParameterDTO{"
-        + "parameterTypeDefinitionId"
+        + "parameterTypeDefinitionId="
         + getId()
         + ", defaultValue="
         + getDefaultValue()

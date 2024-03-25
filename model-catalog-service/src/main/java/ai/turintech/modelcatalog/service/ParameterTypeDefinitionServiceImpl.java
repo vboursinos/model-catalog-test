@@ -107,14 +107,12 @@ public class ParameterTypeDefinitionServiceImpl
   public Flux<ParameterTypeDefinitionDTO> findAllWhereBooleanParameterIsNull() {
     log.debug("Request to get all parameterTypeDefinitions where BooleanParameter is null");
 
-    return Flux.defer(
-            () ->
-                Flux.fromStream(
-                    parameterTypeDefinitionRepository.findAll().stream()
-                        .filter(
-                            parameterTypeDefinition ->
-                                parameterTypeDefinition.getBooleanParameter() == null)
-                        .map(parameterTypeDefinitionMapper::to)))
+    return Flux.fromStream(
+            parameterTypeDefinitionRepository.findAll().stream()
+                .filter(
+                    parameterTypeDefinition ->
+                        parameterTypeDefinition.getBooleanParameter() == null)
+                .map(parameterTypeDefinitionMapper::to))
         .subscribeOn(Schedulers.boundedElastic());
   }
 }
