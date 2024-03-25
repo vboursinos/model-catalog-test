@@ -6,7 +6,7 @@ COPY . /home/app/
 COPY ./setup/.m2 /root/.m2
 
 
-RUN mvn -f /home/app/pom.xml -Dspring-boot.repackage.skip --batch-mode package
+RUN mvn -f /home/app/pom.xml -Dspring-boot.repackage.skip --batch-mode package -DskipTests && rm -r /home/app/target
 
 RUN mvn -f /home/app/pom.xml -DskipTests --offline --batch-mode package
 # ─────────────────────────────── extracts the jar ──────────────────────────────── #
