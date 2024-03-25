@@ -6,14 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ModelDTOTest {
 
   private ModelDTO modelDTO;
 
-  @BeforeEach
+  @BeforeAll
   public void setUp() {
     modelDTO = new ModelDTO();
     modelDTO.setId(UUID.randomUUID());

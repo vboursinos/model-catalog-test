@@ -3,14 +3,16 @@ package ai.turintech.modelcatalog.dto;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ParameterDistributionTypeDTOTest {
 
   private ParameterDistributionTypeDTO parameterDistributionTypeDTO;
 
-  @BeforeEach
+  @BeforeAll
   public void setUp() {
     parameterDistributionTypeDTO = new ParameterDistributionTypeDTO();
     parameterDistributionTypeDTO.setId(UUID.randomUUID());

@@ -3,14 +3,16 @@ package ai.turintech.modelcatalog.dto;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ModelEnsembleTypeDTOTest {
 
   private ModelEnsembleTypeDTO modelEnsembleTypeDTO;
 
-  @BeforeEach
+  @BeforeAll
   public void setUp() {
     modelEnsembleTypeDTO = new ModelEnsembleTypeDTO();
     modelEnsembleTypeDTO.setId(UUID.randomUUID());

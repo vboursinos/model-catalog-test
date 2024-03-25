@@ -5,14 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class IntegerParameterDTOTest {
 
   private IntegerParameterDTO integerParameterDTO;
 
-  @BeforeEach
+  @BeforeAll
   public void setUp() {
     integerParameterDTO = new IntegerParameterDTO();
     integerParameterDTO.setId(UUID.randomUUID());

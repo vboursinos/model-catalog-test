@@ -5,14 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CategoricalParameterDTOTest {
 
   private CategoricalParameterDTO categoricalParameterDTO;
 
-  @BeforeEach
+  @BeforeAll
   public void setUp() {
     categoricalParameterDTO = new CategoricalParameterDTO();
     categoricalParameterDTO.setId(UUID.randomUUID());
