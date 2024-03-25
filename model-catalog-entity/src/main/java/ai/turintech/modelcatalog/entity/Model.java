@@ -76,6 +76,10 @@ public class Model extends AbstractUUIDIdentityEntity {
   private ModelStructureType structure;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "dependency_group_id", referencedColumnName = "id")
+  private DependencyGroupType dependencyGroupType;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "model_type_id", referencedColumnName = "id")
   private ModelType type;
 
@@ -132,11 +136,6 @@ public class Model extends AbstractUUIDIdentityEntity {
     return this.advantages;
   }
 
-  //    public Model advantages(String advantages) {
-  //        this.setAdvantages(advantages);
-  //        return this;
-  //    }
-
   public void setAdvantages(String[] advantages) {
     this.advantages = advantages;
   }
@@ -144,11 +143,6 @@ public class Model extends AbstractUUIDIdentityEntity {
   public String[] getDisadvantages() {
     return this.disadvantages;
   }
-
-  //    public Model disadvantages(String disadvantages) {
-  //        this.setDisadvantages(disadvantages);
-  //        return this;
-  //    }
 
   public void setDisadvantages(String[] disadvantages) {
     this.disadvantages = disadvantages;
@@ -322,6 +316,13 @@ public class Model extends AbstractUUIDIdentityEntity {
     return this;
   }
 
+  public DependencyGroupType getDependencyGroupType() {
+    return this.dependencyGroupType;
+  }
+
+  public void setDependencyGroupType(DependencyGroupType dependencyGroupType) {
+    this.dependencyGroupType = dependencyGroupType;
+  }
   // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
   @Override
@@ -343,32 +344,45 @@ public class Model extends AbstractUUIDIdentityEntity {
   }
 
   // prettier-ignore
+
   @Override
   public String toString() {
     return "Model{"
-        + "id="
-        + getId()
-        + ", name='"
-        + getName()
-        + "'"
+        + "name='"
+        + name
+        + '\''
         + ", displayName='"
-        + getDisplayName()
-        + "'"
+        + displayName
+        + '\''
         + ", description='"
-        + getDescription()
-        + "'"
-        + ", advantages='"
-        + getAdvantages()
-        + "'"
-        + ", disadvantages='"
-        + getDisadvantages()
-        + "'"
-        + ", enabled='"
-        + getEnabled()
-        + "'"
-        + ", decisionTree='"
-        + getDecisionTree()
-        + "'"
-        + "}";
+        + description
+        + '\''
+        + ", advantages="
+        + Arrays.toString(advantages)
+        + ", disadvantages="
+        + Arrays.toString(disadvantages)
+        + ", enabled="
+        + enabled
+        + ", decisionTree="
+        + decisionTree
+        + ", parameters="
+        + parameters
+        + ", groups="
+        + groups
+        + ", incompatibleMetrics="
+        + incompatibleMetrics
+        + ", mlTask="
+        + mlTask
+        + ", structure="
+        + structure
+        + ", dependencyGroupType="
+        + dependencyGroupType
+        + ", type="
+        + type
+        + ", familyType="
+        + familyType
+        + ", ensembleType="
+        + ensembleType
+        + '}';
   }
 }

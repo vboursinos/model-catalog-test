@@ -35,6 +35,8 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
 
   private ModelStructureTypeDTO structure;
 
+  private DependencyGroupTypeDTO dependencyGroupType;
+
   private ModelTypeDTO type;
 
   private ModelFamilyTypeDTO familyType;
@@ -57,6 +59,8 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
     this.enabled = enabled;
     this.decisionTree = decisionTree;
   }
+
+  public ModelDTO() {}
 
   public String getName() {
     return name;
@@ -178,6 +182,14 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
     this.parameters = parameters;
   }
 
+  public DependencyGroupTypeDTO getDependencyGroupType() {
+    return dependencyGroupType;
+  }
+
+  public void setDependencyGroupType(DependencyGroupTypeDTO dependencyGroupType) {
+    this.dependencyGroupType = dependencyGroupType;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -204,9 +216,7 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
   @Override
   public String toString() {
     return "ModelDTO{"
-        + "id="
-        + getId()
-        + ", name='"
+        + "name='"
         + name
         + '\''
         + ", displayName='"
@@ -215,12 +225,10 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
         + ", description='"
         + description
         + '\''
-        + ", advantages='"
-        + advantages
-        + '\''
-        + ", disadvantages='"
-        + disadvantages
-        + '\''
+        + ", advantages="
+        + Arrays.toString(advantages)
+        + ", disadvantages="
+        + Arrays.toString(disadvantages)
         + ", enabled="
         + enabled
         + ", decisionTree="
@@ -235,13 +243,14 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
         + mlTask
         + ", structure="
         + structure
+        + ", dependencyGroupType="
+        + dependencyGroupType
         + ", type="
         + type
         + ", familyType="
         + familyType
         + ", ensembleType="
         + ensembleType
-        + '\''
         + '}';
   }
 }

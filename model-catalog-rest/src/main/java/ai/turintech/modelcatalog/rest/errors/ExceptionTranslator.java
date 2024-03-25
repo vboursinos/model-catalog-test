@@ -4,6 +4,7 @@ import static org.springframework.core.annotation.AnnotatedElementUtils.findMerg
 
 import ai.turintech.components.utils.rest.BadRequestAlertException;
 import ai.turintech.components.utils.rest.ErrorConstants;
+import ai.turintech.modelcatalog.rest.reporting.SentryIntegrationManager;
 import ai.turintech.modelcatalog.rest.support.HeaderUtil;
 import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
 import ai.turintech.modelcatalog.rest.support.errors.ExceptionTranslation;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.ConcurrencyFailureException;
@@ -52,6 +54,7 @@ import reactor.core.publisher.Mono;
 public class ExceptionTranslator extends ResponseEntityExceptionHandler
     implements ExceptionTranslation {
 
+  @Autowired private SentryIntegrationManager sentryIntegrationManager;
   private static final String FIELD_ERRORS_KEY = "fieldErrors";
   private static final String MESSAGE_KEY = "message";
   private static final String PATH_KEY = "path";
@@ -70,6 +73,7 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler
   @Override
   public Mono<ResponseEntity<Object>> handleAnyException(Throwable ex, ServerWebExchange request) {
     ProblemDetailWithCause pdCause = wrapAndCustomizeProblem(ex, request);
+    sentryIntegrationManager.captureException(ex);
     return handleExceptionInternal(
         (Exception) ex,
         pdCause,

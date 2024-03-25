@@ -152,9 +152,75 @@ docker-compose down
 * When the application is running, as described in the previous section (local run, docker run or from IDE), you can 
 access the Swagger UI.
 * Local Swagger UI is available at http://localhost:8081/swagger-ui/index.html
+* Dev Swagger UI is available at http://192.168.58.242:8081/swagger-ui/index.html
 
+## GraphQL ##
+
+* GraphiQL is a powerful tool for exploring and testing GraphQL APIs. It provides an interactive interface that allows you to build and execute GraphQL queries, visualize query results, and inspect schema documentation.
+
+#### Accessing GraphiQL
+You can access GraphiQL for your GraphQL API using the following endpoints:
+
+* Local GraphiQL: http://localhost:8081/graphiql?path=/graphql
+* Dev GraphiQL: http://192.168.58.242:8081/graphiql?path=/graphql
+
+#### Testing Queries
+You can test queries against your GraphQL API using GraphiQL. Here's a sample query to fetch all enabled models:
+
+```
+query {
+  Models(where: {
+    enabled: { EQ: true }
+  }) {
+    select {
+      id
+      name
+      enabled(orderBy: ASC)
+      mlTask {
+        name
+      }
+    }
+  }
+}
+```
 ## Profiles/Configuration ##
 The application supports different profiles for dev and prod environments. To switch between them, adjust the spring.profiles.active setting in model-catalog-rest src/main/resources/application.properties.
+
+Available Profiles
+1. api-docs
+   * Purpose: This profile is intended for generating API documentation.
+   * Usage: It can be activated to include API documentation-related configurations.
+2. local
+   * Purpose: Automatically activated profile for local development.
+   * Activation: Active by default.
+   * Usage: Sets the Spring profile to local and includes necessary dependencies and configurations for local development.
+3. dev
+   * Purpose: Profile for development environment.
+   * Activation: Not active by default.
+   * Usage: Configures settings specific to development environment such as database connection, dependencies for development tools, and test configurations.
+4. prod
+   * Purpose: Profile for production environment.
+   * Activation: Not active by default.
+   * Usage: Configures settings specific to production environment such as Spring profiles, database connection, and build plugins for creating production-ready artifacts.
+5. zipkin
+   * Purpose: Profile for tracing requests with Zipkin.
+   * Activation: Not active by default.
+   * Usage: Includes dependencies related to request tracing with Zipkin.
+6. sentry
+   * Purpose: Profile for integrating with Sentry for error monitoring.
+   * Activation: Active by default.
+   * Usage: Activating this profile will include configurations for Sentry integration.
+
+In order to activate a profile, you can set the spring.profiles.active property in the application.properties file. For example, to activate the dev profile, you can set the property as follows:
+   
+ ``` 
+    spring.profiles.active=dev
+ ```
+Also in .env file, you can set the profile as follows:
+
+ ``` 
+    SPRING_PROFILES_ACTIVE=dev
+ ```
 
 ## SQL Migration ##
 SQL schema migration is performed using Liquibase. The changesets are located in model-catalog-entity src/main/resources/config.liquibase/changelog. There are 13 changesets in total, 2 DDLs and 11 DMLs, and they are run in the order they are listed in db.changelog-master.xml.
@@ -213,6 +279,26 @@ This application is configured to use the Google Java Style Guide for formatting
   mvn com.coveo:fmt-maven-plugin:check
   ```
 
+## Checkstyle ##
+
+In the application there is specific plugin "maven-checkstyle-plugin", which is used to perform code style checks on Java source code.
+
+* To run checkstyle checks use the following command:
+  ```
+  mvn checkstyle:check
+  ```
+* The rules are defined in the checkstyle.xml file in the root directory of the repository.
+  The checkstyle.xml is a configuration file used by the Checkstyle tool to define the coding standards and rules that should be enforced during code analysis. Checkstyle is a static code analysis tool that checks Java code for adherence to a set of coding standards, which helps ensure code quality, maintainability, and readability.
+
+## Modernizer ##
+
+The application uses the Modernizer Maven Plugin to check for the use of outdated Java APIs. It checks your code against a set of rules to identify any usage of deprecated or outdated APIs and provides reports on them.
+* The plugin will be triggered during the build process.
+* To explicitly run the Modernizer Maven Plugin and trigger the modernizer goal defined in your Maven configuration, you can use the following command:
+  ```
+  mvn modernizer:modernizer
+  ```
+
 ## Jacoco Coverage Module ##
 
 * This application also includes an aggregated Jacoco coverage module, which is designed specifically for aggregating 
@@ -224,8 +310,36 @@ located at /jacoco-coverage-aggregate-report/target/site/jacoco-aggregate/jacoco
 * This allows for a unified overview to quickly assess the state of code coverage across multiple modules of the project, 
 in a format that is easy to integrate into Sonarqube.
 
+## Git Revision Plugin ##
+* This application uses the git-commit-id-plugin to generate a properties file containing the git commit id and other information like the branch name, build time, etc. This information is then used in the application to display the git commit id and other information in the Swagger UI.
+* During the Maven build process, execute the following command to generate the git.properties file:
+    ```
+    mvn git-commit-id:revision
+    ```
+* Once generated, the git.properties file will be located in the target directory and can be utilized within the application to display version information or include in build artifacts.
+
 ## Adding Additional Modules ##
 
 If you add any additional modules to the project, please make sure to include them in the POM configuration of the 
 Jacoco module. This will ensure they are included in the coverage report. This is crucial to maintain an accurate and 
 comprehensive understanding of the overall code coverage of the project.
+
+## Entities - Tables explanation ##
+
+All the enum types are good to be individual tables with type at the end of the name.
+
+Those entities (tables) are:
+
+* MlTaskType (ml_task_type) : Model main category (Classification, Regression, Forecasting)
+* ModelEnsembleType (model_ensemble_type) : Category of ensemble algorithms (right now we have forest, other or none)
+* ModelFamilyType (model_family_type) : Each ml model can be in one of the following wider category (linear, tree. other)
+* ModelGroupType (model_group_type) : Front end wants to categorised the ml models to be easier for the user. When the user starts a trial, he/she can see the selected models based on this (fast, explainable, advanced)
+* ModelStructureType (model_structure_type) : dynamic, base
+* ModelType (model_type) : An other category of an Ml model ( Linear Model, Kernel Model, Baseline Model, Tree-Based Model, Nearest Neighbours Model, Ensemble Model, Bayesian Model, Deep Learning Model, Gradient Model, Statistical Model
+* ParameterDistributionType (parameter_distribution_type) : uniform, log uniform
+* ParameterType (parameter_type) : categorical, float, integer, boolean
+and at this pr I want to add
+* DependencyType (dependency_type) : Specific dependency per dependency group. What dependency each dependency group has.
+* DependencyGroupType (dependency_group_type) : dependencies wider groups (lightning, catboost, sktime, statsforecast, darts, huggingface, intelex, lightgbm, xgboost, base, stacking)
+
+In general, we keep the naming from metaml the same, and we add the "type" suffix for the enum value tables. That was our convention.

@@ -53,7 +53,7 @@ public class IntegerParameterTO extends ParameterTypeDefinitionTO {
   @Override
   public String toString() {
     return "IntegerParameterDTO{"
-        + "parameterTypeDefinitionId"
+        + "parameterTypeDefinitionId="
         + getId()
         + ", defaultValue="
         + getDefaultValue()
