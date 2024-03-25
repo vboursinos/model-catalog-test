@@ -7,16 +7,12 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 public class ParameterDistributionTypeFacadeTest extends BasicFacadeTest {
   private final String EXISTING_PARAMETER_DISTRIBUTION_TYPE_ID =
