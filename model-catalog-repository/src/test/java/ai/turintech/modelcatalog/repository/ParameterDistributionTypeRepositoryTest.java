@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.ParameterDistributionType;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ public class ParameterDistributionTypeRepositoryTest {
     ParameterDistributionType parameterDistributionType =
         parameterDistributionTypeRepository
             .findById(UUID.fromString(PARAMETER_DISTRIBUTION_TYPE_ID))
-            .get();
+            .orElseThrow(() -> new NoSuchElementException("Parameter distribution type not found"));
     Assertions.assertEquals("parameterdistributiontype3", parameterDistributionType.getName());
   }
 

@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,9 @@ public class FloatParameterValueRepositoryTest {
   @Test
   void testFindByIdFloatParameterRangeRepository() {
     FloatParameterRange floatParameterRange =
-        floatParameterRangeRepository.findById(UUID.fromString(FLOAT_PARAMETER_RANGE_ID)).get();
+        floatParameterRangeRepository
+            .findById(UUID.fromString(FLOAT_PARAMETER_RANGE_ID))
+            .orElseThrow(() -> new NoSuchElementException("Float parameter range not found"));
     Assertions.assertEquals(25.3, floatParameterRange.getLower());
   }
 

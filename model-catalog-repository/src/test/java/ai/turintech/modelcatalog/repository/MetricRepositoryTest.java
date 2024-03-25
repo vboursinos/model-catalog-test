@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.Metric;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,10 @@ public class MetricRepositoryTest {
 
   @Test
   void testFindByIdMetricRepository() {
-    Metric metric = metricRepository.findById(UUID.fromString(METRIC_ID)).get();
+    Metric metric =
+        metricRepository
+            .findById(UUID.fromString(METRIC_ID))
+            .orElseThrow(() -> new NoSuchElementException("Metric not found"));
     Assertions.assertEquals("Metric1", metric.getMetric());
   }
 

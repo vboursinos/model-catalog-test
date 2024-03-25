@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -89,7 +90,7 @@ public class ParameterTypeDefinitionRepositoryTest {
     ParameterTypeDefinition parameterTypeDefinition =
         parameterTypeDefinitionRepository
             .findById(UUID.fromString(PARAMETER_TYPE_DEFINITION_ID))
-            .get();
+            .orElseThrow(() -> new NoSuchElementException("Parameter type definition not found"));
     Assertions.assertEquals(1, parameterTypeDefinition.getOrdering());
   }
 

@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -88,7 +89,10 @@ public class ModelRepositoryTest {
 
   @Test
   void testFindByIdModelRepository() {
-    Model model = modelRepository.findById(UUID.fromString(MODEL_ID)).get();
+    Model model =
+        modelRepository
+            .findById(UUID.fromString(MODEL_ID))
+            .orElseThrow(() -> new NoSuchElementException("Model not found"));
     Assertions.assertEquals("Display1", model.getDisplayName());
   }
 

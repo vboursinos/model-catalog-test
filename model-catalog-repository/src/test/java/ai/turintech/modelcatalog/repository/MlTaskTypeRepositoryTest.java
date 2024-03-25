@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.MlTaskType;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,10 @@ public class MlTaskTypeRepositoryTest {
 
   @Test
   void testFindByIdMlTaskRepository() {
-    MlTaskType mlTaskType = mlTaskTypeRepository.findById(UUID.fromString(ML_TASK_TYPE_ID)).get();
+    MlTaskType mlTaskType =
+        mlTaskTypeRepository
+            .findById(UUID.fromString(ML_TASK_TYPE_ID))
+            .orElseThrow(() -> new NoSuchElementException("Ml task type not found"));
     Assertions.assertEquals("mltask2", mlTaskType.getName());
   }
 

@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,9 @@ public class IntegerParameterRepositoryTest {
   @Test
   void testFindByIdIntegerParameterRepository() {
     IntegerParameter integerParameter =
-        integerParameterRepository.findById(UUID.fromString(INTEGER_PARAMETER_ID)).get();
+        integerParameterRepository
+            .findById(UUID.fromString(INTEGER_PARAMETER_ID))
+            .orElseThrow(() -> new NoSuchElementException("Integer parameter not found"));
     Assertions.assertEquals(10, integerParameter.getDefaultValue());
   }
 }

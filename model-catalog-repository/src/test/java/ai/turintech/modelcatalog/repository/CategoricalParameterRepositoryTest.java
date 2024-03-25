@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ public class CategoricalParameterRepositoryTest {
     CategoricalParameter categoricalParameter =
         categoricalParameterRepository
             .findById(UUID.fromString("323e4567-e89b-12d3-a456-426614174001"))
-            .get();
+            .orElseThrow(() -> new NoSuchElementException("Categorical parameter not found"));
     Assertions.assertEquals("value1", categoricalParameter.getDefaultValue());
   }
 }

@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.repository;
 
 import ai.turintech.modelcatalog.entity.ModelFamilyType;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,9 @@ public class ModelFamilyTypeRepositoryTest {
   @Test
   void testFindByIdModelFamilyTypeRepository() {
     ModelFamilyType modelFamilyType =
-        modelFamilyTypeRepository.findById(UUID.fromString(MODEL_FAMILY_TYPE_ID)).get();
+        modelFamilyTypeRepository
+            .findById(UUID.fromString(MODEL_FAMILY_TYPE_ID))
+            .orElseThrow(() -> new NoSuchElementException("Model family type not found"));
     Assertions.assertEquals("modelfamilytype3", modelFamilyType.getName());
   }
 
