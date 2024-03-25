@@ -186,6 +186,42 @@ query {
 ## Profiles/Configuration ##
 The application supports different profiles for dev and prod environments. To switch between them, adjust the spring.profiles.active setting in model-catalog-rest src/main/resources/application.properties.
 
+Available Profiles
+1. api-docs
+   * Purpose: This profile is intended for generating API documentation.
+   * Usage: It can be activated to include API documentation-related configurations.
+2. local
+   * Purpose: Automatically activated profile for local development.
+   * Activation: Active by default.
+   * Usage: Sets the Spring profile to local and includes necessary dependencies and configurations for local development.
+3. dev
+   * Purpose: Profile for development environment.
+   * Activation: Not active by default.
+   * Usage: Configures settings specific to development environment such as database connection, dependencies for development tools, and test configurations.
+4. prod
+   * Purpose: Profile for production environment.
+   * Activation: Not active by default.
+   * Usage: Configures settings specific to production environment such as Spring profiles, database connection, and build plugins for creating production-ready artifacts.
+5. zipkin
+   * Purpose: Profile for tracing requests with Zipkin.
+   * Activation: Not active by default.
+   * Usage: Includes dependencies related to request tracing with Zipkin.
+6. sentry
+   * Purpose: Profile for integrating with Sentry for error monitoring.
+   * Activation: Active by default.
+   * Usage: Activating this profile will include configurations for Sentry integration.
+
+In order to activate a profile, you can set the spring.profiles.active property in the application.properties file. For example, to activate the dev profile, you can set the property as follows:
+   
+ ``` 
+    spring.profiles.active=dev
+ ```
+Also in .env file, you can set the profile as follows:
+
+ ``` 
+    SPRING_PROFILES_ACTIVE=dev
+ ```
+
 ## SQL Migration ##
 SQL schema migration is performed using Liquibase. The changesets are located in model-catalog-entity src/main/resources/config.liquibase/changelog. There are 13 changesets in total, 2 DDLs and 11 DMLs, and they are run in the order they are listed in db.changelog-master.xml.
 
