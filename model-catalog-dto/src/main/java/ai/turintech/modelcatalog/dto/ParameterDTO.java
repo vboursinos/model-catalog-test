@@ -29,12 +29,7 @@ public class ParameterDTO extends AbstractUUIDIdentityDTO {
 
   @NotNull private UUID modelId;
 
-  @NotNull private List<BooleanParameterDTO> booleanParameters = new ArrayList<>();
-  @NotNull private List<CategoricalParameterDTO> categoricalParameters = new ArrayList<>();
-
-  @NotNull private List<FloatParameterDTO> floatParameters = new ArrayList<>();
-
-  @NotNull private List<IntegerParameterDTO> integerParameters = new ArrayList<>();
+  @NotNull private List<ParameterTypeDefinitionDTO> definitions = new ArrayList<>();
 
   public String getName() {
     return name;
@@ -92,36 +87,12 @@ public class ParameterDTO extends AbstractUUIDIdentityDTO {
     this.modelId = modelId;
   }
 
-  public List<BooleanParameterDTO> getBooleanParameters() {
-    return booleanParameters;
+  public List<ParameterTypeDefinitionDTO> getDefinitions() {
+    return definitions;
   }
 
-  public void setBooleanParameters(List<BooleanParameterDTO> booleanParameters) {
-    this.booleanParameters = booleanParameters;
-  }
-
-  public List<FloatParameterDTO> getFloatParameters() {
-    return floatParameters;
-  }
-
-  public void setFloatParameters(List<FloatParameterDTO> floatParameters) {
-    this.floatParameters = floatParameters;
-  }
-
-  public List<IntegerParameterDTO> getIntegerParameters() {
-    return integerParameters;
-  }
-
-  public void setIntegerParameters(List<IntegerParameterDTO> integerParameters) {
-    this.integerParameters = integerParameters;
-  }
-
-  public List<CategoricalParameterDTO> getCategoricalParameters() {
-    return categoricalParameters;
-  }
-
-  public void setCategoricalParameters(List<CategoricalParameterDTO> categoricalParameters) {
-    this.categoricalParameters = categoricalParameters;
+  public void setDefinitions(List<ParameterTypeDefinitionDTO> definitions) {
+    this.definitions = definitions;
   }
 
   @Override
@@ -146,11 +117,12 @@ public class ParameterDTO extends AbstractUUIDIdentityDTO {
   }
 
   // prettier-ignore
-
   @Override
   public String toString() {
     return "ParameterDTO{"
-        + "name='"
+        + "id="
+        + getId()
+        + ", name='"
         + name
         + '\''
         + ", label='"
@@ -167,14 +139,8 @@ public class ParameterDTO extends AbstractUUIDIdentityDTO {
         + ordering
         + ", modelId="
         + modelId
-        + ", booleanParameters="
-        + booleanParameters
-        + ", categoricalParameters="
-        + categoricalParameters
-        + ", floatParameters="
-        + floatParameters
-        + ", integerParameters="
-        + integerParameters
+        + ", definitions="
+        + definitions
         + '}';
   }
 }

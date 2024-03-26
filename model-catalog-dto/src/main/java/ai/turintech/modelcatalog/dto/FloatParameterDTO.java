@@ -1,12 +1,13 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /** A DTO for the FloatParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FloatParameterDTO extends ParameterTypeDefinitionDTO {
+public class FloatParameterDTO extends AbstractUUIDIdentityDTO {
   private Double defaultValue;
 
   private List<FloatParameterRangeDTO> floatParameterRanges = new ArrayList<>();

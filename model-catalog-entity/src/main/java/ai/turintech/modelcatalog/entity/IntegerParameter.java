@@ -9,8 +9,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /** A IntegerParameter. */
 @Entity
 @Table(name = "integer_parameter")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameter extends ParameterTypeDefinition {
+public class IntegerParameter extends BaseTypeParameter {
 
   private static final long serialVersionUID = 1L;
 
@@ -36,6 +37,11 @@ public class IntegerParameter extends ParameterTypeDefinition {
 
   public void setDefaultValue(Integer defaultValue) {
     this.defaultValue = defaultValue;
+  }
+
+  public IntegerParameter parameterTypeDefinition(ParameterTypeDefinition parameterTypeDefinition) {
+    this.setParameterTypeDefinition(parameterTypeDefinition);
+    return this;
   }
 
   public Set<IntegerParameterValue> getIntegerParameterValues() {
@@ -77,8 +83,8 @@ public class IntegerParameter extends ParameterTypeDefinition {
     return "IntegerParameter{"
         + "defaultValue="
         + defaultValue
-        + ", integerParameterValues="
-        + integerParameterValues
+        + ", parameterTypeDefinition="
+        + super.getParameterTypeDefinition()
         + '}';
   }
 }

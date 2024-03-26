@@ -1,12 +1,13 @@
 package ai.turintech.modelcatalog.dto;
 
+import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /** A DTO for the IntegerParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class IntegerParameterDTO extends ParameterTypeDefinitionDTO {
+public class IntegerParameterDTO extends AbstractUUIDIdentityDTO {
 
   private Integer defaultValue;
 
