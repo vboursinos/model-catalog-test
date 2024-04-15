@@ -21,7 +21,7 @@ public class ModelType extends AbstractUUIDIdentityEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "type")
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   private Set<Model> models = new HashSet<>();
 

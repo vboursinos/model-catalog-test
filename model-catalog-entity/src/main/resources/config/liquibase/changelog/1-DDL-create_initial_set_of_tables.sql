@@ -71,7 +71,6 @@ CREATE TABLE dependency_type (
 -- changeset liquibaseuser:11
 CREATE TABLE model (
   id uuid DEFAULT generate_uuid() PRIMARY KEY,
-  model_type_id uuid REFERENCES model_type (id),
   ml_task_id uuid REFERENCES ml_task_type (id) NOT NULL,
   name varchar NOT NULL UNIQUE,
   display_name varchar NOT NULL,
@@ -86,6 +85,13 @@ CREATE TABLE model (
   dependency_group_id uuid REFERENCES dependency_group_type (id)
 );
 -- rollback DROP TABLE model;
+
+-- changeset liquibaseuser:
+CREATE TABLE rel_model_model_type (
+   model_id uuid REFERENCES model (id),
+   model_type_id uuid REFERENCES model_type (id)
+);
+ -- rollback DROP TABLE rel_model_model_type;
 
 -- changeset liquibaseuser:12
 CREATE TABLE rel_model__groups (
