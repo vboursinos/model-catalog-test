@@ -37,7 +37,7 @@ public class ModelTO extends AbstractUUIDIdentityTO {
 
   private ModelStructureTypeTO structure;
 
-  private ModelTypeTO type;
+  private Set<ModelTypeTO> types;
 
   private ModelFamilyTypeTO familyType;
 
@@ -133,12 +133,12 @@ public class ModelTO extends AbstractUUIDIdentityTO {
     this.structure = structure;
   }
 
-  public ModelTypeTO getType() {
-    return type;
+  public Set<ModelTypeTO> getTypes() {
+    return types;
   }
 
-  public void setType(ModelTypeTO type) {
-    this.type = type;
+  public void setTypes(Set<ModelTypeTO> types) {
+    this.types = types;
   }
 
   public ModelFamilyTypeTO getFamilyType() {
@@ -230,8 +230,8 @@ public class ModelTO extends AbstractUUIDIdentityTO {
         + mlTask
         + ", structure="
         + structure
-        + ", type="
-        + type
+        + ", types="
+        + types
         + ", familyType="
         + familyType
         + ", ensembleType="

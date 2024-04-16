@@ -33,18 +33,6 @@ public class ModelTypeTest {
   }
 
   @Test
-  public void testGetModels() {
-    modelTypeUnderTest.addModels(model);
-    assertThat(modelTypeUnderTest.getModels()).contains(model);
-  }
-
-  @Test
-  public void testSetModels() {
-    modelTypeUnderTest.addModels(model);
-    assertThat(modelTypeUnderTest.getModels()).contains(model);
-  }
-
-  @Test
   public void testEquals() {
     ModelType entityToCompare = new ModelType();
     entityToCompare.setId(modelTypeUnderTest.getId());

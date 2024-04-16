@@ -42,8 +42,8 @@ public class ModelDTOTest {
     ModelStructureTypeDTO structureTypeDTO = new ModelStructureTypeDTO();
     modelDTO.setStructure(structureTypeDTO);
 
-    ModelTypeDTO modelTypeDTO = new ModelTypeDTO();
-    modelDTO.setType(modelTypeDTO);
+    Set<ModelTypeDTO> modelTypeDTOSet = new HashSet<>();
+    modelDTO.setTypes(modelTypeDTOSet);
 
     ModelFamilyTypeDTO familyTypeDTO = new ModelFamilyTypeDTO();
     modelDTO.setFamilyType(familyTypeDTO);

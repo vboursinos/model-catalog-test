@@ -21,7 +21,7 @@ public class ModelType extends AbstractUUIDIdentityEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "type")
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "types")
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   private Set<Model> models = new HashSet<>();
 
@@ -45,30 +45,7 @@ public class ModelType extends AbstractUUIDIdentityEntity {
   }
 
   public void setModels(Set<Model> models) {
-    if (this.models != null) {
-      this.models.forEach(i -> i.setType(null));
-    }
-    if (models != null) {
-      models.forEach(i -> i.setType(this));
-    }
     this.models = models;
-  }
-
-  public ModelType models(Set<Model> models) {
-    this.setModels(models);
-    return this;
-  }
-
-  public ModelType addModels(Model model) {
-    this.models.add(model);
-    model.setType(this);
-    return this;
-  }
-
-  public ModelType removeModels(Model model) {
-    this.models.remove(model);
-    model.setType(null);
-    return this;
   }
 
   // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
