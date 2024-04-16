@@ -80,7 +80,7 @@ create TABLE rel_model__incompatible_metrics (
     metric_id uuid REFERENCES metric (id)
 );
 
-CREATE TABLE rel_model_model_type (
+CREATE TABLE rel_model__model_type (
    model_id uuid REFERENCES model (id),
    model_type_id uuid REFERENCES model_type (id)
 );

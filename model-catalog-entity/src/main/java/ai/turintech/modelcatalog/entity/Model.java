@@ -69,7 +69,7 @@ public class Model extends AbstractUUIDIdentityEntity {
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
-      name = "rel_model_model_type",
+      name = "rel_model__model_type",
       joinColumns = @JoinColumn(name = "model_id"),
       inverseJoinColumns = @JoinColumn(name = "model_type_id"))
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

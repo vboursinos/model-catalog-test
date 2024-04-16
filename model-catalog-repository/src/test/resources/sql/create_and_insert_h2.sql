@@ -90,11 +90,11 @@ create TABLE rel_model__incompatible_metrics (
     FOREIGN KEY(metric_id) REFERENCES metric(id)
 );
 
-create TABLE rel_model_model_type (
+create TABLE rel_model__model_type (
    model_id VARCHAR(36),
    model_type_id VARCHAR(36),
-    FOREIGN KEY(model_id) REFERENCES model(id),
-    FOREIGN KEY(model_type_id) REFERENCES model_type(id)
+   FOREIGN KEY(model_id) REFERENCES model(id),
+   FOREIGN KEY(model_type_id) REFERENCES model_type(id)
 );
 
 create TABLE parameter (

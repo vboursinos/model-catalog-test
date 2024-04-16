@@ -87,11 +87,11 @@ CREATE TABLE model (
 -- rollback DROP TABLE model;
 
 -- changeset liquibaseuser:
-CREATE TABLE rel_model_model_type (
+CREATE TABLE rel_model__model_type (
    model_id uuid REFERENCES model (id),
    model_type_id uuid REFERENCES model_type (id)
 );
- -- rollback DROP TABLE rel_model_model_type;
+ -- rollback DROP TABLE rel_model__model_type;
 
 -- changeset liquibaseuser:12
 CREATE TABLE rel_model__groups (
