@@ -1,0 +1,4 @@
+hist_gradient_boosting_classifier
+hist_gradient_boosting_regressor
+svr_regressor
+nixtla_auto_theta_forecaster

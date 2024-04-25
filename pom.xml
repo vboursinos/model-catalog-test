@@ -955,6 +955,8 @@
         <module>model-catalog-repository</module>
         <!-- Utility module for jacoco coverate report aggregation -->
         <module>jacoco-coverage-aggregate-report</module>
+        <!-- Utility module for migration file creation -->
+        <module>model-catalog-migration-file-creator</module>
     </modules>
 
 </project>
