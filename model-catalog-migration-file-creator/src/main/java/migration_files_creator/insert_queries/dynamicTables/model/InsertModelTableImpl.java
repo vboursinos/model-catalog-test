@@ -2,7 +2,7 @@ package migration_files_creator.insert_queries.dynamicTables.model;
 
 import static migration_files_creator.insert_queries.dynamicTables.model.ModelTableBuilder.*;
 
-import database.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ModelDTO;
 import java.util.Arrays;
 import java.util.List;
 import migration_files_creator.insert_queries.staticTables.TableCreatorHelper;

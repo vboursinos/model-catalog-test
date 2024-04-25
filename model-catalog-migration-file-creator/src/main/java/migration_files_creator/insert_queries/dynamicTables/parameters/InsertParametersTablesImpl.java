@@ -2,9 +2,9 @@ package migration_files_creator.insert_queries.dynamicTables.parameters;
 
 import static migration_files_creator.insert_queries.dynamicTables.parameters.ParameterTablesBuilder.*;
 
-import database.dto.ModelDTO;
-import database.dto.ParameterDTO;
-import database.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ParameterDTO;
+import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.util.*;
 import migration_files_creator.insert_queries.dynamicTables.parameters.typeParameters.*;
 import migration_files_creator.insert_queries.staticTables.TableCreatorHelper;

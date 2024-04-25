@@ -1,6 +1,6 @@
 package migration_files_creator.insert_queries.dynamicTables.parameters.typeParameters;
 
-import database.dto.CategoricalParameterValueDTO;
+import ai.turintech.modelcatalog.dto.CategoricalParameterValueDTO;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;

@@ -3,8 +3,8 @@ package migration_files_creator.insert_queries.dynamicTables.parameters.typePara
 import static migration_files_creator.insert_queries.dynamicTables.parameters.ParameterTablesBuilder.appendBooleanParameterSQL;
 import static migration_files_creator.insert_queries.staticTables.TableCreatorHelper.buildRevInfoInsertSQL;
 
-import database.dto.ParameterDTO;
-import database.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.dto.ParameterDTO;
+import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.text.SimpleDateFormat;
 import migration_files_creator.delete_queries.DeleteTableBuilder;
 import migration_files_creator.model.HyperParameter;

@@ -1,6 +1,6 @@
 package configuration;
 
-import database.entity.ModelCatalogEntityPackage;
+import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
 import jakarta.persistence.EntityManagerFactory;
 import javax.naming.NamingException;
 import javax.sql.DataSource;

@@ -3,9 +3,9 @@ package migration_files_creator.insert_queries.dynamicTables.parameters.typePara
 import static migration_files_creator.insert_queries.dynamicTables.parameters.ParameterTablesBuilder.*;
 import static migration_files_creator.insert_queries.staticTables.TableCreatorHelper.buildRevInfoInsertSQL;
 
-import database.dto.FloatParameterRangeDTO;
-import database.dto.ParameterDTO;
-import database.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
+import ai.turintech.modelcatalog.dto.ParameterDTO;
+import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
@@ -191,10 +191,11 @@ class FloatParameterStrategy extends TypeParameterUtils implements ParameterStra
             parameterTypeDefinition, "float_parameter", modelName, parameterName));
   }
 
-  private FloatParameterRangeDTO obtainFloatParameterRange(ParameterTypeDefinitionDTO parameterTypeDefinition) {
+  private FloatParameterRangeDTO obtainFloatParameterRange(
+      ParameterTypeDefinitionDTO parameterTypeDefinition) {
     return parameterTypeDefinition.getFloatParameter().getFloatParameterRanges().stream()
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("No float parameter range found"));
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException("No float parameter range found"));
   }
 
   private void appendFloatParameterRangeAudit(
@@ -374,9 +375,13 @@ class FloatParameterStrategy extends TypeParameterUtils implements ParameterStra
       return false;
     }
 
-    FloatParameterRangeDTO firstParamRange = parameterRanges.stream().findFirst()
+    FloatParameterRangeDTO firstParamRange =
+        parameterRanges.stream()
+            .findFirst()
             .orElseThrow(() -> new IllegalStateException("No float parameter range found"));
-    Interval firstInterval = intervals.stream().findFirst()
+    Interval firstInterval =
+        intervals.stream()
+            .findFirst()
             .orElseThrow(() -> new IllegalStateException("Intervals list is empty"));
 
     double tolerance = 0.0001;

@@ -1,7 +1,7 @@
 package migration_files_creator.insert_queries.dynamicTables.model.pivotTables;
 
-import database.dto.ModelDTO;
-import database.dto.ModelTypeDTO;
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ModelTypeDTO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;

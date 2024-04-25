@@ -1,8 +1,8 @@
 package migration_files_creator.delete_queries;
 
-import database.dto.ModelDTO;
-import database.dto.ParameterDTO;
-import database.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ParameterDTO;
+import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.util.List;
 import java.util.Set;
 import migration_files_creator.model.Models;

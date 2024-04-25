@@ -4,9 +4,9 @@ import static migration_files_creator.delete_queries.DeleteTableBuilder.buildDel
 import static migration_files_creator.insert_queries.dynamicTables.parameters.ParameterTablesBuilder.updateParameterSQL;
 import static migration_files_creator.insert_queries.staticTables.TableCreatorHelper.buildRevInfoInsertSQL;
 
-import database.dto.ModelDTO;
-import database.dto.ParameterDTO;
-import database.dto.ParameterTypeDefinitionDTO;
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ParameterDTO;
+import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
