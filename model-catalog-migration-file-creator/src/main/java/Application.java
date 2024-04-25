@@ -1,7 +1,10 @@
-import database.dtoentitymapper.ModelCatalogDtoEntityMapperPackage;
-import database.entity.ModelCatalogEntityPackage;
-import database.repository.ModelCatalogRepositoryPackage;
-import database.service.ModelCatalogServicePackage;
+import ai.turintech.components.jpa.search.JpaSearchPackage;
+import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
+import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
+import ai.turintech.modelcatalog.dtoentitymapper.ModelCatalogDtoEntityMapperPackage;
+import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
+import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
+import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
 import jakarta.persistence.EntityManagerFactory;
 import java.io.IOException;
 import javax.naming.NamingException;
@@ -32,11 +35,13 @@ import org.springframework.transaction.PlatformTransactionManager;
     basePackageClasses = {
       ModelCatalogRepositoryPackage.class,
       MigrationFilesCreatorPackage.class,
+      ModelCatalogDtoEntityMapperPackage.class,
       ModelCatalogServicePackage.class,
-      ModelCatalogDtoEntityMapperPackage.class
+      JpaSearchPackage.class
     })
-@EnableJpaRepositories(basePackageClasses = {ModelCatalogRepositoryPackage.class})
-@EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class})
+@EnableJpaRepositories(
+    basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})
+@EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 @PropertySource(value = {"/configuration.properties", "/application.properties"})
 public class Application {
 
