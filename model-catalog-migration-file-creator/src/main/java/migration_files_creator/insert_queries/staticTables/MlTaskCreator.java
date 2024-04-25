@@ -1,8 +1,8 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
+import ai.turintech.modelcatalog.service.MlTaskTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.MlTaskType;
-import database.service.interfaces.MlTaskTypeService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +25,7 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     Set<String> allMlTaskTypes;
     try {
       allMlTaskTypes = extractAllMlTaskTypes();
-      List<MlTaskType> mlTaskTypes = mlTaskTypeService.findAll();
+      List<MlTaskTypeDTO> mlTaskTypes = mlTaskTypeService.findAll().block();
       logger.info("Mltask types: " + mlTaskTypes);
       compareMlTaskTypes(allMlTaskTypes, mlTaskTypes);
       ;
@@ -42,11 +42,11 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     return allMlTaskTypes;
   }
 
-  private void compareMlTaskTypes(Set<String> allMlTaskTypes, List<MlTaskType> mlTaskTypes) {
+  private void compareMlTaskTypes(Set<String> allMlTaskTypes, List<MlTaskTypeDTO> mlTaskTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> mlTaskTypesForDeletion = new HashSet<>();
     Set<String> foundMlTaskTypes = new HashSet<>();
-    for (MlTaskType mlTaskType : mlTaskTypes) {
+    for (MlTaskTypeDTO mlTaskType : mlTaskTypes) {
       if (allMlTaskTypes.contains(mlTaskType.getName())) {
         logger.info("MlTask type found: " + mlTaskType.getName());
         foundMlTaskTypes.add(mlTaskType.getName());

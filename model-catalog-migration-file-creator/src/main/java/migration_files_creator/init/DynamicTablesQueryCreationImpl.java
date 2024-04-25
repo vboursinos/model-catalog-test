@@ -1,9 +1,9 @@
 package migration_files_creator.init;
 
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
+import ai.turintech.modelcatalog.service.ModelService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.dto.ModelDTO;
-import database.dtoentitymapper.ModelMapper;
-import database.service.interfaces.ModelService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 import utils.FileUtils;
 
 @Component
@@ -67,7 +68,10 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
     String mltask = models.getModels().get(0).getMlTask();
     String outputFileName = determineOutputFileName();
 
-    List<ModelDTO> modelsDTO = modelService.findAll().stream().map(modelMapper::to).toList();
+    //    List<ModelDTO> modelsDTO = modelService.findAll().map(modelMapper::to).toList();
+    Mono<List<ModelDTO>> modelsDTOList = modelService.findAll().collectList();
+    List<ModelDTO> modelsDTO = modelsDTOList.block();
+
     String sqlScriptDelete = deleteDynamicTables.buildDeleteSQL(mltask, models, modelsDTO);
     String sqlScriptInsert = insertDynamicTables.buildInsertSQL(models, modelsDTO);
     String sqlScriptFinal = cleanupSQLScript(sqlScriptDelete + "\n" + sqlScriptInsert);

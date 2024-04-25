@@ -1,8 +1,8 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
+import ai.turintech.modelcatalog.service.ModelGroupTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.ModelGroupType;
-import database.service.interfaces.ModelGroupTypeService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +27,7 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
     Set<String> allGroupTypes;
     try {
       allGroupTypes = extractAllGroupTypes();
-      List<ModelGroupType> modelGroupTypes = modelGroupTypeService.findAll();
+      List<ModelGroupTypeDTO> modelGroupTypes = modelGroupTypeService.findAll().block();
       logger.info("Model group types: " + modelGroupTypes);
       compareModelGroupTypes(allGroupTypes, modelGroupTypes);
     } catch (IOException e) {
@@ -44,11 +44,11 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
   }
 
   private void compareModelGroupTypes(
-      Set<String> allModelGroupTypes, List<ModelGroupType> modelGroupTypes) {
+      Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> modelGroupTypesForDeletion = new HashSet<>();
     Set<String> foundModelGroupTypes = new HashSet<>();
-    for (ModelGroupType modelGroupType : modelGroupTypes) {
+    for (ModelGroupTypeDTO modelGroupType : modelGroupTypes) {
       if (allModelGroupTypes.contains(modelGroupType.getName())) {
         logger.info("Model Group type found: " + modelGroupType.getName());
         foundModelGroupTypes.add(modelGroupType.getName());

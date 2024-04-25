@@ -1,6 +1,6 @@
 package migration_files_creator.insert_queries.dynamicTables.model;
 
-import database.dto.ModelDTO;
+import ai.turintech.modelcatalog.dto.ModelDTO;
 import java.text.SimpleDateFormat;
 import migration_files_creator.model.Model;
 
@@ -97,7 +97,7 @@ public class ModelTableBuilder {
         .append("'));\n");
   }
 
-  public static StringBuilder insertModelAuditSQL(database.entity.Model model, int revType) {
+  public static StringBuilder insertModelAuditSQL(ModelDTO model, int revType) {
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String advantagesArray = "{" + String.join(",", model.getAdvantages()) + "}";
     String disadvantagesArray = "{" + String.join(",", model.getDisadvantages()) + "}";

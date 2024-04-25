@@ -1,8 +1,8 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.ParameterDistributionTypeDTO;
+import ai.turintech.modelcatalog.service.ParameterDistributionTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.ParameterDistributionType;
-import database.service.interfaces.ParameterDistributionTypeService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,8 +31,8 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
     Set<String> allParameterDistributionTypes;
     try {
       allParameterDistributionTypes = extractAllParameterDistributionTypes();
-      List<ParameterDistributionType> parameterDistributionTypes =
-          parameterDistributionTypeService.findAll();
+      List<ParameterDistributionTypeDTO> parameterDistributionTypes =
+          parameterDistributionTypeService.findAll().block();
       logger.info("Parameter Distribution types: " + parameterDistributionTypes);
       compareParameterDistributionTypes(allParameterDistributionTypes, parameterDistributionTypes);
     } catch (IOException e) {
@@ -51,11 +51,11 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
 
   private void compareParameterDistributionTypes(
       Set<String> allParameterDistributionTypes,
-      List<ParameterDistributionType> parameterDistributionTypes) {
+      List<ParameterDistributionTypeDTO> parameterDistributionTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> parameterDistributionTypesForDeletion = new HashSet<>();
     Set<String> foundParameterDistributionTypes = new HashSet<>();
-    for (ParameterDistributionType parameterDistributionType : parameterDistributionTypes) {
+    for (ParameterDistributionTypeDTO parameterDistributionType : parameterDistributionTypes) {
       if (allParameterDistributionTypes.contains(parameterDistributionType.getName())) {
         logger.info("Parameter distribution type found: " + parameterDistributionType.getName());
         foundParameterDistributionTypes.add(parameterDistributionType.getName());

@@ -1,9 +1,9 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
+import ai.turintech.modelcatalog.service.ParameterTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import configuration.PropertiesConfig;
-import database.entity.ParameterType;
-import database.service.interfaces.ParameterTypeService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +27,7 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
     Set<String> allParameterTypes;
     try {
       allParameterTypes = extractAllParameterTypes();
-      List<ParameterType> parameterTypes = parameterTypeService.findAll();
+      List<ParameterTypeDTO> parameterTypes = parameterTypeService.findAll().block();
       logger.info("Parameter types: " + parameterTypes);
       compareParameterTypes(allParameterTypes, parameterTypes);
     } catch (IOException e) {
@@ -45,11 +45,11 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
   }
 
   private void compareParameterTypes(
-      Set<String> allParameterTypes, List<ParameterType> parameterTypes) {
+      Set<String> allParameterTypes, List<ParameterTypeDTO> parameterTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> parameterTypesForDeletion = new HashSet<>();
     Set<String> foundParameterTypes = new HashSet<>();
-    for (ParameterType parameterType : parameterTypes) {
+    for (ParameterTypeDTO parameterType : parameterTypes) {
       if (allParameterTypes.contains(parameterType.getName())) {
         logger.info("Parameter type found: " + parameterType.getName());
         foundParameterTypes.add(parameterType.getName());

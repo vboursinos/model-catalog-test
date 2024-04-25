@@ -1,11 +1,11 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
+import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
+import ai.turintech.modelcatalog.service.ModelEnsembleTypeService;
+import ai.turintech.modelcatalog.service.ModelFamilyTypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.ModelEnsembleType;
-import database.entity.ModelFamilyType;
-import database.service.interfaces.ModelEnsembleTypeService;
-import database.service.interfaces.ModelFamilyTypeService;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -31,8 +31,8 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     Map<String, Set<String>> allFamilyEnsembleTypes = new HashMap<>();
     try {
       allFamilyEnsembleTypes = extractAllFamilyEnsembleTypes();
-      List<ModelEnsembleType> modelEnsembleTypes = modelEnsembleTypeService.findAll();
-      List<ModelFamilyType> modelFamilyTypes = modelFamilyTypeService.findAll();
+      List<ModelEnsembleTypeDTO> modelEnsembleTypes = modelEnsembleTypeService.findAll().block();
+      List<ModelFamilyTypeDTO> modelFamilyTypes = modelFamilyTypeService.findAll().block();
       logger.info("Model Ensemble Types: " + modelEnsembleTypes);
       logger.info("Model Family Types: " + modelFamilyTypes);
       compareModelEnsembleTypes(allFamilyEnsembleTypes.get("ensemble"), modelEnsembleTypes);
@@ -48,11 +48,11 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   }
 
   private void compareModelEnsembleTypes(
-      Set<String> allEnsembleTypes, List<ModelEnsembleType> modelEnsembleTypes) {
+      Set<String> allEnsembleTypes, List<ModelEnsembleTypeDTO> modelEnsembleTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> ensembleTypesForDeletion = new HashSet<>();
     Set<String> foundEnsembleTypes = new HashSet<>();
-    for (ModelEnsembleType modelEnsembleType : modelEnsembleTypes) {
+    for (ModelEnsembleTypeDTO modelEnsembleType : modelEnsembleTypes) {
       if (allEnsembleTypes.contains(modelEnsembleType.getName())) {
         logger.info("Model ensemble type found: " + modelEnsembleType.getName());
         foundEnsembleTypes.add(modelEnsembleType.getName());
@@ -75,11 +75,11 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   }
 
   private void compareModelFamilyTypes(
-      Set<String> allFamilyTypes, List<ModelFamilyType> modelFamilyTypes) {
+      Set<String> allFamilyTypes, List<ModelFamilyTypeDTO> modelFamilyTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> familyTypesForDeletion = new HashSet<>();
     Set<String> foundFamilyTypes = new HashSet<>();
-    for (ModelFamilyType modelFamilyType : modelFamilyTypes) {
+    for (ModelFamilyTypeDTO modelFamilyType : modelFamilyTypes) {
       if (allFamilyTypes.contains(modelFamilyType.getName())) {
         logger.info("Model family type found: " + modelFamilyType.getName());
         foundFamilyTypes.add(modelFamilyType.getName());

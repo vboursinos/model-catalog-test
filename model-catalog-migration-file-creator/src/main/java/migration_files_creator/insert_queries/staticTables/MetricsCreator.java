@@ -1,8 +1,8 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.MetricDTO;
+import ai.turintech.modelcatalog.service.MetricService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.Metric;
-import database.service.interfaces.MetricService;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -26,7 +26,7 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     Set<String> allMetrics = new HashSet<>();
     try {
       allMetrics = extractAllMetrics();
-      List<Metric> metrics = metricService.findAll();
+      List<MetricDTO> metrics = metricService.findAll().block();
       logger.info("Metrics: " + metrics);
       compareMetrics(allMetrics, metrics);
     } catch (IOException e) {
@@ -42,11 +42,11 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     return allMetrics;
   }
 
-  private void compareMetrics(Set<String> allMetrics, List<Metric> metrics) {
+  private void compareMetrics(Set<String> allMetrics, List<MetricDTO> metrics) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> metricsForDeletion = new HashSet<>();
     Set<String> foundMetrics = new HashSet<>();
-    for (Metric metric : metrics) {
+    for (MetricDTO metric : metrics) {
       if (allMetrics.contains(metric.getMetric())) {
         logger.info("Metric found: " + metric.getMetric());
         foundMetrics.add(metric.getMetric());

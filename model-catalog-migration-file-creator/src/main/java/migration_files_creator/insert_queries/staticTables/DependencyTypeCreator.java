@@ -1,9 +1,9 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.DependencyTypeDTO;
+import ai.turintech.modelcatalog.service.DependencyTypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.DependencyType;
-import database.service.interfaces.DependencyTypeService;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 public class DependencyTypeCreator extends TableCreatorHelper implements StaticTableCreator {
@@ -27,18 +28,19 @@ public class DependencyTypeCreator extends TableCreatorHelper implements StaticT
 
   public void createStaticTable() {
     Map<String, Set<String>> allDependencyTypes = getDependencies();
-    List<DependencyType> dependencyTypes = dependencyTypeService.findAll();
+    Mono<List<DependencyTypeDTO>> dependencyTypesMono = dependencyTypeService.findAll();
+    List<DependencyTypeDTO> dependencyTypes = dependencyTypesMono.block();
     logger.info("Dependency types: " + dependencyTypes);
     compareDependencyTypes(allDependencyTypes, dependencyTypes);
   }
 
   private void compareDependencyTypes(
-      Map<String, Set<String>> allDependencyTypes, List<DependencyType> dependencyTypes) {
+      Map<String, Set<String>> allDependencyTypes, List<DependencyTypeDTO> dependencyTypes) {
     String newFileName = insertStaticTables.getFilename();
     Map<String, Set<String>> dependencyTypesForDeletion = new HashMap<>();
     Map<String, Set<String>> foundDependencyTypes = new HashMap<>();
 
-    for (DependencyType dependencyType : dependencyTypes) {
+    for (DependencyTypeDTO dependencyType : dependencyTypes) {
       Set<String> values =
           allDependencyTypes.getOrDefault(
               dependencyType.getDependencyGroupType().getName(), new HashSet<>());

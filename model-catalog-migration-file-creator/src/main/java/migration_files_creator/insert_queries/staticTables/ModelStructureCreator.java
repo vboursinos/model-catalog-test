@@ -1,8 +1,8 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.ModelStructureTypeDTO;
+import ai.turintech.modelcatalog.service.ModelStructureTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.ModelStructureType;
-import database.service.interfaces.ModelStructureTypeService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +27,7 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
     Set<String> allModelStructures = new HashSet<>();
     try {
       allModelStructures = extractAllModelStructures();
-      List<ModelStructureType> modelStructures = modelStructureTypeService.findAll();
+      List<ModelStructureTypeDTO> modelStructures = modelStructureTypeService.findAll().block();
       logger.info("Model structures: " + modelStructures);
       compareModelStructures(allModelStructures, modelStructures);
       ;
@@ -46,11 +46,11 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
   }
 
   private void compareModelStructures(
-      Set<String> allModelStructures, List<ModelStructureType> modelStructureTypes) {
+      Set<String> allModelStructures, List<ModelStructureTypeDTO> modelStructureTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> modelStructureTypesForDeletion = new HashSet<>();
     Set<String> foundModelStructureTypes = new HashSet<>();
-    for (ModelStructureType modelStructureType : modelStructureTypes) {
+    for (ModelStructureTypeDTO modelStructureType : modelStructureTypes) {
       if (allModelStructures.contains(modelStructureType.getName())) {
         logger.info("Model structure type found: " + modelStructureType.getName());
         foundModelStructureTypes.add(modelStructureType.getName());

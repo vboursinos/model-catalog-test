@@ -2,9 +2,9 @@ package migration_files_creator.insert_queries.dynamicTables;
 
 import static utils.Transformations.replaceSingleQuotesInMetadata;
 
+import ai.turintech.modelcatalog.dto.ModelDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.dto.ModelDTO;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;

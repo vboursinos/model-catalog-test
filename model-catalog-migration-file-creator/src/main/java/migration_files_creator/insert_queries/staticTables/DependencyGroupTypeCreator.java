@@ -1,8 +1,8 @@
 package migration_files_creator.insert_queries.staticTables;
 
+import ai.turintech.modelcatalog.dto.DependencyGroupTypeDTO;
+import ai.turintech.modelcatalog.service.DependencyGroupTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entity.DependencyGroupType;
-import database.service.interfaces.DependencyGroupTypeService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +27,8 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     Set<String> allDependencyGroupTypes;
     try {
       allDependencyGroupTypes = extractAllDependencyGroupTypes();
-      List<DependencyGroupType> dependencyGroupTypes = dependencyGroupTypeService.findAll();
+      List<DependencyGroupTypeDTO> dependencyGroupTypes =
+          dependencyGroupTypeService.findAll().block();
       logger.info("Dependency group types: " + dependencyGroupTypes);
       compareDependencyGroupTypes(allDependencyGroupTypes, dependencyGroupTypes);
     } catch (IOException e) {
@@ -45,11 +46,11 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
   }
 
   private void compareDependencyGroupTypes(
-      Set<String> allDependencyGroupTypes, List<DependencyGroupType> dependencyGroupTypes) {
+      Set<String> allDependencyGroupTypes, List<DependencyGroupTypeDTO> dependencyGroupTypes) {
     String newFileName = insertStaticTables.getFilename();
     Set<String> dependencyGroupTypesForDeletion = new HashSet<>();
     Set<String> foundDependencyGroupTypes = new HashSet<>();
-    for (DependencyGroupType dependencyGroupType : dependencyGroupTypes) {
+    for (DependencyGroupTypeDTO dependencyGroupType : dependencyGroupTypes) {
       if (allDependencyGroupTypes.contains(dependencyGroupType.getName())) {
         logger.info("Dependency group type found: " + dependencyGroupType.getName());
         foundDependencyGroupTypes.add(dependencyGroupType.getName());
