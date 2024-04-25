@@ -2,10 +2,7 @@ package ai.turintech.modelcatalog.dto;
 
 import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
 import jakarta.validation.constraints.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /** A DTO for the Parameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
@@ -29,7 +26,7 @@ public class ParameterDTO extends AbstractUUIDIdentityDTO {
 
   @NotNull private UUID modelId;
 
-  @NotNull private List<ParameterTypeDefinitionDTO> definitions = new ArrayList<>();
+  @NotNull private Set<ParameterTypeDefinitionDTO> definitions = new HashSet<>();
 
   public String getName() {
     return name;
@@ -87,11 +84,11 @@ public class ParameterDTO extends AbstractUUIDIdentityDTO {
     this.modelId = modelId;
   }
 
-  public List<ParameterTypeDefinitionDTO> getDefinitions() {
+  public Set<ParameterTypeDefinitionDTO> getDefinitions() {
     return definitions;
   }
 
-  public void setDefinitions(List<ParameterTypeDefinitionDTO> definitions) {
+  public void setDefinitions(Set<ParameterTypeDefinitionDTO> definitions) {
     this.definitions = definitions;
   }
 

@@ -2,9 +2,7 @@ package ai.turintech.modelcatalog.dto;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,7 +23,7 @@ public class ParameterDTOTest {
     parameterDTO.setFixedValue(true);
     parameterDTO.setOrdering(1);
     parameterDTO.setModelId(UUID.randomUUID());
-    List<ParameterTypeDefinitionDTO> definitions = new ArrayList<>();
+    Set<ParameterTypeDefinitionDTO> definitions = new HashSet<>();
     definitions.add(new ParameterTypeDefinitionDTO());
     parameterDTO.setDefinitions(definitions);
   }
@@ -57,6 +55,8 @@ public class ParameterDTOTest {
 
   @Test
   public void testToString() {
+    Set<ParameterTypeDefinitionDTO> definitionsSet = parameterDTO.getDefinitions();
+    List<ParameterTypeDefinitionDTO> definitionsList = new ArrayList<>(definitionsSet);
     String expectedToString =
         "ParameterDTO{id="
             + parameterDTO.getId()
@@ -64,7 +64,7 @@ public class ParameterDTOTest {
             + "enabled=true, fixedValue=true, ordering=1, modelId="
             + parameterDTO.getModelId()
             + ", definitions=["
-            + parameterDTO.getDefinitions().get(0)
+            + definitionsList.get(0)
             + "]}";
     assertEquals(expectedToString, parameterDTO.toString());
   }

@@ -2,9 +2,7 @@ package ai.turintech.modelcatalog.dto;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,7 +19,7 @@ public class IntegerParameterDTOTest {
     integerParameterDTO.setDefaultValue(42);
 
     // Create some integer parameter values for testing
-    List<IntegerParameterValueDTO> integerParameterValues = new ArrayList<>();
+    Set<IntegerParameterValueDTO> integerParameterValues = new HashSet<>();
     IntegerParameterValueDTO value1 = new IntegerParameterValueDTO();
     value1.setId(UUID.randomUUID());
     value1.setLower(10);
