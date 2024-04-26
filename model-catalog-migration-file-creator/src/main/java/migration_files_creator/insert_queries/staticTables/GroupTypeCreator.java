@@ -44,7 +44,7 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
   }
 
   private void compareModelGroupTypes(
-          Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes, String newFileName) {
+      Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes, String newFileName) {
     Set<String> modelGroupTypesForDeletion = new HashSet<>();
     Set<String> foundModelGroupTypes = new HashSet<>();
     for (ModelGroupTypeDTO modelGroupType : modelGroupTypes) {
