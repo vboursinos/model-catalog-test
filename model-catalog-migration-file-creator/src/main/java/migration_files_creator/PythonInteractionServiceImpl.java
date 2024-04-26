@@ -14,7 +14,7 @@ public class PythonInteractionServiceImpl implements PythonInteractionService {
   @Autowired private CreateSqlScriptService createSqlScript;
 
   public void main() throws IOException, InterruptedException {
-    String script = "model-catalog-py/src/main.py";
+    String script = "model-catalog-migration-file-creator/model-catalog-py/src/main.py";
     ProcessBuilder pb;
     Process p;
     pb =

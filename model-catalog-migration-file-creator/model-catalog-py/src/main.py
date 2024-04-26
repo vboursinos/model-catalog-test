@@ -7,7 +7,7 @@ from models import ModelInfoList
 
 
 def create_files():
-    output: Path = Path("model_infos")
+    output: Path = Path("model-catalog-migration-file-creator/model_infos")
     output.mkdir(parents=True, exist_ok=True)
     for task in MlTask:
         model_infos: ModelInfoList = get_model_infos(task)
