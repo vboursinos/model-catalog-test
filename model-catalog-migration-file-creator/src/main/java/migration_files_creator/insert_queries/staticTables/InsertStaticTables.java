@@ -1,12 +1,10 @@
 package migration_files_creator.insert_queries.staticTables;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import configuration.PropertiesConfig;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +14,7 @@ import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import utils.FileUtils;
 
@@ -24,8 +23,11 @@ public class InsertStaticTables {
 
   @Autowired private List<StaticTableCreator> staticTableCreators;
   private static final Logger logger = LogManager.getLogger(InsertStaticTables.class);
-  private static final String JSON_DIR_PATH = "model_infos";
-  private static final String SQL_DIR_PATH = "sql_scripts";
+  private static final String JSON_DIR_PATH = "model-catalog-migration-file-creator/model_infos";
+  private static final String SQL_DIR_PATH = "model-catalog-migration-file-creator/sql_scripts";
+
+  @Value("${latest_sql_file_name}")
+  private String latestSqlFileName;
 
   public String getJsonDirPath() {
     return JSON_DIR_PATH;
@@ -35,15 +37,9 @@ public class InsertStaticTables {
     return SQL_DIR_PATH;
   }
 
-  public String getFilename() {
-    Properties properties = PropertiesConfig.getProperties();
-    String latestSqlFileName = properties.getProperty("latest_sql_file_name");
-    return latestSqlFileName;
-  }
-
   public void insertDataScripts() {
     for (StaticTableCreator staticTableCreator : staticTableCreators) {
-      staticTableCreator.createStaticTable();
+      staticTableCreator.createStaticTable(latestSqlFileName);
     }
   }
 
