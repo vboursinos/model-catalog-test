@@ -12,7 +12,7 @@ public class DependencyTypeDTO extends AbstractUUIDIdentityDTO {
   @NotNull(message = "must not be null")
   private String name;
 
-  private DependencyGroupTypeDTO dependencyGroupType;
+  //  private DependencyGroupTypeDTO dependencyGroupType;
 
   public String getName() {
     return name;
@@ -22,13 +22,6 @@ public class DependencyTypeDTO extends AbstractUUIDIdentityDTO {
     this.name = name;
   }
 
-  public DependencyGroupTypeDTO getDependencyGroupType() {
-    return dependencyGroupType;
-  }
-
-  public void setDependencyGroupType(DependencyGroupTypeDTO dependencyGroupType) {
-    this.dependencyGroupType = dependencyGroupType;
-  }
 
   @Override
   public boolean equals(Object o) {
