@@ -21,13 +21,13 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
   @Autowired private MlTaskTypeService mlTaskTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Set<String> allMlTaskTypes;
     try {
       allMlTaskTypes = extractAllMlTaskTypes();
       List<MlTaskTypeDTO> mlTaskTypes = mlTaskTypeService.findAll().block();
       logger.info("Mltask types: " + mlTaskTypes);
-      compareMlTaskTypes(allMlTaskTypes, mlTaskTypes);
+      compareMlTaskTypes(allMlTaskTypes, mlTaskTypes, newFileName);
       ;
     } catch (IOException e) {
       logger.error("Error while creating MlTask types: " + e.getMessage());
@@ -42,8 +42,8 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     return allMlTaskTypes;
   }
 
-  private void compareMlTaskTypes(Set<String> allMlTaskTypes, List<MlTaskTypeDTO> mlTaskTypes) {
-    String newFileName = insertStaticTables.getFilename();
+  private void compareMlTaskTypes(
+      Set<String> allMlTaskTypes, List<MlTaskTypeDTO> mlTaskTypes, String newFileName) {
     Set<String> mlTaskTypesForDeletion = new HashSet<>();
     Set<String> foundMlTaskTypes = new HashSet<>();
     for (MlTaskTypeDTO mlTaskType : mlTaskTypes) {

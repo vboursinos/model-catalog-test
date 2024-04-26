@@ -23,13 +23,13 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
 
   @Autowired private ParameterTypeService parameterTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Set<String> allParameterTypes;
     try {
       allParameterTypes = extractAllParameterTypes();
       List<ParameterTypeDTO> parameterTypes = parameterTypeService.findAll().block();
       logger.info("Parameter types: " + parameterTypes);
-      compareParameterTypes(allParameterTypes, parameterTypes);
+      compareParameterTypes(allParameterTypes, parameterTypes, newFileName);
     } catch (IOException e) {
       logger.error("Error while creating parameter types: " + e.getMessage());
     }
@@ -45,8 +45,7 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
   }
 
   private void compareParameterTypes(
-      Set<String> allParameterTypes, List<ParameterTypeDTO> parameterTypes) {
-    String newFileName = insertStaticTables.getFilename();
+      Set<String> allParameterTypes, List<ParameterTypeDTO> parameterTypes, String newFileName) {
     Set<String> parameterTypesForDeletion = new HashSet<>();
     Set<String> foundParameterTypes = new HashSet<>();
     for (ParameterTypeDTO parameterType : parameterTypes) {

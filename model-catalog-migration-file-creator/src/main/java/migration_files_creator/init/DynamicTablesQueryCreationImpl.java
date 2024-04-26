@@ -2,6 +2,8 @@ package migration_files_creator.init;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
+import ai.turintech.modelcatalog.entity.Model;
+import ai.turintech.modelcatalog.repository.ModelRepository;
 import ai.turintech.modelcatalog.service.ModelService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -17,20 +19,22 @@ import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 import utils.FileUtils;
 
 @Component
 public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreation {
   private static final Logger logger = LogManager.getLogger(InsertDynamicTables.class);
-  private static final String JSON_DIR_PATH = "model_infos";
-  private static final String SQL_DIR_PATH = "sql_scripts";
+  private static final String JSON_DIR_PATH = "model-catalog-migration-file-creator/model_infos";
+  private static final String SQL_DIR_PATH = "model-catalog-migration-file-creator/sql_scripts";
 
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
   @Autowired private ModelService modelService;
+
+  @Autowired private ModelRepository modelRepository;
 
   @Autowired private InsertDynamicTables insertDynamicTables;
 
@@ -38,6 +42,10 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
 
   @Autowired private ModelMapper modelMapper;
 
+  @Value("${latest_sql_file_name}")
+  private String outputFileName;
+
+  @Transactional
   public void insertDataScripts() {
     ObjectMapper mapper = new ObjectMapper();
     Path dirPath = Paths.get(JSON_DIR_PATH);
@@ -66,22 +74,14 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
   @Transactional
   private void createModelSqlFile(Models models) {
     String mltask = models.getModels().get(0).getMlTask();
-    String outputFileName = determineOutputFileName();
-
-    //    List<ModelDTO> modelsDTO = modelService.findAll().map(modelMapper::to).toList();
-    Mono<List<ModelDTO>> modelsDTOList = modelService.findAll().collectList();
-    List<ModelDTO> modelsDTO = modelsDTOList.block();
-
+    List<Model> dbModels = modelRepository.findAll();
+    List<ModelDTO> modelsDTO = dbModels.stream().map(modelMapper::to).toList();
     String sqlScriptDelete = deleteDynamicTables.buildDeleteSQL(mltask, models, modelsDTO);
     String sqlScriptInsert = insertDynamicTables.buildInsertSQL(models, modelsDTO);
     String sqlScriptFinal = cleanupSQLScript(sqlScriptDelete + "\n" + sqlScriptInsert);
 
     FileUtils.writeToFileAppend(Paths.get(SQL_DIR_PATH, outputFileName).toString(), sqlScriptFinal);
     logger.info(mltask + " sql file created successfully!");
-  }
-
-  private String determineOutputFileName() {
-    return insertStaticTables.getFilename();
   }
 
   private String cleanupSQLScript(String sqlScript) {

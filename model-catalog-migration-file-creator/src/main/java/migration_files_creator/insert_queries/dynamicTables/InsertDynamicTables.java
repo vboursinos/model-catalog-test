@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class InsertDynamicTables {
   private static final String ENSEMBLE_FAMILIES_FILE = "ensemble-family.json";
-  private static final String ENSEMBLE_FAMILIES_DIR = "static";
+  private static final String ENSEMBLE_FAMILIES_DIR = "model-catalog-migration-file-creator/static";
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired private InsertParametersTables insertParametersTables;

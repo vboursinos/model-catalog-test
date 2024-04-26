@@ -23,13 +23,13 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
 
   @Autowired private ModelGroupTypeService modelGroupTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Set<String> allGroupTypes;
     try {
       allGroupTypes = extractAllGroupTypes();
       List<ModelGroupTypeDTO> modelGroupTypes = modelGroupTypeService.findAll().block();
       logger.info("Model group types: " + modelGroupTypes);
-      compareModelGroupTypes(allGroupTypes, modelGroupTypes);
+      compareModelGroupTypes(allGroupTypes, modelGroupTypes, newFileName);
     } catch (IOException e) {
       logger.error("Error while creating model group types: " + e.getMessage());
     }
@@ -44,8 +44,7 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
   }
 
   private void compareModelGroupTypes(
-      Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes) {
-    String newFileName = insertStaticTables.getFilename();
+          Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes, String newFileName) {
     Set<String> modelGroupTypesForDeletion = new HashSet<>();
     Set<String> foundModelGroupTypes = new HashSet<>();
     for (ModelGroupTypeDTO modelGroupType : modelGroupTypes) {

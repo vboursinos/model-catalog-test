@@ -27,14 +27,15 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
 
   @Autowired private ParameterDistributionTypeService parameterDistributionTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Set<String> allParameterDistributionTypes;
     try {
       allParameterDistributionTypes = extractAllParameterDistributionTypes();
       List<ParameterDistributionTypeDTO> parameterDistributionTypes =
           parameterDistributionTypeService.findAll().block();
       logger.info("Parameter Distribution types: " + parameterDistributionTypes);
-      compareParameterDistributionTypes(allParameterDistributionTypes, parameterDistributionTypes);
+      compareParameterDistributionTypes(
+          allParameterDistributionTypes, parameterDistributionTypes, newFileName);
     } catch (IOException e) {
       logger.error("Error while creating parameter distribution types: " + e.getMessage());
     }
@@ -51,8 +52,8 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
 
   private void compareParameterDistributionTypes(
       Set<String> allParameterDistributionTypes,
-      List<ParameterDistributionTypeDTO> parameterDistributionTypes) {
-    String newFileName = insertStaticTables.getFilename();
+      List<ParameterDistributionTypeDTO> parameterDistributionTypes,
+      String newFileName) {
     Set<String> parameterDistributionTypesForDeletion = new HashSet<>();
     Set<String> foundParameterDistributionTypes = new HashSet<>();
     for (ParameterDistributionTypeDTO parameterDistributionType : parameterDistributionTypes) {

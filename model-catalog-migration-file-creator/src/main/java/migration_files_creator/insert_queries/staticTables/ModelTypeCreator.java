@@ -23,13 +23,13 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
 
   @Autowired private ModelTypeService modelTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Set<String> allModelTypes;
     try {
       allModelTypes = extractAllModelTypes();
       List<ModelTypeDTO> modelTypes = modelTypeService.findAll().block();
       logger.info("Model types: " + modelTypes);
-      compareModelTypes(allModelTypes, modelTypes);
+      compareModelTypes(allModelTypes, modelTypes, newFileName);
     } catch (IOException e) {
       logger.error("Error while creating model types: " + e.getMessage());
     }
@@ -41,8 +41,8 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
     return insertStaticTables.extractUniqueValues(mapper, dirPath, ModelTypeCreator::getModelTypes);
   }
 
-  private void compareModelTypes(Set<String> allModelTypes, List<ModelTypeDTO> modelTypes) {
-    String newFileName = insertStaticTables.getFilename();
+  private void compareModelTypes(
+      Set<String> allModelTypes, List<ModelTypeDTO> modelTypes, String newFileName) {
     Set<String> modelTypesForDeletion = new HashSet<>();
     Set<String> foundModelTypes = new HashSet<>();
     for (ModelTypeDTO modelType : modelTypes) {

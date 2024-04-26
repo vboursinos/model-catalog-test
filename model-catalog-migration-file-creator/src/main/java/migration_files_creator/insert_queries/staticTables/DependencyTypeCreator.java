@@ -1,23 +1,25 @@
 package migration_files_creator.insert_queries.staticTables;
 
-import ai.turintech.modelcatalog.dto.DependencyTypeDTO;
+import ai.turintech.modelcatalog.entity.DependencyType;
+import ai.turintech.modelcatalog.repository.DependencyTypeRepository;
 import ai.turintech.modelcatalog.service.DependencyTypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 @Component
 public class DependencyTypeCreator extends TableCreatorHelper implements StaticTableCreator {
   private static final Logger logger = LogManager.getLogger(DependencyTypeCreator.class);
+
+  private static final String DEPENDENCY_TYPES_JSON_FILE_PATH =
+      "model-catalog-migration-file-creator/static/group_dependencies.json";
 
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
@@ -26,21 +28,23 @@ public class DependencyTypeCreator extends TableCreatorHelper implements StaticT
 
   @Autowired private DependencyTypeService dependencyTypeService;
 
-  public void createStaticTable() {
+  @Autowired private DependencyTypeRepository dependencyTypeRepository;
+
+  public void createStaticTable(String newFileName) {
     Map<String, Set<String>> allDependencyTypes = getDependencies();
-    Mono<List<DependencyTypeDTO>> dependencyTypesMono = dependencyTypeService.findAll();
-    List<DependencyTypeDTO> dependencyTypes = dependencyTypesMono.block();
+    List<DependencyType> dependencyTypes = dependencyTypeRepository.findAll();
     logger.info("Dependency types: " + dependencyTypes);
-    compareDependencyTypes(allDependencyTypes, dependencyTypes);
+    compareDependencyTypes(allDependencyTypes, dependencyTypes, newFileName);
   }
 
   private void compareDependencyTypes(
-      Map<String, Set<String>> allDependencyTypes, List<DependencyTypeDTO> dependencyTypes) {
-    String newFileName = insertStaticTables.getFilename();
+      Map<String, Set<String>> allDependencyTypes,
+      List<DependencyType> dependencyTypes,
+      String newFileName) {
     Map<String, Set<String>> dependencyTypesForDeletion = new HashMap<>();
     Map<String, Set<String>> foundDependencyTypes = new HashMap<>();
 
-    for (DependencyTypeDTO dependencyType : dependencyTypes) {
+    for (DependencyType dependencyType : dependencyTypes) {
       Set<String> values =
           allDependencyTypes.getOrDefault(
               dependencyType.getDependencyGroupType().getName(), new HashSet<>());
@@ -90,13 +94,13 @@ public class DependencyTypeCreator extends TableCreatorHelper implements StaticT
   }
 
   static Map<String, Set<String>> getDependencies() {
-    String filePath = Paths.get("static", "group_dependencies.json").toString();
     ObjectMapper objectMapper = new ObjectMapper();
     Map<String, Set<String>> groupDependencyMap = new HashMap<>();
     try {
       groupDependencyMap =
           objectMapper.readValue(
-              new File(filePath), new TypeReference<Map<String, Set<String>>>() {});
+              new File(DEPENDENCY_TYPES_JSON_FILE_PATH),
+              new TypeReference<Map<String, Set<String>>>() {});
     } catch (IOException e) {
       logger.error("Error reading group_dependencies.json file: " + e.getMessage(), e);
     }

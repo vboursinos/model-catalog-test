@@ -22,13 +22,13 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
 
   @Autowired private MetricService metricService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Set<String> allMetrics = new HashSet<>();
     try {
       allMetrics = extractAllMetrics();
       List<MetricDTO> metrics = metricService.findAll().block();
       logger.info("Metrics: " + metrics);
-      compareMetrics(allMetrics, metrics);
+      compareMetrics(allMetrics, metrics, newFileName);
     } catch (IOException e) {
       logger.error("Error while creating metrics: " + e.getMessage());
     }
@@ -42,8 +42,7 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     return allMetrics;
   }
 
-  private void compareMetrics(Set<String> allMetrics, List<MetricDTO> metrics) {
-    String newFileName = insertStaticTables.getFilename();
+  private void compareMetrics(Set<String> allMetrics, List<MetricDTO> metrics, String newFileName) {
     Set<String> metricsForDeletion = new HashSet<>();
     Set<String> foundMetrics = new HashSet<>();
     for (MetricDTO metric : metrics) {

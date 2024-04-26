@@ -23,14 +23,13 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
 
   @Autowired private ModelStructureTypeService modelStructureTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Set<String> allModelStructures = new HashSet<>();
     try {
       allModelStructures = extractAllModelStructures();
       List<ModelStructureTypeDTO> modelStructures = modelStructureTypeService.findAll().block();
       logger.info("Model structures: " + modelStructures);
-      compareModelStructures(allModelStructures, modelStructures);
-      ;
+      compareModelStructures(allModelStructures, modelStructures, newFileName);
     } catch (IOException e) {
       logger.error("Error while creating model types: " + e.getMessage());
     }
@@ -46,8 +45,9 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
   }
 
   private void compareModelStructures(
-      Set<String> allModelStructures, List<ModelStructureTypeDTO> modelStructureTypes) {
-    String newFileName = insertStaticTables.getFilename();
+      Set<String> allModelStructures,
+      List<ModelStructureTypeDTO> modelStructureTypes,
+      String newFileName) {
     Set<String> modelStructureTypesForDeletion = new HashSet<>();
     Set<String> foundModelStructureTypes = new HashSet<>();
     for (ModelStructureTypeDTO modelStructureType : modelStructureTypes) {

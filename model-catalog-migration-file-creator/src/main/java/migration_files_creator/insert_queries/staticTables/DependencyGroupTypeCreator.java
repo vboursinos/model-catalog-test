@@ -23,14 +23,14 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
 
   @Autowired private DependencyGroupTypeService dependencyGroupTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String latestFileName) {
     Set<String> allDependencyGroupTypes;
     try {
       allDependencyGroupTypes = extractAllDependencyGroupTypes();
       List<DependencyGroupTypeDTO> dependencyGroupTypes =
           dependencyGroupTypeService.findAll().block();
       logger.info("Dependency group types: " + dependencyGroupTypes);
-      compareDependencyGroupTypes(allDependencyGroupTypes, dependencyGroupTypes);
+      compareDependencyGroupTypes(allDependencyGroupTypes, dependencyGroupTypes, latestFileName);
     } catch (IOException e) {
       logger.error("Error while creating dependency group types: " + e.getMessage());
     }
@@ -38,7 +38,6 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
 
   private Set<String> extractAllDependencyGroupTypes() throws IOException {
     Path dirPath = Paths.get(insertStaticTables.getJsonDirPath());
-    InsertStaticTables insertStaticTables = new InsertStaticTables();
     Set<String> allDependencyGroupTypes =
         insertStaticTables.extractUniqueValues(
             mapper, dirPath, DependencyGroupTypeCreator::getDependencyGroupTypes);
@@ -46,8 +45,9 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
   }
 
   private void compareDependencyGroupTypes(
-      Set<String> allDependencyGroupTypes, List<DependencyGroupTypeDTO> dependencyGroupTypes) {
-    String newFileName = insertStaticTables.getFilename();
+      Set<String> allDependencyGroupTypes,
+      List<DependencyGroupTypeDTO> dependencyGroupTypes,
+      String newFileName) {
     Set<String> dependencyGroupTypesForDeletion = new HashSet<>();
     Set<String> foundDependencyGroupTypes = new HashSet<>();
     for (DependencyGroupTypeDTO dependencyGroupType : dependencyGroupTypes) {

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.*;
 import migration_files_creator.model.EnsembleFamily;
 import org.apache.logging.log4j.LogManager;
@@ -21,13 +20,16 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   private final ObjectMapper mapper = new ObjectMapper();
   private static final Logger logger = LogManager.getLogger(EnsembleFamilyCreator.class);
 
+  private static final String ENSEMBLE_FAMILY_JSON_FILE_PATH =
+      "model-catalog-migration-file-creator/static/ensemble-family.json";
+
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
   @Autowired private ModelEnsembleTypeService modelEnsembleTypeService;
 
   @Autowired private ModelFamilyTypeService modelFamilyTypeService;
 
-  public void createStaticTable() {
+  public void createStaticTable(String newFileName) {
     Map<String, Set<String>> allFamilyEnsembleTypes = new HashMap<>();
     try {
       allFamilyEnsembleTypes = extractAllFamilyEnsembleTypes();
@@ -35,8 +37,9 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
       List<ModelFamilyTypeDTO> modelFamilyTypes = modelFamilyTypeService.findAll().block();
       logger.info("Model Ensemble Types: " + modelEnsembleTypes);
       logger.info("Model Family Types: " + modelFamilyTypes);
-      compareModelEnsembleTypes(allFamilyEnsembleTypes.get("ensemble"), modelEnsembleTypes);
-      compareModelFamilyTypes(allFamilyEnsembleTypes.get("family"), modelFamilyTypes);
+      compareModelEnsembleTypes(
+          allFamilyEnsembleTypes.get("ensemble"), modelEnsembleTypes, newFileName);
+      compareModelFamilyTypes(allFamilyEnsembleTypes.get("family"), modelFamilyTypes, newFileName);
     } catch (IOException e) {
       logger.error("Error extracting family and ensemble types: " + e.getMessage(), e);
     }
@@ -48,8 +51,9 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   }
 
   private void compareModelEnsembleTypes(
-      Set<String> allEnsembleTypes, List<ModelEnsembleTypeDTO> modelEnsembleTypes) {
-    String newFileName = insertStaticTables.getFilename();
+      Set<String> allEnsembleTypes,
+      List<ModelEnsembleTypeDTO> modelEnsembleTypes,
+      String newFileName) {
     Set<String> ensembleTypesForDeletion = new HashSet<>();
     Set<String> foundEnsembleTypes = new HashSet<>();
     for (ModelEnsembleTypeDTO modelEnsembleType : modelEnsembleTypes) {
@@ -75,8 +79,7 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   }
 
   private void compareModelFamilyTypes(
-      Set<String> allFamilyTypes, List<ModelFamilyTypeDTO> modelFamilyTypes) {
-    String newFileName = insertStaticTables.getFilename();
+      Set<String> allFamilyTypes, List<ModelFamilyTypeDTO> modelFamilyTypes, String newFileName) {
     Set<String> familyTypesForDeletion = new HashSet<>();
     Set<String> foundFamilyTypes = new HashSet<>();
     for (ModelFamilyTypeDTO modelFamilyType : modelFamilyTypes) {
@@ -101,14 +104,14 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   }
 
   static Map<String, Set<String>> getFamilyEnsembleTypes() {
-    String filePath = Paths.get("static", "ensemble-family.json").toString();
     ObjectMapper objectMapper = new ObjectMapper();
     Set<String> familyTypes = new HashSet<>();
     Set<String> ensembleTypes = new HashSet<>();
     Map<String, Set<String>> familyEnsembleTypes = new HashMap<>();
     try {
       List<EnsembleFamily> modelList =
-          objectMapper.readValue(new File(filePath), new TypeReference<>() {});
+          objectMapper.readValue(
+              new File(ENSEMBLE_FAMILY_JSON_FILE_PATH), new TypeReference<>() {});
 
       for (EnsembleFamily model : modelList) {
         ensembleTypes.add(model.getEnsembleType());

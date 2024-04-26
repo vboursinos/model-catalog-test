@@ -10,7 +10,7 @@ import utils.FileUtils;
 
 @Component
 public class CreateSqlScriptServiceImpl implements CreateSqlScriptService {
-  private static final String SQL_DIR_PATH = "sql_scripts";
+  private static final String SQL_DIR_PATH = "model-catalog-migration-file-creator/sql_scripts";
   @Autowired private DynamicTablesQueryCreation dynamicTablesQueryCreation;
   @Autowired private InsertStaticTables insertStaticTables;
 
