@@ -5,12 +5,14 @@ import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A CategoricalParameter. */
 @Entity
 @Table(name = "categorical_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 public class CategoricalParameter extends BaseTypeParameter {
 
   private static final long serialVersionUID = 1L;

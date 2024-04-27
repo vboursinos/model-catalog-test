@@ -6,11 +6,13 @@ import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A Metric. */
 @Entity
 @Table(name = "metric")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Metric extends AbstractUUIDIdentityEntity {
 

@@ -7,11 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A DependencyGroupType. */
 @Entity
 @Table(name = "dependency_group_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class DependencyGroupType extends AbstractUUIDIdentityEntity {
 

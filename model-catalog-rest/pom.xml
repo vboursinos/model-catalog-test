@@ -32,6 +32,10 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-brave</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-envers</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>io.zipkin.reporter2</groupId>
@@ -208,6 +212,11 @@
 		<dependency>
 			<groupId>ai.turintech.model-catalog</groupId>
 			<artifactId>model-catalog-to-dto-mapper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
