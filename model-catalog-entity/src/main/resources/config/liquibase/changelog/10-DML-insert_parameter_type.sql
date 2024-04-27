@@ -1,4 +1,12 @@
 INSERT INTO parameter_type(name) VALUES ('categorical');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO parameter_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from parameter_type where name='categorical'), 'categorical', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO parameter_type(name) VALUES ('float');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO parameter_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from parameter_type where name='float'), 'float', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO parameter_type(name) VALUES ('integer');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO parameter_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from parameter_type where name='integer'), 'integer', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO parameter_type(name) VALUES ('boolean');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO parameter_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from parameter_type where name='boolean'), 'boolean', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
