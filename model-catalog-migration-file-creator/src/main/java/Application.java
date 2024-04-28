@@ -132,7 +132,7 @@ public class Application {
       @Qualifier("taskExecutor") Executor executor, LiquibaseProperties liquibaseProperties) {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(createLiquibaseDataSource(liquibaseProperties));
-    liquibase.setChangeLog("classpath:liquibase/master.xml");
+    liquibase.setChangeLog("classpath:config/liquibase/master.xml");
     liquibase.setContexts(liquibaseProperties.getContexts());
     liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
     liquibase.setLiquibaseSchema(liquibaseProperties.getLiquibaseSchema());

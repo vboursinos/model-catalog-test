@@ -37,8 +37,10 @@ mvn clean package
 ```
 
 5. run the model catalog migration files creator (Java code)
+
+* From the root directory of the model-catalog project run the following command:
 ```bash
-java -jar model-catalog-migration-file-creator-1.0.0-a0-SNAPSHOT-jar-with-dependencies.jar
+java -jar model-catalog-migration-file-creator/target/model-catalog-migration-file-creator.jar
 ```
 
 6. the migration file will be created in the "<b>sql_scripts</b>" directory
