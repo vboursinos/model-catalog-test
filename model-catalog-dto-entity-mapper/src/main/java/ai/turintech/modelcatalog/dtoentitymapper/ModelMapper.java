@@ -14,7 +14,7 @@ public interface ModelMapper extends MapperInterface<ModelDTO, Model> {
   @Mapping(target = "incompatibleMetrics", source = "incompatibleMetrics")
   @Mapping(target = "mlTask", source = "mlTask")
   @Mapping(target = "structure", source = "structure")
-  @Mapping(target = "type", source = "type")
+  @Mapping(target = "types", source = "types")
   @Mapping(target = "familyType", source = "familyType")
   @Mapping(target = "ensembleType", source = "ensembleType")
   ModelDTO toDto(Model s);

@@ -43,12 +43,12 @@ create TABLE parameter_distribution_type (
     name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE dependency_group_type (
+create TABLE dependency_group_type (
   id VARCHAR(36) PRIMARY KEY,
   name varchar NOT NULL
 );
 
-CREATE TABLE dependency_type (
+create TABLE dependency_type (
   id VARCHAR(36) PRIMARY KEY,
   name VARCHAR NOT NULL,
   dependency_group_id VARCHAR(36),
@@ -57,7 +57,6 @@ CREATE TABLE dependency_type (
 
 create TABLE model (
     id VARCHAR(36) PRIMARY KEY,
-    model_type_id VARCHAR(36),
     ml_task_id VARCHAR(36),
     name VARCHAR NOT NULL UNIQUE,
     display_name VARCHAR NOT NULL,
@@ -70,7 +69,6 @@ create TABLE model (
     family_type_id VARCHAR(36),
     decision_tree boolean NOT NULL,
     dependency_group_id VARCHAR(36),
-    FOREIGN KEY(model_type_id) REFERENCES model_type(id),
     FOREIGN KEY(ml_task_id) REFERENCES ml_task_type(id),
     FOREIGN KEY(structure_id) REFERENCES model_structure_type(id),
     FOREIGN KEY(ensemble_type_id) REFERENCES model_ensemble_type(id),
@@ -90,6 +88,13 @@ create TABLE rel_model__incompatible_metrics (
     metric_id VARCHAR(36),
     FOREIGN KEY(model_id) REFERENCES model(id),
     FOREIGN KEY(metric_id) REFERENCES metric(id)
+);
+
+create TABLE rel_model__model_type (
+   model_id VARCHAR(36),
+   model_type_id VARCHAR(36),
+   FOREIGN KEY(model_id) REFERENCES model(id),
+   FOREIGN KEY(model_type_id) REFERENCES model_type(id)
 );
 
 create TABLE parameter (
@@ -139,7 +144,7 @@ create TABLE float_parameter (
   FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
 
-CREATE TABLE integer_parameter_value (
+create TABLE integer_parameter_value (
   id VARCHAR(36) PRIMARY KEY,
   parameter_type_definition_id VARCHAR(36) NOT NULL,
   lower integer NOT NULL,
@@ -147,7 +152,7 @@ CREATE TABLE integer_parameter_value (
   FOREIGN KEY(parameter_type_definition_id) REFERENCES integer_parameter(id)
 );
 
-CREATE TABLE float_parameter_range (
+create TABLE float_parameter_range (
   id VARCHAR(36) PRIMARY KEY,
   parameter_type_definition_id VARCHAR(36) NOT NULL,
   is_left_open boolean NOT NULL,
@@ -236,10 +241,10 @@ values
     ('3b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d29', 'parameterdistributiontype3'),
     ('4b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d21', 'parameterdistributiontype4');
 
-insert into model (id, model_type_id, ml_task_id, name, display_name, structure_id, description, advantages, disadvantages, enabled, ensemble_type_id, family_type_id, decision_tree)
+insert into model (id, ml_task_id, name, display_name, structure_id, description, advantages, disadvantages, enabled, ensemble_type_id, family_type_id, decision_tree)
 values
-  ('123e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'Model1', 'Display1', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'Description1', ARRAY['Advantage1'], ARRAY['Disadvantage1'], true, '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', true),
-  ('223e4567-e89b-12d3-a456-426614174002', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'Model2', 'Display2', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'Description2', ARRAY['Advantage2'], ARRAY['Disadvantage2'], true, '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', false);
+  ('123e4567-e89b-12d3-a456-426614174001', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'Model1', 'Display1', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', 'Description1', ARRAY['Advantage1'], ARRAY['Disadvantage1'], true, '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', '1b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d27', true),
+  ('223e4567-e89b-12d3-a456-426614174002', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'Model2', 'Display2', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', 'Description2', ARRAY['Advantage2'], ARRAY['Disadvantage2'], true, '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', '2b6f7a9a-4a2d-4e9a-8f2a-6d6bb9c66d28', false);
 
 INSERT INTO parameter (id, model_id, name, label, description, enabled, fixed_value, ordering)
 VALUES
@@ -271,15 +276,15 @@ values
   ('323e4567-e89b-12d3-a456-426614174001', 10.1),
   ('323e4567-e89b-12d3-a456-426614174002', 20.2);
 
-INSERT INTO integer_parameter_value (id, parameter_type_definition_id, lower, upper)
-VALUES
+insert into integer_parameter_value (id, parameter_type_definition_id, lower, upper)
+values
   ('423e4567-e89b-12d3-a456-426614174001', '323e4567-e89b-12d3-a456-426614174001', 10, 20),
   ('423e4567-e89b-12d3-a456-426614174002', '323e4567-e89b-12d3-a456-426614174001', 5, 15),
   ('423e4567-e89b-12d3-a456-426614174003', '323e4567-e89b-12d3-a456-426614174002', 30, 40),
   ('423e4567-e89b-12d3-a456-426614174004', '323e4567-e89b-12d3-a456-426614174002', 25, 35);
 
-INSERT INTO float_parameter_range (id, parameter_type_definition_id, is_left_open, is_right_open, lower, upper)
-VALUES
+insert into float_parameter_range (id, parameter_type_definition_id, is_left_open, is_right_open, lower, upper)
+values
   ('423e4567-e89b-12d3-a456-426614174001', '323e4567-e89b-12d3-a456-426614174001', true, false, 10.5, 20.5),
   ('423e4567-e89b-12d3-a456-426614174002', '323e4567-e89b-12d3-a456-426614174001', false, true, 5.2, 15.7),
   ('423e4567-e89b-12d3-a456-426614174003', '323e4567-e89b-12d3-a456-426614174002', false, false, 30.0, 40.0),

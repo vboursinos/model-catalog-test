@@ -67,6 +67,14 @@ public class Model extends AbstractUUIDIdentityEntity {
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   private Set<Metric> incompatibleMetrics = new HashSet<>();
 
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "rel_model__model_type",
+      joinColumns = @JoinColumn(name = "model_id"),
+      inverseJoinColumns = @JoinColumn(name = "model_type_id"))
+  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+  private Set<ModelType> types = new HashSet<>();
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ml_task_id", referencedColumnName = "id")
   private MlTaskType mlTask;
@@ -78,10 +86,6 @@ public class Model extends AbstractUUIDIdentityEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "dependency_group_id", referencedColumnName = "id")
   private DependencyGroupType dependencyGroupType;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "model_type_id", referencedColumnName = "id")
-  private ModelType type;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "family_type_id", referencedColumnName = "id")
@@ -277,17 +281,12 @@ public class Model extends AbstractUUIDIdentityEntity {
     return this;
   }
 
-  public ModelType getType() {
-    return this.type;
+  public Set<ModelType> getTypes() {
+    return types;
   }
 
-  public void setType(ModelType modelType) {
-    this.type = modelType;
-  }
-
-  public Model type(ModelType modelType) {
-    this.setType(modelType);
-    return this;
+  public void setTypes(Set<ModelType> types) {
+    this.types = types;
   }
 
   public ModelFamilyType getFamilyType() {
@@ -377,8 +376,8 @@ public class Model extends AbstractUUIDIdentityEntity {
         + structure
         + ", dependencyGroupType="
         + dependencyGroupType
-        + ", type="
-        + type
+        + ", types="
+        + types
         + ", familyType="
         + familyType
         + ", ensembleType="

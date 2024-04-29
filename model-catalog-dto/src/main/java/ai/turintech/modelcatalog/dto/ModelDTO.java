@@ -37,7 +37,7 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
 
   private DependencyGroupTypeDTO dependencyGroupType;
 
-  private ModelTypeDTO type;
+  private Set<ModelTypeDTO> types;
 
   private ModelFamilyTypeDTO familyType;
 
@@ -150,12 +150,12 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
     this.structure = structure;
   }
 
-  public ModelTypeDTO getType() {
-    return type;
+  public Set<ModelTypeDTO> getTypes() {
+    return types;
   }
 
-  public void setType(ModelTypeDTO type) {
-    this.type = type;
+  public void setTypes(Set<ModelTypeDTO> types) {
+    this.types = types;
   }
 
   public ModelFamilyTypeDTO getFamilyType() {
@@ -245,8 +245,8 @@ public class ModelDTO extends AbstractUUIDIdentityDTO {
         + structure
         + ", dependencyGroupType="
         + dependencyGroupType
-        + ", type="
-        + type
+        + ", types="
+        + types
         + ", familyType="
         + familyType
         + ", ensembleType="

@@ -1,4 +1,5 @@
 INSERT INTO model_type(name) VALUES ('Linear Model');
+INSERT INTO model_type(name) VALUES ('Kernel Model');
 INSERT INTO model_type(name) VALUES ('Baseline Model');
 INSERT INTO model_type(name) VALUES ('Tree-Based Model');
 INSERT INTO model_type(name) VALUES ('Nearest Neighbours Model');

@@ -54,10 +54,12 @@ public class ModelTOTest {
     structureType.setName("Structure1");
     modelTO.setStructure(structureType);
 
+    Set<ModelTypeTO> modelTypes = new HashSet<>();
     ModelTypeTO modelType = new ModelTypeTO();
     modelType.setId(UUID.randomUUID());
     modelType.setName("Type1");
-    modelTO.setType(modelType);
+    modelTypes.add(modelType);
+    modelTO.setTypes(modelTypes);
 
     ModelFamilyTypeTO familyType = new ModelFamilyTypeTO();
     familyType.setId(UUID.randomUUID());
