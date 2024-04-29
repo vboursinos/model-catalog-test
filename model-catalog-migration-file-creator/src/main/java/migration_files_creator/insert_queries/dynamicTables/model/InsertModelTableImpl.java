@@ -66,8 +66,9 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
 
   private static boolean compareModel(
       Model jsonModel, ModelDTO dbModel, List<EnsembleFamily> ensembleFamilies) {
-    String description =
-        jsonModel.getMetadata().getModelDescription().replaceAll("\\n", " ").replaceAll("''", "'");
+    String jsonDescription =
+        jsonModel.getMetadata().getModelDescription().replaceAll("\\n", "").replaceAll("''", "'").replaceAll("\\s","");
+    String dbDescription = dbModel.getDescription().replaceAll("''", "'").replaceAll("\\n", "").replaceAll("\\s","");
 
     String jsonAdvantages = jsonModel.getMetadata().getAdvantages().toString();
     String jsonDisadvantages = jsonModel.getMetadata().getDisadvantages().toString();
@@ -77,7 +78,7 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
         Arrays.stream(dbModel.getDisadvantages()).toList().toString().replaceAll("'", "''");
 
     return jsonModel.getMlTask().equals(dbModel.getMlTask().getName())
-        && description.equals(dbModel.getDescription().replaceAll("''", "'").replaceAll("\\n", ""))
+        && jsonDescription.equals(dbDescription)
         && jsonModel.getMetadata().getDisplayName().equals(dbModel.getDisplayName())
         && jsonAdvantages.equals(dbAdvantages)
         && jsonDisadvantages.equals(dbDisadvantages)
