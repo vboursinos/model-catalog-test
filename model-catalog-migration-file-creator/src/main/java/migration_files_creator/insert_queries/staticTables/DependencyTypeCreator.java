@@ -22,12 +22,6 @@ public class DependencyTypeCreator extends TableCreatorHelper implements StaticT
       "model-catalog-migration-file-creator/static/group_dependencies.json";
 
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
-
-  private Map<String, Map<String, Set<String>>> foundDependencyTypes = new HashMap<>();
-  private Set<String> oldDependencyTypes = new HashSet<>();
-
-  @Autowired private DependencyTypeService dependencyTypeService;
-
   @Autowired private DependencyTypeRepository dependencyTypeRepository;
 
   public void createStaticTable(String newFileName) {
