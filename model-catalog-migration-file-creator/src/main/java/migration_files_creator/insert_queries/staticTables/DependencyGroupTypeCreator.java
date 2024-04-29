@@ -2,7 +2,6 @@ package migration_files_creator.insert_queries.staticTables;
 
 import ai.turintech.modelcatalog.dto.DependencyGroupTypeDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.DependencyGroupTypeMapper;
-import ai.turintech.modelcatalog.dtoentitymapper.DependencyTypeMapper;
 import ai.turintech.modelcatalog.entity.DependencyType;
 import ai.turintech.modelcatalog.service.DependencyGroupTypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
