@@ -1,12 +1,19 @@
 package migration_files_creator.insert_queries.staticTables;
 
 import ai.turintech.modelcatalog.dto.DependencyGroupTypeDTO;
+import ai.turintech.modelcatalog.dtoentitymapper.DependencyGroupTypeMapper;
+import ai.turintech.modelcatalog.dtoentitymapper.DependencyTypeMapper;
+import ai.turintech.modelcatalog.entity.DependencyType;
 import ai.turintech.modelcatalog.service.DependencyGroupTypeService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 import migration_files_creator.model.Model;
 import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
@@ -23,14 +30,23 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
 
   @Autowired private DependencyGroupTypeService dependencyGroupTypeService;
 
+  @Autowired private DependencyGroupTypeMapper dependencyGroupTypeMapper;
+
+  private static final String DEPENDENCY_TYPES_JSON_FILE_PATH =
+      "model-catalog-migration-file-creator/static/group_dependencies.json";
+
   public void createStaticTable(String latestFileName) {
     Set<String> allDependencyGroupTypes;
+    Map<String, Set<String>> allDependencyTypes;
     try {
       allDependencyGroupTypes = extractAllDependencyGroupTypes();
+      allDependencyTypes = getDependencies();
       List<DependencyGroupTypeDTO> dependencyGroupTypes =
           dependencyGroupTypeService.findAll().block();
+      List<DependencyType> dependencyTypes = getDependencyTypes(dependencyGroupTypes);
       logger.info("Dependency group types: " + dependencyGroupTypes);
       compareDependencyGroupTypes(allDependencyGroupTypes, dependencyGroupTypes, latestFileName);
+      compareDependencyTypes(allDependencyTypes, dependencyTypes, latestFileName);
     } catch (IOException e) {
       logger.error("Error while creating dependency group types: " + e.getMessage());
     }
@@ -42,6 +58,23 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
         insertStaticTables.extractUniqueValues(
             mapper, dirPath, DependencyGroupTypeCreator::getDependencyGroupTypes);
     return allDependencyGroupTypes;
+  }
+
+  private List<DependencyType> getDependencyTypes(
+      List<DependencyGroupTypeDTO> dependencyGroupTypes) {
+    return dependencyGroupTypes.stream()
+        .flatMap(
+            dependencyGroupType ->
+                dependencyGroupType.getDependencyTypes().stream()
+                    .map(
+                        dependencyType -> {
+                          DependencyType depType = new DependencyType();
+                          depType.setName(dependencyType.getName());
+                          depType.setDependencyGroupType(
+                              dependencyGroupTypeMapper.from(dependencyGroupType));
+                          return depType;
+                        }))
+        .collect(Collectors.toList());
   }
 
   private void compareDependencyGroupTypes(
@@ -72,6 +105,75 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     }
   }
 
+  private void compareDependencyTypes(
+      Map<String, Set<String>> allDependencyTypes,
+      List<DependencyType> dependencyTypes,
+      String newFileName) {
+    Map<String, Set<String>> dependencyTypesForDeletion = new HashMap<>();
+    Map<String, Set<String>> foundDependencyTypes = new HashMap<>();
+
+    for (DependencyType dependencyType : dependencyTypes) {
+      Set<String> values =
+          allDependencyTypes.getOrDefault(
+              dependencyType.getDependencyGroupType().getName(), new HashSet<>());
+      if (values.contains(dependencyType.getName())) {
+        logger.info("Dependency type found: " + dependencyType.getName());
+        foundDependencyTypes
+            .computeIfAbsent(
+                dependencyType.getDependencyGroupType().getName(), k -> new HashSet<>())
+            .add(dependencyType.getName());
+      } else {
+        logger.info("Dependency type not found: " + dependencyType.getName());
+        dependencyTypesForDeletion
+            .computeIfAbsent(
+                dependencyType.getDependencyGroupType().getName(), k -> new HashSet<>())
+            .add(dependencyType.getName());
+      }
+    }
+
+    if (!dependencyTypesForDeletion.isEmpty()) {
+      logger.info("Dependency types for deletion: " + dependencyTypesForDeletion);
+      insertStaticTables.createSQLFile(
+          newFileName, buildDeleteDependencySQL(dependencyTypesForDeletion), true);
+    }
+
+    allDependencyTypes.forEach(
+        (key, value) ->
+            value.removeAll(foundDependencyTypes.getOrDefault(key, Collections.emptySet())));
+
+    if (!allDependencyTypes.isEmpty()) {
+      logger.info("Dependency types for insertion: " + allDependencyTypes);
+      insertStaticTables.createSQLFile(
+          newFileName, buildInsertDependenciesTypeSQL(allDependencyTypes), true);
+    }
+  }
+
+  static Set<String> getDependencyGroupTypes(Models models) {
+    Set<String> dependencyGroups = new HashSet<>();
+    for (Model model : models.getModels()) {
+      if (model.getMetadata().getDependencyGroup() == null) {
+        continue;
+      }
+      String dependencyGroup = model.getMetadata().getDependencyGroup();
+      dependencyGroups.add(dependencyGroup);
+    }
+    return dependencyGroups;
+  }
+
+  static Map<String, Set<String>> getDependencies() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    Map<String, Set<String>> groupDependencyMap = new HashMap<>();
+    try {
+      groupDependencyMap =
+          objectMapper.readValue(
+              new File(DEPENDENCY_TYPES_JSON_FILE_PATH),
+              new TypeReference<Map<String, Set<String>>>() {});
+    } catch (IOException e) {
+      logger.error("Error reading group_dependencies.json file: " + e.getMessage(), e);
+    }
+    return groupDependencyMap;
+  }
+
   static String buildInsertDependencyGroupTypeSQL(Set<String> dependencyGroupTypes) {
     StringBuilder sb = new StringBuilder();
     for (String dependencyGroupType : dependencyGroupTypes) {
@@ -96,15 +198,57 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     return sb.toString();
   }
 
-  static Set<String> getDependencyGroupTypes(Models models) {
-    Set<String> dependencyGroups = new HashSet<>();
-    for (Model model : models.getModels()) {
-      if (model.getMetadata().getDependencyGroup() == null) {
-        continue;
+  static String buildDeleteDependencySQL(Map<String, Set<String>> dependencyGroupTypes) {
+    StringBuilder sb = new StringBuilder();
+    for (Map.Entry<String, Set<String>> entry : dependencyGroupTypes.entrySet()) {
+      Set<String> value = entry.getValue();
+      for (String val : value) {
+        sb.append(buildRevInfoInsertSQL());
+        sb.append(buildDeleteAuditSQL(val, entry.getKey(), 2));
+        sb.append("DELETE FROM dependency_type WHERE name='").append(val).append("';\n");
       }
-      String dependencyGroup = model.getMetadata().getDependencyGroup();
-      dependencyGroups.add(dependencyGroup);
     }
-    return dependencyGroups;
+    return sb.toString();
+  }
+
+  static String buildInsertDependenciesTypeSQL(Map<String, Set<String>> groupDependencyMap) {
+    StringBuilder sb = new StringBuilder();
+    logger.info(groupDependencyMap);
+    for (Map.Entry<String, Set<String>> entry : groupDependencyMap.entrySet()) {
+      String key = entry.getKey();
+      Set<String> value = entry.getValue();
+      for (String val : value) {
+        sb.append("INSERT INTO dependency_type(name,dependency_group_id) VALUES ('")
+            .append(val)
+            .append("',(select id from dependency_group_type where name='")
+            .append(key)
+            .append("'));\n");
+        sb.append(buildRevInfoInsertSQL());
+        sb.append(buildInsertAuditSQL(val, key, 0));
+      }
+    }
+    return sb.toString();
+  }
+
+  public static String buildInsertAuditSQL(
+      String dependencyType, String dependencyGroupType, int revType) {
+    String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+    StringBuilder sb = new StringBuilder();
+    sb.append(
+            "INSERT INTO dependency_type_aud(id, rev, revtype, name, dependency_group_id, created_at, updated_at) VALUES (")
+        .append("(select id from dependency_type where name = '")
+        .append(dependencyType)
+        .append("'), (select max(rev) from revinfo),")
+        .append(revType)
+        .append(", '")
+        .append(dependencyType)
+        .append("', (select id from dependency_group_type where name = '")
+        .append(dependencyGroupType)
+        .append("'), '")
+        .append(date)
+        .append("', '")
+        .append(date)
+        .append("');\n");
+    return sb.toString();
   }
 }

@@ -2,7 +2,6 @@ package migration_files_creator.init;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
-import ai.turintech.modelcatalog.entity.Model;
 import ai.turintech.modelcatalog.repository.ModelRepository;
 import ai.turintech.modelcatalog.service.ModelService;
 import com.fasterxml.jackson.databind.ObjectMapper;
