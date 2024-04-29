@@ -10,7 +10,7 @@ This java tool is connected with a corresponding python code that is used to cre
 To install the tool, run the following command:
 
 ```bash
-git clone 
+git clone git@github.com:turintech/model-catalog.git
 ```
 
 ## Usage ##
@@ -28,7 +28,7 @@ conda activate model-catalog-py
 
 3. install the required packages
 ```bash
-pip install -r model-catalog-py/setup/requirements.txt
+pip install -r model-catalog-migration-file-creator/model-catalog-py/setup/requirements.txt
 ```    
 
 4. compile the java code
