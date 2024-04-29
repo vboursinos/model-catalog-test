@@ -74,8 +74,7 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
   @Transactional
   private void createModelSqlFile(Models models) {
     String mltask = models.getModels().get(0).getMlTask();
-    List<Model> dbModels = modelRepository.findAll();
-    List<ModelDTO> modelsDTO = dbModels.stream().map(modelMapper::to).toList();
+    List<ModelDTO> modelsDTO = modelService.findAll().collectList().block();
     String sqlScriptDelete = deleteDynamicTables.buildDeleteSQL(mltask, models, modelsDTO);
     String sqlScriptInsert = insertDynamicTables.buildInsertSQL(models, modelsDTO);
     String sqlScriptFinal = cleanupSQLScript(sqlScriptDelete + "\n" + sqlScriptInsert);

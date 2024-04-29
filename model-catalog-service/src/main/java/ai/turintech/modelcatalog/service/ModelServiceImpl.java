@@ -100,8 +100,7 @@ public class ModelServiceImpl extends AbstractSearchService<ModelLimited, ModelD
   @Transactional(readOnly = true)
   public Flux<ModelDTO> findAll() {
     log.debug("Request to get all Models");
-    return Flux.defer(
-            () -> Flux.fromStream(modelRepository.findAll().stream().map(modelMapper::to)))
+    return Flux.fromStream(modelRepository.findAll().stream().map(modelMapper::to))
         .subscribeOn(Schedulers.boundedElastic());
   }
 
