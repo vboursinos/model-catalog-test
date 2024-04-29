@@ -2,7 +2,6 @@ package migration_files_creator.insert_queries.staticTables;
 
 import ai.turintech.modelcatalog.entity.DependencyType;
 import ai.turintech.modelcatalog.repository.DependencyTypeRepository;
-import ai.turintech.modelcatalog.service.DependencyTypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
