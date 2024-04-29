@@ -123,7 +123,6 @@ class ModelInfo(BaseModel):
     mlTask: MlTask
     # parameters: Dict[str, Any]
     incompatibleMetrics: List[str] = []
-    groups: List[Group] = []
     blackListed: bool
     hyperParameters: List[Parameter]
     constraintEdges: List[Constraint]

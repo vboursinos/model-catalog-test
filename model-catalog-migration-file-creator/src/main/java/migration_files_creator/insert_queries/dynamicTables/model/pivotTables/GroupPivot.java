@@ -2,9 +2,14 @@ package migration_files_creator.insert_queries.dynamicTables.model.pivotTables;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import migration_files_creator.insert_queries.staticTables.TableCreatorHelper;
 import migration_files_creator.model.Model;
 import org.springframework.stereotype.Component;
@@ -12,13 +17,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class GroupPivot implements Pivot {
 
+  private static final String GROUP_TYPE_JSON_FILE_PATH =
+      "model-catalog-migration-file-creator/static/groups.json";
+  private final ObjectMapper mapper = new ObjectMapper();
+
   public String buildInsertIntoPivotSQL(Model model, List<ModelDTO> dbModelList) {
     StringBuilder sb = new StringBuilder();
     boolean found = false;
     for (ModelDTO dbModel : dbModelList) {
       if (model.getName().equals(dbModel.getName())) {
         found = true;
-        for (String group : model.getGroups()) {
+        for (String group : getModelGroups(model.getName())) {
           if (dbModel.getGroups().stream().noneMatch(g -> g.getName().equals(group))) {
             sb.append(createPivotQuerySQL(group, model.getName()));
             sb.append(TableCreatorHelper.buildRevInfoInsertSQL());
@@ -43,7 +52,7 @@ public class GroupPivot implements Pivot {
     List<ModelGroupTypeDTO> groupForDeletion = new ArrayList<>(dbModel.getGroups());
     if (jsonModel.getName().equals(dbModel.getName())) {
       for (ModelGroupTypeDTO group : dbModel.getGroups()) {
-        for (String jsonGroup : jsonModel.getGroups()) {
+        for (String jsonGroup : getModelGroups(jsonModel.getName())) {
           if (group.getName().equals(jsonGroup)) {
             groupForDeletion.remove(group);
           }
@@ -56,6 +65,40 @@ public class GroupPivot implements Pivot {
       }
     }
     return sb.toString();
+  }
+
+  public List<String> getModelGroups(String modelName) {
+    Map<String, Map<String, List<String>>> modelData;
+    try {
+      modelData = getModelGroupTypes(GROUP_TYPE_JSON_FILE_PATH);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return getModelGroups(modelName, modelData);
+  }
+
+  public Map<String, Map<String, List<String>>> getModelGroupTypes(String filePath)
+      throws IOException {
+    File jsonFile = new File(filePath);
+    MapType mapType = mapper.getTypeFactory().constructMapType(Map.class, String.class, Map.class);
+    return mapper.readValue(jsonFile, mapType);
+  }
+
+  public static List<String> getModelGroups(
+      String modelName, Map<String, Map<String, List<String>>> modelData) {
+    List<String> groups = new ArrayList<>();
+    for (Map.Entry<String, Map<String, List<String>>> entry : modelData.entrySet()) {
+      String group = entry.getKey();
+      Map<String, List<String>> modelMap = entry.getValue();
+      for (Map.Entry<String, List<String>> modelEntry : modelMap.entrySet()) {
+        List<String> models = modelEntry.getValue();
+        if (models.contains(modelName)) {
+          groups.add(group);
+          break;
+        }
+      }
+    }
+    return groups;
   }
 
   public String buildInsertIntoPivotDeleteSQL(ModelDTO model) {

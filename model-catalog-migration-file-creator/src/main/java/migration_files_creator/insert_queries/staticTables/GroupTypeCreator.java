@@ -3,9 +3,9 @@ package migration_files_creator.insert_queries.staticTables;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
 import ai.turintech.modelcatalog.service.ModelGroupTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import migration_files_creator.model.Model;
 import migration_files_creator.model.Models;
@@ -20,6 +20,9 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
   private static final Logger logger = LogManager.getLogger(GroupTypeCreator.class);
 
   private static final InsertStaticTables insertStaticTables = new InsertStaticTables();
+
+  private static final String GROUP_TYPE_JSON_FILE_PATH =
+      "model-catalog-migration-file-creator/static/groups.json";
 
   @Autowired private ModelGroupTypeService modelGroupTypeService;
 
@@ -36,11 +39,16 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
   }
 
   private Set<String> extractAllGroupTypes() throws IOException {
-    Path dirPath = Paths.get(insertStaticTables.getJsonDirPath());
-    InsertStaticTables insertStaticTables = new InsertStaticTables();
-    Set<String> allGroupTypes =
-        insertStaticTables.extractUniqueValues(mapper, dirPath, GroupTypeCreator::getGroupsTypes);
-    return allGroupTypes;
+    Map<String, Map<String, List<String>>> groupTypeMap =
+        getModelGroupTypes(GROUP_TYPE_JSON_FILE_PATH);
+    return groupTypeMap.keySet();
+  }
+
+  public Map<String, Map<String, List<String>>> getModelGroupTypes(String filePath)
+      throws IOException {
+    File jsonFile = new File(filePath);
+    MapType mapType = mapper.getTypeFactory().constructMapType(Map.class, String.class, Map.class);
+    return mapper.readValue(jsonFile, mapType);
   }
 
   private void compareModelGroupTypes(

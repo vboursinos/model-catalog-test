@@ -151,7 +151,7 @@ def get_model_metadata(parameters: MetamlParamSettings) -> Metadata:
     )
     metadata = Metadata(
         model=old_metadata["model_name"],
-        modelDescription=old_metadata["description"],
+        modelDescription=old_metadata["description"].replace("\n", "").replace("''", "'"),
         modelType=old_metadata["model_type"],
         advantages=old_metadata["advantages"],
         disadvantages=old_metadata["disadvantages"],
@@ -290,7 +290,6 @@ def get_model_infos(ml_task: MlTask) -> ModelInfoList:
             # Build a list of incompatible metrics - empty if no problematic metrics
             incompatible_metrics = get_incompatible_metrics(model_name, params)
 
-            groups = config.get_default_groups(model_name, ml_task)
             metaml_blacklisted = is_blacklisted_model(params)
 
 
@@ -299,9 +298,7 @@ def get_model_infos(ml_task: MlTask) -> ModelInfoList:
                 ModelInfo(
                     name=model_name,
                     mlTask=ml_task,
-                    # parameters=lite_params,
                     incompatibleMetrics=incompatible_metrics,
-                    groups=groups,
                     blackListed=metaml_blacklisted,
                     hyperParameters=get_model_parameters(lite_params.get("parameters", [])),
                     constraintEdges=get_model_constraint_edges(params.get("constraints", [])),

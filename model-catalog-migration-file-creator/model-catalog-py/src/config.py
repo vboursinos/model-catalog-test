@@ -10,8 +10,6 @@ from models import MlTask, ModelName, Group
 
 # File paths
 STATIC_CONFIG = Path(__file__).parent / "static"  # folder for default config files
-BLACKLIST = STATIC_CONFIG / "blacklist.txt"
-BLACKLIST_GROUPS = STATIC_CONFIG / "blacklist_groups.txt"
 DEFAULTS = STATIC_CONFIG / "defaults.json"
 MODELS_SUPPORT = STATIC_CONFIG / "models_support.json"
 
@@ -45,21 +43,6 @@ def get_blacklisted_groups() -> List[str]:
 # Groups (subsets of models)
 _DEFAULTS_MAP = json.loads(DEFAULTS.read_text())
 """Map of Group (hardcoded subset of models) to ml-task to models"""
-
-
-def get_default_groups(model_name: str, ml_task: MlTask) -> List[Group]:
-    """For a model, give all the default groups it's part of, using the
-    configuration of defaults (see `DEFAULTS` path).
-    """
-    defaults: Dict[Group, Dict[MlTask, List[ModelName]]] = _DEFAULTS_MAP
-    groups: List[Group] = []
-    for group in defaults:
-        groups_models = defaults[group][ml_task.value]
-        if model_name in groups_models:
-            groups.append(group)
-    return groups
-
-
 # ──────────────────────────────────────────────────────────────────────────── #
 # Model Support
 _MODELS_SUPPORT = json.loads(MODELS_SUPPORT.read_text())
