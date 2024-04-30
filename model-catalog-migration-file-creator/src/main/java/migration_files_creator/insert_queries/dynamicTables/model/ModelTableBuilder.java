@@ -2,10 +2,11 @@ package migration_files_creator.insert_queries.dynamicTables.model;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import java.text.SimpleDateFormat;
+import migration_files_creator.model.EnsembleFamily;
 import migration_files_creator.model.Model;
 
 public class ModelTableBuilder {
-  public static String updateModelSQL(Model model, String ensembleType, String familyType) {
+  public static String updateModelSQL(Model model, EnsembleFamily ensembleFamily) {
     String advantagesArray = "{" + String.join(",", model.getMetadata().getAdvantages()) + "}";
     String disadvantagesArray =
         "{" + String.join(",", model.getMetadata().getDisadvantages()) + "}";
@@ -22,8 +23,8 @@ public class ModelTableBuilder {
             advantagesArray,
             disadvantagesArray,
             !model.isBlackListed(),
-            ensembleType,
-            familyType,
+            ensembleFamily.getEnsembleType(),
+            ensembleFamily.getFamily(),
             model.getMetadata().getSupports().getDecisionTree(),
             model.getMetadata().getDependencyGroup(),
             model.getName());
@@ -33,8 +34,7 @@ public class ModelTableBuilder {
 
   public static String insertModelSQL(
       Model model,
-      String ensembleType,
-      String familyType,
+      EnsembleFamily ensembleFamily,
       String advantagesArray,
       String disadvantagesArray,
       String description) {
@@ -48,14 +48,14 @@ public class ModelTableBuilder {
         advantagesArray,
         disadvantagesArray,
         !model.isBlackListed(),
-        ensembleType,
-        familyType,
+        ensembleFamily.getEnsembleType(),
+        ensembleFamily.getFamily(),
         model.getMetadata().getSupports().getDecisionTree(),
         model.getMetadata().getDependencyGroup());
   }
 
   public static StringBuilder insertModelAuditSQL(
-      Model model, String ensembleType, String familyType, int revType) {
+      Model model, EnsembleFamily ensembleFamily, int revType) {
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String advantagesArray = "{" + String.join(",", model.getMetadata().getAdvantages()) + "}";
     String disadvantagesArray =
@@ -87,9 +87,9 @@ public class ModelTableBuilder {
         .append("', ")
         .append(!model.isBlackListed())
         .append(", (select id from model_ensemble_type where name = '")
-        .append(ensembleType)
+        .append(ensembleFamily.getEnsembleType())
         .append("'), (select id from model_family_type where name = '")
-        .append(familyType)
+        .append(ensembleFamily.getFamily())
         .append("'), ")
         .append(model.getMetadata().getSupports().getDecisionTree())
         .append(", (select id from dependency_group_type where name = '")

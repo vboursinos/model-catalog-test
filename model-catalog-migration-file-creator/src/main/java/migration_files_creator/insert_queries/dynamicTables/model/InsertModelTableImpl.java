@@ -12,35 +12,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InsertModelTableImpl extends TableCreatorHelper implements InsertModelTable {
-  public String buildInsertIntoModelSQL(
-      Model jsonModel, List<EnsembleFamily> ensembleFamilies, List<ModelDTO> dbModelList) {
+  public String buildInsertIntoModelSQL(Model jsonModel, List<ModelDTO> dbModelList) {
     String advantagesArray = "{" + String.join(",", jsonModel.getMetadata().getAdvantages()) + "}";
     String disadvantagesArray =
         "{" + String.join(",", jsonModel.getMetadata().getDisadvantages()) + "}";
-
-    String ensembleType = null;
-    String familyType = null;
-    for (EnsembleFamily ensembleFamily : ensembleFamilies) {
-      if (ensembleFamily.getName().equals(jsonModel.getName())) {
-        ensembleType = ensembleFamily.getEnsembleType();
-        familyType = ensembleFamily.getFamily();
-        break;
-      }
-    }
+    EnsembleFamily ensembleFamily = EnsembleFamily.getEnsembleFamily(jsonModel.getName());
 
     String description = jsonModel.getMetadata().getModelDescription().replaceAll("\\n", "");
-
     boolean found = false;
     for (ModelDTO dbModel : dbModelList) {
       if (jsonModel.getName().equals(dbModel.getName())) {
-        if (compareModel(jsonModel, dbModel, ensembleFamilies)) {
+        if (compareModel(jsonModel, dbModel, ensembleFamily)) {
           found = true;
           break;
         } else {
           StringBuilder sb = new StringBuilder();
-          sb.append(updateModelSQL(jsonModel, ensembleType, familyType));
+          sb.append(updateModelSQL(jsonModel, ensembleFamily));
           sb.append(TableCreatorHelper.buildRevInfoInsertSQL());
-          sb.append(ModelTableBuilder.insertModelAuditSQL(jsonModel, ensembleType, familyType, 1));
+          sb.append(ModelTableBuilder.insertModelAuditSQL(jsonModel, ensembleFamily, 1));
           return sb.toString();
         }
       }
@@ -49,14 +38,9 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
       StringBuilder sb = new StringBuilder();
       sb.append(
           insertModelSQL(
-              jsonModel,
-              ensembleType,
-              familyType,
-              advantagesArray,
-              disadvantagesArray,
-              description));
+              jsonModel, ensembleFamily, advantagesArray, disadvantagesArray, description));
       sb.append(TableCreatorHelper.buildRevInfoInsertSQL());
-      sb.append(ModelTableBuilder.insertModelAuditSQL(jsonModel, ensembleType, familyType, 0));
+      sb.append(ModelTableBuilder.insertModelAuditSQL(jsonModel, ensembleFamily, 0));
       sb.append(includeAudit(jsonModel.getName()));
       return sb.toString();
     }
@@ -65,7 +49,7 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
   }
 
   private static boolean compareModel(
-      Model jsonModel, ModelDTO dbModel, List<EnsembleFamily> ensembleFamilies) {
+      Model jsonModel, ModelDTO dbModel, EnsembleFamily ensembleFamily) {
     String jsonDescription =
         jsonModel
             .getMetadata()
@@ -91,24 +75,12 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
         && jsonModel.getMetadata().getStructure().equals(dbModel.getStructure().getName())
         && jsonModel.isBlackListed() == !dbModel.getEnabled()
         && jsonModel.getMetadata().getSupports().getDecisionTree() == dbModel.getDecisionTree()
-        && compareEnsembleFamilyType(jsonModel, dbModel, ensembleFamilies)
+        && ensembleFamily.getFamily().equals(dbModel.getFamilyType().getName())
+        && ensembleFamily.getEnsembleType().equals(dbModel.getEnsembleType().getName())
         && jsonModel
             .getMetadata()
             .getDependencyGroup()
             .equals(dbModel.getDependencyGroupType().getName());
-  }
-
-  private static boolean compareEnsembleFamilyType(
-      Model jsonModel, ModelDTO dbModel, List<EnsembleFamily> ensembleFamilies) {
-    for (EnsembleFamily ensembleFamily : ensembleFamilies) {
-      if (ensembleFamily.getName().equals(jsonModel.getName())) {
-        if (ensembleFamily.getEnsembleType().equals(dbModel.getEnsembleType().getName())
-            && ensembleFamily.getFamily().equals(dbModel.getFamilyType().getName())) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   private static String includeAudit(String name) {
