@@ -50,22 +50,13 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
 
   private static boolean compareModel(
       Model jsonModel, ModelDTO dbModel, EnsembleFamily ensembleFamily) {
-    String jsonDescription =
-        jsonModel
-            .getMetadata()
-            .getModelDescription()
-            .replaceAll("\\n", "")
-            .replaceAll("''", "'")
-            .replaceAll("\\s", "");
-    String dbDescription =
-        dbModel.getDescription().replaceAll("''", "'").replaceAll("\\n", "").replaceAll("\\s", "");
+    String jsonDescription = normalizeString(jsonModel.getMetadata().getModelDescription());
+    String dbDescription = normalizeString(dbModel.getDescription());
 
     String jsonAdvantages = jsonModel.getMetadata().getAdvantages().toString();
     String jsonDisadvantages = jsonModel.getMetadata().getDisadvantages().toString();
-    String dbAdvantages =
-        Arrays.stream(dbModel.getAdvantages()).toList().toString().replaceAll("'", "''");
-    String dbDisadvantages =
-        Arrays.stream(dbModel.getDisadvantages()).toList().toString().replaceAll("'", "''");
+    String dbAdvantages = normalizeList(Arrays.asList(dbModel.getAdvantages()));
+    String dbDisadvantages = normalizeList(Arrays.asList(dbModel.getDisadvantages()));
 
     return jsonModel.getMlTask().equals(dbModel.getMlTask().getName())
         && jsonDescription.equals(dbDescription)
@@ -81,6 +72,14 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
             .getMetadata()
             .getDependencyGroup()
             .equals(dbModel.getDependencyGroupType().getName());
+  }
+
+  private static String normalizeString(String input) {
+    return input.replaceAll("\\n", "").replaceAll("''", "'").replaceAll("\\s", "");
+  }
+
+  private static String normalizeList(List<?> list) {
+    return list.toString().replaceAll("'", "''");
   }
 
   private static String includeAudit(String name) {
