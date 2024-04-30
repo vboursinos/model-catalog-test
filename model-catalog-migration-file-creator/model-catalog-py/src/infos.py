@@ -305,7 +305,6 @@ def get_model_infos(ml_task: MlTask) -> ModelInfoList:
                     metadata=get_model_metadata(params)
                 )
             )
-            print(len(lite_params["parameters"]))
-            print(len(get_model_parameters(params.get("parameters", []))))
+
             assert len(lite_params["parameters"]) == len(get_model_parameters(params.get("parameters", [])))
     return ModelInfoList(models=models)
