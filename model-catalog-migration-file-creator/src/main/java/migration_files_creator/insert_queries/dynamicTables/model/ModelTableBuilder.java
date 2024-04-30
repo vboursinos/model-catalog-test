@@ -97,47 +97,6 @@ public class ModelTableBuilder {
         .append("'));\n");
   }
 
-  public static StringBuilder insertModelAuditSQL(ModelDTO model, int revType) {
-    String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
-    String advantagesArray = "{" + String.join(",", model.getAdvantages()) + "}";
-    String disadvantagesArray = "{" + String.join(",", model.getDisadvantages()) + "}";
-    StringBuilder sb = new StringBuilder();
-    return sb.append(
-            "INSERT INTO model_aud(id, rev, revtype, created_at, updated_at, ml_task_id, name, display_name, structure_id, description, advantages, disadvantages, enabled, ensemble_type_id, family_type_id, decision_tree, dependency_group_id) VALUES ((select id from model where name = '")
-        .append(model.getName())
-        .append("'), (select max(rev) from revinfo),")
-        .append(revType)
-        .append(", '")
-        .append(date)
-        .append("', '")
-        .append(date)
-        .append("', (select id from ml_task_type where name = '")
-        .append(model.getMlTask().getName())
-        .append("'), '")
-        .append(model.getName())
-        .append("', '")
-        .append(model.getDisplayName())
-        .append("', (select id from model_structure_type where name = '")
-        .append(model.getStructure().getName())
-        .append("'), '")
-        .append(model.getDescription().replaceAll("'", "''"))
-        .append("', '")
-        .append(advantagesArray.replaceAll("'", "''"))
-        .append("', '")
-        .append(disadvantagesArray.replaceAll("'", "''"))
-        .append("', ")
-        .append(model.getEnabled())
-        .append(", (select id from model_ensemble_type where name = '")
-        .append(model.getEnsembleType().getName())
-        .append("'), (select id from model_family_type where name = '")
-        .append(model.getFamilyType().getName())
-        .append("'), ")
-        .append(model.getDecisionTree())
-        .append(", (select id from dependency_group_type where name = '")
-        .append(model.getDependencyGroupType().getName())
-        .append("'));\n");
-  }
-
   public static StringBuilder insertModelAuditSQLDelete(ModelDTO model) {
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     StringBuilder sb = new StringBuilder();

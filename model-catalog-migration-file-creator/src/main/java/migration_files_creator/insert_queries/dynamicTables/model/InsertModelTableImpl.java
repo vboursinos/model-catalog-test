@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class InsertModelTableImpl extends TableCreatorHelper implements InsertModelTable {
   public String buildInsertIntoModelSQL(Model jsonModel, List<ModelDTO> dbModelList) {
-    String advantagesArray = "{" + String.join(",", jsonModel.getMetadata().getAdvantages()) + "}";
-    String disadvantagesArray =
-        "{" + String.join(",", jsonModel.getMetadata().getDisadvantages()) + "}";
-    EnsembleFamily ensembleFamily = EnsembleFamily.getEnsembleFamily(jsonModel.getName());
 
-    String description = jsonModel.getMetadata().getModelDescription().replaceAll("\\n", "");
+    String advantagesArray = buildArray(jsonModel.getMetadata().getAdvantages());
+    String disadvantagesArray = buildArray(jsonModel.getMetadata().getDisadvantages());
+    EnsembleFamily ensembleFamily = EnsembleFamily.getEnsembleFamily(jsonModel.getName());
+    String description = normalizeDescription(jsonModel.getMetadata().getModelDescription());
+
     boolean found = false;
     for (ModelDTO dbModel : dbModelList) {
       if (jsonModel.getName().equals(dbModel.getName())) {
@@ -46,6 +46,14 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
     }
 
     return "\n";
+  }
+
+  private String buildArray(List<String> modelList) {
+    return "{" + String.join(",", modelList) + "}";
+  }
+
+  private String normalizeDescription(String description) {
+    return description.replaceAll("\\n", "");
   }
 
   private static boolean compareModel(
