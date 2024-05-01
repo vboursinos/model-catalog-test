@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import migration_files_creator.exceptions.ModelCatalogMigrationFileException;
 import migration_files_creator.model.Model;
 import migration_files_creator.static_query_creator.TableCreatorHelper;
 import org.springframework.stereotype.Component;
@@ -72,7 +73,7 @@ public class GroupPivot implements Pivot {
     try {
       modelData = getModelGroupTypes(GROUP_TYPE_JSON_FILE_PATH);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ModelCatalogMigrationFileException(e);
     }
     return getModelGroups(modelName, modelData);
   }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import migration_files_creator.exceptions.ModelCatalogMigrationFileException;
 import migration_files_creator.model.EnsembleFamily;
 import migration_files_creator.model.Model;
 import migration_files_creator.static_query_creator.TableCreatorHelper;
@@ -114,7 +115,7 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
     try {
       decisionTreeMap = objectMapper.readValue(jsonFile, new TypeReference<>() {});
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ModelCatalogMigrationFileException(e);
     }
     Map<String, Boolean> modelMap = decisionTreeMap.get(modelName);
     return modelMap != null

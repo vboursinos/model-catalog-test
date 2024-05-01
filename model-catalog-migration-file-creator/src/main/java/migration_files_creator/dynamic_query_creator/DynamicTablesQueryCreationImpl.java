@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import migration_files_creator.dynamic_query_creator.delete_queries.DeleteDynamicTables;
 import migration_files_creator.dynamic_query_creator.insert_queries.InsertDynamicTables;
 import migration_files_creator.dynamic_query_creator.insert_queries.InsertDynamicTablesImpl;
+import migration_files_creator.exceptions.ModelCatalogMigrationFileException;
 import migration_files_creator.model.Models;
 import migration_files_creator.static_query_creator.InsertStaticTables;
 import org.apache.logging.log4j.LogManager;
@@ -54,7 +55,7 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
                   try {
                     modelProcessor.accept(mapper.readValue(filePath.toFile(), Models.class));
                   } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new ModelCatalogMigrationFileException(e);
                   }
                 }
               });
