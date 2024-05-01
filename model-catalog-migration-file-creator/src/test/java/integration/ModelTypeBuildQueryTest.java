@@ -1,6 +1,7 @@
 package integration;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import migration_files_creator.static_query_creator.ModelTypeCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,8 @@ public class ModelTypeBuildQueryTest extends BaseQueryValidationTest {
   }
 
   private void validateContent() {
-    try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+    try (BufferedReader br =
+        new BufferedReader(new FileReader(FILE_NAME, Charset.defaultCharset()))) {
       String firstLine = br.readLine();
       Assertions.assertTrue(
           firstLine.contains("INSERT INTO model_type(name) VALUES ('Statistical Model test');"));
