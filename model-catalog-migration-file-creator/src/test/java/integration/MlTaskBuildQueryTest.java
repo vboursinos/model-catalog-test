@@ -21,7 +21,7 @@ public class MlTaskBuildQueryTest extends BaseQueryValidationTest {
   private static final String FILE_NAME = "src/test/java/integration/migration_file.sql";
 
   @Test
-  public void testParameterTypeQuery() {
+  public void testQueryBuilder() {
     mlTaskCreator.createStaticTable(FILE_NAME);
     File file = new File(FILE_NAME);
     Assertions.assertTrue(file.exists() && file.length() > 0);
