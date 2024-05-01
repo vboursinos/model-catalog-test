@@ -9,6 +9,10 @@ import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
 import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
 import jakarta.persistence.EntityManagerFactory;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
 import javax.sql.DataSource;
 import migration_files_creator.MigrationFilesCreatorPackage;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -25,7 +29,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;import java.io.IOException;import java.nio.file.Files;import java.nio.file.Paths;import java.util.Properties;
+import reactor.core.scheduler.Schedulers;
 
 @Configuration
 @EnableJpaRepositories(
@@ -44,8 +48,7 @@ import reactor.core.scheduler.Schedulers;import java.io.IOException;import java.
 public class TestConfig {
   private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
 
-    private static final String PROPERTIES_FILE_PATH =
-        "src/test/resources/configuration.properties";
+  private static final String PROPERTIES_FILE_PATH = "src/test/resources/configuration.properties";
 
   @Bean
   public DataSource dataSource() {
