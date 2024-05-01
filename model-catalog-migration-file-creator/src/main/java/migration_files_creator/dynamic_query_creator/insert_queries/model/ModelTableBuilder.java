@@ -6,7 +6,8 @@ import migration_files_creator.model.EnsembleFamily;
 import migration_files_creator.model.Model;
 
 public class ModelTableBuilder {
-  public static String updateModelSQL(Model model, EnsembleFamily ensembleFamily) {
+  public static String updateModelSQL(
+      Model model, EnsembleFamily ensembleFamily, boolean isDecisionTree) {
     String advantagesArray = "{" + String.join(",", model.getMetadata().getAdvantages()) + "}";
     String disadvantagesArray =
         "{" + String.join(",", model.getMetadata().getDisadvantages()) + "}";
@@ -25,7 +26,7 @@ public class ModelTableBuilder {
             !model.isBlackListed(),
             ensembleFamily.getEnsembleType(),
             ensembleFamily.getFamily(),
-            model.getMetadata().getSupports().getDecisionTree(),
+            isDecisionTree,
             model.getMetadata().getDependencyGroup(),
             model.getName());
 
@@ -37,7 +38,8 @@ public class ModelTableBuilder {
       EnsembleFamily ensembleFamily,
       String advantagesArray,
       String disadvantagesArray,
-      String description) {
+      String description,
+      boolean isDecisionTree) {
     return String.format(
         "INSERT INTO model(name, ml_task_id, description, display_name, structure_id, advantages, disadvantages, enabled, ensemble_type_id, family_type_id, decision_tree, dependency_group_id) VALUES ('%s', (select id from ml_task_type where name='%s'),'%s', '%s', (select id from model_structure_type where name='%s'), '%s', '%s', %b, (select id from model_ensemble_type where name='%s'),(select id from model_family_type where name='%s'), %b, (select id from dependency_group_type where name='%s'));\n",
         model.getName(),
@@ -50,12 +52,12 @@ public class ModelTableBuilder {
         !model.isBlackListed(),
         ensembleFamily.getEnsembleType(),
         ensembleFamily.getFamily(),
-        model.getMetadata().getSupports().getDecisionTree(),
+        isDecisionTree,
         model.getMetadata().getDependencyGroup());
   }
 
   public static StringBuilder insertModelAuditSQL(
-      Model model, EnsembleFamily ensembleFamily, int revType) {
+      Model model, EnsembleFamily ensembleFamily, boolean isDecisionTree, int revType) {
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String advantagesArray = "{" + String.join(",", model.getMetadata().getAdvantages()) + "}";
     String disadvantagesArray =
@@ -91,7 +93,7 @@ public class ModelTableBuilder {
         .append("'), (select id from model_family_type where name = '")
         .append(ensembleFamily.getFamily())
         .append("'), ")
-        .append(model.getMetadata().getSupports().getDecisionTree())
+        .append(isDecisionTree)
         .append(", (select id from dependency_group_type where name = '")
         .append(model.getMetadata().getDependencyGroup())
         .append("'));\n");

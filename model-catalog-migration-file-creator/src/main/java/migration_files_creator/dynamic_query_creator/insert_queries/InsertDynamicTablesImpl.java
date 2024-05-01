@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InsertDynamicTablesImpl implements InsertDynamicTables{
+public class InsertDynamicTablesImpl implements InsertDynamicTables {
   @Autowired private InsertParametersTables insertParametersTables;
   @Autowired private InsertModelTable insertModelTable;
 
@@ -38,7 +38,5 @@ public class InsertDynamicTablesImpl implements InsertDynamicTables{
       sb.append(pivot.buildInsertIntoPivotSQL(model, models));
     }
     sb.append(insertParametersTables.buildInsertIntoParameterAndParameterValueSQL(model, models));
-
-    //    sb.append(buildInsertConstraintSQL(model));
   }
 }

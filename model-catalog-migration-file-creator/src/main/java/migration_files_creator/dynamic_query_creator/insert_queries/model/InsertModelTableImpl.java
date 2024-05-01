@@ -3,8 +3,13 @@ package migration_files_creator.dynamic_query_creator.insert_queries.model;
 import static migration_files_creator.dynamic_query_creator.insert_queries.model.ModelTableBuilder.*;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import migration_files_creator.model.EnsembleFamily;
 import migration_files_creator.model.Model;
 import migration_files_creator.static_query_creator.TableCreatorHelper;
@@ -12,6 +17,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InsertModelTableImpl extends TableCreatorHelper implements InsertModelTable {
+
+  private final String DECISION_TREE_FILE_PATH =
+      "model-catalog-migration-file-creator/static/decision_tree.json";
+
   public String buildInsertIntoModelSQL(Model jsonModel, List<ModelDTO> dbModelList) {
 
     String advantagesArray = buildArray(jsonModel.getMetadata().getAdvantages());
@@ -27,9 +36,12 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
           break;
         } else {
           StringBuilder sb = new StringBuilder();
-          sb.append(updateModelSQL(jsonModel, ensembleFamily));
+          sb.append(
+              updateModelSQL(jsonModel, ensembleFamily, isDecisionTreeModel(jsonModel.getName())));
           sb.append(TableCreatorHelper.buildRevInfoInsertSQL());
-          sb.append(ModelTableBuilder.insertModelAuditSQL(jsonModel, ensembleFamily, 1));
+          sb.append(
+              ModelTableBuilder.insertModelAuditSQL(
+                  jsonModel, ensembleFamily, isDecisionTreeModel(jsonModel.getName()), 1));
           return sb.toString();
         }
       }
@@ -38,9 +50,16 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
       StringBuilder sb = new StringBuilder();
       sb.append(
           insertModelSQL(
-              jsonModel, ensembleFamily, advantagesArray, disadvantagesArray, description));
+              jsonModel,
+              ensembleFamily,
+              advantagesArray,
+              disadvantagesArray,
+              description,
+              isDecisionTreeModel(jsonModel.getName())));
       sb.append(TableCreatorHelper.buildRevInfoInsertSQL());
-      sb.append(ModelTableBuilder.insertModelAuditSQL(jsonModel, ensembleFamily, 0));
+      sb.append(
+          ModelTableBuilder.insertModelAuditSQL(
+              jsonModel, ensembleFamily, isDecisionTreeModel(jsonModel.getName()), 0));
       return sb.toString();
     }
 
@@ -55,8 +74,7 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
     return description.replaceAll("\\n", "");
   }
 
-  private static boolean compareModel(
-      Model jsonModel, ModelDTO dbModel, EnsembleFamily ensembleFamily) {
+  private boolean compareModel(Model jsonModel, ModelDTO dbModel, EnsembleFamily ensembleFamily) {
     String jsonDescription = normalizeString(jsonModel.getMetadata().getModelDescription());
     String dbDescription = normalizeString(dbModel.getDescription());
 
@@ -72,7 +90,7 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
         && jsonDisadvantages.equals(dbDisadvantages)
         && jsonModel.getMetadata().getStructure().equals(dbModel.getStructure().getName())
         && jsonModel.isBlackListed() == !dbModel.getEnabled()
-        && jsonModel.getMetadata().getSupports().getDecisionTree() == dbModel.getDecisionTree()
+        && isDecisionTreeModel(jsonModel.getName()) == dbModel.getDecisionTree()
         && ensembleFamily.getFamily().equals(dbModel.getFamilyType().getName())
         && ensembleFamily.getEnsembleType().equals(dbModel.getEnsembleType().getName())
         && jsonModel
@@ -87,5 +105,20 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
 
   private static String normalizeList(List<?> list) {
     return list.toString().replaceAll("'", "''");
+  }
+
+  public boolean isDecisionTreeModel(String modelName) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    File jsonFile = new File(DECISION_TREE_FILE_PATH);
+    Map<String, Map<String, Boolean>> decisionTreeMap = null;
+    try {
+      decisionTreeMap = objectMapper.readValue(jsonFile, new TypeReference<>() {});
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Map<String, Boolean> modelMap = decisionTreeMap.get(modelName);
+    return modelMap != null
+        && modelMap.containsKey("decision_tree")
+        && modelMap.get("decision_tree");
   }
 }
