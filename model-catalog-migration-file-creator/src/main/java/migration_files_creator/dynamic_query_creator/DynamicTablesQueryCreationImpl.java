@@ -27,7 +27,6 @@ import utils.FileUtils;
 public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreation {
   private static final Logger logger = LogManager.getLogger(InsertDynamicTablesImpl.class);
   private static final String JSON_DIR_PATH = "model-catalog-migration-file-creator/model_infos";
-  private static final String SQL_DIR_PATH = "model-catalog-migration-file-creator/sql_scripts";
 
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
@@ -71,7 +70,7 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
     String sqlScriptInsert = insertDynamicTables.buildInsertSQL(models, modelsDTO);
     String sqlScriptFinal = cleanupSQLScript(sqlScriptDelete + "\n" + sqlScriptInsert);
 
-    FileUtils.writeToFileAppend(Paths.get(SQL_DIR_PATH, outputFileName).toString(), sqlScriptFinal);
+    FileUtils.writeToFileAppend(Paths.get(outputFileName).toString(), sqlScriptFinal);
     logger.info(mltask + " sql file created successfully!");
   }
 

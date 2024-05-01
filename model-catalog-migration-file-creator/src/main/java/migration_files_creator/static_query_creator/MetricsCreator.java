@@ -11,6 +11,7 @@ import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,9 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
   private static final Logger logger = LogManager.getLogger(MetricsCreator.class);
 
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
+
+  @Value("${json_dir_path}")
+  private String jsonDirPath;
 
   @Autowired private MetricService metricService;
 
@@ -35,7 +39,7 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
   }
 
   private Set<String> extractAllMetrics() throws IOException {
-    Path dirPath = Paths.get(insertStaticTables.getJsonDirPath());
+    Path dirPath = Paths.get(jsonDirPath);
     InsertStaticTables insertStaticTables = new InsertStaticTables();
     Set<String> allMetrics =
         insertStaticTables.extractUniqueValues(mapper, dirPath, MetricsCreator::getMetrics);

@@ -15,6 +15,7 @@ import migration_files_creator.model.ParameterTypeDistribution;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,6 +25,9 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
   private static final Logger logger = LogManager.getLogger(ParameterDistributionTypeCreator.class);
 
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
+
+  @Value("${json_dir_path}")
+  private String jsonDirPath;
 
   @Autowired private ParameterDistributionTypeService parameterDistributionTypeService;
 
@@ -42,7 +46,7 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
   }
 
   private Set<String> extractAllParameterDistributionTypes() throws IOException {
-    Path dirPath = Paths.get(insertStaticTables.getJsonDirPath());
+    Path dirPath = Paths.get(jsonDirPath);
     InsertStaticTables insertStaticTables = new InsertStaticTables();
     Set<String> allParameterDistributionTypes =
         insertStaticTables.extractUniqueValues(

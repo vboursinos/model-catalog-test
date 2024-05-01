@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,17 +23,12 @@ public class InsertStaticTables {
   @Autowired private List<StaticTableCreator> staticTableCreators;
   private static final Logger logger = LogManager.getLogger(InsertStaticTables.class);
   private static final String JSON_DIR_PATH = "model-catalog-migration-file-creator/model_infos";
-  private static final String SQL_DIR_PATH = "model-catalog-migration-file-creator/sql_scripts";
 
   @Value("${latest_sql_file_name}")
   private String latestSqlFileName;
 
   public String getJsonDirPath() {
     return JSON_DIR_PATH;
-  }
-
-  public String getSqlDirPath() {
-    return SQL_DIR_PATH;
   }
 
   public void insertDataScripts() {
@@ -47,12 +41,11 @@ public class InsertStaticTables {
     createSQLFile(fileName, content, false);
   }
 
-  public void createSQLFile(String fileName, String content, boolean append) {
-    Path sqlDirPath = Paths.get(SQL_DIR_PATH, fileName);
+  public void createSQLFile(String filePath, String content, boolean append) {
     if (!append) {
-      FileUtils.writeToFile(sqlDirPath.toString(), content);
+      FileUtils.writeToFile(filePath, content);
     } else {
-      FileUtils.writeToFileAppend(sqlDirPath.toString(), content);
+      FileUtils.writeToFileAppend(filePath, content);
     }
   }
 

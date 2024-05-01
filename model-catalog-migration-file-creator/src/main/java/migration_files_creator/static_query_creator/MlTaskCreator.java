@@ -12,6 +12,7 @@ import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,10 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
   private final ObjectMapper mapper = new ObjectMapper();
   private static final Logger logger = LogManager.getLogger(MlTaskCreator.class);
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
+
+  @Value("${json_dir_path}")
+  private String jsonDirPath;
+
   @Autowired private MlTaskTypeService mlTaskTypeService;
 
   public void createStaticTable(String newFileName) {
@@ -35,7 +40,7 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
   }
 
   private Set<String> extractAllMlTaskTypes() throws IOException {
-    Path dirPath = Paths.get(insertStaticTables.getJsonDirPath());
+    Path dirPath = Paths.get(jsonDirPath);
     InsertStaticTables insertStaticTables = new InsertStaticTables();
     Set<String> allMlTaskTypes =
         insertStaticTables.extractUniqueValues(mapper, dirPath, MlTaskCreator::getMlTaskTypes);

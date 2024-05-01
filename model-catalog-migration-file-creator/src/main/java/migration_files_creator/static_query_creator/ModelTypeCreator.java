@@ -12,6 +12,7 @@ import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,6 +21,9 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
   private static final Logger logger = LogManager.getLogger(ModelTypeCreator.class);
 
   private static final InsertStaticTables insertStaticTables = new InsertStaticTables();
+
+  @Value("${json_dir_path}")
+  private String jsonDirPath;
 
   @Autowired private ModelTypeService modelTypeService;
 
@@ -36,7 +40,7 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
   }
 
   private Set<String> extractAllModelTypes() throws IOException {
-    Path dirPath = Paths.get(insertStaticTables.getJsonDirPath());
+    Path dirPath = Paths.get(jsonDirPath);
     InsertStaticTables insertStaticTables = new InsertStaticTables();
     return insertStaticTables.extractUniqueValues(mapper, dirPath, ModelTypeCreator::getModelTypes);
   }
