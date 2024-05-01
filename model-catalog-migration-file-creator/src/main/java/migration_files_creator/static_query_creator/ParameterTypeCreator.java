@@ -69,7 +69,7 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
     }
   }
 
-  static String buildParameterTypeSQL(Set<String> parameterTypes) {
+  public static String buildParameterTypeSQL(Set<String> parameterTypes) {
     StringBuilder sb = new StringBuilder();
     for (String parameterType : parameterTypes) {
       sb.append("INSERT INTO parameter_type(name) VALUES ('").append(parameterType).append("');\n");
@@ -79,7 +79,7 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
     return sb.toString();
   }
 
-  static String buildDeleteParameterTypeSQL(Set<String> parameterTypes) {
+  public static String buildDeleteParameterTypeSQL(Set<String> parameterTypes) {
     StringBuilder sb = new StringBuilder();
     for (String parameterType : parameterTypes) {
       sb.append(buildRevInfoInsertSQL());
