@@ -1,4 +1,4 @@
-package static_query_creator;
+package unit.static_query_creator;
 
 import java.util.Set;
 import migration_files_creator.static_query_creator.MetricsCreator;

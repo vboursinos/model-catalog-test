@@ -1,3 +1,5 @@
+package integration;
+
 import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
 import ai.turintech.components.jpa.search.JpaSearchPackage;
 import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
@@ -13,6 +15,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -22,7 +25,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.scheduler.Schedulers;import java.io.IOException;import java.nio.file.Files;import java.nio.file.Paths;import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(
@@ -37,8 +40,12 @@ import reactor.core.scheduler.Schedulers;
       ReactiveAbstractUUIDIdentityCrudCallableImpl.class
     })
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
+@PropertySource("classpath:configuration.properties")
 public class TestConfig {
   private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
+
+    private static final String PROPERTIES_FILE_PATH =
+        "src/test/resources/configuration.properties";
 
   @Bean
   public DataSource dataSource() {
@@ -75,5 +82,16 @@ public class TestConfig {
   @Bean
   public Scheduler jdbcScheduler() {
     return Schedulers.immediate();
+  }
+
+  @Bean
+  public static Properties getProperties() {
+    Properties properties = new Properties();
+    try {
+      properties.load(Files.newInputStream(Paths.get(PROPERTIES_FILE_PATH)));
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
+    return properties;
   }
 }

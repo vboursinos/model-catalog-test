@@ -1,4 +1,4 @@
-package static_query_creator;
+package unit.static_query_creator;
 
 public class BaseQueryValidationTest {
 

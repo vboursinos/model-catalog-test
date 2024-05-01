@@ -1,3 +1,5 @@
+package integration;
+
 import org.testcontainers.containers.PostgreSQLContainer;
 
 public class SingletonPostgresContainer {
