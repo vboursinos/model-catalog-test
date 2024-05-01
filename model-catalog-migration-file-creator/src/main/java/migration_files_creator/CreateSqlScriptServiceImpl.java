@@ -1,8 +1,8 @@
 package migration_files_creator;
 
 import java.nio.file.Paths;
-import migration_files_creator.init.DynamicTablesQueryCreation;
-import migration_files_creator.insert_queries.staticTables.InsertStaticTables;
+import migration_files_creator.dynamic_query_creator.DynamicTablesQueryCreation;
+import migration_files_creator.static_query_creator.InsertStaticTables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
