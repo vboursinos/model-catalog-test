@@ -41,7 +41,6 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
               jsonModel, ensembleFamily, advantagesArray, disadvantagesArray, description));
       sb.append(TableCreatorHelper.buildRevInfoInsertSQL());
       sb.append(ModelTableBuilder.insertModelAuditSQL(jsonModel, ensembleFamily, 0));
-      sb.append(includeAudit(jsonModel.getName()));
       return sb.toString();
     }
 
@@ -88,12 +87,5 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
 
   private static String normalizeList(List<?> list) {
     return list.toString().replaceAll("'", "''");
-  }
-
-  private static String includeAudit(String name) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(buildRevInfoInsertSQL());
-    sb.append(buildInsertAuditSQL(name, "model", 0));
-    return sb.toString();
   }
 }
