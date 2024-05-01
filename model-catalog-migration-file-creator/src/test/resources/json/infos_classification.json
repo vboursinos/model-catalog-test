@@ -2,7 +2,7 @@
   "models": [
     {
       "name": "random_forest_classifier",
-      "mlTask": "classification",
+      "mlTask": "classification_2",
       "incompatibleMetrics": [],
       "groups": [
         "explainable",
