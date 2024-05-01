@@ -136,7 +136,7 @@ public class GroupPivot implements Pivot {
         .append(group.getName())
         .append("') AND model_id=(select id from model where name='")
         .append(model.getName())
-        .append("'));\n");
+        .append("');\n");
     return sb.toString();
   }
 
