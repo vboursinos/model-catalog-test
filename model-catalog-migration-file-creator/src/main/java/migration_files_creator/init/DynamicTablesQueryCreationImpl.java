@@ -1,8 +1,6 @@
 package migration_files_creator.init;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import ai.turintech.modelcatalog.dtoentitymapper.ModelMapper;
-import ai.turintech.modelcatalog.repository.ModelRepository;
 import ai.turintech.modelcatalog.service.ModelService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -32,14 +30,8 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
   @Autowired private ModelService modelService;
-
-  @Autowired private ModelRepository modelRepository;
-
   @Autowired private InsertDynamicTables insertDynamicTables;
-
   @Autowired private DeleteDynamicTables deleteDynamicTables;
-
-  @Autowired private ModelMapper modelMapper;
 
   @Value("${latest_sql_file_name}")
   private String outputFileName;
@@ -70,7 +62,6 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
     }
   }
 
-  @Transactional
   private void createModelSqlFile(Models models) {
     String mltask = models.getModels().get(0).getMlTask();
     List<ModelDTO> modelsDTO = modelService.findAll().collectList().block();

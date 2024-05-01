@@ -22,7 +22,6 @@ import migration_files_creator.insert_queries.dynamicTables.parameters.typeParam
 import migration_files_creator.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class DeleteDynamicTablesImpl implements DeleteDynamicTables {
@@ -33,7 +32,6 @@ public class DeleteDynamicTablesImpl implements DeleteDynamicTables {
 
   @Autowired private CompareParametersService compareParametersService;
 
-  @Transactional
   public String buildDeleteSQL(String mltask, Models models, List<ModelDTO> modelsDTO) {
     StringBuilder sb = new StringBuilder();
     List<ModelDTO> modelsForDeletion = new ArrayList<>(modelsDTO);
