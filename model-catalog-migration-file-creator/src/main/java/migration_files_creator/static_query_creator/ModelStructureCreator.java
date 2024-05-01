@@ -72,7 +72,7 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
     }
   }
 
-  static String buildInsertModelStructureTypeSQL(Set<String> modelStructureTypes) {
+  public static String buildInsertModelStructureTypeSQL(Set<String> modelStructureTypes) {
     StringBuilder sb = new StringBuilder();
     for (String modelStructureType : modelStructureTypes) {
       sb.append("INSERT INTO model_structure_type(name) VALUES ('")
@@ -84,7 +84,7 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
     return sb.toString();
   }
 
-  static String buildDeleteModelStructureSQL(Set<String> modelStructureTypes) {
+  public static String buildDeleteModelStructureSQL(Set<String> modelStructureTypes) {
     StringBuilder sb = new StringBuilder();
     for (String modelStructure : modelStructureTypes) {
       sb.append(buildRevInfoInsertSQL());

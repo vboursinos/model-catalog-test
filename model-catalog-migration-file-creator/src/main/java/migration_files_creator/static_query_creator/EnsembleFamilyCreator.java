@@ -125,7 +125,7 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     return familyEnsembleTypes;
   }
 
-  static String buildInsertFamilyTypeSQL(Set<String> familyTypes) {
+  public static String buildInsertFamilyTypeSQL(Set<String> familyTypes) {
     StringBuilder sb = new StringBuilder();
     for (String familyType : familyTypes) {
       sb.append("INSERT INTO model_family_type(name) VALUES ('").append(familyType).append("');\n");
@@ -135,7 +135,7 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     return sb.toString();
   }
 
-  static String buildInsertEnsembleTypeSQL(Set<String> ensembleTypes) {
+  public static String buildInsertEnsembleTypeSQL(Set<String> ensembleTypes) {
     StringBuilder sb = new StringBuilder();
     for (String ensembleType : ensembleTypes) {
       sb.append("INSERT INTO model_ensemble_type(name) VALUES ('")
@@ -147,17 +147,17 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     return sb.toString();
   }
 
-  static String buildDeleteEnsembleTypeSQL(Set<String> ensembleTypes) {
+  public static String buildDeleteEnsembleTypeSQL(Set<String> ensembleTypes) {
     StringBuilder sb = new StringBuilder();
     for (String ensembleTYpe : ensembleTypes) {
       sb.append(buildRevInfoInsertSQL());
-      sb.append(buildDeleteAuditSQL(ensembleTYpe, "model_family_type", 2));
+      sb.append(buildDeleteAuditSQL(ensembleTYpe, "model_ensemble_type", 2));
       sb.append("DELETE FROM model_ensemble_type WHERE name='").append(ensembleTYpe).append("';\n");
     }
     return sb.toString();
   }
 
-  static String buildDeleteFamilyTypeSQL(Set<String> familyTypes) {
+  public static String buildDeleteFamilyTypeSQL(Set<String> familyTypes) {
     StringBuilder sb = new StringBuilder();
     for (String familyType : familyTypes) {
       sb.append(buildRevInfoInsertSQL());

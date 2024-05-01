@@ -65,7 +65,7 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     }
   }
 
-  private String buildMetricSQL(Set<String> metricSet) {
+  public static String buildMetricSQL(Set<String> metricSet) {
     StringBuilder sb = new StringBuilder();
     for (String metric : metricSet) {
       sb.append("INSERT INTO metric(name) VALUES ('").append(metric).append("');\n");
@@ -75,7 +75,7 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     return sb.toString();
   }
 
-  static String buildDeleteMetricSQL(Set<String> metrics) {
+  public static String buildDeleteMetricSQL(Set<String> metrics) {
     StringBuilder sb = new StringBuilder();
     for (String metric : metrics) {
       sb.append(buildRevInfoInsertSQL());

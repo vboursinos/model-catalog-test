@@ -66,7 +66,7 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
     }
   }
 
-  static String buildInsertModelTypeSQL(Set<String> modelTypes) {
+  public static String buildInsertModelTypeSQL(Set<String> modelTypes) {
     StringBuilder sb = new StringBuilder();
     for (String modelType : modelTypes) {
       sb.append("INSERT INTO model_type(name) VALUES ('").append(modelType).append("');\n");
@@ -76,7 +76,7 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
     return sb.toString();
   }
 
-  static String buildDeleteModelTypeSQL(Set<String> modelTypes) {
+  public static String buildDeleteModelTypeSQL(Set<String> modelTypes) {
     StringBuilder sb = new StringBuilder();
     for (String modelType : modelTypes) {
       sb.append(buildRevInfoInsertSQL());

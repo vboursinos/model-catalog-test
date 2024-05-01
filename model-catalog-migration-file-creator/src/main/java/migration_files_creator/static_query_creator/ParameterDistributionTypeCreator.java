@@ -82,7 +82,7 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
     }
   }
 
-  static String buildParameterDistributionTypeSQL(Set<String> distributionTypes) {
+  public static String buildParameterDistributionTypeSQL(Set<String> distributionTypes) {
     StringBuilder sb = new StringBuilder();
     for (String distributionType : distributionTypes) {
       sb.append("INSERT INTO parameter_distribution_type(name) VALUES ('")
@@ -94,7 +94,7 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
     return sb.toString();
   }
 
-  static String buildDeleteParameterDistributionTypeSQL(Set<String> distributionTypes) {
+  public static String buildDeleteParameterDistributionTypeSQL(Set<String> distributionTypes) {
     StringBuilder sb = new StringBuilder();
     for (String distributionType : distributionTypes) {
       sb.append(buildRevInfoInsertSQL());

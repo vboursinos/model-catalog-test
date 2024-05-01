@@ -77,7 +77,7 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
     }
   }
 
-  static String buildInsertGroupTypeSQL(Set<String> groups) {
+  public static String buildInsertGroupTypeSQL(Set<String> groups) {
     StringBuilder sb = new StringBuilder();
     for (String group : groups) {
       sb.append("INSERT INTO model_group_type(name) VALUES ('").append(group).append("');\n");
@@ -87,7 +87,7 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
     return sb.toString();
   }
 
-  static String buildDeleteGroupTypeSQL(Set<String> groups) {
+  public static String buildDeleteGroupTypeSQL(Set<String> groups) {
     StringBuilder sb = new StringBuilder();
     for (String group : groups) {
       sb.append(buildRevInfoInsertSQL());

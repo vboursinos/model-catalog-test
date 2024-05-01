@@ -173,7 +173,7 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     return groupDependencyMap;
   }
 
-  static String buildInsertDependencyGroupTypeSQL(Set<String> dependencyGroupTypes) {
+  public static String buildInsertDependencyGroupTypeSQL(Set<String> dependencyGroupTypes) {
     StringBuilder sb = new StringBuilder();
     for (String dependencyGroupType : dependencyGroupTypes) {
       sb.append("INSERT INTO dependency_group_type(name) VALUES ('")
@@ -185,7 +185,7 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     return sb.toString();
   }
 
-  static String buildDeleteDependencyGroupSQL(Set<String> dependencyGroupTypes) {
+  public static String buildDeleteDependencyGroupSQL(Set<String> dependencyGroupTypes) {
     StringBuilder sb = new StringBuilder();
     for (String dependencyGroup : dependencyGroupTypes) {
       sb.append(buildRevInfoInsertSQL());
@@ -197,20 +197,20 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     return sb.toString();
   }
 
-  static String buildDeleteDependencySQL(Map<String, Set<String>> dependencyGroupTypes) {
+  public static String buildDeleteDependencySQL(Map<String, Set<String>> dependencyGroupTypes) {
     StringBuilder sb = new StringBuilder();
     for (Map.Entry<String, Set<String>> entry : dependencyGroupTypes.entrySet()) {
       Set<String> value = entry.getValue();
       for (String val : value) {
         sb.append(buildRevInfoInsertSQL());
-        sb.append(buildDeleteAuditSQL(val, entry.getKey(), 2));
+        sb.append(buildInsertDependencyTypeAuditSQL(val, entry.getKey(), 2));
         sb.append("DELETE FROM dependency_type WHERE name='").append(val).append("';\n");
       }
     }
     return sb.toString();
   }
 
-  static String buildInsertDependenciesTypeSQL(Map<String, Set<String>> groupDependencyMap) {
+  public static String buildInsertDependenciesTypeSQL(Map<String, Set<String>> groupDependencyMap) {
     StringBuilder sb = new StringBuilder();
     logger.info(groupDependencyMap);
     for (Map.Entry<String, Set<String>> entry : groupDependencyMap.entrySet()) {
@@ -223,13 +223,13 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
             .append(key)
             .append("'));\n");
         sb.append(buildRevInfoInsertSQL());
-        sb.append(buildInsertAuditSQL(val, key, 0));
+        sb.append(buildInsertDependencyTypeAuditSQL(val, key, 0));
       }
     }
     return sb.toString();
   }
 
-  public static String buildInsertAuditSQL(
+  public static String buildInsertDependencyTypeAuditSQL(
       String dependencyType, String dependencyGroupType, int revType) {
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     StringBuilder sb = new StringBuilder();

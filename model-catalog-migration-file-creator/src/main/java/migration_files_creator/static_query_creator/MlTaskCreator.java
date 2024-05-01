@@ -67,7 +67,7 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     }
   }
 
-  static String buildMlTaskTypesSQL(Set<String> mlTaskSet) {
+  public static String buildMlTaskTypesSQL(Set<String> mlTaskSet) {
     StringBuilder sb = new StringBuilder();
     for (String mlTask : mlTaskSet) {
       sb.append("INSERT INTO ml_task_type(name) VALUES ('").append(mlTask).append("');\n");
@@ -77,7 +77,7 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     return sb.toString();
   }
 
-  static String buildDeleteMlTaskTypesSQL(Set<String> mlTaskTypes) {
+  public static String buildDeleteMlTaskTypesSQL(Set<String> mlTaskTypes) {
     StringBuilder sb = new StringBuilder();
     for (String mlTask : mlTaskTypes) {
       sb.append(buildRevInfoInsertSQL());
