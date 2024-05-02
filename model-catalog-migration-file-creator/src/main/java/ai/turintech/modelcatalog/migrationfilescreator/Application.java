@@ -36,7 +36,7 @@ import reactor.core.scheduler.Schedulers;
 @EnableJpaRepositories(
     basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
-@PropertySource(value = {"/configuration.properties", "/application.properties"})
+@PropertySource(value = {"classpath:configuration.properties", "classpath:application.properties"})
 public class Application {
 
   /**
