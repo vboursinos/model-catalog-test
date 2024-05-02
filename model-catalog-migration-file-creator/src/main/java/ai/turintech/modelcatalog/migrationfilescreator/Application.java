@@ -6,7 +6,6 @@ import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
 import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelCatalogDtoEntityMapperPackage;
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
-import ai.turintech.modelcatalog.migrationfilescreator.service.MigrationFilesCreatorPackage;
 import ai.turintech.modelcatalog.migrationfilescreator.service.PythonInteractionService;
 import ai.turintech.modelcatalog.migrationfilescreator.service.PythonInteractionServiceImpl;
 import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
