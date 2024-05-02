@@ -1,30 +1,28 @@
 package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.delete;
 
-import static ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.ParameterTablesBuilder.updateParameterSQL;
 import static ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.delete.DeleteTableBuilder.buildDeleteParameterSQL;
+import static ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.ParameterTablesBuilder.updateParameterSQL;
 import static ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper.buildRevInfoInsertSQL;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model.ModelTableBuilder;
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model.pivottables.Pivot;
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.CompareParametersService;
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.InsertParametersTablesImpl;
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.ParameterTablesBuilder;
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model.ModelTableBuilder;
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model.pivottables.Pivot;
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.typeparameters.ParameterStrategy;
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.typeparameters.TypeParameterStrategyFactoryImpl;
 import ai.turintech.modelcatalog.migrationfilescreator.model.HyperParameter;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
 import ai.turintech.modelcatalog.migrationfilescreator.model.ParameterTypeDistribution;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -119,8 +117,7 @@ public class DeleteDynamicTablesImpl implements DeleteDynamicTables {
     return sb.toString();
   }
 
-  public String buildDeleteSQLParameterNotExist(
-      ModelDTO dbModel, Model jsonModel) {
+  public String buildDeleteSQLParameterNotExist(ModelDTO dbModel, Model jsonModel) {
     StringBuilder sb = new StringBuilder();
     List<ParameterDTO> parametersForDeletion = new ArrayList<>(dbModel.getParameters());
     if (jsonModel.getName().equals(dbModel.getName())) {

@@ -1,6 +1,8 @@
 package ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator;
 
 import ai.turintech.modelcatalog.dto.MlTaskTypeDTO;
+import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
+import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
 import ai.turintech.modelcatalog.service.MlTaskTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -9,12 +11,8 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

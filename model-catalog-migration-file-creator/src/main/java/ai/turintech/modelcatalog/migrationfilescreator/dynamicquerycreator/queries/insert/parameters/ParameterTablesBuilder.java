@@ -1,8 +1,8 @@
 package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters;
 
-import java.text.SimpleDateFormat;
 import ai.turintech.modelcatalog.migrationfilescreator.model.HyperParameter;
 import ai.turintech.modelcatalog.migrationfilescreator.model.ParameterTypeDistribution;
+import java.text.SimpleDateFormat;
 
 public class ParameterTablesBuilder {
   public static String buildInsertParameterAuditSQL(

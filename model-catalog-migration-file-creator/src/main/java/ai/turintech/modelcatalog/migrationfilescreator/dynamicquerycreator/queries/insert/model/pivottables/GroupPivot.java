@@ -2,6 +2,9 @@ package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.quer
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelGroupTypeDTO;
+import ai.turintech.modelcatalog.migrationfilescreator.exceptions.ModelCatalogMigrationFileException;
+import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
+import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import java.io.File;
@@ -10,9 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import ai.turintech.modelcatalog.migrationfilescreator.exceptions.ModelCatalogMigrationFileException;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -47,8 +47,7 @@ public class GroupPivot implements Pivot {
     return sb + "\n";
   }
 
-  public String buildDeleteSQLPivotTableNotExist(
-      ModelDTO dbModel, Model jsonModel) {
+  public String buildDeleteSQLPivotTableNotExist(ModelDTO dbModel, Model jsonModel) {
     StringBuilder sb = new StringBuilder();
     List<ModelGroupTypeDTO> groupForDeletion = new ArrayList<>(dbModel.getGroups());
     if (jsonModel.getName().equals(dbModel.getName())) {

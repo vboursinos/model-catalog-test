@@ -3,11 +3,11 @@ package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.quer
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
-import java.util.List;
-import java.util.Set;
+import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
 import ai.turintech.modelcatalog.migrationfilescreator.model.ParameterTypeDistribution;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
+import java.util.List;
+import java.util.Set;
 
 public interface DeleteDynamicTables {
 
@@ -17,8 +17,7 @@ public interface DeleteDynamicTables {
 
   public String addAUDCommandsIfModelNotExist(ModelDTO model);
 
-  public String buildDeleteSQLParameterNotExist(
-      ModelDTO dbModel, Model jsonModel);
+  public String buildDeleteSQLParameterNotExist(ModelDTO dbModel, Model jsonModel);
 
   public String buildDeleteSQLParameterNotExist(
       List<ParameterDTO> parametersForDeletion, ModelDTO model);

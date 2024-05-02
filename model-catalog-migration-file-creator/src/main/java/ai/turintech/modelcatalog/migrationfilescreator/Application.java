@@ -1,15 +1,4 @@
 package ai.turintech.modelcatalog.migrationfilescreator;
-import java.io.IOException;
-
-import org.springdoc.core.configuration.SpringDocDataRestConfiguration;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import ai.turintech.components.architecture.callable.impl.reactive.ReactiveAbstractUUIDIdentityCrudCallableImpl;
 import ai.turintech.components.jpa.search.JpaSearchPackage;
@@ -22,6 +11,16 @@ import ai.turintech.modelcatalog.migrationfilescreator.service.PythonInteraction
 import ai.turintech.modelcatalog.migrationfilescreator.service.PythonInteractionServiceImpl;
 import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
+import java.io.IOException;
+import org.springdoc.core.configuration.SpringDocDataRestConfiguration;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 

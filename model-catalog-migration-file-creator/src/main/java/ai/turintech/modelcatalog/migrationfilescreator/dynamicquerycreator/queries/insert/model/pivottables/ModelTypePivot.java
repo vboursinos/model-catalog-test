@@ -2,11 +2,11 @@ package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.quer
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ModelTypeDTO;
+import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
+import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -37,8 +37,7 @@ public class ModelTypePivot implements Pivot {
     return sb + "\n";
   }
 
-  public String buildDeleteSQLPivotTableNotExist(
-      ModelDTO dbModel, Model jsonModel) {
+  public String buildDeleteSQLPivotTableNotExist(ModelDTO dbModel, Model jsonModel) {
     StringBuilder sb = new StringBuilder();
     List<ModelTypeDTO> modelTypesForDeletion = new ArrayList<>(dbModel.getTypes());
     if (jsonModel.getName().equals(dbModel.getName())) {

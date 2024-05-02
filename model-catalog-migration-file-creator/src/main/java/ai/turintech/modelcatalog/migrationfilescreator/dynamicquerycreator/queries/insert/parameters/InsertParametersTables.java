@@ -1,10 +1,10 @@
 package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import java.util.List;
 import ai.turintech.modelcatalog.migrationfilescreator.model.HyperParameter;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
 import ai.turintech.modelcatalog.migrationfilescreator.model.ParameterTypeDistribution;
+import java.util.List;
 
 public interface InsertParametersTables {
 

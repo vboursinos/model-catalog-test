@@ -1,18 +1,16 @@
 package ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator;
 
 import ai.turintech.modelcatalog.dto.MetricDTO;
-import ai.turintech.modelcatalog.service.MetricService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
-
+import ai.turintech.modelcatalog.service.MetricService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

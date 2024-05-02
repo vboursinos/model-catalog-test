@@ -1,9 +1,9 @@
 package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import java.text.SimpleDateFormat;
 import ai.turintech.modelcatalog.migrationfilescreator.model.EnsembleFamily;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
+import java.text.SimpleDateFormat;
 
 public class ModelTableBuilder {
   public static String updateModelSQL(

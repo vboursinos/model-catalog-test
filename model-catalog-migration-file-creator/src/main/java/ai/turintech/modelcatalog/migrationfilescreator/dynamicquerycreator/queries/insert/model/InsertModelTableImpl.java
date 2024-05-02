@@ -1,20 +1,19 @@
 package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model;
 
-import ai.turintech.modelcatalog.dto.ModelDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import static ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model.ModelTableBuilder.*;
 
+import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.migrationfilescreator.exceptions.ModelCatalogMigrationFileException;
+import ai.turintech.modelcatalog.migrationfilescreator.model.EnsembleFamily;
+import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
+import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import ai.turintech.modelcatalog.migrationfilescreator.exceptions.ModelCatalogMigrationFileException;
-import ai.turintech.modelcatalog.migrationfilescreator.model.EnsembleFamily;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper;
 import org.springframework.stereotype.Component;
 
 @Component

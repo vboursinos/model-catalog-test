@@ -1,6 +1,12 @@
 package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.delete.DeleteDynamicTables;
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.InsertDynamicTables;
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.InsertDynamicTablesImpl;
+import ai.turintech.modelcatalog.migrationfilescreator.exceptions.ModelCatalogMigrationFileException;
+import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
+import ai.turintech.modelcatalog.migrationfilescreator.utils.FileUtils;
 import ai.turintech.modelcatalog.service.ModelService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -9,19 +15,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
-
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.delete.DeleteDynamicTables;
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.InsertDynamicTables;
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.InsertDynamicTablesImpl;
-import ai.turintech.modelcatalog.migrationfilescreator.exceptions.ModelCatalogMigrationFileException;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ai.turintech.modelcatalog.migrationfilescreator.utils.FileUtils;
 
 @Component
 public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreation {

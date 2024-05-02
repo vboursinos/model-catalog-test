@@ -1,7 +1,7 @@
 package ai.turintech.modelcatalog.migrationfilescreator.unit.staticquerycreator;
 
-import java.util.Set;
 import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.MetricsCreator;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

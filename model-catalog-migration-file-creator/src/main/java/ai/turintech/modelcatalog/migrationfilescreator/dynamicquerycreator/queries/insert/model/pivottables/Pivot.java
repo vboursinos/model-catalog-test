@@ -1,14 +1,13 @@
 package ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.model.pivottables;
 
 import ai.turintech.modelcatalog.dto.ModelDTO;
-import java.util.List;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
+import java.util.List;
 
 public interface Pivot {
   public String buildInsertIntoPivotSQL(Model model, List<ModelDTO> dbModelList);
 
-  public String buildDeleteSQLPivotTableNotExist(
-      ModelDTO dbModel, Model jsonModel);
+  public String buildDeleteSQLPivotTableNotExist(ModelDTO dbModel, Model jsonModel);
 
   public String buildInsertIntoPivotDeleteSQL(ModelDTO model);
 

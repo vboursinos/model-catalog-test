@@ -6,16 +6,15 @@ import static ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator
 import ai.turintech.modelcatalog.dto.FloatParameterRangeDTO;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.delete.DeleteTableBuilder;
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.ParameterTablesBuilder;
 import ai.turintech.modelcatalog.migrationfilescreator.model.HyperParameter;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Interval;
 import ai.turintech.modelcatalog.migrationfilescreator.model.ParameterTypeDistribution;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -8,7 +8,6 @@ import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
 import ai.turintech.modelcatalog.migrationfilescreator.service.MigrationFilesCreatorPackage;
 import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
-
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

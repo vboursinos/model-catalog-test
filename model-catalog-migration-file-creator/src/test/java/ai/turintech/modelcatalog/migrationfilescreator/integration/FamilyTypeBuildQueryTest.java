@@ -1,11 +1,11 @@
 package ai.turintech.modelcatalog.migrationfilescreator.integration;
 
+import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.EnsembleFamilyCreator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.EnsembleFamilyCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

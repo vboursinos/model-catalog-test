@@ -5,8 +5,6 @@ import static ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreato
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
-import java.util.*;
-
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.typeparameters.ParameterStrategy;
 import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.typeparameters.TypeParameterStrategyFactoryImpl;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Domain;
@@ -14,6 +12,7 @@ import ai.turintech.modelcatalog.migrationfilescreator.model.HyperParameter;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
 import ai.turintech.modelcatalog.migrationfilescreator.model.ParameterTypeDistribution;
 import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.TableCreatorHelper;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

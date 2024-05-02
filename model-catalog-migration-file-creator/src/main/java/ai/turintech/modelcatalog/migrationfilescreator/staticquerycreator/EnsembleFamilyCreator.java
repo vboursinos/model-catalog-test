@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator;
 
 import ai.turintech.modelcatalog.dto.ModelEnsembleTypeDTO;
 import ai.turintech.modelcatalog.dto.ModelFamilyTypeDTO;
+import ai.turintech.modelcatalog.migrationfilescreator.model.EnsembleFamily;
 import ai.turintech.modelcatalog.service.ModelEnsembleTypeService;
 import ai.turintech.modelcatalog.service.ModelFamilyTypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -13,8 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import ai.turintech.modelcatalog.migrationfilescreator.model.EnsembleFamily;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

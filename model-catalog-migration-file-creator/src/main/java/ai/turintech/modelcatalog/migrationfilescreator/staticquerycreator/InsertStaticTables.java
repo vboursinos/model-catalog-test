@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator;
 
+import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
+import ai.turintech.modelcatalog.migrationfilescreator.utils.FileUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,13 +11,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ai.turintech.modelcatalog.migrationfilescreator.utils.FileUtils;
 
 @Component
 public class InsertStaticTables {

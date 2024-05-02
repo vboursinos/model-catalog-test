@@ -1,8 +1,8 @@
 package ai.turintech.modelcatalog.migrationfilescreator.unit.staticquerycreator;
 
+import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.DependencyGroupTypeCreator;
 import java.util.Map;
 import java.util.Set;
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.DependencyGroupTypeCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

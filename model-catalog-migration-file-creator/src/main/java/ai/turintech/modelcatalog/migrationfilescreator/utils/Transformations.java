@@ -1,8 +1,8 @@
 package ai.turintech.modelcatalog.migrationfilescreator.utils;
 
+import ai.turintech.modelcatalog.migrationfilescreator.model.Metadata;
 import java.util.List;
 import java.util.stream.Collectors;
-import ai.turintech.modelcatalog.migrationfilescreator.model.Metadata;
 
 public class Transformations {
 
