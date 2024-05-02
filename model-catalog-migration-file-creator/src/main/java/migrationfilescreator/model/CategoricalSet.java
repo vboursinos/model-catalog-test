@@ -1,4 +1,4 @@
-package migration_files_creator.model;
+package migrationfilescreator.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

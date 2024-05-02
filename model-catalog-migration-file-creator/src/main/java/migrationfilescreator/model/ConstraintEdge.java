@@ -1,4 +1,4 @@
-package migration_files_creator.model;
+package migrationfilescreator.model;
 
 import java.util.List;
 

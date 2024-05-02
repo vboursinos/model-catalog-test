@@ -1,14 +1,14 @@
-package migration_files_creator.dynamic_query_creator.insert_queries.parameters.typeParameters;
+package migrationfilescreator.dynamicquerycreator.insertqueries.parameters.typeParameters;
 
-import static migration_files_creator.dynamic_query_creator.insert_queries.parameters.ParameterTablesBuilder.appendBooleanParameterSQL;
-import static migration_files_creator.static_query_creator.TableCreatorHelper.buildRevInfoInsertSQL;
+import static migrationfilescreator.dynamicquerycreator.insertqueries.parameters.ParameterTablesBuilder.appendBooleanParameterSQL;
+import static migrationfilescreator.staticquerycreator.TableCreatorHelper.buildRevInfoInsertSQL;
 
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
 import java.text.SimpleDateFormat;
-import migration_files_creator.dynamic_query_creator.delete_queries.DeleteTableBuilder;
-import migration_files_creator.model.HyperParameter;
-import migration_files_creator.model.ParameterTypeDistribution;
+import migrationfilescreator.dynamicquerycreator.deletequeries.DeleteTableBuilder;
+import migrationfilescreator.model.HyperParameter;
+import migrationfilescreator.model.ParameterTypeDistribution;
 import org.springframework.stereotype.Component;
 
 @Component

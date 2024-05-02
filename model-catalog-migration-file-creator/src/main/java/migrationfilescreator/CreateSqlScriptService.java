@@ -1,4 +1,4 @@
-package migration_files_creator;
+package migrationfilescreator;
 
 public interface CreateSqlScriptService {
 

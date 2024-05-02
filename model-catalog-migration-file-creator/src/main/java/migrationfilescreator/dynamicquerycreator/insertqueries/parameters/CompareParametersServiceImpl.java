@@ -1,11 +1,11 @@
-package migration_files_creator.dynamic_query_creator.insert_queries.parameters;
+package migrationfilescreator.dynamicquerycreator.insertqueries.parameters;
 
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
-import migration_files_creator.dynamic_query_creator.insert_queries.parameters.typeParameters.ParameterStrategy;
-import migration_files_creator.dynamic_query_creator.insert_queries.parameters.typeParameters.TypeParameterStrategyFactoryImpl;
-import migration_files_creator.model.HyperParameter;
-import migration_files_creator.model.ParameterTypeDistribution;
+import migrationfilescreator.dynamicquerycreator.insertqueries.parameters.typeParameters.ParameterStrategy;
+import migrationfilescreator.dynamicquerycreator.insertqueries.parameters.typeParameters.TypeParameterStrategyFactoryImpl;
+import migrationfilescreator.model.HyperParameter;
+import migrationfilescreator.model.ParameterTypeDistribution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

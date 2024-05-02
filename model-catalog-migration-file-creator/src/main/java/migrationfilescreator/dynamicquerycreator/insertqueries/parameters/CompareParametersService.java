@@ -1,9 +1,9 @@
-package migration_files_creator.dynamic_query_creator.insert_queries.parameters;
+package migrationfilescreator.dynamicquerycreator.insertqueries.parameters;
 
 import ai.turintech.modelcatalog.dto.ParameterDTO;
 import ai.turintech.modelcatalog.dto.ParameterTypeDefinitionDTO;
-import migration_files_creator.model.HyperParameter;
-import migration_files_creator.model.ParameterTypeDistribution;
+import migrationfilescreator.model.HyperParameter;
+import migrationfilescreator.model.ParameterTypeDistribution;
 
 public interface CompareParametersService {
 
