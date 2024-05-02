@@ -18,6 +18,7 @@ import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,8 +32,11 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
 
   @Autowired private DependencyGroupTypeMapper dependencyGroupTypeMapper;
 
-  private static final String DEPENDENCY_TYPES_JSON_FILE_PATH =
-      "model-catalog-migration-file-creator/static/group_dependencies.json";
+  @Value("${dependency_types_json_path}")
+  private String dependencyTypesJsonPath;
+
+  @Value("${json_dir_path}")
+  private String jsonDirPath;
 
   public void createStaticTable(String latestFileName) {
     Set<String> allDependencyGroupTypes;
@@ -52,7 +56,7 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
   }
 
   private Set<String> extractAllDependencyGroupTypes() throws IOException {
-    Path dirPath = Paths.get(insertStaticTables.getJsonDirPath());
+    Path dirPath = Paths.get(jsonDirPath);
     Set<String> allDependencyGroupTypes =
         insertStaticTables.extractUniqueValues(
             mapper, dirPath, DependencyGroupTypeCreator::getDependencyGroupTypes);
@@ -159,14 +163,13 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     return dependencyGroups;
   }
 
-  static Map<String, Set<String>> getDependencies() {
+  public Map<String, Set<String>> getDependencies() {
     ObjectMapper objectMapper = new ObjectMapper();
     Map<String, Set<String>> groupDependencyMap = new HashMap<>();
     try {
       groupDependencyMap =
           objectMapper.readValue(
-              new File(DEPENDENCY_TYPES_JSON_FILE_PATH),
-              new TypeReference<Map<String, Set<String>>>() {});
+              new File(dependencyTypesJsonPath), new TypeReference<Map<String, Set<String>>>() {});
     } catch (IOException e) {
       logger.error("Error reading group_dependencies.json file: " + e.getMessage(), e);
     }
