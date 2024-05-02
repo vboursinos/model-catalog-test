@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.insertqueries.parameters.InsertParametersTablesImpl;
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.parameters.InsertParametersTablesImpl;
 import ai.turintech.modelcatalog.migrationfilescreator.model.HyperParameter;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Models;

@@ -9,9 +9,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.deletequeries.DeleteDynamicTables;
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.insertqueries.InsertDynamicTables;
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.insertqueries.InsertDynamicTablesImpl;
+
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.delete.DeleteDynamicTables;
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.InsertDynamicTables;
+import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.queries.insert.InsertDynamicTablesImpl;
 import ai.turintech.modelcatalog.migrationfilescreator.exceptions.ModelCatalogMigrationFileException;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
 import org.apache.logging.log4j.LogManager;
