@@ -2,13 +2,8 @@ package migration_files_creator.static_query_creator;
 
 import ai.turintech.modelcatalog.dto.ParameterTypeDTO;
 import ai.turintech.modelcatalog.service.ParameterTypeService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import configuration.PropertiesConfig;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +12,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ParameterTypeCreator extends TableCreatorHelper implements StaticTableCreator {
-  private final ObjectMapper mapper = new ObjectMapper();
   private static final Logger logger = LogManager.getLogger(ParameterTypeCreator.class);
 
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
   @Value("${json_dir_path}")
   private String jsonDirPath;
+
+  @Value("${parameter_types}")
+  private String parameterTypeProperty;
 
   @Autowired private ParameterTypeService parameterTypeService;
 
@@ -40,11 +37,7 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
   }
 
   private Set<String> extractAllParameterTypes() throws IOException {
-    Path dirPath = Paths.get(jsonDirPath);
-    InsertStaticTables insertStaticTables = new InsertStaticTables();
-    Set<String> allParameterTypes =
-        insertStaticTables.extractUniqueValues(
-            mapper, dirPath, ParameterTypeCreator::getParameterTypes);
+    Set<String> allParameterTypes = getParameterTypes();
     return allParameterTypes;
   }
 
@@ -93,9 +86,7 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
     return sb.toString();
   }
 
-  static Set<String> getParameterTypes(Models models) {
-    Properties properties = PropertiesConfig.getProperties();
-    String parameterTypeProperty = properties.getProperty("parameter_types");
+  public Set<String> getParameterTypes() {
     Set<String> parameterTypes = new HashSet<>(Arrays.asList(parameterTypeProperty.split(",")));
     return parameterTypes;
   }
