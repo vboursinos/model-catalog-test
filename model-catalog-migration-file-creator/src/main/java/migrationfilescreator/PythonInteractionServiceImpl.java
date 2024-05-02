@@ -1,4 +1,4 @@
-package migration_files_creator;
+package migrationfilescreator;
 
 import java.io.IOException;
 import java.nio.file.Paths;
