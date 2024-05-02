@@ -7,7 +7,7 @@ import ai.turintech.modelcatalog.dtoentitymapper.ModelCatalogDtoEntityMapperPack
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
 import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
-import migration_files_creator.MigrationFilesCreatorPackage;
+import migrationfilescreator.MigrationFilesCreatorPackage;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

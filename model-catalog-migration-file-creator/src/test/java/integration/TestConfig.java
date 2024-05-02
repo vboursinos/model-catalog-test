@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 import javax.sql.DataSource;
-import migration_files_creator.MigrationFilesCreatorPackage;
+import migrationfilescreator.MigrationFilesCreatorPackage;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

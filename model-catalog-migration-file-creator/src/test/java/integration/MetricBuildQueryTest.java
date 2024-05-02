@@ -2,7 +2,7 @@ package integration;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import migration_files_creator.static_query_creator.MetricsCreator;
+import migrationfilescreator.staticquerycreator.MetricsCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

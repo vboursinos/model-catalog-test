@@ -2,7 +2,7 @@ package utils;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import migration_files_creator.model.Metadata;
+import migrationfilescreator.model.Metadata;
 
 public class Transformations {
 

@@ -1,7 +1,7 @@
 package unit.static_query_creator;
 
 import java.util.Set;
-import migration_files_creator.static_query_creator.MlTaskCreator;
+import migrationfilescreator.staticquerycreator.MlTaskCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
