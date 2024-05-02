@@ -9,16 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import unit.static_query_creator.BaseQueryValidationTest;
 
 @SpringBootTest
 @Testcontainers
 @ContextConfiguration(classes = TestConfig.class)
-public class MlTaskBuildQueryTest extends BaseQueryValidationTest {
+public class MlTaskBuildQueryTest extends BaseBuildQueryTest {
 
   @Autowired private MlTaskCreator mlTaskCreator;
-
-  private static final String FILE_NAME = "src/test/java/integration/migration_file.sql";
 
   @Test
   public void testQueryBuilder() {
@@ -26,7 +23,6 @@ public class MlTaskBuildQueryTest extends BaseQueryValidationTest {
     File file = new File(FILE_NAME);
     Assertions.assertTrue(file.exists() && file.length() > 0);
     validateContent();
-    file.delete();
   }
 
   private void validateContent() {
