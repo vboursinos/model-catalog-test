@@ -2694,7 +2694,7 @@
       "name": "nearest_centroid_classifier",
       "mlTask": "classification",
       "incompatibleMetrics": [
-        "classification-log-loss",
+        "classification-log-loss-test",
         "classification-roc"
       ],
       "groups": [],
@@ -2754,7 +2754,7 @@
           "constraintInformation": null,
           "distribution": {
             "categoricalDistribution": null,
-            "floatDistribution": "uniform",
+            "floatDistribution": "uniform_test",
             "integerDistribution": "uniform"
           },
           "fixedValue": false
@@ -2782,7 +2782,7 @@
           "decisionTree": false,
           "featureImportance": false
         },
-        "structure": "base",
+        "structure": "base_2",
         "dependencyGroup": "base"
       }
     },
