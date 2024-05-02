@@ -7,11 +7,10 @@ import com.fasterxml.jackson.databind.type.MapType;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import migration_files_creator.model.Model;
-import migration_files_creator.model.Models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,8 +20,8 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
 
   private static final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
-  private static final String GROUP_TYPE_JSON_FILE_PATH =
-      "model-catalog-migration-file-creator/static/groups.json";
+  @Value("${group_type_json_path}")
+  private String groupTypeJsonPath;
 
   @Autowired private ModelGroupTypeService modelGroupTypeService;
 
@@ -39,8 +38,7 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
   }
 
   private Set<String> extractAllGroupTypes() throws IOException {
-    Map<String, Map<String, List<String>>> groupTypeMap =
-        getModelGroupTypes(GROUP_TYPE_JSON_FILE_PATH);
+    Map<String, Map<String, List<String>>> groupTypeMap = getModelGroupTypes(groupTypeJsonPath);
     return groupTypeMap.keySet();
   }
 
@@ -95,14 +93,5 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
       sb.append("DELETE FROM model_group_type WHERE name='").append(group).append("';\n");
     }
     return sb.toString();
-  }
-
-  static Set<String> getGroupsTypes(Models models) {
-    Set<String> groupSet = new HashSet<>();
-    for (Model model : models.getModels()) {
-      List<String> group = model.getGroups();
-      groupSet.addAll(group);
-    }
-    return groupSet;
   }
 }
