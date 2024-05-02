@@ -1,24 +1,4 @@
 {
-    "fast": {
-        "classification": [
-            "logistic_regression_classifier",
-            "lightgbm_classifier",
-            "xgboost_classifier",
-            "catboost_classifier",
-            "decision_tree_classifier"
-        ],
-        "regression": [
-            "lightgbm_regressor",
-            "linear_regressor",
-            "catboost_regressor",
-            "decision_tree_regressor"
-        ],
-        "forecasting": [
-            "nixtla_auto_ets_forecaster",
-            "nixtla_seasonal_naive_forecaster",
-            "linear_regression_forecaster"
-        ]
-    },
     "explainable": {
         "classification": [
             "logistic_regression_classifier",

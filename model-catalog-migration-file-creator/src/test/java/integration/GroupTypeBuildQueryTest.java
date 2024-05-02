@@ -33,15 +33,20 @@ public class GroupTypeBuildQueryTest extends BaseQueryValidationTest {
     try (BufferedReader br =
         new BufferedReader(new FileReader(FILE_NAME, Charset.defaultCharset()))) {
       String line;
-      boolean foundGroupQuery = false;
+      boolean foundInsertGroupQuery = false;
+        boolean foundDeleteGroupQuery = false;
 
       while ((line = br.readLine()) != null) {
+        System.out.println(line);
         if (line.contains("INSERT INTO model_group_type(name) VALUES ('test');")) {
-          foundGroupQuery = true;
-          break;
+          foundInsertGroupQuery = true;
+        }
+        if (line.contains("DELETE FROM model_group_type WHERE name='fast';")) {
+          foundDeleteGroupQuery = true;
         }
       }
-      Assertions.assertTrue(foundGroupQuery);
+      Assertions.assertTrue(foundInsertGroupQuery);
+      Assertions.assertTrue(foundDeleteGroupQuery);
     } catch (IOException e) {
       System.err.println("Error reading the file: " + e.getMessage());
     }
