@@ -13,6 +13,7 @@ import migration_files_creator.model.EnsembleFamily;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,14 +21,14 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   private final ObjectMapper mapper = new ObjectMapper();
   private static final Logger logger = LogManager.getLogger(EnsembleFamilyCreator.class);
 
-  private static final String ENSEMBLE_FAMILY_JSON_FILE_PATH =
-      "model-catalog-migration-file-creator/static/ensemble-family.json";
-
   private final InsertStaticTables insertStaticTables = new InsertStaticTables();
 
   @Autowired private ModelEnsembleTypeService modelEnsembleTypeService;
 
   @Autowired private ModelFamilyTypeService modelFamilyTypeService;
+
+  @Value("${ensemble_family_json_path}")
+  private String ensembleFamilyJsonPath;
 
   public void createStaticTable(String newFileName) {
     Map<String, Set<String>> allFamilyEnsembleTypes = new HashMap<>();
@@ -103,15 +104,14 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     }
   }
 
-  static Map<String, Set<String>> getFamilyEnsembleTypes() {
+  public Map<String, Set<String>> getFamilyEnsembleTypes() {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<String> familyTypes = new HashSet<>();
     Set<String> ensembleTypes = new HashSet<>();
     Map<String, Set<String>> familyEnsembleTypes = new HashMap<>();
     try {
       List<EnsembleFamily> modelList =
-          objectMapper.readValue(
-              new File(ENSEMBLE_FAMILY_JSON_FILE_PATH), new TypeReference<>() {});
+          objectMapper.readValue(new File(ensembleFamilyJsonPath), new TypeReference<>() {});
 
       for (EnsembleFamily model : modelList) {
         ensembleTypes.add(model.getEnsembleType());
