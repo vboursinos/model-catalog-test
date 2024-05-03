@@ -189,7 +189,7 @@ class CategoricalParameterStrategy extends TypeParameterUtils implements Paramet
             parameterTypeDefinition,
             parameterTypeDistribution,
             sb,
-            modelName.toString(),
+            category.toString(),
             modelName,
             parameterName);
       }
