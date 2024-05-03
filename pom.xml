@@ -225,6 +225,11 @@
                 <artifactId>model-catalog-to-dto-mapper</artifactId>
                 <version>1.0.0-a0-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>ai.turintech.model-catalog</groupId>
+                <artifactId>model-catalog-migration-file-creator</artifactId>
+                <version>1.0.0-a0-SNAPSHOT</version>
+            </dependency>
 
             <!-- Turintech components -->
             <dependency>
