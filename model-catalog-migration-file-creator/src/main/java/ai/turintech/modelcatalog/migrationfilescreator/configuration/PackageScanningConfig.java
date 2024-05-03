@@ -1,30 +1,25 @@
 package ai.turintech.modelcatalog.migrationfilescreator.configuration;
 
+import ai.turintech.components.architecture.ArchitectureServicePackage;
 import ai.turintech.components.jpa.search.JpaSearchPackage;
-import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
-import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
 import ai.turintech.modelcatalog.dtoentitymapper.ModelCatalogDtoEntityMapperPackage;
-import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
-import ai.turintech.modelcatalog.migrationfilescreator.MigrationFilesCreatorPackage;
+import ai.turintech.modelcatalog.migrationfilescreator.querycreator.QueryCreatorPackage;
+import ai.turintech.modelcatalog.migrationfilescreator.service.ServicePackage;
 import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import ai.turintech.modelcatalog.service.ModelCatalogServicePackage;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @ComponentScan(
     basePackageClasses = {
       ModelCatalogRepositoryPackage.class,
-      MigrationFilesCreatorPackage.class,
       ModelCatalogDtoEntityMapperPackage.class,
       ModelCatalogServicePackage.class,
-      JpaSearchPackage.class
+      JpaSearchPackage.class,
+      ArchitectureServicePackage.class,
+      /* Configuration for the Model Catalog Migration File Generator*/
+      QueryCreatorPackage.class,
+      ServicePackage.class
     })
-@EnableJpaRepositories(
-    basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})
-@EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
-@PropertySource(value = {"classpath:configuration.properties", "classpath:application.properties"})
 public class PackageScanningConfig {}

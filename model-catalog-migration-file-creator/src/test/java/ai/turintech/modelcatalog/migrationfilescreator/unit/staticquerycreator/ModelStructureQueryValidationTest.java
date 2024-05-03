@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.migrationfilescreator.unit.staticquerycreator;
 
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.ModelStructureCreator;
+import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.ModelStructureCreator;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

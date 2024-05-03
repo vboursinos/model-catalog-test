@@ -1,6 +1,6 @@
 package ai.turintech.modelcatalog.migrationfilescreator.integration;
 
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.DependencyGroupTypeCreator;
+import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.DependencyGroupTypeCreator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

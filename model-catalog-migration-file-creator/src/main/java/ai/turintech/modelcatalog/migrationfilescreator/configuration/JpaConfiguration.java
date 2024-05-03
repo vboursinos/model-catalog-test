@@ -1,13 +1,18 @@
 package ai.turintech.modelcatalog.migrationfilescreator.configuration;
 
+import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
+import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
+import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
 import jakarta.persistence.EntityManagerFactory;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -18,6 +23,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
+@EnableJpaRepositories(
+    basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})
+@EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 public class JpaConfiguration {
 
   @Value("${spring.datasource.url}")

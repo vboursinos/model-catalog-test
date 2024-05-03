@@ -1,7 +1,7 @@
 package ai.turintech.modelcatalog.migrationfilescreator.service;
 
-import ai.turintech.modelcatalog.migrationfilescreator.dynamicquerycreator.DynamicTablesQueryCreation;
-import ai.turintech.modelcatalog.migrationfilescreator.staticquerycreator.InsertStaticTables;
+import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.InsertStaticTables;
+import ai.turintech.modelcatalog.migrationfilescreator.querycreator.dynamic.DynamicTablesQueryCreation;
 import ai.turintech.modelcatalog.migrationfilescreator.utils.FileUtils;
 import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
