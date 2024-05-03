@@ -9,15 +9,15 @@ import java.util.List;
 @JsonPropertyOrder({"categories"})
 public class CategoricalSet {
   @JsonProperty("categories")
-  private List<Object> categories;
+  private List<String> categories;
 
   @JsonProperty("categories")
-  public List<Object> getCategories() {
+  public List<String> getCategories() {
     return categories;
   }
 
   @JsonProperty("categories")
-  public void setCategories(List<Object> categories) {
+  public void setCategories(List<String> categories) {
     this.categories = categories;
   }
 }

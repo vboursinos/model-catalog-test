@@ -165,7 +165,7 @@ class CategoricalParameterStrategy extends TypeParameterUtils implements Paramet
       String parameterName) {
     Set<CategoricalParameterValueDTO> categoricalParameterValues =
         parameterTypeDefinition.getCategoricalParameter().getCategoricalParameterValues();
-    List<Object> categories = parameterTypeDistribution.getCategoricalSet().getCategories();
+    List<String> categories = parameterTypeDistribution.getCategoricalSet().getCategories();
 
     boolean isPresent = allCategoriesPresent(categoricalParameterValues, categories);
 

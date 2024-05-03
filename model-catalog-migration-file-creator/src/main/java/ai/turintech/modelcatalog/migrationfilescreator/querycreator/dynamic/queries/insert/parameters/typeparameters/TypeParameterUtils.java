@@ -12,7 +12,7 @@ public class TypeParameterUtils {
   }
 
   boolean allCategoriesPresent(
-      Set<CategoricalParameterValueDTO> categoricalParameterValues, List<Object> categories) {
+      Set<CategoricalParameterValueDTO> categoricalParameterValues, List<String> categories) {
     for (CategoricalParameterValueDTO parameterValue : categoricalParameterValues) {
       if (!categories.contains(parameterValue.getValue())) {
         return false;
