@@ -1,20 +1,13 @@
 package ai.turintech.modelcatalog.migrationfilescreator.integration;
 
-import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
-import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
-import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
-import ai.turintech.modelcatalog.migrationfilescreator.configuration.PackageScanningConfig;
-import ai.turintech.modelcatalog.migrationfilescreator.configuration.PropertySourceConfig;
-import ai.turintech.modelcatalog.migrationfilescreator.configuration.SchedulerConfig;
-import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
-import ai.turintech.modelcatalog.rest.support.async.ExceptionHandlingAsyncTaskExecutor;
-import jakarta.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+
 import javax.sql.DataSource;
+
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +27,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
+import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
+import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
+import ai.turintech.modelcatalog.migrationfilescreator.configuration.PackageScanningConfig;
+import ai.turintech.modelcatalog.migrationfilescreator.configuration.PropertySourceConfig;
+import ai.turintech.modelcatalog.migrationfilescreator.configuration.SchedulerConfig;
+import ai.turintech.modelcatalog.repository.ModelCatalogRepositoryPackage;
+import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @Import(
@@ -111,6 +113,6 @@ public class TestConfig {
     executor.setMaxPoolSize(taskExecutionProperties.getPool().getMaxSize());
     executor.setQueueCapacity(taskExecutionProperties.getPool().getQueueCapacity());
     executor.setThreadNamePrefix(taskExecutionProperties.getThreadNamePrefix());
-    return new ExceptionHandlingAsyncTaskExecutor(executor);
+    return executor;
   }
 }
