@@ -57,7 +57,9 @@ public class JpaConfiguration {
   public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
     LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
     em.setDataSource(dataSource());
-    em.setPackagesToScan(ModelCatalogEntityPackage.class.getPackage().getName());
+    em.setPackagesToScan(
+        ModelCatalogEntityPackage.class.getPackage().getName(),
+        JpaSearchEntityPackage.class.getPackage().getName());
     em.setJpaVendorAdapter(vendorAdapter(Boolean.valueOf(true), postgresDialect));
     return em;
   }
