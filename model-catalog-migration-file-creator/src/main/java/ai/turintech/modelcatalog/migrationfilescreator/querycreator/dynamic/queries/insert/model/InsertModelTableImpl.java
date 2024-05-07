@@ -72,11 +72,11 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
     return "\n";
   }
 
-  private String buildArray(List<String> modelList) {
+  public String buildArray(List<String> modelList) {
     return "{" + String.join(",", modelList) + "}";
   }
 
-  private String normalizeDescription(String description) {
+  public String normalizeDescription(String description) {
     return description.replaceAll("\\n", "");
   }
 
@@ -105,11 +105,11 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
             .equals(dbModel.getDependencyGroupType().getName());
   }
 
-  private static String normalizeString(String input) {
+  public static String normalizeString(String input) {
     return input.replaceAll("\\n", "").replaceAll("''", "'").replaceAll("\\s", "");
   }
 
-  private static String normalizeList(List<?> list) {
+  public static String normalizeList(List<?> list) {
     return list.toString().replaceAll("'", "''");
   }
 
