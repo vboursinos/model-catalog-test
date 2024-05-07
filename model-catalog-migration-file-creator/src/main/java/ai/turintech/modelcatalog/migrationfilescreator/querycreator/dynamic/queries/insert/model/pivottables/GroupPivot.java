@@ -13,13 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GroupPivot implements Pivot {
+  @Value("${group_type_json_path}")
+  private String groupTypeJsonFilePath;
 
-  private static final String GROUP_TYPE_JSON_FILE_PATH =
-      "model-catalog-migration-file-creator/static/groups.json";
   private final ObjectMapper mapper = new ObjectMapper();
 
   public String buildInsertIntoPivotSQL(Model model, List<ModelDTO> dbModelList) {
@@ -70,7 +71,7 @@ public class GroupPivot implements Pivot {
   public List<String> getModelGroups(String modelName) {
     Map<String, Map<String, List<String>>> modelData;
     try {
-      modelData = getModelGroupTypes(GROUP_TYPE_JSON_FILE_PATH);
+      modelData = getModelGroupTypes(groupTypeJsonFilePath);
     } catch (IOException e) {
       throw new ModelCatalogMigrationFileException(e);
     }

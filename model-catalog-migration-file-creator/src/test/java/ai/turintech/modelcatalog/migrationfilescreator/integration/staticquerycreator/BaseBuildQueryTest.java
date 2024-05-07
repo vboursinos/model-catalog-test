@@ -1,4 +1,4 @@
-package ai.turintech.modelcatalog.migrationfilescreator.integration;
+package ai.turintech.modelcatalog.migrationfilescreator.integration.staticquerycreator;
 
 import java.io.File;
 import org.junit.jupiter.api.AfterAll;

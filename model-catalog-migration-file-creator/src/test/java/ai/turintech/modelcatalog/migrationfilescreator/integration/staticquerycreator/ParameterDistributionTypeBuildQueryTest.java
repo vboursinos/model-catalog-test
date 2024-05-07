@@ -1,5 +1,6 @@
-package ai.turintech.modelcatalog.migrationfilescreator.integration;
+package ai.turintech.modelcatalog.migrationfilescreator.integration.staticquerycreator;
 
+import ai.turintech.modelcatalog.migrationfilescreator.integration.TestConfig;
 import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.ParameterDistributionTypeCreator;
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,6 +1,7 @@
-package ai.turintech.modelcatalog.migrationfilescreator.integration;
+package ai.turintech.modelcatalog.migrationfilescreator.integration.staticquerycreator;
 
-import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.MlTaskCreator;
+import ai.turintech.modelcatalog.migrationfilescreator.integration.TestConfig;
+import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.EnsembleFamilyCreator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -16,13 +17,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ContextConfiguration(classes = TestConfig.class)
-public class MlTaskBuildQueryTest extends BaseBuildQueryTest {
+public class FamilyTypeBuildQueryTest extends BaseBuildQueryTest {
 
-  @Autowired private MlTaskCreator mlTaskCreator;
+  @Autowired private EnsembleFamilyCreator ensembleFamilyCreator;
 
   @Test
   public void testQueryBuilder() {
-    mlTaskCreator.createStaticTable(FILE_NAME);
+    ensembleFamilyCreator.createStaticTable(FILE_NAME);
     File file = new File(FILE_NAME);
     Assertions.assertTrue(file.exists() && file.length() > 0);
     validateContent();
@@ -31,9 +32,20 @@ public class MlTaskBuildQueryTest extends BaseBuildQueryTest {
   private void validateContent() {
     try (BufferedReader br =
         new BufferedReader(new FileReader(FILE_NAME, Charset.defaultCharset()))) {
-      String firstLine = br.readLine();
-      Assertions.assertTrue(
-          firstLine.contains("INSERT INTO ml_task_type(name) VALUES ('classification_2');"));
+      String line;
+      boolean foundFamily = false;
+      boolean foundEnsemble = false;
+
+      while ((line = br.readLine()) != null) {
+        if (line.contains("INSERT INTO model_family_type(name) VALUES ('family-test');")) {
+          foundFamily = true;
+        }
+        if (line.contains("INSERT INTO model_ensemble_type(name) VALUES ('ensemble-test');")) {
+          foundEnsemble = true;
+        }
+      }
+      Assertions.assertTrue(foundFamily);
+      Assertions.assertTrue(foundEnsemble);
     } catch (IOException e) {
       System.err.println("Error reading the file: " + e.getMessage());
     }

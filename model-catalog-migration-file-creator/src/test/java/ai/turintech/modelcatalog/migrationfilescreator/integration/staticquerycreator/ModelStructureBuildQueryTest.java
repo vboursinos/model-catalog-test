@@ -1,6 +1,7 @@
-package ai.turintech.modelcatalog.migrationfilescreator.integration;
+package ai.turintech.modelcatalog.migrationfilescreator.integration.staticquerycreator;
 
-import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.EnsembleFamilyCreator;
+import ai.turintech.modelcatalog.migrationfilescreator.integration.TestConfig;
+import ai.turintech.modelcatalog.migrationfilescreator.querycreator.constant.ModelStructureCreator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -16,13 +17,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ContextConfiguration(classes = TestConfig.class)
-public class FamilyTypeBuildQueryTest extends BaseBuildQueryTest {
+public class ModelStructureBuildQueryTest extends BaseBuildQueryTest {
 
-  @Autowired private EnsembleFamilyCreator ensembleFamilyCreator;
+  @Autowired private ModelStructureCreator modelStructureCreator;
 
   @Test
   public void testQueryBuilder() {
-    ensembleFamilyCreator.createStaticTable(FILE_NAME);
+    modelStructureCreator.createStaticTable(FILE_NAME);
     File file = new File(FILE_NAME);
     Assertions.assertTrue(file.exists() && file.length() > 0);
     validateContent();
@@ -31,20 +32,9 @@ public class FamilyTypeBuildQueryTest extends BaseBuildQueryTest {
   private void validateContent() {
     try (BufferedReader br =
         new BufferedReader(new FileReader(FILE_NAME, Charset.defaultCharset()))) {
-      String line;
-      boolean foundFamily = false;
-      boolean foundEnsemble = false;
-
-      while ((line = br.readLine()) != null) {
-        if (line.contains("INSERT INTO model_family_type(name) VALUES ('family-test');")) {
-          foundFamily = true;
-        }
-        if (line.contains("INSERT INTO model_ensemble_type(name) VALUES ('ensemble-test');")) {
-          foundEnsemble = true;
-        }
-      }
-      Assertions.assertTrue(foundFamily);
-      Assertions.assertTrue(foundEnsemble);
+      String firstLine = br.readLine();
+      Assertions.assertTrue(
+          firstLine.contains("INSERT INTO model_structure_type(name) VALUES ('base_2');"));
     } catch (IOException e) {
       System.err.println("Error reading the file: " + e.getMessage());
     }
