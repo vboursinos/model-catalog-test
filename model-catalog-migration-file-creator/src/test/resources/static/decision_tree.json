@@ -1,0 +1,15 @@
+{
+  "decision_tree_classifier": {
+    "decision_tree": true
+  },
+  "extra_tree_classifier": {
+    "decision_tree": true
+  },
+  "decision_tree_regressor": {
+    "decision_tree": true
+  },
+  "extra_tree_regressor": {
+    "decision_tree": true
+  }
+}
+

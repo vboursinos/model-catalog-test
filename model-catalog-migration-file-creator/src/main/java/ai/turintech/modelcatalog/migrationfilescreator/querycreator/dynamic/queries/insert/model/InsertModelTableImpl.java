@@ -11,22 +11,27 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class InsertModelTableImpl extends TableCreatorHelper implements InsertModelTable {
 
-  private final String DECISION_TREE_FILE_PATH =
-      "model-catalog-migration-file-creator/static/decision_tree.json";
+  @Value("${ensemble_family_json_path}")
+  private String ensembleFamilyJsonPath;
+
+  @Value("${decision_tree_json_path}")
+  private String decisionTreeJsonFilePath;
 
   public String buildInsertIntoModelSQL(Model jsonModel, List<ModelDTO> dbModelList) {
 
     String advantagesArray = buildArray(jsonModel.getMetadata().getAdvantages());
     String disadvantagesArray = buildArray(jsonModel.getMetadata().getDisadvantages());
-    EnsembleFamily ensembleFamily = EnsembleFamily.getEnsembleFamily(jsonModel.getName());
+    EnsembleFamily ensembleFamily = getEnsembleFamily(jsonModel.getName());
     String description = normalizeDescription(jsonModel.getMetadata().getModelDescription());
 
     boolean found = false;
@@ -110,7 +115,7 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
 
   public boolean isDecisionTreeModel(String modelName) {
     ObjectMapper objectMapper = new ObjectMapper();
-    File jsonFile = new File(DECISION_TREE_FILE_PATH);
+    File jsonFile = new File(decisionTreeJsonFilePath);
     Map<String, Map<String, Boolean>> decisionTreeMap = null;
     try {
       decisionTreeMap = objectMapper.readValue(jsonFile, new TypeReference<>() {});
@@ -121,5 +126,26 @@ public class InsertModelTableImpl extends TableCreatorHelper implements InsertMo
     return modelMap != null
         && modelMap.containsKey("decision_tree")
         && modelMap.get("decision_tree");
+  }
+
+  public EnsembleFamily getEnsembleFamily(String modelName) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    List<EnsembleFamily> ensembleFamilies = null;
+    try {
+      ensembleFamilies =
+          objectMapper.readValue(
+              new File(Paths.get(ensembleFamilyJsonPath).toString()),
+              objectMapper
+                  .getTypeFactory()
+                  .constructCollectionType(List.class, EnsembleFamily.class));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    for (EnsembleFamily ensembleFamily : ensembleFamilies) {
+      if (ensembleFamily.getName().equals(modelName)) {
+        return ensembleFamily;
+      }
+    }
+    return new EnsembleFamily(modelName, "other", "other");
   }
 }
