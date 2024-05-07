@@ -55,15 +55,14 @@ public class ParameterTablesBuilder {
     return sb.toString();
   }
 
-  public static String buildInsertParameterAuditSQLDelete(
-      String parameter_name, String model_name) {
+  public static String buildInsertParameterAuditSQLDelete(String parameterName, String modelName) {
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     StringBuilder sb = new StringBuilder();
     sb.append(
             "INSERT INTO parameter_aud(id, rev, revtype, name, label, description, enabled, fixed_value, ordering, model_id, created_at, updated_at) VALUES ((select id from parameter where name = '")
-        .append(parameter_name)
+        .append(parameterName)
         .append("' and model_id = (select id from model where name = '")
-        .append(model_name)
+        .append(modelName)
         .append("')), (select max(rev) from revinfo), ")
         .append(2)
         .append(", null, null, null, null, null, null, null, '")
@@ -75,35 +74,35 @@ public class ParameterTablesBuilder {
   }
 
   public static String buildInsertParameterTypeDefinitionAuditSQL(
-      String parameter_name, String model_name, String parameter_type, int revType) {
+      String parameterName, String modelName, String parameterType, int revType) {
     if (revType == 2) {
       return buildInsertParameterTypeDefinitionAuditSQLDelete(
-          parameter_name, model_name, parameter_type);
+          parameterName, modelName, parameterType);
     }
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     StringBuilder sb = new StringBuilder();
     sb.append(
             "INSERT INTO parameter_type_definition_aud(id, rev, revtype, parameter_id, parameter_type_id,parameter_distribution_type_id, ordering, created_at, updated_at) VALUES ((select id from parameter_type_definition where parameter_id = (select id from parameter where name = '")
-        .append(parameter_name)
+        .append(parameterName)
         .append("' and model_id = (select id from model where name = '")
-        .append(model_name)
+        .append(modelName)
         .append("')) and parameter_type_id = (select id from parameter_type where name = '")
-        .append(parameter_type)
+        .append(parameterType)
         .append("')), (select max(rev) from revinfo), ")
         .append(revType)
         .append(", (select id from parameter where name = '")
-        .append(parameter_name)
+        .append(parameterName)
         .append("' and model_id = (select id from model where name = '")
-        .append(model_name)
+        .append(modelName)
         .append("')), (select id from parameter_type where name = '")
-        .append(parameter_type)
+        .append(parameterType)
         .append("'), (select id from parameter_distribution_type where name = '")
-        .append(parameter_type)
+        .append(parameterType)
         .append(
             "'), (select ordering from parameter_type_definition where parameter_id = (select id from parameter where name = '")
-        .append(parameter_name)
+        .append(parameterName)
         .append("' and model_id = (select id from model where name = '")
-        .append(model_name)
+        .append(modelName)
         .append("'))), '")
         .append(date)
         .append("', '")
@@ -113,16 +112,16 @@ public class ParameterTablesBuilder {
   }
 
   public static String buildInsertParameterTypeDefinitionAuditSQLDelete(
-      String parameter_name, String model_name, String parameter_type) {
+      String parameterName, String modelName, String parameterType) {
     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     StringBuilder sb = new StringBuilder();
     sb.append(
             "INSERT INTO parameter_type_definition_aud(id, rev, revtype, parameter_id, parameter_type_id,parameter_distribution_type_id, ordering, created_at, updated_at) VALUES ((select id from parameter_type_definition where parameter_id = (select id from parameter where name = '")
-        .append(parameter_name)
+        .append(parameterName)
         .append("' and model_id = (select id from model where name = '")
-        .append(model_name)
+        .append(modelName)
         .append("')) and parameter_type_id = (select id from parameter_type where name = '")
-        .append(parameter_type)
+        .append(parameterType)
         .append("')), (select max(rev) from revinfo), ")
         .append(2)
         .append(", null, null, null, null, '")
@@ -216,13 +215,13 @@ public class ParameterTablesBuilder {
   }
 
   public static String appendCategoricalParameterValueSQL(
-      String parameter_name,
+      String parameterName,
       ParameterTypeDistribution parameterTypeDistribution,
       String value,
       String modelName) {
     String subQuery =
         buildParameterTypeDefinitionQuery(
-            modelName, parameter_name, parameterTypeDistribution.getParameterType());
+            modelName, parameterName, parameterTypeDistribution.getParameterType());
     StringBuilder sb = new StringBuilder();
     String insertSQL =
         String.format(
