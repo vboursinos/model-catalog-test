@@ -15,7 +15,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
-class CategoricalParameterStrategy extends TypeParameterUtils implements ParameterStrategy {
+public class CategoricalParameterStrategy extends TypeParameterUtils implements ParameterStrategy {
   @Override
   public String appendParameterSQL(
       String modelName,
