@@ -130,7 +130,7 @@ public class GroupPivot implements Pivot {
     return sb.toString();
   }
 
-  private String createDeletePivotQuerySQL(ModelGroupTypeDTO group, ModelDTO model) {
+  public String createDeletePivotQuerySQL(ModelGroupTypeDTO group, ModelDTO model) {
     StringBuilder sb = new StringBuilder();
     sb.append(
             "DELETE FROM rel_model__groups WHERE group_id=(select id from model_group_type where name='")
