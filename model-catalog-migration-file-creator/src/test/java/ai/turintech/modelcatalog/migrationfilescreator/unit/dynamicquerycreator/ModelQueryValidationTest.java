@@ -19,8 +19,6 @@ import org.junit.jupiter.api.Test;
 public class ModelQueryValidationTest extends BaseQueryValidationTest {
 
   private static Model model;
-  private static List<ModelDTO> dbModelList;
-
   private static ModelDTO modelDTO;
 
   private static EnsembleFamily ensembleFamily;
@@ -81,7 +79,6 @@ public class ModelQueryValidationTest extends BaseQueryValidationTest {
     modelDTO.setEnsembleType(modelEnsembleTypeDTO);
     modelDTO.setDependencyGroupType(dependencyGroupTypeDTO);
     modelDTO.setTypes(Set.of(modelTypeDTO));
-    dbModelList = List.of(modelDTO);
 
     ensembleFamily = new EnsembleFamily();
     ensembleFamily.setFamily("linear");

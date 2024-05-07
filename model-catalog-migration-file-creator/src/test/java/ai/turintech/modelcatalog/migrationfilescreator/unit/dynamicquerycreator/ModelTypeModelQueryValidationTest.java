@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class ModelTypeModelTypeQueryValidationTest extends BaseQueryValidationTest {
+public class ModelTypeModelQueryValidationTest extends BaseQueryValidationTest {
 
   private static Model model;
   private static List<ModelDTO> dbModelList;

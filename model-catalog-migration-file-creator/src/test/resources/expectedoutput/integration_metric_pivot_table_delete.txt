@@ -1,0 +1,1 @@
+DELETE FROM rel_model__incompatible_metrics WHERE metric_id=(select id from metric where name='test') AND model_id=(select id from model where name='logistic_regression_classifier');
