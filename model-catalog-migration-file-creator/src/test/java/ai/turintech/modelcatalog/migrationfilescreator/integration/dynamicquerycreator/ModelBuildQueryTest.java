@@ -2,6 +2,7 @@ package ai.turintech.modelcatalog.migrationfilescreator.integration.dynamicquery
 
 import ai.turintech.modelcatalog.dto.*;
 import ai.turintech.modelcatalog.migrationfilescreator.integration.TestConfig;
+import ai.turintech.modelcatalog.migrationfilescreator.model.EnsembleFamily;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Metadata;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Model;
 import ai.turintech.modelcatalog.migrationfilescreator.model.Models;
@@ -100,6 +101,20 @@ public class ModelBuildQueryTest {
     modelDTO.setDependencyGroupType(dependencyGroupTypeDTO);
     modelDTO.setTypes(Set.of(modelTypeDTO));
     dbModelList = List.of(modelDTO);
+  }
+
+  @Test
+  public void isDecisionTree() {
+    boolean isDecisionTree = insertModelTable.isDecisionTreeModel(modelDTO.getName());
+    System.out.println(isDecisionTree);
+    Assertions.assertTrue(!isDecisionTree);
+  }
+
+  @Test
+  public void FamilyEnsembleTest() {
+    EnsembleFamily ensembleFamily = insertModelTable.getEnsembleFamily(modelDTO.getName());
+    Assertions.assertEquals("linear", ensembleFamily.getFamily());
+    Assertions.assertEquals("none", ensembleFamily.getEnsembleType());
   }
 
   @Test
