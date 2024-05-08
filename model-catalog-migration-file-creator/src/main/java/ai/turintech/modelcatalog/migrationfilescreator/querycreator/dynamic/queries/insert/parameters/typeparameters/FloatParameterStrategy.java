@@ -18,7 +18,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
-class FloatParameterStrategy extends TypeParameterUtils implements ParameterStrategy {
+public class FloatParameterStrategy extends TypeParameterUtils implements ParameterStrategy {
   @Override
   public String appendParameterSQL(
       String modelName,
