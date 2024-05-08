@@ -122,7 +122,6 @@ public class IntegerParameterStrategy extends TypeParameterUtils implements Para
     StringBuilder sb = new StringBuilder();
 
     if (shouldDeleteParameterType(parameterTypeDefinition, parameterTypeDistribution)) {
-      sb.append(buildRevInfoInsertSQL());
       sb.append(
           buildParameterTypeAuditAndDeletionSQL(
               parameterTypeDefinition, "integer_parameter", modelName, parameterName));
