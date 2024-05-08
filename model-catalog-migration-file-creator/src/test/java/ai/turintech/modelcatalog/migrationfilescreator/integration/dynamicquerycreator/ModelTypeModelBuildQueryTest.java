@@ -53,13 +53,13 @@ public class ModelTypeModelBuildQueryTest {
   }
 
   @Test
-  public void testQueryBuilderInsert() {
+  public void queryBuilderInsertTest() {
     String insertQuery = modelTypePivot.buildInsertIntoPivotSQL(model, dbModelList);
     validateContent(insertQuery, EXPECTED_OUTPUT_INSERT_PATH);
   }
 
   @Test
-  public void testQueryBuilderDelete() {
+  public void queryBuilderDeleteTest() {
     String deleteQuery = modelTypePivot.buildDeleteSQLPivotTableNotExist(modelDTO, model);
     validateContent(deleteQuery, EXPECTED_OUTPUT_DELETE_PATH);
   }

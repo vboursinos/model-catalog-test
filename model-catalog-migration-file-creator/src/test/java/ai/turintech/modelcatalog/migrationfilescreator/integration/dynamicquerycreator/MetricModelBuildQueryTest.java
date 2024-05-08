@@ -50,13 +50,13 @@ public class MetricModelBuildQueryTest {
   }
 
   @Test
-  public void testQueryBuilderInsert() {
+  public void queryBuilderInsertTest() {
     String insertQuery = metricPivot.buildInsertIntoPivotSQL(model, dbModelList);
     validateContent(insertQuery, EXPECTED_OUTPUT_INSERT_PATH);
   }
 
   @Test
-  public void testQueryBuilderDelete() {
+  public void queryBuilderDeleteTest() {
     String deleteQuery = metricPivot.buildDeleteSQLPivotTableNotExist(modelDTO, model);
     validateContent(deleteQuery, EXPECTED_OUTPUT_DELETE_PATH);
   }

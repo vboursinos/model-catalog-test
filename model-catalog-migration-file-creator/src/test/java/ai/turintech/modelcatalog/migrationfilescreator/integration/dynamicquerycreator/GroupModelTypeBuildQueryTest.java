@@ -50,13 +50,13 @@ public class GroupModelTypeBuildQueryTest {
   }
 
   @Test
-  public void testQueryBuilderInsert() {
+  public void queryBuilderInsertTest() {
     String insertQuery = groupPivot.buildInsertIntoPivotSQL(model, dbModelList);
     validateContent(insertQuery, EXPECTED_OUTPUT_INSERT_PATH);
   }
 
   @Test
-  public void testQueryBuilderDelete() {
+  public void queryBuilderDeleteTest() {
     String deleteQuery = groupPivot.buildDeleteSQLPivotTableNotExist(modelDTO, model);
     validateContent(deleteQuery, EXPECTED_OUTPUT_DELETE_PATH);
   }
