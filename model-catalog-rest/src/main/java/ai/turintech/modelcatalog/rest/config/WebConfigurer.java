@@ -1,8 +1,6 @@
 package ai.turintech.modelcatalog.rest.config;
 
 import ai.turintech.modelcatalog.rest.errors.ExceptionTranslator;
-import ai.turintech.modelcatalog.rest.support.constants.ApplicationProfiles;
-import ai.turintech.modelcatalog.rest.support.database.h2.H2ConfigurationHelper;
 import ai.turintech.modelcatalog.rest.support.errors.ReactiveWebExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;
@@ -11,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.data.web.ReactivePageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.ReactiveSortHandlerMethodArgumentResolver;
 import org.springframework.http.HttpMethod;
@@ -29,18 +25,6 @@ import org.springframework.web.server.WebExceptionHandler;
 public class WebConfigurer implements WebFluxConfigurer {
 
   private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
-
-  public WebConfigurer(Environment env) {
-
-    if (env.acceptsProfiles(Profiles.of(ApplicationProfiles.SPRING_PROFILE_DEVELOPMENT))) {
-      try {
-        H2ConfigurationHelper.initH2Console();
-      } catch (Exception e) {
-        // Console may already be running on another app or after a refresh.
-        e.printStackTrace();
-      }
-    }
-  }
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
