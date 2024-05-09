@@ -3,6 +3,7 @@ package ai.turintech.modelcatalog.migrationfilescreator.integration;
 import ai.turintech.components.jpa.search.data.entity.JpaSearchEntityPackage;
 import ai.turintech.components.jpa.search.repository.JpaSearchRepositoryPackage;
 import ai.turintech.modelcatalog.entity.ModelCatalogEntityPackage;
+import ai.turintech.modelcatalog.migrationfilescreator.configuration.LiquibaseConfig;
 import ai.turintech.modelcatalog.migrationfilescreator.configuration.PackageScanningConfig;
 import ai.turintech.modelcatalog.migrationfilescreator.configuration.PropertySourceConfig;
 import ai.turintech.modelcatalog.migrationfilescreator.configuration.SchedulerConfig;
@@ -41,7 +42,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
        * JpaConfig.class is not included in order to specifically address
        * configuration needed for tests.
        */
-      // LiquibaseConfig.class,
+      LiquibaseConfig.class,
       SchedulerConfig.class,
       PropertySourceConfig.class,
       PackageScanningConfig.class

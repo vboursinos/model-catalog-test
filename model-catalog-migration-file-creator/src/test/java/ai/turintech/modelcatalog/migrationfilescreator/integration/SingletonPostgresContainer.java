@@ -11,8 +11,7 @@ public class SingletonPostgresContainer {
         new PostgreSQLContainer<>("postgres:16.1")
             .withDatabaseName("testdb")
             .withUsername("testuser")
-            .withPassword("testpass")
-            .withInitScript("sql/create_and_insert.sql");
+            .withPassword("testpass");
     container.start();
   }
 

@@ -1,5 +1,7 @@
 package ai.turintech.modelcatalog.migrationfilescreator.integration.dynamicquerycreator;
 
+import static org.mockito.Mockito.when;
+
 import ai.turintech.modelcatalog.dto.ModelDTO;
 import ai.turintech.modelcatalog.migrationfilescreator.integration.TestConfig;
 import ai.turintech.modelcatalog.migrationfilescreator.model.*;
@@ -13,11 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import reactor.core.publisher.Flux;
 
 @SpringBootTest
 @Testcontainers
@@ -46,7 +51,7 @@ public class ParameterBuildQueryTest {
 
   @Autowired private InsertParametersTables insertParametersTables;
 
-  @Autowired private ModelService modelService;
+  @Mock private ModelService modelService;
 
   @BeforeAll
   public static void setUp() {
@@ -82,6 +87,16 @@ public class ParameterBuildQueryTest {
     model.setHyperParameters(hyperParameters);
     model.setName(modelName);
     model.setMetadata(metadata);
+  }
+
+  @BeforeEach
+  public void setUpMock() {
+    List<ModelDTO> mockModelDTOList = new ArrayList<>();
+    ModelDTO modelDTO = new ModelDTO();
+    modelDTO.setName(modelName);
+    mockModelDTOList.add(modelDTO);
+
+    when(modelService.findAll()).thenReturn(Flux.fromIterable(mockModelDTOList));
   }
 
   @Test
