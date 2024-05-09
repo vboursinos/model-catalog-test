@@ -1,6 +1,18 @@
 INSERT INTO model_ensemble_type(name) VALUES ('other');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO model_ensemble_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from model_ensemble_type where name='other'), 'other', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO model_ensemble_type(name) VALUES ('forest');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO model_ensemble_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from model_ensemble_type where name='forest'), 'forest', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO model_ensemble_type(name) VALUES ('none');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO model_ensemble_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from model_ensemble_type where name='none'), 'none', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO model_family_type(name) VALUES ('other');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO model_family_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from model_family_type where name='other'), 'other', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO model_family_type(name) VALUES ('linear');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO model_family_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from model_family_type where name='linear'), 'linear', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');
 INSERT INTO model_family_type(name) VALUES ('tree');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO model_family_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from model_family_type where name='tree'), 'tree', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');

@@ -28,7 +28,7 @@ public class FloatParameterMapperTest {
     floatParameterDTO.setId(UUID.randomUUID());
     floatParameterDTO.setDefaultValue(10.0);
 
-    List<FloatParameterRangeDTO> rangeDTOs = new ArrayList<>();
+    Set<FloatParameterRangeDTO> rangeDTOs = new HashSet<>();
     FloatParameterRangeDTO rangeDTO1 = new FloatParameterRangeDTO();
     rangeDTO1.setId(UUID.randomUUID());
     rangeDTO1.setLower(5.0);
@@ -74,7 +74,7 @@ public class FloatParameterMapperTest {
     floatParameterTO.setId(floatParameterDTO.getId());
     floatParameterTO.setDefaultValue(10.0);
 
-    List<FloatParameterRangeDTO> rangeDTOs = new ArrayList<>();
+    Set<FloatParameterRangeDTO> rangeDTOs = new HashSet<>();
     FloatParameterRangeDTO rangeDTO1 = new FloatParameterRangeDTO();
     rangeDTO1.setId(UUID.randomUUID());
     rangeDTO1.setLower(5.0);

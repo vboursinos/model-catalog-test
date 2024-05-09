@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A DependencyType. */
 @Entity
 @Table(name = "dependency_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class DependencyType extends AbstractUUIDIdentityEntity {
 

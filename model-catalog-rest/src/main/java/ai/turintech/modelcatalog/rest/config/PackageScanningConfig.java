@@ -15,6 +15,8 @@ import ai.turintech.modelcatalog.todtomapper.ModelCatalogToDtoMapperPackage;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
@@ -31,7 +33,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
       ArchitectureServicePackage.class
     })
 @EnableJpaRepositories(
-    basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class})
+    basePackageClasses = {JpaSearchRepositoryPackage.class, ModelCatalogRepositoryPackage.class},
+    repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @EntityScan(basePackageClasses = {ModelCatalogEntityPackage.class, JpaSearchEntityPackage.class})
 @EnableIgvMap
+@EnableJpaAuditing
 public class PackageScanningConfig {}

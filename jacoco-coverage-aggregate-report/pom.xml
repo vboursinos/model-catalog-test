@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>ai.turintech.model-catalog</groupId>
 			<artifactId>model-catalog-api</artifactId>
-		</dependency>		
+		</dependency>
 			<!-- TO -->
 		<dependency>
 			<groupId>ai.turintech.model-catalog</groupId>
@@ -69,6 +69,11 @@
 		<dependency>
 			<groupId>ai.turintech.model-catalog</groupId>
 			<artifactId>model-catalog-repository</artifactId>
+		</dependency>
+			<!-- Migration file creator -->
+		<dependency>
+			<groupId>ai.turintech.model-catalog</groupId>
+			<artifactId>model-catalog-migration-file-creator</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -1,0 +1,68 @@
+{
+    "fast": {
+        "classification": [
+            "logistic_regression_classifier",
+            "lightgbm_classifier",
+            "xgboost_classifier",
+            "catboost_classifier",
+            "decision_tree_classifier"
+        ],
+        "regression": [
+            "lightgbm_regressor",
+            "linear_regressor",
+            "catboost_regressor",
+            "decision_tree_regressor"
+        ],
+        "forecasting": [
+            "nixtla_auto_ets_forecaster",
+            "nixtla_seasonal_naive_forecaster",
+            "linear_regression_forecaster"
+        ]
+    },
+    "explainable": {
+        "classification": [
+            "logistic_regression_classifier",
+            "lightgbm_classifier",
+            "random_forest_classifier",
+            "xgboost_classifier",
+            "catboost_classifier",
+            "decision_tree_classifier"
+        ],
+        "regression": [
+            "lightgbm_regressor",
+            "catboost_regressor",
+            "bagging_regressor",
+            "linear_regressor",
+            "elastic_net_regressor",
+            "decision_tree_regressor"
+        ],
+        "forecasting": [
+            "nixtla_auto_arima_forecaster",
+            "nixtla_auto_ets_forecaster",
+            "nixtla_seasonal_naive_forecaster",
+            "linear_regression_forecaster"
+        ]
+    },
+    "advanced": {
+        "classification": [
+            "logistic_regression_classifier",
+            "lightgbm_classifier",
+            "random_forest_classifier",
+            "xgboost_classifier",
+            "gaussian_process_classifier",
+            "gradient_boosting_classifier",
+            "catboost_classifier"
+        ],
+        "regression": [
+            "lightgbm_regressor",
+            "bagging_regressor",
+            "gradient_boosting_regressor",
+            "random_forest_regressor",
+            "catboost_regressor"
+        ],
+        "forecasting": [
+            "nixtla_auto_ces_forecaster",
+            "nbeats_forecaster"
+        ]
+    }
+}

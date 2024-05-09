@@ -1,2 +1,3 @@
 INSERT INTO parameter_distribution_type(name) VALUES ('uniform');
-INSERT INTO parameter_distribution_type(name) VALUES ('log_uniform');
+INSERT INTO revinfo(rev,revtstmp) VALUES ( COALESCE (( select max(rev)+1 from revinfo), 1 ), '2024-04-17 16:31:23');
+INSERT INTO parameter_distribution_type_AUD(id, name, rev, revtype, created_at, updated_at) VALUES ((select id from parameter_distribution_type where name='uniform'), 'uniform', (select max(rev) from revinfo),0,'2024-04-17 16:31:23','2024-04-17 16:31:23');

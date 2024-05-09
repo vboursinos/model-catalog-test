@@ -1,0 +1,1 @@
+DELETE FROM rel_model__model_type WHERE model_type_id=(select id from model_type where name='modelType') AND model_id=(select id from model where name='logistic_regression_classifier');

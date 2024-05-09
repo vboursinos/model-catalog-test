@@ -1,0 +1,1 @@
+INSERT INTO rel_model__incompatible_metrics(model_id, metric_id) VALUES ((select id from model where name='logistic_regression_classifier'), (select id from metric where name='test_new'));

@@ -2,9 +2,7 @@ package ai.turintech.modelcatalog.dto;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,7 +17,7 @@ public class FloatParameterDTOTest {
     floatParameterDTO = new FloatParameterDTO();
     floatParameterDTO.setId(UUID.randomUUID());
     floatParameterDTO.setDefaultValue(10.5);
-    List<FloatParameterRangeDTO> floatParameterRanges = new ArrayList<>();
+    Set<FloatParameterRangeDTO> floatParameterRanges = new HashSet<>();
     floatParameterRanges.add(new FloatParameterRangeDTO());
     floatParameterDTO.setFloatParameterRanges(floatParameterRanges);
   }

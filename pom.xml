@@ -44,6 +44,8 @@
 		<hibernate-core.version>6.3.1.Final</hibernate-core.version>
 		<com.vladmihalcea.hybernate-types-60.version>2.21.1</com.vladmihalcea.hybernate-types-60.version>
 		<fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
+        <jackson-databind.version>2.15.2</jackson-databind.version>
+        <classgraph.version>4.8.138</classgraph.version>
 		<testcontainers.version>1.15.1</testcontainers.version>
 		<graphql-jpa-query.version>1.2.0</graphql-jpa-query.version>
 		<mockito.version>5.8.0</mockito.version>
@@ -221,6 +223,11 @@
             <dependency>
                 <groupId>ai.turintech.model-catalog</groupId>
                 <artifactId>model-catalog-to-dto-mapper</artifactId>
+                <version>1.0.0-a0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.turintech.model-catalog</groupId>
+                <artifactId>model-catalog-migration-file-creator</artifactId>
                 <version>1.0.0-a0-SNAPSHOT</version>
             </dependency>
 
@@ -955,6 +962,8 @@
         <module>model-catalog-repository</module>
         <!-- Utility module for jacoco coverate report aggregation -->
         <module>jacoco-coverage-aggregate-report</module>
+        <!-- Utility module for migration file creation -->
+        <module>model-catalog-migration-file-creator</module>
     </modules>
 
 </project>

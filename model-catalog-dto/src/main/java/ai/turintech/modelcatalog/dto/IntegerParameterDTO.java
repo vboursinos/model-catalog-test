@@ -1,9 +1,7 @@
 package ai.turintech.modelcatalog.dto;
 
 import ai.turintech.components.data.common.dto.AbstractUUIDIdentityDTO;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /** A DTO for the IntegerParameter entity. */
 @SuppressWarnings("common-java:DuplicatedBlocks")
@@ -11,7 +9,7 @@ public class IntegerParameterDTO extends AbstractUUIDIdentityDTO {
 
   private Integer defaultValue;
 
-  private List<IntegerParameterValueDTO> integerParameterValues = new ArrayList<>();
+  private Set<IntegerParameterValueDTO> integerParameterValues = new HashSet<>();
 
   public Integer getDefaultValue() {
     return defaultValue;
@@ -21,11 +19,11 @@ public class IntegerParameterDTO extends AbstractUUIDIdentityDTO {
     this.defaultValue = defaultValue;
   }
 
-  public List<IntegerParameterValueDTO> getIntegerParameterValues() {
+  public Set<IntegerParameterValueDTO> getIntegerParameterValues() {
     return integerParameterValues;
   }
 
-  public void setIntegerParameterValues(List<IntegerParameterValueDTO> integerParameterValues) {
+  public void setIntegerParameterValues(Set<IntegerParameterValueDTO> integerParameterValues) {
     this.integerParameterValues = integerParameterValues;
   }
 

@@ -5,12 +5,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A FloatParameterRange. */
 @Entity
 @Table(name = "float_parameter_range")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 public class FloatParameterRange extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;

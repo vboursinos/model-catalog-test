@@ -1,0 +1,613 @@
+2024-05-02 12:16:08 [main] INFO  o.t.d.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2024-05-02 12:16:11 [main] INFO  o.t.d.DockerClientProviderStrategy - Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2024-05-02 12:16:11 [main] INFO  o.testcontainers.DockerClientFactory - Docker host IP address is localhost
+2024-05-02 12:16:11 [main] INFO  o.testcontainers.DockerClientFactory - Connected to docker: 
+  Server Version: 26.1.1
+  API Version: 1.45
+  Operating System: Ubuntu 22.04.4 LTS
+  Total Memory: 15664 MB
+2024-05-02 12:16:11 [main] INFO  o.t.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2024-05-02 12:16:12 [main] INFO  o.testcontainers.DockerClientFactory - Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2024-05-02 12:16:12 [main] INFO  o.testcontainers.DockerClientFactory - Checking the system...
+2024-05-02 12:16:12 [main] INFO  o.testcontainers.DockerClientFactory - ✔︎ Docker server version should be at least 1.6.0
+2024-05-02 12:16:12 [main] INFO  o.testcontainers.DockerClientFactory - ✔︎ Docker environment should have more than 2GB free disk space
+2024-05-02 12:16:12 [main] INFO  🐳 [postgres:16.1] - Creating container for image: postgres:16.1
+2024-05-02 12:16:12 [main] INFO  🐳 [postgres:16.1] - Starting container with ID: 9cdff82cdd80aca55afa95eea1f88c6bbadfc81e9b354e3194c49376d176ee1b
+2024-05-02 12:16:19 [main] INFO  🐳 [postgres:16.1] - Container postgres:16.1 is starting: 9cdff82cdd80aca55afa95eea1f88c6bbadfc81e9b354e3194c49376d176ee1b
+2024-05-02 12:16:30 [main] INFO  🐳 [postgres:16.1] - Container postgres:16.1 started in PT18.246082176S
+2024-05-02 12:16:30 [main] INFO  org.testcontainers.ext.ScriptUtils - Executing database script from sql/create_and_insert.sql
+2024-05-02 12:16:31 [main] INFO  org.testcontainers.ext.ScriptUtils - Executed database script from sql/create_and_insert.sql in 356 ms.
+2024-05-02 12:16:31 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:31 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 308 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:33 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:33 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2024-05-02 12:16:34 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:34 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:35 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:36 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:36 [main] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-05-02 12:16:37 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:37 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:37 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - JSqlParser is in classpath; If applicable, JSqlParser will be used
+2024-05-02 12:16:37 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-02 12:16:39 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:39 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 18 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:39 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:39 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:39 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:39 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:39 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:39 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:39 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:39 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 23 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:39 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:39 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:39 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:39 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:39 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:40 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:40 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:40 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:40 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:40 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:40 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:40 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:40 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:40 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:40 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:40 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:41 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:41 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:41 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:42 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:42 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:42 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:42 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:42 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:42 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:42 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:42 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:42 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:42 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:42 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:42 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:42 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:42 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:43 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:43 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:43 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:43 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:43 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:43 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 18 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:43 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:43 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:43 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:43 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:43 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:43 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:43 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:43 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:43 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:43 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:44 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:44 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:44 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [ai.turintech.modelcatalog.rest.ModelCatalogRestApplicationTests]: ModelCatalogRestApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-05-02 12:16:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:44 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:44 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:44 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:44 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:44 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:44 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:44 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:44 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:44 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:44 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:45 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:45 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:45 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:45 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:45 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:45 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:45 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:45 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:45 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:45 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:45 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:45 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:45 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:46 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:46 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:46 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 24 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:47 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:47 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:47 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:47 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:47 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:47 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 10 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:47 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:47 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:47 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:47 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:47 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:47 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:47 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:47 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:47 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:47 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:47 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:48 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:48 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:48 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:48 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:48 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:48 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:48 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:48 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:48 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:48 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:48 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:48 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:48 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:48 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:48 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:48 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:48 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:49 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:49 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:49 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:49 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:49 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:49 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:49 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:49 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:49 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:49 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:49 [SpringContextShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'

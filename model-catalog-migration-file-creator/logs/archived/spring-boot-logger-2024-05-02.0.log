@@ -1,0 +1,135 @@
+2024-05-02 12:16:52 [main] INFO  o.s.b.d.r.RestartApplicationListener - Restart disabled due to context in which it is running
+2024-05-02 12:16:53 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-05-02 12:16:53 [main] INFO  i.DependencyGroupTypeBuildQueryTest - Starting DependencyGroupTypeBuildQueryTest using Java 17.0.10 with PID 34898 (started by jose in /home/jose/Development/Projects/Turintech/evoml/model-catalog/model-catalog-migration-file-creator)
+2024-05-02 12:16:53 [main] INFO  i.DependencyGroupTypeBuildQueryTest - No active profile set, falling back to 1 default profile: "default"
+2024-05-02 12:16:53 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02 12:16:53 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 223 ms. Found 23 JPA repository interfaces.
+2024-05-02 12:16:54 [main] INFO  o.t.d.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2024-05-02 12:16:54 [main] INFO  o.t.d.DockerClientProviderStrategy - Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2024-05-02 12:16:54 [main] INFO  o.testcontainers.DockerClientFactory - Docker host IP address is localhost
+2024-05-02 12:16:54 [main] INFO  o.testcontainers.DockerClientFactory - Connected to docker: 
+  Server Version: 26.1.1
+  API Version: 1.45
+  Operating System: Ubuntu 22.04.4 LTS
+  Total Memory: 15664 MB
+2024-05-02 12:16:54 [main] INFO  o.t.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2024-05-02 12:16:55 [main] INFO  o.testcontainers.DockerClientFactory - Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2024-05-02 12:16:55 [main] INFO  o.testcontainers.DockerClientFactory - Checking the system...
+2024-05-02 12:16:55 [main] INFO  o.testcontainers.DockerClientFactory - ✔︎ Docker server version should be at least 1.6.0
+2024-05-02 12:16:55 [main] INFO  o.testcontainers.DockerClientFactory - ✔︎ Docker environment should have more than 2GB free disk space
+2024-05-02 12:16:55 [main] INFO  🐳 [postgres:16.1] - Creating container for image: postgres:16.1
+2024-05-02 12:16:55 [main] INFO  🐳 [postgres:16.1] - Starting container with ID: fcdc92022e8058af8e47a5b0776dd51da6c6ac5ede95231de7c528e9c7f38374
+2024-05-02 12:16:55 [main] INFO  🐳 [postgres:16.1] - Container postgres:16.1 is starting: fcdc92022e8058af8e47a5b0776dd51da6c6ac5ede95231de7c528e9c7f38374
+2024-05-02 12:16:56 [main] INFO  🐳 [postgres:16.1] - Container postgres:16.1 started in PT1.168079887S
+2024-05-02 12:16:56 [main] INFO  org.testcontainers.ext.ScriptUtils - Executing database script from sql/create_and_insert.sql
+2024-05-02 12:16:56 [main] INFO  org.testcontainers.ext.ScriptUtils - Executed database script from sql/create_and_insert.sql in 285 ms.
+2024-05-02 12:16:56 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02 12:16:56 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2024-05-02 12:16:56 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-05-02 12:16:57 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2024-05-02 12:16:57 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelLimited
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterTypeDefinition
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelFamilyType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameterValue
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelEnsembleType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Model
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameterValue
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelStructureType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.BooleanParameter
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ParameterDistributionType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameter
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.CategoricalParameter
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Parameter
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.ModelGroupType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.MlTaskType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyGroupType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.DependencyType
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.Metric
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.IntegerParameter
+2024-05-02 12:16:57 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: ai.turintech.modelcatalog.entity.FloatParameterRange
+2024-05-02 12:16:58 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02 12:16:58 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02 12:16:59 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - JSqlParser is in classpath; If applicable, JSqlParser will be used
+2024-05-02 12:16:59 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-02 12:16:59 [main] INFO  i.DependencyGroupTypeBuildQueryTest - Started DependencyGroupTypeBuildQueryTest in 7.132 seconds (process running for 8.52)
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group types: [DependencyGroupTypeDTO{name='lightning', dependencyTypes=[DependencyTypeDTO{name='sklearn-contrib-lightning}]}, DependencyGroupTypeDTO{name='catboost', dependencyTypes=[DependencyTypeDTO{name='catboost}]}, DependencyGroupTypeDTO{name='sktime', dependencyTypes=[DependencyTypeDTO{name='sktime}, DependencyTypeDTO{name='pmdarima}]}, DependencyGroupTypeDTO{name='statsforecast', dependencyTypes=[DependencyTypeDTO{name='statsforecast}]}, DependencyGroupTypeDTO{name='darts', dependencyTypes=[DependencyTypeDTO{name='darts}, DependencyTypeDTO{name='tensorboardx}, DependencyTypeDTO{name='holidays}, DependencyTypeDTO{name='ipython}]}, DependencyGroupTypeDTO{name='huggingface', dependencyTypes=[DependencyTypeDTO{name='transformers}, DependencyTypeDTO{name='datasets}]}, DependencyGroupTypeDTO{name='intelex', dependencyTypes=[DependencyTypeDTO{name='scikit-learn-intelex}]}, DependencyGroupTypeDTO{name='lightgbm', dependencyTypes=[DependencyTypeDTO{name='lightgbm}]}, DependencyGroupTypeDTO{name='xgboost', dependencyTypes=[DependencyTypeDTO{name='xgboost}]}, DependencyGroupTypeDTO{name='base', dependencyTypes=[]}, DependencyGroupTypeDTO{name='stacking', dependencyTypes=[DependencyTypeDTO{name='mrmr-selection}, DependencyTypeDTO{name='polars}]}]
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: lightning
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: catboost
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: sktime
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: statsforecast
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: darts
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: huggingface
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: intelex
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: lightgbm
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: xgboost
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: base
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group type found: stacking
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency group types for insertion: [base-test]
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: sklearn-contrib-lightning
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: catboost
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: sktime
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: pmdarima
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: statsforecast
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: darts
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: tensorboardx
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: holidays
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: ipython
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: transformers
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: datasets
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: scikit-learn-intelex
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: lightgbm
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: xgboost
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: mrmr-selection
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency type found: polars
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - Dependency types for insertion: {base=[], catboost=[], darts=[], huggingface=[], intelex=[], lightgbm=[], lightning=[], stacking=[], statsforecast=[], sktime=[], xgboost=[]}
+2024-05-02 12:17:00 [main] INFO  m.s.DependencyGroupTypeCreator - {base=[], catboost=[], darts=[], huggingface=[], intelex=[], lightgbm=[], lightning=[], stacking=[], statsforecast=[], sktime=[], xgboost=[]}
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model Ensemble Types: [ModelEnsembleTypeDTO{id='a71f6eaa-86e1-46c1-8233-c479871f07f7', name='other'}, ModelEnsembleTypeDTO{id='a71f6eaa-86e1-46c1-8233-c479871f07f1', name='forest'}, ModelEnsembleTypeDTO{id='a71f6eaa-86e1-46c1-8233-c479871f07f0', name='none'}]
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model Family Types: [ModelFamilyTypeDTO{id='a71f6eaa-86e1-46c1-8233-c479871f07f2', name='other'}, ModelFamilyTypeDTO{id='a71f6eaa-86e1-46c1-8233-c479871f07f3', name='linear'}, ModelFamilyTypeDTO{id='a71f6eaa-86e1-46c1-8233-c479871f07f4', name='tree'}]
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model ensemble type found: other
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model ensemble type found: forest
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model ensemble type found: none
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model ensemble for insertion: [ensemble-test]
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model family type found: other
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model family type found: linear
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model family type found: tree
+2024-05-02 12:17:00 [main] INFO  m.s.EnsembleFamilyCreator - Model family for insertion: [family-test]
+2024-05-02 12:17:00 [main] INFO  m.s.GroupTypeCreator - Model group types: [ModelGroupTypeDTO{id='b71f6eaa-86e1-46c1-8233-c479871f07f1', name='fast'}, ModelGroupTypeDTO{id='b71f6eaa-86e1-46c1-8233-c479871f07f2', name='explainable'}, ModelGroupTypeDTO{id='b71f6eaa-86e1-46c1-8233-c479871f07f3', name='advanced'}]
+2024-05-02 12:17:00 [main] INFO  m.s.GroupTypeCreator - Model Group type not found: fast
+2024-05-02 12:17:00 [main] INFO  m.s.GroupTypeCreator - Model Group type found: explainable
+2024-05-02 12:17:00 [main] INFO  m.s.GroupTypeCreator - Model Group type found: advanced
+2024-05-02 12:17:00 [main] INFO  m.s.GroupTypeCreator - Model Group types for deletion: [fast]
+2024-05-02 12:17:00 [main] INFO  m.s.GroupTypeCreator - Model Group types for insertion: [test]
+2024-05-02 12:17:00 [main] INFO  m.s.MetricsCreator - Metrics: [MetricDTO{id='c71f6eaa-86e1-46c1-8233-c479871f07f1', metric='classification-log-loss'}, MetricDTO{id='c71f6eaa-86e1-46c1-8233-c479871f07f2', metric='classification-roc'}]
+2024-05-02 12:17:00 [main] INFO  m.s.MetricsCreator - Metric found: classification-log-loss
+2024-05-02 12:17:00 [main] INFO  m.s.MetricsCreator - Metric found: classification-roc
+2024-05-02 12:17:00 [main] INFO  m.s.MetricsCreator - Metric for insertion: [classification-log-loss-test]
+2024-05-02 12:17:00 [main] INFO  m.static_query_creator.MlTaskCreator - Mltask types: [MlTaskTypeDTO{id='b71f6eaa-86e1-46c1-8233-c479871f07f3', name='forecasting'}, MlTaskTypeDTO{id='b71f6eaa-86e1-46c1-8233-c479871f07f4', name='regression'}, MlTaskTypeDTO{id='b71f6eaa-86e1-46c1-8233-c479871f07f5', name='classification'}]
+2024-05-02 12:17:00 [main] INFO  m.static_query_creator.MlTaskCreator - MlTask type found: forecasting
+2024-05-02 12:17:00 [main] INFO  m.static_query_creator.MlTaskCreator - MlTask type found: regression
+2024-05-02 12:17:00 [main] INFO  m.static_query_creator.MlTaskCreator - MlTask type found: classification
+2024-05-02 12:17:00 [main] INFO  m.static_query_creator.MlTaskCreator - MlTask types for insertion: [classification_2]
+2024-05-02 12:17:01 [main] INFO  m.s.ModelStructureCreator - Model structures: [ModelStructureTypeDTO{id='c71f6eaa-86e1-46c1-8233-c479871f07f3', name='dynamic'}, ModelStructureTypeDTO{id='c71f6eaa-86e1-46c1-8233-c479871f07f4', name='base'}]
+2024-05-02 12:17:01 [main] INFO  m.s.ModelStructureCreator - Model structure type found: dynamic
+2024-05-02 12:17:01 [main] INFO  m.s.ModelStructureCreator - Model structure type found: base
+2024-05-02 12:17:01 [main] INFO  m.s.ModelStructureCreator - Model types for insertion: [base_2]
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model types: [ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f1', name='Linear Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f2', name='Kernel Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f3', name='Baseline Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f4', name='Tree-Based Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f5', name='Nearest Neighbours Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f6', name='Ensemble Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f7', name='Bayesian Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f8', name='Deep Learning Model'}, ModelTypeDTO{id='c81f6eaa-86e1-46c1-8233-c479871f07f9', name='Support Vector Machine Model'}, ModelTypeDTO{id='c91f6eaa-86e1-46c1-8233-c479871f07f1', name='Gradient Model'}, ModelTypeDTO{id='c91f6eaa-86e1-46c1-8233-c479871f07f0', name='Statistical Model'}]
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Linear Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Kernel Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Baseline Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Tree-Based Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Nearest Neighbours Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Ensemble Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Bayesian Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Deep Learning Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Support Vector Machine Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Gradient Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model type found: Statistical Model
+2024-05-02 12:17:01 [main] INFO  m.s.ModelTypeCreator - Model types for insertion: [Statistical Model test]
+2024-05-02 12:17:01 [main] INFO  m.s.ParameterDistributionTypeCreator - Parameter Distribution types: [ParameterDistributionTypeDTO{id='a71f6eaa-86e1-46c1-8233-c479871f07f6', name='uniform'}]
+2024-05-02 12:17:01 [main] INFO  m.s.ParameterDistributionTypeCreator - Parameter distribution type found: uniform
+2024-05-02 12:17:01 [main] INFO  m.s.ParameterDistributionTypeCreator - Parameter distribution types for insertion: [uniform_test]
+2024-05-02 12:17:01 [main] INFO  m.s.DependencyGroupTypeCreator - {test_key=[test]}
+2024-05-02 12:17:01 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'

@@ -3,11 +3,13 @@ package ai.turintech.modelcatalog.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A BooleanParameter. */
 @Entity
 @Table(name = "boolean_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class BooleanParameter extends BaseTypeParameter {
 

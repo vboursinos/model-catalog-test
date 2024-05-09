@@ -5,12 +5,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A IntegerParameterValue. */
 @Entity
 @Table(name = "integer_parameter_value")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 public class IntegerParameterValue extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;

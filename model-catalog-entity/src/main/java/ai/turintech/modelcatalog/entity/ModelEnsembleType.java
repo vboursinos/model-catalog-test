@@ -7,12 +7,14 @@ import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /** A ModelEnsembleType. */
 @Entity
 @Table(name = "model_ensemble_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 public class ModelEnsembleType extends AbstractUUIDIdentityEntity {
 
   private static final long serialVersionUID = 1L;

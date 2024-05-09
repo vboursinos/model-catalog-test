@@ -1,0 +1,1 @@
+DELETE FROM rel_model__groups WHERE group_id=(select id from model_group_type where name='s') AND model_id=(select id from model where name='logistic_regression_classifier');

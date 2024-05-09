@@ -1,0 +1,1 @@
+INSERT INTO rel_model__model_type(model_id, model_type_id) VALUES ((select id from Model where name='logistic_regression_classifier'),(select id from model_type where name='modelType_new'));

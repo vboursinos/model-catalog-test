@@ -12,6 +12,8 @@ public class DependencyTypeDTO extends AbstractUUIDIdentityDTO {
   @NotNull(message = "must not be null")
   private String name;
 
+  //  private DependencyGroupTypeDTO dependencyGroupType;
+
   public String getName() {
     return name;
   }

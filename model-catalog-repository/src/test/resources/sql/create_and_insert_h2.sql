@@ -3,9 +3,29 @@ create TABLE metric (
     name VARCHAR(100) NOT NULL
 );
 
+create TABLE metric_AUD (
+  id VARCHAR(100),
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  name VARCHAR(100),
+  PRIMARY KEY (id, rev)
+);
+
 create TABLE ml_task_type (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
+);
+
+create TABLE ml_task_type_AUD (
+  id uuid,
+  name varchar,
+  rev int,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE model_group_type (
@@ -13,9 +33,30 @@ create TABLE model_group_type (
     name VARCHAR(100) NOT NULL
 );
 
+create TABLE model_group_type_AUD (
+  id uuid,
+  name varchar,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
+
 create TABLE model_type (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
+);
+
+create TABLE model_type_AUD (
+  id uuid,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  name varchar,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE model_family_type (
@@ -23,9 +64,29 @@ create TABLE model_family_type (
     name VARCHAR(100) NOT NULL
 );
 
+create TABLE model_family_type_AUD (
+  id uuid,
+  name varchar,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
 create TABLE model_ensemble_type (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
+);
+
+create TABLE model_ensemble_type_AUD (
+  id uuid,
+  name varchar,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE model_structure_type (
@@ -33,9 +94,29 @@ create TABLE model_structure_type (
     name VARCHAR(100) NOT NULL
 );
 
+create TABLE model_structure_type_AUD (
+  id uuid,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  name varchar,
+  PRIMARY KEY (id, rev)
+);
+
 create TABLE parameter_type (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
+);
+
+create TABLE parameter_type_AUD (
+  id uuid,
+  name varchar,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE parameter_distribution_type (
@@ -43,9 +124,29 @@ create TABLE parameter_distribution_type (
     name VARCHAR(100) NOT NULL
 );
 
+create TABLE parameter_distribution_type_AUD (
+  id uuid,
+  name varchar,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
 create TABLE dependency_group_type (
   id VARCHAR(36) PRIMARY KEY,
   name varchar NOT NULL
+);
+
+create TABLE dependency_group_type_AUD (
+  id uuid,
+  name varchar,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE dependency_type (
@@ -53,6 +154,17 @@ create TABLE dependency_type (
   name VARCHAR NOT NULL,
   dependency_group_id VARCHAR(36),
   FOREIGN KEY(dependency_group_id) REFERENCES dependency_group_type(id)
+);
+
+create TABLE dependency_type_AUD (
+  id uuid,
+  name varchar,
+  dependency_group_id uuid,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE model (
@@ -76,11 +188,42 @@ create TABLE model (
     FOREIGN KEY(dependency_group_id) REFERENCES dependency_group_type(id)
 );
 
+create TABLE model_AUD (
+    id VARCHAR(36),
+    ml_task_id VARCHAR(36),
+    name VARCHAR,
+    display_name VARCHAR,
+    structure_id VARCHAR(36),
+    description VARCHAR,
+    advantages VARCHAR,
+    disadvantages VARCHAR,
+    enabled boolean,
+    ensemble_type_id VARCHAR(36),
+    family_type_id VARCHAR(36),
+    decision_tree boolean,
+    dependency_group_id VARCHAR(36),
+    rev int NOT NULL,
+    revtype smallint,
+    created_at timestamp,
+    updated_at timestamp,
+    PRIMARY KEY (id, rev)
+);
+
 create TABLE rel_model__groups (
     model_id VARCHAR(36),
     group_id VARCHAR(36),
     FOREIGN KEY(model_id) REFERENCES model(id),
     FOREIGN KEY(group_id) REFERENCES model_group_type(id)
+);
+
+create TABLE rel_model__groups_AUD (
+    model_id uuid,
+    group_id uuid,
+    rev int NOT NULL,
+    revtype smallint,
+    created_at timestamp,
+    updated_at timestamp,
+    PRIMARY KEY (model_id, group_id, rev)
 );
 
 create TABLE rel_model__incompatible_metrics (
@@ -90,11 +233,32 @@ create TABLE rel_model__incompatible_metrics (
     FOREIGN KEY(metric_id) REFERENCES metric(id)
 );
 
+create TABLE rel_model__incompatible_metrics_AUD (
+    model_id uuid,
+    metric_id uuid,
+    rev int NOT NULL,
+    revtype smallint,
+    created_at timestamp,
+    updated_at timestamp,
+    PRIMARY KEY (model_id, metric_id, rev)
+);
+
+
 create TABLE rel_model__model_type (
    model_id VARCHAR(36),
    model_type_id VARCHAR(36),
    FOREIGN KEY(model_id) REFERENCES model(id),
    FOREIGN KEY(model_type_id) REFERENCES model_type(id)
+);
+
+create TABLE rel_model__model_type_AUD (
+   model_id uuid,
+   model_type_id uuid,
+   rev int NOT NULL,
+   revtype smallint,
+   created_at timestamp,
+   updated_at timestamp,
+   PRIMARY KEY (model_id, model_type_id, rev)
 );
 
 create TABLE parameter (
@@ -109,6 +273,22 @@ create TABLE parameter (
   FOREIGN KEY(model_id) REFERENCES model(id)
 );
 
+create TABLE parameter_AUD (
+  id uuid,
+  model_id uuid,
+  name varchar,
+  label varchar,
+  description varchar,
+  enabled boolean,
+  fixed_value boolean,
+  ordering integer,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
 create TABLE parameter_type_definition (
   id VARCHAR(36) PRIMARY KEY,
   parameter_id VARCHAR(36) NOT NULL,
@@ -119,17 +299,51 @@ create TABLE parameter_type_definition (
   FOREIGN KEY(parameter_type_id) REFERENCES parameter_type(id),
   FOREIGN KEY(parameter_distribution_type_id) REFERENCES parameter_distribution_type(id)
 );
---
+
+create TABLE parameter_type_definition_AUD (
+  id uuid,
+  parameter_id uuid,
+  parameter_type_id uuid,
+  parameter_distribution_type_id uuid,
+  ordering integer,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
 create TABLE boolean_parameter (
     id VARCHAR(36) PRIMARY KEY,
     default_value boolean,
     FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
 
+create TABLE boolean_parameter_AUD (
+    id uuid,
+    default_value boolean,
+    rev int NOT NULL,
+    revtype smallint,
+    created_at timestamp,
+    updated_at timestamp,
+    PRIMARY KEY (id, rev)
+);
+
+
 create TABLE categorical_parameter (
   id VARCHAR(36) PRIMARY KEY,
   default_value VARCHAR,
   FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
+);
+
+create TABLE categorical_parameter_AUD (
+  id uuid,
+  default_value varchar,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE integer_parameter (
@@ -138,11 +352,32 @@ create TABLE integer_parameter (
   FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
 
+create TABLE integer_parameter_AUD (
+  id uuid,
+  default_value integer,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
 create TABLE float_parameter (
   id VARCHAR(36) PRIMARY KEY,
   default_value double,
   FOREIGN KEY(id) REFERENCES parameter_type_definition(id)
 );
+
+create TABLE float_parameter_AUD (
+  id uuid,
+  default_value double precision,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
 
 create TABLE integer_parameter_value (
   id VARCHAR(36) PRIMARY KEY,
@@ -150,6 +385,18 @@ create TABLE integer_parameter_value (
   lower integer NOT NULL,
   upper integer NOT NULL,
   FOREIGN KEY(parameter_type_definition_id) REFERENCES integer_parameter(id)
+);
+
+create TABLE integer_parameter_value_AUD (
+  id uuid,
+  parameter_type_definition_id uuid,
+  lower integer,
+  upper integer,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
 );
 
 create TABLE float_parameter_range (
@@ -160,6 +407,26 @@ create TABLE float_parameter_range (
   lower double NOT NULL,
   upper double NOT NULL,
   FOREIGN KEY(parameter_type_definition_id) REFERENCES float_parameter(id)
+);
+
+create TABLE float_parameter_range_AUD (
+  id uuid,
+  parameter_type_definition_id uuid,
+  is_left_open boolean,
+  is_right_open boolean,
+  lower double precision,
+  upper double precision,
+  rev int NOT NULL,
+  revtype smallint,
+  created_at timestamp,
+  updated_at timestamp,
+  PRIMARY KEY (id, rev)
+);
+
+CREATE TABLE REVINFO (
+    rev INTEGER NOT NULL,
+    revtstmp TIMESTAMP,
+    PRIMARY KEY (rev)
 );
 
 -- Inserting sample data into the "metrics" table

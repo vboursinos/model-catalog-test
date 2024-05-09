@@ -1,0 +1,13 @@
+DELETE FROM categorical_parameter_value WHERE parameter_type_definition_id IN (SELECT id FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test')));
+DELETE FROM integer_parameter_value WHERE parameter_type_definition_id IN (SELECT id FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test')));
+DELETE FROM float_parameter_range WHERE parameter_type_definition_id IN (SELECT id FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test')));
+DELETE FROM categorical_parameter WHERE id IN (SELECT id FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test')));
+DELETE FROM integer_parameter WHERE id IN (SELECT id FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test')));
+DELETE FROM float_parameter WHERE id IN (SELECT id FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test')));
+DELETE FROM boolean_parameter WHERE id IN (SELECT id FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test')));
+DELETE FROM parameter_type_definition WHERE parameter_id IN (SELECT id FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test'));
+DELETE FROM parameter WHERE model_id=(select id from model where name='logistic_regression_classifier_test');
+DELETE FROM rel_model__groups WHERE model_id=(select id from model where name='logistic_regression_classifier_test');
+DELETE FROM rel_model__incompatible_metrics WHERE model_id=(select id from model where name='logistic_regression_classifier_test');
+DELETE FROM rel_model__model_type WHERE model_id=(select id from model where name='logistic_regression_classifier_test');
+DELETE FROM model WHERE name='logistic_regression_classifier_test';
