@@ -33,18 +33,21 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
 
   @Autowired private ParameterDistributionTypeService parameterDistributionTypeService;
 
-  public void createStaticTable(String newFileName) {
+  public String createStaticTable() {
     Set<String> allParameterDistributionTypes;
+    String parameterDistributionTypesSql = "";
     try {
       allParameterDistributionTypes = extractAllParameterDistributionTypes();
       List<ParameterDistributionTypeDTO> parameterDistributionTypes =
           parameterDistributionTypeService.findAll().block();
       logger.info("Parameter Distribution types: " + parameterDistributionTypes);
-      compareParameterDistributionTypes(
-          allParameterDistributionTypes, parameterDistributionTypes, newFileName);
+      parameterDistributionTypesSql =
+          compareParameterDistributionTypes(
+              allParameterDistributionTypes, parameterDistributionTypes);
     } catch (IOException e) {
       logger.error("Error while creating parameter distribution types: " + e.getMessage());
     }
+    return parameterDistributionTypesSql;
   }
 
   private Set<String> extractAllParameterDistributionTypes() throws IOException {
@@ -56,10 +59,9 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
     return allParameterDistributionTypes;
   }
 
-  private void compareParameterDistributionTypes(
+  private String compareParameterDistributionTypes(
       Set<String> allParameterDistributionTypes,
-      List<ParameterDistributionTypeDTO> parameterDistributionTypes,
-      String newFileName) {
+      List<ParameterDistributionTypeDTO> parameterDistributionTypes) {
     Set<String> parameterDistributionTypesForDeletion = new HashSet<>();
     Set<String> foundParameterDistributionTypes = new HashSet<>();
     for (ParameterDistributionTypeDTO parameterDistributionType : parameterDistributionTypes) {
@@ -75,17 +77,14 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
     if (parameterDistributionTypesForDeletion.size() > 0) {
       logger.info(
           "Parameter distribution types for deletion: " + parameterDistributionTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName,
-          buildDeleteParameterDistributionTypeSQL(parameterDistributionTypesForDeletion),
-          true);
+      return buildDeleteParameterDistributionTypeSQL(parameterDistributionTypesForDeletion);
     }
     allParameterDistributionTypes.removeAll(foundParameterDistributionTypes);
     if (allParameterDistributionTypes.size() > 0) {
       logger.info("Parameter distribution types for insertion: " + allParameterDistributionTypes);
-      insertStaticTables.createSQLFile(
-          newFileName, buildParameterDistributionTypeSQL(allParameterDistributionTypes), true);
+      return buildParameterDistributionTypeSQL(allParameterDistributionTypes);
     }
+    return "\n";
   }
 
   public static String buildParameterDistributionTypeSQL(Set<String> distributionTypes) {

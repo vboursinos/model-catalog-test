@@ -29,16 +29,18 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
 
   @Autowired private ModelStructureTypeService modelStructureTypeService;
 
-  public void createStaticTable(String newFileName) {
+  public String createStaticTable() {
     Set<String> allModelStructures = new HashSet<>();
+    String modelStructureSql = "";
     try {
       allModelStructures = extractAllModelStructures();
       List<ModelStructureTypeDTO> modelStructures = modelStructureTypeService.findAll().block();
       logger.info("Model structures: " + modelStructures);
-      compareModelStructures(allModelStructures, modelStructures, newFileName);
+      modelStructureSql = compareModelStructures(allModelStructures, modelStructures);
     } catch (IOException e) {
       logger.error("Error while creating model types: " + e.getMessage());
     }
+    return modelStructureSql;
   }
 
   private Set<String> extractAllModelStructures() throws IOException {
@@ -50,10 +52,8 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
     return allModelStructures;
   }
 
-  private void compareModelStructures(
-      Set<String> allModelStructures,
-      List<ModelStructureTypeDTO> modelStructureTypes,
-      String newFileName) {
+  private String compareModelStructures(
+      Set<String> allModelStructures, List<ModelStructureTypeDTO> modelStructureTypes) {
     Set<String> modelStructureTypesForDeletion = new HashSet<>();
     Set<String> foundModelStructureTypes = new HashSet<>();
     for (ModelStructureTypeDTO modelStructureType : modelStructureTypes) {
@@ -67,15 +67,14 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
     }
     if (modelStructureTypesForDeletion.size() > 0) {
       logger.info("Model structure types for deletion: " + modelStructureTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteModelStructureSQL(modelStructureTypesForDeletion), true);
+      return buildDeleteModelStructureSQL(modelStructureTypesForDeletion);
     }
     allModelStructures.removeAll(foundModelStructureTypes);
     if (allModelStructures.size() > 0) {
       logger.info("Model types for insertion: " + allModelStructures);
-      insertStaticTables.createSQLFile(
-          newFileName, buildInsertModelStructureTypeSQL(allModelStructures), true);
+      return buildInsertModelStructureTypeSQL(allModelStructures);
     }
+    return "\n";
   }
 
   public static String buildInsertModelStructureTypeSQL(Set<String> modelStructureTypes) {

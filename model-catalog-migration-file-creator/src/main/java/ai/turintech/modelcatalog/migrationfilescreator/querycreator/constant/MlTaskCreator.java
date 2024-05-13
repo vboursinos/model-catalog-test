@@ -28,17 +28,18 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
 
   @Autowired private MlTaskTypeService mlTaskTypeService;
 
-  public void createStaticTable(String newFileName) {
+  public String createStaticTable() {
     Set<String> allMlTaskTypes;
+    String mlTaskTypesSql = "";
     try {
       allMlTaskTypes = extractAllMlTaskTypes();
       List<MlTaskTypeDTO> mlTaskTypes = mlTaskTypeService.findAll().block();
       logger.info("Mltask types: " + mlTaskTypes);
-      compareMlTaskTypes(allMlTaskTypes, mlTaskTypes, newFileName);
-      ;
+      mlTaskTypesSql = compareMlTaskTypes(allMlTaskTypes, mlTaskTypes);
     } catch (IOException e) {
       logger.error("Error while creating MlTask types: " + e.getMessage());
     }
+    return mlTaskTypesSql;
   }
 
   private Set<String> extractAllMlTaskTypes() throws IOException {
@@ -49,8 +50,7 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     return allMlTaskTypes;
   }
 
-  private void compareMlTaskTypes(
-      Set<String> allMlTaskTypes, List<MlTaskTypeDTO> mlTaskTypes, String newFileName) {
+  private String compareMlTaskTypes(Set<String> allMlTaskTypes, List<MlTaskTypeDTO> mlTaskTypes) {
     Set<String> mlTaskTypesForDeletion = new HashSet<>();
     Set<String> foundMlTaskTypes = new HashSet<>();
     for (MlTaskTypeDTO mlTaskType : mlTaskTypes) {
@@ -64,14 +64,14 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     }
     if (mlTaskTypesForDeletion.size() > 0) {
       logger.info("MlTask types for deletion: " + mlTaskTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteMlTaskTypesSQL(mlTaskTypesForDeletion), true);
+      return buildDeleteMlTaskTypesSQL(mlTaskTypesForDeletion);
     }
     allMlTaskTypes.removeAll(foundMlTaskTypes);
     if (allMlTaskTypes.size() > 0) {
       logger.info("MlTask types for insertion: " + allMlTaskTypes);
-      insertStaticTables.createSQLFile(newFileName, buildMlTaskTypesSQL(allMlTaskTypes), true);
+      return buildMlTaskTypesSQL(allMlTaskTypes);
     }
+    return "\n";
   }
 
   public static String buildMlTaskTypesSQL(Set<String> mlTaskSet) {

@@ -31,14 +31,28 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
   @Autowired private InsertDynamicTables insertDynamicTables;
   @Autowired private DeleteDynamicTables deleteDynamicTables;
 
-  @Value("${latest_sql_file_name}")
+  @Value("${output_sql_file_path}")
+  private String outputFilePath;
+
   private String outputFileName;
 
+  @Value("${liquibase_dir_path}")
+  private String liquibaseDirPath;
+
+  private static int count;
+
   @Transactional
-  public void insertDataScripts() {
+  public void insertDataScripts(String constantSQL) {
     ObjectMapper mapper = new ObjectMapper();
     Path dirPath = Paths.get(JSON_DIR_PATH);
-    processModelsInDirectory(mapper, dirPath, this::createModelSqlFile);
+    count = FileUtils.countFiles(liquibaseDirPath) + 1;
+    outputFileName =
+        Paths.get(outputFilePath, count + "-metaml_automatic_tool_update.sql").toString();
+    Path outputFile = Paths.get(outputFileName);
+    if (!Files.exists(outputFile)) {
+      createConstantSqlFile(constantSQL);
+      processModelsInDirectory(mapper, dirPath, this::createModelSqlFile);
+    }
   }
 
   private void processModelsInDirectory(
@@ -58,6 +72,12 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
     } catch (IOException e) {
       logger.error("Error reading files from directory: " + e.getMessage(), e);
     }
+  }
+
+  private void createConstantSqlFile(String constantSQL) {
+    FileUtils.writeToFileAppend(
+        Paths.get(outputFileName).toString(), cleanupSQLScript(constantSQL));
+    logger.info("constant sql file created successfully!");
   }
 
   private void createModelSqlFile(Models models) {

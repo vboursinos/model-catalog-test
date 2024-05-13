@@ -43,9 +43,11 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
   @Value("${json_dir_path}")
   private String jsonDirPath;
 
-  public void createStaticTable(String latestFileName) {
+  public String createStaticTable() {
     Set<String> allDependencyGroupTypes;
     Map<String, Set<String>> allDependencyTypes;
+    String dependencyGroupTypesSql = "";
+    String dependencyTypesSql = "";
     try {
       allDependencyGroupTypes = extractAllDependencyGroupTypes();
       allDependencyTypes = getDependencies();
@@ -53,11 +55,13 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
           dependencyGroupTypeService.findAll().block();
       List<DependencyType> dependencyTypes = getDependencyTypes(dependencyGroupTypes);
       logger.info("Dependency group types: " + dependencyGroupTypes);
-      compareDependencyGroupTypes(allDependencyGroupTypes, dependencyGroupTypes, latestFileName);
-      compareDependencyTypes(allDependencyTypes, dependencyTypes, latestFileName);
+      dependencyGroupTypesSql =
+          compareDependencyGroupTypes(allDependencyGroupTypes, dependencyGroupTypes);
+      dependencyTypesSql = compareDependencyTypes(allDependencyTypes, dependencyTypes);
     } catch (IOException e) {
       logger.error("Error while creating dependency group types: " + e.getMessage());
     }
+    return dependencyGroupTypesSql.concat(dependencyTypesSql);
   }
 
   private Set<String> extractAllDependencyGroupTypes() throws IOException {
@@ -85,10 +89,8 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
         .collect(Collectors.toList());
   }
 
-  private void compareDependencyGroupTypes(
-      Set<String> allDependencyGroupTypes,
-      List<DependencyGroupTypeDTO> dependencyGroupTypes,
-      String newFileName) {
+  private String compareDependencyGroupTypes(
+      Set<String> allDependencyGroupTypes, List<DependencyGroupTypeDTO> dependencyGroupTypes) {
     Set<String> dependencyGroupTypesForDeletion = new HashSet<>();
     Set<String> foundDependencyGroupTypes = new HashSet<>();
     for (DependencyGroupTypeDTO dependencyGroupType : dependencyGroupTypes) {
@@ -102,21 +104,18 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
     }
     if (dependencyGroupTypesForDeletion.size() > 0) {
       logger.info("Dependency group types for deletion: " + dependencyGroupTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteDependencyGroupSQL(dependencyGroupTypesForDeletion), true);
+      return buildDeleteDependencyGroupSQL(dependencyGroupTypesForDeletion);
     }
     allDependencyGroupTypes.removeAll(foundDependencyGroupTypes);
     if (allDependencyGroupTypes.size() > 0) {
       logger.info("Dependency group types for insertion: " + allDependencyGroupTypes);
-      insertStaticTables.createSQLFile(
-          newFileName, buildInsertDependencyGroupTypeSQL(allDependencyGroupTypes), true);
+      return buildInsertDependencyGroupTypeSQL(allDependencyGroupTypes);
     }
+    return "\n";
   }
 
-  private void compareDependencyTypes(
-      Map<String, Set<String>> allDependencyTypes,
-      List<DependencyType> dependencyTypes,
-      String newFileName) {
+  private String compareDependencyTypes(
+      Map<String, Set<String>> allDependencyTypes, List<DependencyType> dependencyTypes) {
     Map<String, Set<String>> dependencyTypesForDeletion = new HashMap<>();
     Map<String, Set<String>> foundDependencyTypes = new HashMap<>();
 
@@ -141,8 +140,9 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
 
     if (!dependencyTypesForDeletion.isEmpty()) {
       logger.info("Dependency types for deletion: " + dependencyTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteDependencySQL(dependencyTypesForDeletion), true);
+      //      insertStaticTables.createSQLFile(
+      //          newFileName, buildDeleteDependencySQL(dependencyTypesForDeletion), true);
+      return buildDeleteDependencySQL(dependencyTypesForDeletion);
     }
 
     allDependencyTypes.forEach(
@@ -151,9 +151,11 @@ public class DependencyGroupTypeCreator extends TableCreatorHelper implements St
 
     if (!allDependencyTypes.isEmpty()) {
       logger.info("Dependency types for insertion: " + allDependencyTypes);
-      insertStaticTables.createSQLFile(
-          newFileName, buildInsertDependenciesTypeSQL(allDependencyTypes), true);
+      //      insertStaticTables.createSQLFile(
+      //          newFileName, buildInsertDependenciesTypeSQL(allDependencyTypes), true);
+      return buildInsertDependenciesTypeSQL(allDependencyTypes);
     }
+    return "\n";
   }
 
   static Set<String> getDependencyGroupTypes(Models models) {
