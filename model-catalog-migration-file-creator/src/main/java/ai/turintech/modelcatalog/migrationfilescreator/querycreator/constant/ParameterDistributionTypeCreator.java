@@ -64,6 +64,7 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
       List<ParameterDistributionTypeDTO> parameterDistributionTypes) {
     Set<String> parameterDistributionTypesForDeletion = new HashSet<>();
     Set<String> foundParameterDistributionTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ParameterDistributionTypeDTO parameterDistributionType : parameterDistributionTypes) {
       if (allParameterDistributionTypes.contains(parameterDistributionType.getName())) {
         logger.info("Parameter distribution type found: " + parameterDistributionType.getName());
@@ -77,14 +78,14 @@ public class ParameterDistributionTypeCreator extends TableCreatorHelper
     if (parameterDistributionTypesForDeletion.size() > 0) {
       logger.info(
           "Parameter distribution types for deletion: " + parameterDistributionTypesForDeletion);
-      return buildDeleteParameterDistributionTypeSQL(parameterDistributionTypesForDeletion);
+      sb.append(buildDeleteParameterDistributionTypeSQL(parameterDistributionTypesForDeletion));
     }
     allParameterDistributionTypes.removeAll(foundParameterDistributionTypes);
     if (allParameterDistributionTypes.size() > 0) {
       logger.info("Parameter distribution types for insertion: " + allParameterDistributionTypes);
-      return buildParameterDistributionTypeSQL(allParameterDistributionTypes);
+      sb.append(buildParameterDistributionTypeSQL(allParameterDistributionTypes));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public static String buildParameterDistributionTypeSQL(Set<String> distributionTypes) {

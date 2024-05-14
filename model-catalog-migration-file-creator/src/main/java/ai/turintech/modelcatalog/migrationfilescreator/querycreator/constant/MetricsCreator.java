@@ -54,6 +54,7 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
   private String compareMetrics(Set<String> allMetrics, List<MetricDTO> metrics) {
     Set<String> metricsForDeletion = new HashSet<>();
     Set<String> foundMetrics = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (MetricDTO metric : metrics) {
       if (allMetrics.contains(metric.getMetric())) {
         logger.info("Metric found: " + metric.getMetric());
@@ -65,14 +66,14 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     }
     if (metricsForDeletion.size() > 0) {
       logger.info("Metric for deletion: " + metricsForDeletion);
-      return buildDeleteMetricSQL(metricsForDeletion);
+      sb.append(buildDeleteMetricSQL(metricsForDeletion));
     }
     allMetrics.removeAll(foundMetrics);
     if (allMetrics.size() > 0) {
       logger.info("Metric for insertion: " + allMetrics);
-      return buildMetricSQL(allMetrics);
+      sb.append(buildMetricSQL(allMetrics));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public static String buildMetricSQL(Set<String> metricSet) {

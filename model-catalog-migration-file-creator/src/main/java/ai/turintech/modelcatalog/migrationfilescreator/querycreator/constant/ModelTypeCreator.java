@@ -52,6 +52,7 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
   private String compareModelTypes(Set<String> allModelTypes, List<ModelTypeDTO> modelTypes) {
     Set<String> modelTypesForDeletion = new HashSet<>();
     Set<String> foundModelTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelTypeDTO modelType : modelTypes) {
       if (allModelTypes.contains(modelType.getName())) {
         logger.info("Model type found: " + modelType.getName());
@@ -63,14 +64,14 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
     }
     if (modelTypesForDeletion.size() > 0) {
       logger.info("Model types for deletion: " + modelTypesForDeletion);
-      return buildDeleteModelTypeSQL(modelTypesForDeletion);
+      sb.append(buildDeleteModelTypeSQL(modelTypesForDeletion));
     }
     allModelTypes.removeAll(foundModelTypes);
     if (allModelTypes.size() > 0) {
       logger.info("Model types for insertion: " + allModelTypes);
-      return buildInsertModelTypeSQL(allModelTypes);
+      sb.append(buildInsertModelTypeSQL(allModelTypes));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public static String buildInsertModelTypeSQL(Set<String> modelTypes) {

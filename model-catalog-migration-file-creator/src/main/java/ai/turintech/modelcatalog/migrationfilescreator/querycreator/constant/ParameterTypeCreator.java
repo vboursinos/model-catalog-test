@@ -50,6 +50,7 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
       Set<String> allParameterTypes, List<ParameterTypeDTO> parameterTypes) {
     Set<String> parameterTypesForDeletion = new HashSet<>();
     Set<String> foundParameterTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ParameterTypeDTO parameterType : parameterTypes) {
       if (allParameterTypes.contains(parameterType.getName())) {
         logger.info("Parameter type found: " + parameterType.getName());
@@ -61,14 +62,14 @@ public class ParameterTypeCreator extends TableCreatorHelper implements StaticTa
     }
     if (parameterTypesForDeletion.size() > 0) {
       logger.info("Parameter types for deletion: " + parameterTypesForDeletion);
-      return buildDeleteParameterTypeSQL(parameterTypesForDeletion);
+      sb.append(buildDeleteParameterTypeSQL(parameterTypesForDeletion));
     }
     allParameterTypes.removeAll(foundParameterTypes);
     if (allParameterTypes.size() > 0) {
       logger.info("Parameter types for insertion: " + allParameterTypes);
-      return buildParameterTypeSQL(allParameterTypes);
+      sb.append(buildParameterTypeSQL(allParameterTypes));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public static String buildParameterTypeSQL(Set<String> parameterTypes) {

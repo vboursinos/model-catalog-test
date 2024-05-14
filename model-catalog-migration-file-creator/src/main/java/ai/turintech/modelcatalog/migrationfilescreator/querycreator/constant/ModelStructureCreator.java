@@ -56,6 +56,7 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
       Set<String> allModelStructures, List<ModelStructureTypeDTO> modelStructureTypes) {
     Set<String> modelStructureTypesForDeletion = new HashSet<>();
     Set<String> foundModelStructureTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelStructureTypeDTO modelStructureType : modelStructureTypes) {
       if (allModelStructures.contains(modelStructureType.getName())) {
         logger.info("Model structure type found: " + modelStructureType.getName());
@@ -67,14 +68,14 @@ public class ModelStructureCreator extends TableCreatorHelper implements StaticT
     }
     if (modelStructureTypesForDeletion.size() > 0) {
       logger.info("Model structure types for deletion: " + modelStructureTypesForDeletion);
-      return buildDeleteModelStructureSQL(modelStructureTypesForDeletion);
+      sb.append(buildDeleteModelStructureSQL(modelStructureTypesForDeletion));
     }
     allModelStructures.removeAll(foundModelStructureTypes);
     if (allModelStructures.size() > 0) {
       logger.info("Model types for insertion: " + allModelStructures);
-      return buildInsertModelStructureTypeSQL(allModelStructures);
+      sb.append(buildInsertModelStructureTypeSQL(allModelStructures));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public static String buildInsertModelStructureTypeSQL(Set<String> modelStructureTypes) {

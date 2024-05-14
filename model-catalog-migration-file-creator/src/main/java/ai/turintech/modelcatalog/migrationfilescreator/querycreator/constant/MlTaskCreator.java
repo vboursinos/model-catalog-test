@@ -53,6 +53,7 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
   private String compareMlTaskTypes(Set<String> allMlTaskTypes, List<MlTaskTypeDTO> mlTaskTypes) {
     Set<String> mlTaskTypesForDeletion = new HashSet<>();
     Set<String> foundMlTaskTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (MlTaskTypeDTO mlTaskType : mlTaskTypes) {
       if (allMlTaskTypes.contains(mlTaskType.getName())) {
         logger.info("MlTask type found: " + mlTaskType.getName());
@@ -64,14 +65,14 @@ public class MlTaskCreator extends TableCreatorHelper implements StaticTableCrea
     }
     if (mlTaskTypesForDeletion.size() > 0) {
       logger.info("MlTask types for deletion: " + mlTaskTypesForDeletion);
-      return buildDeleteMlTaskTypesSQL(mlTaskTypesForDeletion);
+      sb.append(buildDeleteMlTaskTypesSQL(mlTaskTypesForDeletion));
     }
     allMlTaskTypes.removeAll(foundMlTaskTypes);
     if (allMlTaskTypes.size() > 0) {
       logger.info("MlTask types for insertion: " + allMlTaskTypes);
-      return buildMlTaskTypesSQL(allMlTaskTypes);
+      sb.append(buildMlTaskTypesSQL(allMlTaskTypes));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public static String buildMlTaskTypesSQL(Set<String> mlTaskSet) {

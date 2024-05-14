@@ -62,6 +62,7 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
       Set<String> allEnsembleTypes, List<ModelEnsembleTypeDTO> modelEnsembleTypes) {
     Set<String> ensembleTypesForDeletion = new HashSet<>();
     Set<String> foundEnsembleTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelEnsembleTypeDTO modelEnsembleType : modelEnsembleTypes) {
       if (allEnsembleTypes.contains(modelEnsembleType.getName())) {
         logger.info("Model ensemble type found: " + modelEnsembleType.getName());
@@ -73,20 +74,21 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     }
     if (ensembleTypesForDeletion.size() > 0) {
       logger.info("Model ensemble types for deletion: " + ensembleTypesForDeletion);
-      return buildDeleteEnsembleTypeSQL(ensembleTypesForDeletion);
+      sb.append(buildDeleteEnsembleTypeSQL(ensembleTypesForDeletion));
     }
     allEnsembleTypes.removeAll(foundEnsembleTypes);
     if (allEnsembleTypes.size() > 0) {
       logger.info("Model ensemble for insertion: " + allEnsembleTypes);
-      return buildInsertEnsembleTypeSQL(allEnsembleTypes);
+      sb.append(buildInsertEnsembleTypeSQL(allEnsembleTypes));
     }
-    return "\n";
+    return sb.toString();
   }
 
   private String compareModelFamilyTypes(
       Set<String> allFamilyTypes, List<ModelFamilyTypeDTO> modelFamilyTypes) {
     Set<String> familyTypesForDeletion = new HashSet<>();
     Set<String> foundFamilyTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelFamilyTypeDTO modelFamilyType : modelFamilyTypes) {
       if (allFamilyTypes.contains(modelFamilyType.getName())) {
         logger.info("Model family type found: " + modelFamilyType.getName());
@@ -98,14 +100,14 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     }
     if (familyTypesForDeletion.size() > 0) {
       logger.info("Model family types for deletion: " + familyTypesForDeletion);
-      return buildDeleteFamilyTypeSQL(familyTypesForDeletion);
+      sb.append(buildDeleteFamilyTypeSQL(familyTypesForDeletion));
     }
     allFamilyTypes.removeAll(foundFamilyTypes);
     if (allFamilyTypes.size() > 0) {
       logger.info("Model family for insertion: " + allFamilyTypes);
-      return buildInsertFamilyTypeSQL(allFamilyTypes);
+      sb.append(buildInsertFamilyTypeSQL(allFamilyTypes));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public Map<String, Set<String>> getFamilyEnsembleTypes() {
