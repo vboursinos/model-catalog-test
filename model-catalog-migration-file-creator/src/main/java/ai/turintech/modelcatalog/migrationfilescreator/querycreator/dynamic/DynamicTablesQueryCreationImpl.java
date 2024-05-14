@@ -39,6 +39,9 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
   @Value("${liquibase_dir_path}")
   private String liquibaseDirPath;
 
+  @Value("${default_liquibase_file_name}")
+  private String defaultLiquibaseFileName;
+
   private static int count;
 
   @Transactional
@@ -47,7 +50,7 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
     Path dirPath = Paths.get(JSON_DIR_PATH);
     count = FileUtils.countFiles(liquibaseDirPath) + 1;
     outputFileName =
-        Paths.get(outputFilePath, count + "-metaml_automatic_tool_update.sql").toString();
+        Paths.get(outputFilePath, count + defaultLiquibaseFileName + ".sql").toString();
     Path outputFile = Paths.get(outputFileName);
     if (!Files.exists(outputFile)) {
       createConstantSqlFile(constantSQL);
