@@ -58,6 +58,7 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
       Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes) {
     Set<String> modelGroupTypesForDeletion = new HashSet<>();
     Set<String> foundModelGroupTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelGroupTypeDTO modelGroupType : modelGroupTypes) {
       if (allModelGroupTypes.contains(modelGroupType.getName())) {
         logger.info("Model Group type found: " + modelGroupType.getName());
@@ -69,14 +70,14 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
     }
     if (modelGroupTypesForDeletion.size() > 0) {
       logger.info("Model Group types for deletion: " + modelGroupTypesForDeletion);
-      return buildDeleteGroupTypeSQL(modelGroupTypesForDeletion);
+      sb.append(buildDeleteGroupTypeSQL(modelGroupTypesForDeletion));
     }
     allModelGroupTypes.removeAll(foundModelGroupTypes);
     if (allModelGroupTypes.size() > 0) {
       logger.info("Model Group types for insertion: " + allModelGroupTypes);
-      return buildInsertGroupTypeSQL(allModelGroupTypes);
+      sb.append(buildInsertGroupTypeSQL(allModelGroupTypes));
     }
-    return "\n";
+    return sb.toString();
   }
 
   public static String buildInsertGroupTypeSQL(Set<String> groups) {
