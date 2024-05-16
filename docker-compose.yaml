@@ -43,6 +43,18 @@ services:
     networks:
       - model-catalog-network
 
+  migration_execution:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./sql_scripts:/app/migrations
+    networks:
+      - model-catalog-network
+
 volumes:
   postgres:
 

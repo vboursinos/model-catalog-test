@@ -40,6 +40,6 @@ COPY --from=builder extracted/application/ ./
 
 EXPOSE 8080
 
-ENV POSTGRES_HOST=catalog-postgres
+ENV POSTGRES_HOST=model-catalog-postgres
 
 ENTRYPOINT ["java", "-XX:+UseSerialGC", "-XX:MaxRAM=1024m", "-XX:MaxMetaspaceSize=512m", "-Xmx8g", "-Xms256m", "-Xss512k", "org.springframework.boot.loader.JarLauncher"]
