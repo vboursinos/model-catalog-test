@@ -1,0 +1,9 @@
+# docker-compose-migration-file.yml
+version: '3.8'
+services:
+  migration_execution:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./sql_scripts:/app/migrations
