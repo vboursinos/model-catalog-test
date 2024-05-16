@@ -1,0 +1,107 @@
+# Release library
+# ---------------------------------------------
+# This Github action is responsible to validate code and proceed with code publishing of the library on nexus.
+#
+# When: On every github release
+# Concurrency: Ensures that only a single job or workflow using the same concurrency
+# group will run at a time. A concurrency group can be any string or expression
+
+name: Release library
+
+on:
+  release:
+    types:
+      - published
+      - edited
+
+env:
+  REPOSITORY_NAME: ${{ github.repository }}
+  TAG_NAME: ${{ github.ref_name }}
+  PRE_RELEASE: ${{ github.event.release.prerelease }}
+
+jobs:
+
+
+  code-quality:
+    name: Code quality
+    uses: ./.github/workflows/code-quality.yml
+    secrets: inherit
+    
+  deploy-release:
+    needs: [code-quality]
+    runs-on: beast
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout remote composite actions
+        uses: ./.github/workflows/composite-actions
+        with:
+          ACTION_APP_ID: ${{ secrets.ACTION_APP_ID }}
+          ACTION_APP_KEY: ${{ secrets.ACTION_APP_KEY }}
+                  
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-${{ hashFiles('**/pom.xml') }}
+          
+      - uses: s4u/maven-settings-action@v2.8.0
+        with:
+          servers: |
+            [{
+                "id": "turintech-releases",
+                "username": "${{ secrets.CD_USER }}",
+                "password": "${{ secrets.CD_PASSWORD }}"
+             },
+             {
+                "id": "turintech-snapshots",
+                "username": "${{ secrets.CD_USER }}",
+                "password": "${{ secrets.CD_PASSWORD }}"
+             }
+            ]
+            
+      
+            
+      - uses: actions/setup-java@v3
+        if: ${{ github.event.release.prerelease }} == 'true'
+        with:
+          java-version: 17
+          distribution: 'zulu'
+          server-id: turintech-snapshots
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          
+      - uses: actions/setup-java@v3
+        if: ${{ github.event.release.prerelease }} == 'false'
+        with:
+          java-version: 17
+          distribution: 'zulu'
+          server-id: turintech-releases
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.9.5
+                    
+      - name: Debug prerelease variable
+        run: |
+          echo "Pre Release value: ${{ env.PRE_RELEASE }} ${{ github.event.release.prerelease }}"
+      
+      - name: Deploy to Nexus maven snapshots
+        uses: simontunnat/action-maven-deploy@v1.1
+        if: ${{ env.PRE_RELEASE == 'true' || env.PRE_RELEASE == true }} 
+        with:
+          username: ${{ secrets.CD_USER }}
+          password: ${{ secrets.CD_PASSWORD }}
+          repository: https://nexus.dataspartan.com/repository/maven-snapshots/
+          
+      - name: Deploy to Nexus maven releases
+        uses: simontunnat/action-maven-deploy@v1.1
+        if: ${{ env.PRE_RELEASE == 'false' || env.PRE_RELEASE == false }} 
+        with:
+          username: ${{ secrets.CD_USER }}
+          password: ${{ secrets.CD_PASSWORD }}
+          repository: https://nexus.dataspartan.com/repository/maven-releases/
