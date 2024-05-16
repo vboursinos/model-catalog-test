@@ -107,7 +107,7 @@ These mappers ensure a clean separation of concerns and promote code reusability
   ```
   java -jar target/model-catalog-rest.jar
   ```
-* The application, with current configuration, will be running on port 8081.
+* The application, with current configuration, will be running on port 8083.
 * The application can be run from your IDE as well. Just run the main method in ModelCatalogRestApplication class in model-catalog-rest module.
 
 ## Infrastructure Dependencies ##
@@ -128,7 +128,7 @@ To build a Docker image for this application, follow the steps below:
 ## Running Docker Container ##
 * Run the Docker container using the command 
     ```
-    docker run -p 8081:8081 -t data-catalog
+    docker run -p 8083:8083 -t data-catalog
     ```
 
 ## Docker Compose ##
@@ -151,8 +151,8 @@ docker-compose down
 * Swagger is a tool that helps us document our RESTful APIs. It provides a UI that allows us to interact with our APIs.
 * When the application is running, as described in the previous section (local run, docker run or from IDE), you can 
 access the Swagger UI.
-* Local Swagger UI is available at http://localhost:8081/swagger-ui/index.html
-* Dev Swagger UI is available at http://192.168.58.242:8081/swagger-ui/index.html
+* Local Swagger UI is available at http://localhost:8083/swagger-ui/index.html
+* Dev Swagger UI is available at http://192.168.58.242:8083/swagger-ui/index.html
 
 ## GraphQL ##
 
@@ -161,8 +161,8 @@ access the Swagger UI.
 #### Accessing GraphiQL
 You can access GraphiQL for your GraphQL API using the following endpoints:
 
-* Local GraphiQL: http://localhost:8081/graphiql?path=/graphql
-* Dev GraphiQL: http://192.168.58.242:8081/graphiql?path=/graphql
+* Local GraphiQL: http://localhost:8083/graphiql?path=/graphql
+* Dev GraphiQL: http://192.168.58.242:8083/graphiql?path=/graphql
 
 #### Testing Queries
 You can test queries against your GraphQL API using GraphiQL. Here's a sample query to fetch all enabled models:
