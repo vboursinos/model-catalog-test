@@ -33,20 +33,24 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
   @Value("${ensemble_family_json_path}")
   private String ensembleFamilyJsonPath;
 
-  public void createStaticTable(String newFileName) {
+  public String createStaticTable() {
     Map<String, Set<String>> allFamilyEnsembleTypes = new HashMap<>();
+    String ensembleTypeSql = "";
+    String familyTypeSql = "";
     try {
       allFamilyEnsembleTypes = extractAllFamilyEnsembleTypes();
       List<ModelEnsembleTypeDTO> modelEnsembleTypes = modelEnsembleTypeService.findAll().block();
       List<ModelFamilyTypeDTO> modelFamilyTypes = modelFamilyTypeService.findAll().block();
       logger.info("Model Ensemble Types: " + modelEnsembleTypes);
       logger.info("Model Family Types: " + modelFamilyTypes);
-      compareModelEnsembleTypes(
-          allFamilyEnsembleTypes.get("ensemble"), modelEnsembleTypes, newFileName);
-      compareModelFamilyTypes(allFamilyEnsembleTypes.get("family"), modelFamilyTypes, newFileName);
+      ensembleTypeSql =
+          compareModelEnsembleTypes(allFamilyEnsembleTypes.get("ensemble"), modelEnsembleTypes);
+      familyTypeSql =
+          compareModelFamilyTypes(allFamilyEnsembleTypes.get("family"), modelFamilyTypes);
     } catch (IOException e) {
       logger.error("Error extracting family and ensemble types: " + e.getMessage(), e);
     }
+    return ensembleTypeSql.concat(familyTypeSql);
   }
 
   private Map<String, Set<String>> extractAllFamilyEnsembleTypes() throws IOException {
@@ -54,12 +58,11 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     return allFamilyEnsembleTypes;
   }
 
-  private void compareModelEnsembleTypes(
-      Set<String> allEnsembleTypes,
-      List<ModelEnsembleTypeDTO> modelEnsembleTypes,
-      String newFileName) {
+  private String compareModelEnsembleTypes(
+      Set<String> allEnsembleTypes, List<ModelEnsembleTypeDTO> modelEnsembleTypes) {
     Set<String> ensembleTypesForDeletion = new HashSet<>();
     Set<String> foundEnsembleTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelEnsembleTypeDTO modelEnsembleType : modelEnsembleTypes) {
       if (allEnsembleTypes.contains(modelEnsembleType.getName())) {
         logger.info("Model ensemble type found: " + modelEnsembleType.getName());
@@ -71,21 +74,21 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     }
     if (ensembleTypesForDeletion.size() > 0) {
       logger.info("Model ensemble types for deletion: " + ensembleTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteEnsembleTypeSQL(ensembleTypesForDeletion), true);
+      sb.append(buildDeleteEnsembleTypeSQL(ensembleTypesForDeletion));
     }
     allEnsembleTypes.removeAll(foundEnsembleTypes);
     if (allEnsembleTypes.size() > 0) {
       logger.info("Model ensemble for insertion: " + allEnsembleTypes);
-      insertStaticTables.createSQLFile(
-          newFileName, buildInsertEnsembleTypeSQL(allEnsembleTypes), true);
+      sb.append(buildInsertEnsembleTypeSQL(allEnsembleTypes));
     }
+    return sb.toString();
   }
 
-  private void compareModelFamilyTypes(
-      Set<String> allFamilyTypes, List<ModelFamilyTypeDTO> modelFamilyTypes, String newFileName) {
+  private String compareModelFamilyTypes(
+      Set<String> allFamilyTypes, List<ModelFamilyTypeDTO> modelFamilyTypes) {
     Set<String> familyTypesForDeletion = new HashSet<>();
     Set<String> foundFamilyTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelFamilyTypeDTO modelFamilyType : modelFamilyTypes) {
       if (allFamilyTypes.contains(modelFamilyType.getName())) {
         logger.info("Model family type found: " + modelFamilyType.getName());
@@ -97,14 +100,14 @@ public class EnsembleFamilyCreator extends TableCreatorHelper implements StaticT
     }
     if (familyTypesForDeletion.size() > 0) {
       logger.info("Model family types for deletion: " + familyTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteFamilyTypeSQL(familyTypesForDeletion), true);
+      sb.append(buildDeleteFamilyTypeSQL(familyTypesForDeletion));
     }
     allFamilyTypes.removeAll(foundFamilyTypes);
     if (allFamilyTypes.size() > 0) {
       logger.info("Model family for insertion: " + allFamilyTypes);
-      insertStaticTables.createSQLFile(newFileName, buildInsertFamilyTypeSQL(allFamilyTypes), true);
+      sb.append(buildInsertFamilyTypeSQL(allFamilyTypes));
     }
+    return sb.toString();
   }
 
   public Map<String, Set<String>> getFamilyEnsembleTypes() {

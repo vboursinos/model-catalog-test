@@ -29,16 +29,18 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
 
   @Autowired private ModelTypeService modelTypeService;
 
-  public void createStaticTable(String newFileName) {
+  public String createStaticTable() {
     Set<String> allModelTypes;
+    String modelTypeSql = "";
     try {
       allModelTypes = extractAllModelTypes();
       List<ModelTypeDTO> modelTypes = modelTypeService.findAll().block();
       logger.info("Model types: " + modelTypes);
-      compareModelTypes(allModelTypes, modelTypes, newFileName);
+      modelTypeSql = compareModelTypes(allModelTypes, modelTypes);
     } catch (IOException e) {
       logger.error("Error while creating model types: " + e.getMessage());
     }
+    return modelTypeSql;
   }
 
   private Set<String> extractAllModelTypes() throws IOException {
@@ -47,10 +49,10 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
     return insertStaticTables.extractUniqueValues(mapper, dirPath, ModelTypeCreator::getModelTypes);
   }
 
-  private void compareModelTypes(
-      Set<String> allModelTypes, List<ModelTypeDTO> modelTypes, String newFileName) {
+  private String compareModelTypes(Set<String> allModelTypes, List<ModelTypeDTO> modelTypes) {
     Set<String> modelTypesForDeletion = new HashSet<>();
     Set<String> foundModelTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelTypeDTO modelType : modelTypes) {
       if (allModelTypes.contains(modelType.getName())) {
         logger.info("Model type found: " + modelType.getName());
@@ -62,14 +64,14 @@ public class ModelTypeCreator extends TableCreatorHelper implements StaticTableC
     }
     if (modelTypesForDeletion.size() > 0) {
       logger.info("Model types for deletion: " + modelTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteModelTypeSQL(modelTypesForDeletion), true);
+      sb.append(buildDeleteModelTypeSQL(modelTypesForDeletion));
     }
     allModelTypes.removeAll(foundModelTypes);
     if (allModelTypes.size() > 0) {
       logger.info("Model types for insertion: " + allModelTypes);
-      insertStaticTables.createSQLFile(newFileName, buildInsertModelTypeSQL(allModelTypes), true);
+      sb.append(buildInsertModelTypeSQL(allModelTypes));
     }
+    return sb.toString();
   }
 
   public static String buildInsertModelTypeSQL(Set<String> modelTypes) {

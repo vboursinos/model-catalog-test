@@ -20,7 +20,7 @@ public class CreateSqlScriptServiceImpl implements CreateSqlScriptService {
 
   @Transactional
   public void createFiles() {
-    insertStaticTables.insertDataScripts();
-    dynamicTablesQueryCreation.insertDataScripts();
+    String constantSQL = insertStaticTables.insertDataScripts();
+    dynamicTablesQueryCreation.insertDataScripts(constantSQL);
   }
 }

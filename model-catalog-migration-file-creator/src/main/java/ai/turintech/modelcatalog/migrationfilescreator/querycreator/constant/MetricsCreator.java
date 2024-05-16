@@ -29,16 +29,18 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
 
   @Autowired private MetricService metricService;
 
-  public void createStaticTable(String newFileName) {
+  public String createStaticTable() {
     Set<String> allMetrics = new HashSet<>();
+    String metricsSql = "";
     try {
       allMetrics = extractAllMetrics();
       List<MetricDTO> metrics = metricService.findAll().block();
       logger.info("Metrics: " + metrics);
-      compareMetrics(allMetrics, metrics, newFileName);
+      metricsSql = compareMetrics(allMetrics, metrics);
     } catch (IOException e) {
       logger.error("Error while creating metrics: " + e.getMessage());
     }
+    return metricsSql;
   }
 
   private Set<String> extractAllMetrics() throws IOException {
@@ -49,9 +51,10 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     return allMetrics;
   }
 
-  private void compareMetrics(Set<String> allMetrics, List<MetricDTO> metrics, String newFileName) {
+  private String compareMetrics(Set<String> allMetrics, List<MetricDTO> metrics) {
     Set<String> metricsForDeletion = new HashSet<>();
     Set<String> foundMetrics = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (MetricDTO metric : metrics) {
       if (allMetrics.contains(metric.getMetric())) {
         logger.info("Metric found: " + metric.getMetric());
@@ -63,13 +66,14 @@ public class MetricsCreator extends TableCreatorHelper implements StaticTableCre
     }
     if (metricsForDeletion.size() > 0) {
       logger.info("Metric for deletion: " + metricsForDeletion);
-      insertStaticTables.createSQLFile(newFileName, buildDeleteMetricSQL(metricsForDeletion), true);
+      sb.append(buildDeleteMetricSQL(metricsForDeletion));
     }
     allMetrics.removeAll(foundMetrics);
     if (allMetrics.size() > 0) {
       logger.info("Metric for insertion: " + allMetrics);
-      insertStaticTables.createSQLFile(newFileName, buildMetricSQL(allMetrics), true);
+      sb.append(buildMetricSQL(allMetrics));
     }
+    return sb.toString();
   }
 
   public static String buildMetricSQL(Set<String> metricSet) {

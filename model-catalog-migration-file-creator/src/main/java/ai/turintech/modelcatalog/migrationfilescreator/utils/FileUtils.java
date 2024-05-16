@@ -1,6 +1,7 @@
 package ai.turintech.modelcatalog.migrationfilescreator.utils;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -37,5 +38,27 @@ public class FileUtils {
     } catch (IOException e) {
       logger.error("Error writing to file: " + e.getMessage(), e);
     }
+  }
+
+  public static int countFiles(String directoryPath) {
+    File directory = new File(directoryPath);
+    if (!directory.exists() || !directory.isDirectory()) {
+      logger.error("The specified path is not a directory or does not exist.");
+      return -1; // Return -1 to indicate error
+    }
+
+    File[] files = directory.listFiles();
+    if (files == null) {
+      logger.error("Error occurred while listing files in the directory.");
+      return -1; // Return -1 to indicate error
+    }
+
+    int fileCount = 0;
+    for (File file : files) {
+      if (file.isFile()) {
+        fileCount++;
+      }
+    }
+    return fileCount;
   }
 }

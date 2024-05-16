@@ -14,7 +14,6 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,17 +23,16 @@ public class InsertStaticTables {
   private static final Logger logger = LogManager.getLogger(InsertStaticTables.class);
   private static final String JSON_DIR_PATH = "model-catalog-migration-file-creator/model_infos";
 
-  @Value("${latest_sql_file_name}")
-  private String latestSqlFileName;
-
   public String getJsonDirPath() {
     return JSON_DIR_PATH;
   }
 
-  public void insertDataScripts() {
+  public String insertDataScripts() {
+    StringBuilder sqlContent = new StringBuilder();
     for (StaticTableCreator staticTableCreator : staticTableCreators) {
-      staticTableCreator.createStaticTable(latestSqlFileName);
+      sqlContent.append(staticTableCreator.createStaticTable());
     }
+    return sqlContent.toString();
   }
 
   public void createSQLFile(String fileName, String content) {

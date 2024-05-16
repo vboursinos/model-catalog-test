@@ -28,16 +28,18 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
 
   @Autowired private ModelGroupTypeService modelGroupTypeService;
 
-  public void createStaticTable(String newFileName) {
+  public String createStaticTable() {
     Set<String> allGroupTypes;
+    String groupTypeSql = "";
     try {
       allGroupTypes = extractAllGroupTypes();
       List<ModelGroupTypeDTO> modelGroupTypes = modelGroupTypeService.findAll().block();
       logger.info("Model group types: " + modelGroupTypes);
-      compareModelGroupTypes(allGroupTypes, modelGroupTypes, newFileName);
+      groupTypeSql = compareModelGroupTypes(allGroupTypes, modelGroupTypes);
     } catch (IOException e) {
       logger.error("Error while creating model group types: " + e.getMessage());
     }
+    return groupTypeSql;
   }
 
   private Set<String> extractAllGroupTypes() throws IOException {
@@ -52,10 +54,11 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
     return mapper.readValue(jsonFile, mapType);
   }
 
-  private void compareModelGroupTypes(
-      Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes, String newFileName) {
+  private String compareModelGroupTypes(
+      Set<String> allModelGroupTypes, List<ModelGroupTypeDTO> modelGroupTypes) {
     Set<String> modelGroupTypesForDeletion = new HashSet<>();
     Set<String> foundModelGroupTypes = new HashSet<>();
+    StringBuilder sb = new StringBuilder();
     for (ModelGroupTypeDTO modelGroupType : modelGroupTypes) {
       if (allModelGroupTypes.contains(modelGroupType.getName())) {
         logger.info("Model Group type found: " + modelGroupType.getName());
@@ -67,15 +70,14 @@ public class GroupTypeCreator extends TableCreatorHelper implements StaticTableC
     }
     if (modelGroupTypesForDeletion.size() > 0) {
       logger.info("Model Group types for deletion: " + modelGroupTypesForDeletion);
-      insertStaticTables.createSQLFile(
-          newFileName, buildDeleteGroupTypeSQL(modelGroupTypesForDeletion), true);
+      sb.append(buildDeleteGroupTypeSQL(modelGroupTypesForDeletion));
     }
     allModelGroupTypes.removeAll(foundModelGroupTypes);
     if (allModelGroupTypes.size() > 0) {
       logger.info("Model Group types for insertion: " + allModelGroupTypes);
-      insertStaticTables.createSQLFile(
-          newFileName, buildInsertGroupTypeSQL(allModelGroupTypes), true);
+      sb.append(buildInsertGroupTypeSQL(allModelGroupTypes));
     }
+    return sb.toString();
   }
 
   public static String buildInsertGroupTypeSQL(Set<String> groups) {
