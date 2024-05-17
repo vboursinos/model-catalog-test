@@ -1,9 +1,62 @@
-# docker-compose-migration-file.yml
-version: '3.8'
+version: "2.4"
 services:
+  model-catalog:
+    image: nexus.dataspartan.com:9443/turintech/evoml-releases/model-catalog:develop
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    container_name: model-catalog
+    restart: always
+    ports:
+      - ${MODEL_CATALOG_PORT}:${MODEL_CATALOG_PORT}
+    networks:
+      - model-catalog-network
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "wget --spider http://localhost:${MODEL_CATALOG_PORT}/actuator/health/db || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - .env
+
+  postgres:
+    image: 'postgres:latest'
+    container_name: model-catalog-postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - PGDATA:/data/postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME} -d ${POSTGRES_DATABASE}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - model-catalog-network
+
   migration_execution:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
-      - ./sql_scripts:/app/migrations
+      - ./sql_scripts1:/application/model-catalog-migration-file-creator/sql_scripts/
+    networks:
+      - model-catalog-network
+
+volumes:
+  postgres:
+
+networks:
+  model-catalog-network:
