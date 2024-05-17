@@ -26,17 +26,27 @@ RUN pip install --no-cache-dir -r requirements.txt
 FROM eclipse-temurin:17-jre-alpine as builder
 WORKDIR extracted
 
-COPY --from=build-python /app /app
 COPY --from=build-java ./app/model-catalog-migration-file-creator/target/model-catalog-migration-file-creator.jar model-catalog-migration-file-creator.jar
 RUN java -Djarmode=layertools -jar model-catalog-migration-file-creator.jar extract
 
 # ─────────────────────────────── runs the exploded jar ─────────────────────────── #
-FROM eclipse-temurin:17-jre-alpine
+FROM azul/zulu-openjdk:17-jre-latest
+
 WORKDIR application
 COPY --from=builder extracted/dependencies/ ./
 COPY --from=builder extracted/spring-boot-loader/ ./
 COPY --from=builder extracted/snapshot-dependencies/ ./
 COPY --from=builder extracted/application/ ./
+COPY --from=build-java ./app/model-catalog-migration-file-creator/model-catalog-py model-catalog-migration-file-creator/model-catalog-py
+
+COPY setup/pip/pip.conf /etc/pip.conf
+COPY setup/pip/.netrc /root/.netrc
+COPY model-catalog-migration-file-creator/static model-catalog-migration-file-creator/static
+
+RUN apt-get update && apt-get install -y python3 python3-pip
+RUN python3 -m pip install -U pip setuptools
+
+RUN python3 -m pip install --no-cache-dir -r model-catalog-migration-file-creator/model-catalog-py/setup/requirements.txt
 
 EXPOSE 8080
 
