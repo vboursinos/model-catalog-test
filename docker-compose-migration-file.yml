@@ -1,27 +1,5 @@
 version: "2.4"
 services:
-  model-catalog:
-    image: nexus.dataspartan.com:9443/turintech/evoml-releases/model-catalog:develop
-    build:
-      context: ./
-      dockerfile: docker/Dockerfile
-    depends_on:
-      postgres:
-        condition: service_healthy
-    container_name: model-catalog
-    restart: always
-    ports:
-      - ${MODEL_CATALOG_PORT}:${MODEL_CATALOG_PORT}
-    networks:
-      - model-catalog-network
-    healthcheck:
-      test: [ "CMD", "bash", "-c", "wget --spider http://localhost:${MODEL_CATALOG_PORT}/actuator/health/db || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    env_file:
-      - .env
-
   postgres:
     image: 'postgres:latest'
     container_name: model-catalog-postgres
