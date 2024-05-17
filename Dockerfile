@@ -32,6 +32,7 @@ COPY --from=build-java ./app/model-catalog-migration-file-creator/model-catalog-
 COPY setup/pip/pip.conf /etc/pip.conf
 COPY setup/pip/.netrc /root/.netrc
 COPY model-catalog-migration-file-creator/static model-catalog-migration-file-creator/static
+COPY model-catalog-entity/src/main/resources/config/liquibase/changelog model-catalog-entity/src/main/resources/config/liquibase/changelog
 
 RUN apt-get update && apt-get install -y python3 python3-pip
 RUN python3 -m pip install -U pip setuptools
