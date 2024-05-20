@@ -2,15 +2,15 @@
 FROM maven:3.9.5-eclipse-temurin-17 AS build-java
 LABEL org.opencontainers.image.authors="Turintech.ai"
 
-COPY ../../model-catalog-migration-file-creator /app/model-catalog-migration-file-creator
+COPY ../../ /app/
 COPY ../../.env /app/.env
 COPY ../../pom.xml /app/pom.xml
 COPY ../../setup/.m2 /root/.m2
 
 
-RUN mvn -f /app/model-catalog-migration-file-creator/pom.xml -Dspring-boot.repackage.skip --batch-mode package -DskipTests && rm -r /app/model-catalog-migration-file-creator/target
+RUN mvn -f /app/pom.xml -Dspring-boot.repackage.skip --batch-mode package -DskipTests && rm -r /app/target
 
-RUN mvn -f /app/model-catalog-migration-file-creator/pom.xml -DskipTests --offline --batch-mode package
+RUN mvn -f /app/pom.xml -DskipTests --offline --batch-mode package
 
 # ─────────────────────────────── extracts the jar ──────────────────────────────── #
 FROM eclipse-temurin:17-jre-alpine as builder
