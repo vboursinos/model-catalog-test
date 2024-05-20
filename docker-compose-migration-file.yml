@@ -29,7 +29,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./sql_scripts1:/application/model-catalog-migration-file-creator/sql_scripts/
+      - ./sql_scripts:/application/model-catalog-migration-file-creator/sql_scripts/
     networks:
       - model-catalog-network
 
