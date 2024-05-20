@@ -149,46 +149,6 @@
 			<artifactId>graphql-jpa-query-web</artifactId>
 			<version>1.2.3</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>com.introproventures</groupId>-->
-<!--			<artifactId>graphql-jpa-query-schema</artifactId>-->
-<!--			<version>1.2.3</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>com.introproventures</groupId>-->
-<!--			<artifactId>graphql-jpa-query-autoconfigure</artifactId>-->
-<!--			<version>1.2.3</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter</artifactId>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-configuration-processor</artifactId>-->
-<!--			<optional>true</optional>-->
-<!--		</dependency>-->
-
-		<!--		<dependency>-->
-<!--			<groupId>org.springframework.graphql</groupId>-->
-<!--			<artifactId>spring-graphql-test</artifactId>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.graphql</groupId>-->
-<!--			<artifactId>spring-graphql</artifactId>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>com.graphql-java-kickstart</groupId>-->
-<!--			<artifactId>graphql-spring-boot-starter</artifactId>-->
-<!--			<version>11.1.0</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>com.graphql-java-kickstart</groupId>-->
-<!--			<artifactId>graphql-java-tools</artifactId>-->
-<!--			<version>11.1.0</version>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
-
 
 		<!-- java components -->
 		<dependency>
