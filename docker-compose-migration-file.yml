@@ -24,7 +24,7 @@ services:
   migration_execution:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/migration/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy

@@ -2,10 +2,10 @@
 FROM maven:3.9.5-eclipse-temurin-17 AS build-java
 LABEL org.opencontainers.image.authors="Turintech.ai"
 
-COPY model-catalog-migration-file-creator /app/model-catalog-migration-file-creator
-COPY .env /app/.env
-COPY pom.xml /app/pom.xml
-COPY ./setup/.m2 /root/.m2
+COPY ../../model-catalog-migration-file-creator /app/model-catalog-migration-file-creator
+COPY ../../.env /app/.env
+COPY ../../pom.xml /app/pom.xml
+COPY ../../setup/.m2 /root/.m2
 
 
 RUN mvn -f /app/model-catalog-migration-file-creator/pom.xml -Dspring-boot.repackage.skip --batch-mode package -DskipTests && rm -r /app/model-catalog-migration-file-creator/target
@@ -29,10 +29,10 @@ COPY --from=builder extracted/snapshot-dependencies/ ./
 COPY --from=builder extracted/application/ ./
 COPY --from=build-java ./app/model-catalog-migration-file-creator/model-catalog-py model-catalog-migration-file-creator/model-catalog-py
 
-COPY setup/pip/pip.conf /etc/pip.conf
-COPY setup/pip/.netrc /root/.netrc
-COPY model-catalog-migration-file-creator/static model-catalog-migration-file-creator/static
-COPY model-catalog-entity/src/main/resources/config/liquibase/changelog model-catalog-entity/src/main/resources/config/liquibase/changelog
+COPY ../../setup/pip/pip.conf /etc/pip.conf
+COPY ../../setup/pip/.netrc /root/.netrc
+COPY ../../model-catalog-migration-file-creator/static model-catalog-migration-file-creator/static
+COPY ../../model-catalog-entity/src/main/resources/config/liquibase/changelog model-catalog-entity/src/main/resources/config/liquibase/changelog
 
 RUN apt-get update && apt-get install -y python3 python3-pip
 RUN python3 -m pip install -U pip setuptools
