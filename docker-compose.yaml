@@ -50,8 +50,8 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-#      - ./model-catalog-entity/src/main/resources/config/liquibase/changelog:/application/model-catalog-migration-file-creator/sql_scripts/
-      - ./sql_scripts:/application/model-catalog-migration-file-creator/sql_scripts/
+      - ./model-catalog-entity/src/main/resources/config/liquibase/changelog:/application/model-catalog-migration-file-creator/sql_scripts/
+#      - ./sql_scripts:/application/model-catalog-migration-file-creator/sql_scripts/
     networks:
       - model-catalog-network
 

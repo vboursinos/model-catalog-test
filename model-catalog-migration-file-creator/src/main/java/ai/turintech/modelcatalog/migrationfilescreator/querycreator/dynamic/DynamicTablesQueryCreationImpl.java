@@ -13,9 +13,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.List;
 import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
@@ -54,11 +52,11 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
     ObjectMapper mapper = new ObjectMapper();
     Path dirPath = Paths.get(JSON_DIR_PATH);
     count = FileUtils.countFiles(liquibaseDirPath) + 1;
+    boolean migrationFileExists = findFileByMetamlVersion(liquibaseDirPath, getMetaMlVersion());
     outputFileName =
         Paths.get(outputFilePath, count + defaultLiquibaseFileName + getMetaMlVersion() + ".sql")
             .toString();
-    Path outputFile = Paths.get(outputFileName);
-    if (!Files.exists(outputFile)) {
+    if (!migrationFileExists) {
       createConstantSqlFile(constantSQL);
       processModelsInDirectory(mapper, dirPath, this::createModelSqlFile);
     }
@@ -118,5 +116,19 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
       e.printStackTrace();
     }
     return null;
+  }
+
+  public static boolean findFileByMetamlVersion(String dirPath, String metamlVersion) {
+    Path startPath = Paths.get(dirPath);
+    try (DirectoryStream<Path> stream = Files.newDirectoryStream(startPath)) {
+      for (Path path : stream) {
+        if (path.getFileName().toString().contains(metamlVersion)) {
+          return true;
+        }
+      }
+    } catch (IOException e) {
+      logger.error("Error reading files from directory: " + e.getMessage(), e);
+    }
+    return false;
   }
 }
