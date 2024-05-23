@@ -296,6 +296,22 @@
             </snapshots>
         </repository>
     </repositories>
+    <distributionManagement>
+        <repository>
+            <id>turintech-releases</id>
+            <url>https://nexus.dataspartan.com/repository/maven-releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <snapshotRepository>
+            <id>turintech-snapshots</id>
+            <url>https://nexus.dataspartan.com/repository/maven-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </snapshotRepository>
+    </distributionManagement>
     <build>
         <plugins>
             <plugin>

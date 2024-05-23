@@ -6,8 +6,7 @@ services:
       context: ./
       dockerfile: docker/Dockerfile
     depends_on:
-      postgres:
-        condition: service_healthy
+      - migration_execution
     container_name: model-catalog
     restart: always
     ports:
@@ -42,6 +41,20 @@ services:
       - postgres:/data/postgres
     networks:
       - model-catalog-network
+
+  migration_execution:
+    build:
+      context: .
+      dockerfile: docker/migration/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./model-catalog-entity/src/main/resources/config/liquibase/changelog:/application/model-catalog-migration-file-creator/sql_scripts/
+#      - ./sql_scripts:/application/model-catalog-migration-file-creator/sql_scripts/
+    networks:
+      - model-catalog-network
+
 
 volumes:
   postgres:

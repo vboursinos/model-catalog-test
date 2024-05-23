@@ -7,6 +7,17 @@ This tool is used to create migration files for the Model Catalog. It is a tool 
 This java tool is connected with a corresponding python code that is used to create the json files from MetaMl. The python code is located in model-catalog-py directory.
 
 ## Usage ##
+
+### Automatically ###
+
+To use the tool automatically, run the following command:
+
+```bash
+docker-compose -f docker-compose-migration-file.yml up --build
+```
+
+### Manually ###
+
 To use the tool, run the following command:
 
 1. Update MetaMl version
