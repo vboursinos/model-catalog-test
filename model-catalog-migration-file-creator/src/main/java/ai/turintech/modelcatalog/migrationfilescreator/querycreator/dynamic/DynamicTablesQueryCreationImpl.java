@@ -10,6 +10,7 @@ import ai.turintech.modelcatalog.migrationfilescreator.utils.FileUtils;
 import ai.turintech.modelcatalog.service.ModelService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -59,6 +60,16 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
     if (!migrationFileExists) {
       createConstantSqlFile(constantSQL);
       processModelsInDirectory(mapper, dirPath, this::createModelSqlFile);
+      File sqlFile = new File(outputFileName);
+      try {
+        String content = new String(Files.readAllBytes(sqlFile.toPath()));
+        if (content.trim().isEmpty()) {
+          logger.error("No data to insert in the sql file");
+          FileUtils.deleteFile(outputFileName);
+        }
+      } catch (IOException e) {
+        logger.error("Error when reading the file", e);
+      }
     }
   }
 

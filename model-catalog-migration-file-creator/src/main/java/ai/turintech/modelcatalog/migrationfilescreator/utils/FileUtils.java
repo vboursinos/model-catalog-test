@@ -62,4 +62,13 @@ public class FileUtils {
     String formattedFileCount = String.format("%04d", fileCount + 1);
     return formattedFileCount;
   }
+
+  public static void deleteFile(String filePath) {
+    File file = new File(filePath);
+    if (file.delete()) {
+      logger.info("File deleted successfully");
+    } else {
+      logger.error("Failed to delete the file");
+    }
+  }
 }
