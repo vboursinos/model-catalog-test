@@ -40,17 +40,17 @@ public class FileUtils {
     }
   }
 
-  public static int countFiles(String directoryPath) {
+  public static String countFiles(String directoryPath) {
     File directory = new File(directoryPath);
     if (!directory.exists() || !directory.isDirectory()) {
       logger.error("The specified path is not a directory or does not exist.");
-      return -1; // Return -1 to indicate error
+      return "-1";
     }
 
     File[] files = directory.listFiles();
     if (files == null) {
       logger.error("Error occurred while listing files in the directory.");
-      return -1; // Return -1 to indicate error
+      return "-1";
     }
 
     int fileCount = 0;
@@ -59,6 +59,7 @@ public class FileUtils {
         fileCount++;
       }
     }
-    return fileCount;
+    String formattedFileCount = String.format("%04d", fileCount + 1);
+    return formattedFileCount;
   }
 }

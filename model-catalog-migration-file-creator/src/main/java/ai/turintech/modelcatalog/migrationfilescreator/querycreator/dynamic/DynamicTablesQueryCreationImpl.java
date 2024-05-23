@@ -45,13 +45,13 @@ public class DynamicTablesQueryCreationImpl implements DynamicTablesQueryCreatio
   @Value("${default_liquibase_file_name}")
   private String defaultLiquibaseFileName;
 
-  private static int count;
+  private static String count;
 
   @Transactional
   public void insertDataScripts(String constantSQL) {
     ObjectMapper mapper = new ObjectMapper();
     Path dirPath = Paths.get(JSON_DIR_PATH);
-    count = FileUtils.countFiles(liquibaseDirPath) + 1;
+    count = FileUtils.countFiles(liquibaseDirPath);
     boolean migrationFileExists = findFileByMetamlVersion(liquibaseDirPath, getMetaMlVersion());
     outputFileName =
         Paths.get(outputFilePath, count + defaultLiquibaseFileName + getMetaMlVersion() + ".sql")
