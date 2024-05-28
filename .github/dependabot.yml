@@ -1,0 +1,45 @@
+version: 2
+
+registries:
+  pypi-releases:
+    type: python-index
+    url: https://nexus.turintech.ai/repository/pypi-all/simple
+    username: ${{ secrets.CD_USER }}
+    password: ${{ secrets.CD_PASSWORD }}
+
+  pypi-snapshot:
+    type: python-index
+    url: https://nexus.turintech.ai/repository/pypi-snapshot/simple
+    username: ${{ secrets.CD_USER }}
+    password: ${{ secrets.CD_PASSWORD }}
+
+updates:
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: tuesday
+    target-branch: "develop"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+
+  - package-ecosystem: pip
+    directory: "/model-catalog-migration-file-creator/model-catalog-py/setup"
+    insecure-external-code-execution: allow
+    registries:
+      - pypi-releases
+      - pypi-snapshot
+    schedule:
+      interval: daily
+    target-branch: "develop"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+
+    groups:
+      core-libraries:
+        patterns:
+          - "metaml"
+    
