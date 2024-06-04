@@ -71,7 +71,7 @@ jobs:
         run: echo "TAG_NAME_SANITIZED=`echo ${{ github.ref_name }} | sed -r 's/[/]+/./g'`" >> $GITHUB_ENV
         shell: bash
         
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: maven-${{ hashFiles('**/pom.xml') }}
