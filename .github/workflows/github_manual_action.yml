@@ -1,0 +1,57 @@
+name: Upload artifact to pypi
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: beast
+    steps:
+      - name: Generate new access token
+        id: token
+        uses: tibdex/github-app-token@v2.1.0
+        with:
+          app_id: ${{ secrets.ACTION_APP_ID }}
+          private_key: ${{ secrets.ACTION_APP_KEY }}
+
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.token.outputs.token }}
+
+      - name: Checkout remote composite actions
+        uses: ./.github/workflows/composite-actions
+        with:
+          ACTION_APP_ID: ${{ secrets.ACTION_APP_ID }}
+          ACTION_APP_KEY: ${{ secrets.ACTION_APP_KEY }}
+
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get install docker-ce
+
+      - name: Install Docker-compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Run docker-compose
+        run: docker-compose up -d
+
+      - name: Build and Test with Maven
+        run: mvn clean test
+
+      - name: Stop docker-compose
+        run: docker-compose down --remove-orphans
+
+      - name: 🚧 Commit lockfiles
+        uses: stefanzweifel/git-auto-commit-action@v5.0.1
+        with:
+          branch: ${{ github.head_ref }}
+          commit_message: "chore: generate migration file [dependabot skip]"
+          file_pattern: "model-catalog-entity/src/main/resources/config/liquibase/changelog/*.sql"
+        continue-on-error: false
