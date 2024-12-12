@@ -52,7 +52,7 @@ jobs:
           ACTION_APP_KEY: ${{ secrets.ACTION_APP_KEY }}
           
       - name: Download the coverage file as an artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: tests-coverage
           path: jacoco
